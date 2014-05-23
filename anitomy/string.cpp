@@ -38,6 +38,11 @@ bool IsNumericChar(const char_t c) {
   return c >= '0' && c <= '9';
 }
 
+bool IsAlphanumericString(const string_t& str) {
+  return !str.empty() &&
+         std::all_of(str.begin(), str.end(), IsAlphanumericChar);
+}
+
 bool IsHexadecimalString(const string_t& str) {
   return !str.empty() &&
          std::all_of(str.begin(), str.end(), IsHexadecimalChar);

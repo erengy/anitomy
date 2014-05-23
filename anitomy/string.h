@@ -41,6 +41,7 @@ typedef std::basic_string<char_t> string_t;
 bool IsAlphanumericChar(const char_t c);
 bool IsHexadecimalChar(const char_t c);
 bool IsNumericChar(const char_t c);
+bool IsAlphanumericString(const string_t& str);
 bool IsHexadecimalString(const string_t& str);
 bool IsNumericString(const string_t& str);
 
