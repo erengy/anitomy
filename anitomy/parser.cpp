@@ -298,6 +298,7 @@ bool Parser::MatchKnownEpisodePatterns(const string_t& str,
 
   // Season and episode (e.g. "02x01")
   if (std::regex_match(str, match_result, season_and_episode_pattern)) {
+    data_->anime_season = match_result[1];
     SetEpisodeNumber(match_result[2], *token);
     return true;
   }
@@ -328,7 +329,7 @@ void Parser::SearchForEpisodeNumber() {
   if (tokens_with_numbers.empty())
     return;
 
-  // If in a known episode format, it MUST be the episode number
+  // If in a known episode format, it has to be the episode number
   if (SearchForKnownEpisodeFormats(tokens_with_numbers))
     return;
 

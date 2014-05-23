@@ -62,10 +62,8 @@ void Tokenizer::TokenizeByBrackets() {
     if (index != string_t::npos) {
       // Check if it matches last open bracket
       if (bracket_open) {
-        size_t bracket_index = index;
-        if (bracket_index != last_bracket_index) {
+        if (index != last_bracket_index)
           continue;
-        }
       } else {
         last_bracket_index = index;
       }
@@ -90,11 +88,11 @@ void Tokenizer::TokenizeByBrackets() {
 }
 
 void Tokenizer::TokenizeByDelimiter(bool enclosed, const TokenRange& range) {
-  // Each token occasionally has a different delimiter, which is why we can't
-  // analyze the whole thing in one go.
+  // Each group occasionally has a different delimiter, which is why we can't
+  // analyze the whole filename in one go.
   char_t delimiter = GetDelimiter(range);
 
-  // TODO: Better handle tokens with multiple delimiters
+  // TODO: Better handle groups with multiple delimiters
   if (!ValidateDelimiter(delimiter, enclosed, range)) {
     AddToken(kUnknown, enclosed, range);
     return;
@@ -138,9 +136,8 @@ char_t Tokenizer::GetDelimiter(const TokenRange& range) {
   size_t offset = filename_.find_first_not_of(L' ', range.offset);
   size_t offset_end = offset == string_t::npos ? offset :
       filename_.find_last_not_of(L' ', range.offset + range.size - 1);
-  if (offset == string_t::npos || offset_end < offset) {
+  if (offset == string_t::npos || offset_end < offset)
     return L' ';  // There's nothing but whitespace
-  }
   size_t size = offset_end - offset + 1;
 
   std::map<char_t, int> frequency;
@@ -178,9 +175,8 @@ char_t Tokenizer::GetDelimiter(const TokenRange& range) {
                             static_cast<float>(frequency[delimiter]);
     // The constant value was chosen by trial and error. There should be room
     // for improvement.
-    if (frequency_ratio / character_distance > 0.8f) {
+    if (frequency_ratio / character_distance > 0.8f)
       delimiter = it->first;
-    }
   }
 
   return delimiter;
