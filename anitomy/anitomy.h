@@ -33,6 +33,8 @@ public:
   const token_container_t& tokens() const;
 
 private:
+  void RemoveExtensionFromFilename(string_t& filename);
+
   Elements data_;
   token_container_t tokens_;
 };

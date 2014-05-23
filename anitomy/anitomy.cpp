@@ -28,10 +28,12 @@ bool Anitomy::Parse(const string_t& filename) {
   data_.filename = filename;
   tokens_.clear();
 
-  if (filename.empty())
+  RemoveExtensionFromFilename(data_.filename);
+
+  if (data_.filename.empty())
     return false;
 
-  Tokenizer tokenizer(filename, tokens_);
+  Tokenizer tokenizer(data_.filename, tokens_);
   if (!tokenizer.Tokenize())
     return false;
 
@@ -40,6 +42,24 @@ bool Anitomy::Parse(const string_t& filename) {
     return false;
 
   return true;
+}
+
+void Anitomy::RemoveExtensionFromFilename(string_t& filename) {
+  size_t position = filename.find_last_of(L".");
+
+  if (position == string_t::npos)
+    return;
+
+  string_t extension = filename.substr(position + 1);
+
+  const size_t max_length = 4;
+  if (extension.length() > max_length)
+    return;
+
+  if (!IsAlphanumericString(extension))
+    return;
+
+  filename.resize(position);
 }
 
 const Elements& Anitomy::elements() const {
