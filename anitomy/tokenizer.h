@@ -35,8 +35,8 @@ private:
   void TokenizeByBrackets();
   void TokenizeByDelimiter(bool enclosed, const TokenRange& range);
 
-  char_t GetDelimiter(const TokenRange& range);
-  bool ValidateDelimiter(char_t delimiter, bool enclosed, const TokenRange& range);
+  char_t GetDelimiter(const TokenRange& range) const;
+  bool ValidateDelimiter(const char_t delimiter, bool enclosed, const TokenRange& range) const;
 
   string_t filename_;
   token_container_t* tokens_;

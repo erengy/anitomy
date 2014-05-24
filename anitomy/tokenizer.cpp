@@ -56,7 +56,7 @@ void Tokenizer::TokenizeByBrackets() {
 
   for (size_t offset = 0; offset < filename_.size(); offset++) {
     const auto& brackets = bracket_open ? kClosingBrackets : kOpeningBrackets;
-    size_t index = brackets.find(filename_.at(offset));
+    const size_t index = brackets.find(filename_.at(offset));
 
     // Character is a bracket
     if (index != string_t::npos) {
@@ -90,7 +90,7 @@ void Tokenizer::TokenizeByBrackets() {
 void Tokenizer::TokenizeByDelimiter(bool enclosed, const TokenRange& range) {
   // Each group occasionally has a different delimiter, which is why we can't
   // analyze the whole filename in one go.
-  char_t delimiter = GetDelimiter(range);
+  const char_t delimiter = GetDelimiter(range);
 
   // TODO: Better handle groups with multiple delimiters
   if (!ValidateDelimiter(delimiter, enclosed, range)) {
@@ -102,7 +102,7 @@ void Tokenizer::TokenizeByDelimiter(bool enclosed, const TokenRange& range) {
 
   for (size_t offset = range.offset;
        offset < range.offset + range.size; offset++) {
-    char_t character = filename_.at(offset);
+    const char_t character = filename_.at(offset);
 
     if (character == delimiter) {
       // Add new unknown token
@@ -123,7 +123,7 @@ void Tokenizer::TokenizeByDelimiter(bool enclosed, const TokenRange& range) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-char_t Tokenizer::GetDelimiter(const TokenRange& range) {
+char_t Tokenizer::GetDelimiter(const TokenRange& range) const {
   // Symbols are sorted by their precedence, in decreasing order. While the most
   // common delimiters are underscore, space and dot, we give comma the priority
   // to handle the case where words are separated by ", ". Besides, we'll be
@@ -144,7 +144,7 @@ char_t Tokenizer::GetDelimiter(const TokenRange& range) {
 
   // Count all possible delimiters
   for (size_t i = offset; i < offset + size; i++) {
-    char_t character = filename_.at(i);
+    const char_t character = filename_.at(i);
     if (IsAlphanumericChar(character))
       continue;
     if (kDelimiterTable.find(character) == string_t::npos)
@@ -182,8 +182,8 @@ char_t Tokenizer::GetDelimiter(const TokenRange& range) {
   return delimiter;
 }
 
-bool Tokenizer::ValidateDelimiter(char_t delimiter, bool enclosed,
-                                  const TokenRange& range) {
+bool Tokenizer::ValidateDelimiter(const char_t delimiter, bool enclosed,
+                                  const TokenRange& range) const {
   if (delimiter == L'\0')
     return false;
 

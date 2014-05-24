@@ -43,8 +43,8 @@ public:
   ParseOptions parse_options;
 
 private:
-  token_iterator_t GetPreviousValidToken(token_iterator_t it);
-  token_iterator_t GetNextValidToken(token_iterator_t it);
+  token_iterator_t GetPreviousValidToken(token_iterator_t it) const;
+  token_iterator_t GetNextValidToken(token_iterator_t it) const;
   void CompareTokenWithKeywords(Token& token);
   void SearchForEpisodeNumber();
   bool SearchForKnownEpisodeFormats(std::vector<size_t>& tokens);

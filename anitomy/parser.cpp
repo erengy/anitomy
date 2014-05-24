@@ -32,7 +32,7 @@ ParseOptions::ParseOptions()
       parse_release_group(true) {
 }
 
-token_iterator_t Parser::GetPreviousValidToken(token_iterator_t it) {
+token_iterator_t Parser::GetPreviousValidToken(token_iterator_t it) const {
   if (it == tokens_->begin())
     return tokens_->end();
 
@@ -44,7 +44,7 @@ token_iterator_t Parser::GetPreviousValidToken(token_iterator_t it) {
   return it;
 }
 
-token_iterator_t Parser::GetNextValidToken(token_iterator_t it) {
+token_iterator_t Parser::GetNextValidToken(token_iterator_t it) const {
   // Find the first next token that's not a delimiter
   do {
     ++it;

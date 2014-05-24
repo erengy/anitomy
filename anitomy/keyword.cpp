@@ -113,7 +113,7 @@ KeywordManager::KeywordManager() {
 void KeywordManager::Add(KeywordCategory category, const string_t& input) {
   auto& keyword_lists = keyword_lists_[category];
 
-  string_t separator = _TEXT(", ");
+  const string_t separator = _TEXT(", ");
   size_t index_begin = 0, index_end;
 
   do {
