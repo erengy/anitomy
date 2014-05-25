@@ -140,21 +140,36 @@ char_t Tokenizer::GetDelimiter(const TokenRange& range) const {
     return L' ';  // There's nothing but whitespace
   size_t size = offset_end - offset + 1;
 
-  std::map<char_t, int> frequency;
+  static std::map<char_t, size_t> frequency;
+
+  if (frequency.empty()) {
+    // Initialize frequency map
+    for (auto it = kDelimiterTable.begin(); it != kDelimiterTable.end(); ++it) {
+      frequency.insert(std::make_pair(*it, 0));
+    }
+  } else {
+    // Reset frequency map
+    for (auto it = frequency.begin(); it != frequency.end(); ++it) {
+      it->second = 0;
+    }
+  }
 
   // Count all possible delimiters
   for (size_t i = offset; i < offset + size; i++) {
     const char_t character = filename_.at(i);
     if (IsAlphanumericChar(character))
       continue;
-    if (kDelimiterTable.find(character) == string_t::npos)
+    if (frequency.find(character) == frequency.end())
       continue;
-    frequency[character] += 1;
+    frequency.at(character) += 1;
   }
 
   char_t delimiter = L'\0';
 
   for (auto it = frequency.begin(); it != frequency.end(); ++it) {
+    if (it->second == 0)
+      continue;
+
     // Initialize delimiter at first iteration
     if (delimiter == L'\0') {
       delimiter = it->first;
