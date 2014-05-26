@@ -119,11 +119,9 @@ bool Parser::Parse() {
 
   if (parse_options.parse_episode_number) {
     SearchForEpisodeNumber();
-    TrimString(data_->episode_number);
   }
 
   SearchForAnimeTitle();
-  TrimString(data_->anime_title, _TEXT(" -"));
 
   if (parse_options.parse_release_group &&
       data_->release_group.empty()) {
@@ -132,7 +130,6 @@ bool Parser::Parse() {
 
   if (parse_options.parse_episode_title) {
     SearchForEpisodeTitle();
-    TrimString(data_->episode_title, _TEXT(" -"));
   }
 
   return !data_->anime_title.empty();
@@ -429,6 +426,8 @@ void Parser::SearchForEpisodeNumber() {
 
 void Parser::SetEpisodeNumber(const string_t& number, Token& token) {
   data_->episode_number = number;
+  TrimString(data_->episode_number);
+
   token.category = kIdentifier;
 }
 
@@ -452,6 +451,8 @@ void BuildElement(string_t& element,
         break;
     }
   }
+
+  TrimString(element, _TEXT(" -"));
 }
 
 void Parser::SearchForAnimeTitle() {
