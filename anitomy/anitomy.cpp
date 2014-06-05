@@ -45,7 +45,7 @@ bool Anitomy::Parse(const string_t& filename) {
 }
 
 void Anitomy::RemoveExtensionFromFilename(string_t& filename) {
-  const size_t position = filename.find_last_of(L".");
+  const size_t position = filename.find_last_of(L'.');
 
   if (position == string_t::npos)
     return;

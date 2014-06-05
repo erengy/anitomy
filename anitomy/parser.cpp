@@ -59,7 +59,7 @@ void AppendKeyword(string_t& str, const string_t& keyword) {
     return;
 
   if (!str.empty())
-    str.append(_TEXT(" "));
+    str.push_back(L' ');
 
   str.append(keyword);
 }
@@ -146,22 +146,24 @@ void Parser::CompareTokenWithKeywords(Token& token) {
   if (word.size() != 8 && IsNumericString(word))
     return;
 
-  // Performs better than making a case-insensitive Find
-  auto keyword = StringToUpperCopy(token.content);
-  TrimString(keyword);
-
   // Checksum
   if (data_->checksum.empty() && IsCrc32(word)) {
     data_->checksum = word;
     token.category = kIdentifier;
+    return;
 
   // Video resolution
   } else if (data_->resolution.empty() && IsResolution(word)) {
     data_->resolution = word;
     token.category = kIdentifier;
+    return;
+  }
+
+  // Performs better than making a case-insensitive Find
+  auto keyword = StringToUpperCopy(word);
 
   // Video info
-  } else if (keyword_manager.Find(kKeywordVideo, keyword)) {
+  if (keyword_manager.Find(kKeywordVideo, keyword)) {
     AppendKeyword(data_->video, word);
     token.category = kIdentifier;
 
