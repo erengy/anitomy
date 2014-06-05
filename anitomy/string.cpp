@@ -17,6 +17,7 @@
 */
 
 #include <algorithm>
+#include <functional>
 
 #include "string.h"
 
@@ -55,26 +56,33 @@ bool IsNumericString(const string_t& str) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-inline char_t ToLowerA(const char_t c) {
-  return (c >= 'A' && c <= 'Z') ? (c + ('a' - 'A')) : c;
+inline char ToLower(const char c) {
+  return (c >= 'A' && c <= 'Z') ? (c + ('a' - 'A')) : tolower(c);
 }
+
+inline wchar_t ToLower(const wchar_t c) {
+  return (c >= L'A' && c <= L'Z') ? (c + (L'a' - L'A')) : towlower(c);
+}
+
+struct ToUpper : public std::unary_function<char_t, char_t> {
+  char operator ()(const char c) const {
+    return (c >= 'a' && c <= 'z') ? (c + ('A' - 'a')) : toupper(c);
+  }
+
+  wchar_t operator ()(const wchar_t c) const {
+    return (c >= L'a' && c <= L'z') ? (c + (L'A' - L'a')) : towupper(c);
+  }
+};
+
+////////////////////////////////////////////////////////////////////////////////
 
 inline bool IsCharEqualTo(const char_t c1, const char_t c2) {
-  return tolower(c1) == tolower(c2);
-}
-
-inline bool IsCharEqualToA(const char_t c1, const char_t c2) {
-  return ToLowerA(c1) == ToLowerA(c2);
+  return ToLower(c1) == ToLower(c2);
 }
 
 bool IsStringEqualTo(const string_t& str1, const string_t& str2) {
   return str1.size() == str2.size() &&
          std::equal(str1.begin(), str1.end(), str2.begin(), IsCharEqualTo);
-}
-
-bool IsStringEqualToA(const string_t& str1, const string_t& str2) {
-  return str1.size() == str2.size() &&
-         std::equal(str1.begin(), str1.end(), str2.begin(), IsCharEqualToA);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -90,11 +98,11 @@ int StringToInt(const std::wstring& str) {
 ////////////////////////////////////////////////////////////////////////////////
 
 void StringToUpper(std::string& str) {
-  std::transform(str.begin(), str.end(), str.begin(), toupper);
+  std::transform(str.begin(), str.end(), str.begin(), ToUpper());
 }
 
 void StringToUpper(std::wstring& str) {
-  std::transform(str.begin(), str.end(), str.begin(), towupper);
+  std::transform(str.begin(), str.end(), str.begin(), ToUpper());
 }
 
 string_t StringToUpperCopy(string_t str) {

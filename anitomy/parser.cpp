@@ -240,7 +240,7 @@ bool Parser::SearchForKnownEpisodeFormats(std::vector<size_t>& tokens) {
     // Number and total format (e.g. "8 of 12")
     auto next_token = GetNextValidToken(token);
     if (next_token != tokens_->end()) {
-      if (IsStringEqualToA(next_token->content, _TEXT("of"))) {
+      if (IsStringEqualTo(next_token->content, _TEXT("of"))) {
         auto other_token = GetNextValidToken(next_token);
         if (other_token != tokens_->end()) {
           if (IsNumericString(other_token->content)) {
@@ -404,7 +404,7 @@ void Parser::SearchForEpisodeNumber() {
   auto previous_token = GetPreviousValidToken(token);
   if (previous_token != tokens_->end() &&
       previous_token->category == kUnknown) {
-    if (IsStringEqualToA(previous_token->content, _TEXT("Season"))) {
+    if (IsStringEqualTo(previous_token->content, _TEXT("Season"))) {
       // We can't bail out yet; it can still be in "2nd Season 01" format
       previous_token = GetPreviousValidToken(previous_token);
       if (previous_token != tokens_->end()) {
@@ -415,7 +415,7 @@ void Parser::SearchForEpisodeNumber() {
           return;
         }
       }
-    } else if (IsStringEqualToA(previous_token->content, _TEXT("Movie"))) {
+    } else if (IsStringEqualTo(previous_token->content, _TEXT("Movie"))) {
       return;
     }
   }
