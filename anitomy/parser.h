@@ -43,16 +43,41 @@ public:
   ParseOptions parse_options;
 
 private:
-  token_iterator_t GetPreviousValidToken(token_iterator_t it) const;
-  token_iterator_t GetNextValidToken(token_iterator_t it) const;
-  void CompareTokenWithKeywords(Token& token);
+  void SearchForKeywords();
   void SearchForEpisodeNumber();
-  bool SearchForKnownEpisodeFormats(std::vector<size_t>& tokens);
-  bool MatchKnownEpisodePatterns(const string_t& str, const token_iterator_t& token);
-  void SetEpisodeNumber(const string_t& number, Token& token);
   void SearchForAnimeTitle();
   void SearchForReleaseGroup();
   void SearchForEpisodeTitle();
+
+  bool SearchForEpisodePatterns(std::vector<size_t>& tokens);
+  bool SearchForIsolatedNumbers(std::vector<size_t>& tokens);
+  bool SearchForSeparatedNumbers(std::vector<size_t>& tokens);
+  bool SearchForLastNumber(std::vector<size_t>& tokens);
+
+  bool NumberComesAfterEpisodePrefix(Token& token, size_t number_begin);
+  bool NumberComesAfterEpisodeKeyword(const token_iterator_t& token);
+  bool NumberComesBeforeTotalNumber(const token_iterator_t& token);
+
+  bool MatchEpisodePatterns(const string_t& word, Token& token);
+  bool MatchSingleEpisodePattern(const string_t& word, Token& token);
+  bool MatchMultiEpisodePattern(const string_t& word, Token& token);
+  bool MatchSeasonAndEpisodePattern(const string_t& word, Token& token);
+  bool MatchJapaneseCounterPattern(const string_t& word, Token& token);
+
+  void SetEpisodeNumber(const string_t& number, Token& token);
+
+  void AppendKeyword(string_t& str, const string_t& keyword);
+  size_t FindNumberInString(const string_t& str);
+  bool IsCrc32(const string_t& str);
+  bool IsOrdinalNumber(const string_t& word);
+  bool IsResolution(const string_t& str);
+
+  token_iterator_t GetPreviousValidToken(token_iterator_t it) const;
+  token_iterator_t GetNextValidToken(token_iterator_t it) const;
+
+  void BuildElement(string_t& element, bool keep_delimiters,
+                    const token_iterator_t& token_begin,
+                    const token_iterator_t& token_end) const;
 
   Elements* data_;
   token_container_t* tokens_;
