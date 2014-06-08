@@ -248,48 +248,55 @@ bool Parser::SearchForSeparatedNumbers(std::vector<size_t>& tokens) {
 }
 
 bool Parser::SearchForLastNumber(std::vector<size_t>& tokens) {
-  size_t token_index = tokens.back();
-  auto& token = tokens_->begin() + token_index;
+  for (auto it = tokens.rbegin(); it != tokens.rend(); ++it) {
+    size_t token_index = *it;
+    auto& token = tokens_->begin() + token_index;
 
-  // Assuming that episode number always comes after the title, first token
-  // cannot be what we're looking for
-  if (token_index == 0)
-    return false;
+    // Assuming that episode number always comes after the title, first token
+    // cannot be what we're looking for
+    if (token_index == 0)
+      continue;
 
-  // An enclosed token is unlikely to be the episode number at this point
-  if (token->enclosed)
-    return false;
+    // An enclosed token is unlikely to be the episode number at this point
+    if (token->enclosed)
+      continue;
 
-  // Ignore if it's the first non-enclosed token
-  bool first_nonenclosed =
-      std::all_of(tokens_->begin(), tokens_->begin() + token_index,
-                  [](const Token& token) { return token.enclosed; });
-  if (first_nonenclosed)
-    return false;
+    // Ignore if it's the first non-enclosed token
+    if (std::all_of(tokens_->begin(), tokens_->begin() + token_index,
+            [](const Token& token) { return token.enclosed; }))
+      continue;
 
-  // Check if the previous token is "Season" or "Movie"
-  auto previous_token = GetPreviousValidToken(token);
-  if (previous_token != tokens_->end() &&
-      previous_token->category == kUnknown) {
-    if (IsStringEqualTo(previous_token->content, _TEXT("Season"))) {
-      // We can't bail out yet; it can still be in "2nd Season 01" format
-      previous_token = GetPreviousValidToken(previous_token);
-      if (previous_token != tokens_->end()) {
-        if (IsOrdinalNumber(previous_token->content)) {
-          data_->anime_season = previous_token->content;
-        } else {
-          data_->anime_season = token->content;
-          return false;
+    // Ignore if there's an identified token placed before this one
+    if (std::any_of(tokens_->begin(), tokens_->begin() + token_index,
+            [](const Token& token) { return token.category == kIdentifier; }))
+      continue;
+
+    // Check if the previous token is "Season" or "Movie"
+    auto previous_token = GetPreviousValidToken(token);
+    if (previous_token != tokens_->end() &&
+        previous_token->category == kUnknown) {
+      if (IsStringEqualTo(previous_token->content, _TEXT("Season"))) {
+        // We can't bail out yet; it can still be in "2nd Season 01" format
+        previous_token = GetPreviousValidToken(previous_token);
+        if (previous_token != tokens_->end()) {
+          if (IsOrdinalNumber(previous_token->content)) {
+            data_->anime_season = previous_token->content;
+          } else {
+            data_->anime_season = token->content;
+            continue;
+          }
         }
+      } else if (IsStringEqualTo(previous_token->content, _TEXT("Movie"))) {
+        continue;
       }
-    } else if (IsStringEqualTo(previous_token->content, _TEXT("Movie"))) {
-      return false;
     }
+
+    // We'll use this number after all
+    SetEpisodeNumber(token->content, *token);
+    return true;
   }
 
-  // We'll use the last number after all
-  SetEpisodeNumber(token->content, *token);
-  return true;
+  return false;
 }
 
 }  // namespace anitomy
