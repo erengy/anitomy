@@ -218,10 +218,14 @@ void Parser::SearchForReleaseGroup() {
     }
 
     // Build release group, or anime title if it wasn't found earlier
-    bool title_not_found = data_->anime_title.empty();
-    auto& element = title_not_found ? data_->anime_title : data_->release_group;
-    BuildElement(element, !title_not_found, token_begin, token_end);
-    return;
+    if (data_->release_group.empty()) {
+      BuildElement(data_->release_group, true, token_begin, token_end);
+      if (data_->anime_title.empty())
+        continue;
+    } else if (data_->anime_title.empty()) {
+      BuildElement(data_->anime_title, false, token_begin, token_end);
+      return;
+    }
 
   } while (token_begin != tokens_->end());
 }
