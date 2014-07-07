@@ -123,7 +123,26 @@ void Tokenizer::TokenizeByDelimiter(bool enclosed, const TokenRange& range) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-char_t Tokenizer::GetDelimiter(const TokenRange& range) const {
+bool TrimWhitespace(const string_t& str, TokenRange& range) {
+  const char_t whitespace = L' ';
+
+  size_t offset_end = range.offset + range.size - 1;
+
+  range.offset = str.find_first_not_of(whitespace, range.offset);
+
+  if (range.offset != string_t::npos) {
+    offset_end = str.find_last_not_of(whitespace, offset_end);
+
+    if (offset_end >= range.offset) {
+      range.size = offset_end - range.offset + 1;
+      return true;
+    }
+  }
+
+  return false;  // There's nothing but whitespace
+}
+
+char_t Tokenizer::GetDelimiter(TokenRange range) const {
   // Symbols are sorted by their precedence, in decreasing order. While the most
   // common delimiters are underscore, space and dot, we give comma the priority
   // to handle the case where words are separated by ", ". Besides, we'll be
@@ -133,12 +152,8 @@ char_t Tokenizer::GetDelimiter(const TokenRange& range) const {
   // Trim whitespace so that it doesn't interfere with our frequency analysis.
   // This proves useful for handling some edge cases, and it doesn't seem to
   // have any side effects.
-  size_t offset = filename_.find_first_not_of(L' ', range.offset);
-  size_t offset_end = offset == string_t::npos ? offset :
-      filename_.find_last_not_of(L' ', range.offset + range.size - 1);
-  if (offset == string_t::npos || offset_end < offset)
-    return L' ';  // There's nothing but whitespace
-  size_t size = offset_end - offset + 1;
+  if (!TrimWhitespace(filename_, range))
+    return L' ';
 
   static std::map<char_t, size_t> frequency;
 
@@ -155,7 +170,7 @@ char_t Tokenizer::GetDelimiter(const TokenRange& range) const {
   }
 
   // Count all possible delimiters
-  for (size_t i = offset; i < offset + size; i++) {
+  for (size_t i = range.offset; i < range.offset + range.size; i++) {
     const char_t character = filename_.at(i);
     if (IsAlphanumericChar(character))
       continue;
