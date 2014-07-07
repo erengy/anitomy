@@ -48,7 +48,7 @@ bool KeywordList::Find(const string_t& str) const {
 KeywordManager::KeywordManager() {
   Add(kKeywordAudio,
       // Audio channels
-      _TEXT("2CH, 5.1, 5.1CH, DTS, DTS5.1, DTS-ES, TRUEHD5.1, ")
+      _TEXT("2CH, 5.1, 5.1CH, DTS, DTS-ES, DTS5.1, TRUEHD5.1, ")
       // Audio codecs
       _TEXT("AAC, AC3, FLAC, OGG, MP3, VORBIS, ")
       // Audio language
@@ -59,30 +59,32 @@ KeywordManager::KeywordManager() {
       // Video codecs
       _TEXT("8BIT, 8-BIT, 10BIT, 10-BIT, HI10P, ")
       _TEXT("H264, H.264, X264, X.264, ")
-      _TEXT("DIVX, XVID, ")
+      _TEXT("AVC, DIVX, XVID, ")
       // Video formats
-      _TEXT("AVI, RMVB, WMV, ")
+      _TEXT("AVI, RMVB, WMV, WMV3, WMV9, ")
       // Video quality
       _TEXT("HQ, LQ, ")
       // Video resolution
-      _TEXT("HD, HDTV, SD, ")
+      _TEXT("HD, SD, ")
       // Other
       _TEXT("TS, VFR")
       );
 
   Add(kKeywordExtra,
       // Language
-      _TEXT("ENG, ENGLISH, VOSTFR, ")
+      _TEXT("ENG, ENGLISH, ESP, ESPANOL, ITA, JAP, SPANISH, VOSTFR, ")
       // Release
       _TEXT("BATCH, COMPLETE, ")
       // Source
-      _TEXT("BD, BLURAY, BLU-RAY, ")
-      _TEXT("DVD, DVD5, DVD9, DVD-R2J, DVDRIP, R2DVD, R2J, R2JDVD, ")
-      _TEXT("WEBCAST, ")
+      _TEXT("BD, BDRIP, BLURAY, BLU-RAY, ")
+      _TEXT("DVD, DVD5, DVD9, DVD-R2J, DVDRIP, DVD-RIP, R2DVD, R2J, R2JDVD, R2JDVDRIP, ")
+      _TEXT("HDTV, HDTVRIP, TV-RIP, TVRIP, WEBCAST, ")
       // Subtitles
-      _TEXT("ASS, HARDSUB, SOFTSUB, SUB, SUBBED, ")
+      _TEXT("ASS, BIG5, HARDSUB, RAW, SOFTSUB, SUB, SUBBED, ")
+      // Device compatibility
+      _TEXT("IPAD3, IPHONE5, IPOD, PS3, XBOX, XBOX360, ")
       // Other
-      _TEXT("DIRECTOR'S CUT, UNCENSORED, UNCUT, PS3, RAW, REMASTERED, WIDESCREEN, WS")
+      _TEXT("DIRECTOR'S CUT, UNCENSORED, UNCUT, PS3, REMASTERED, WIDESCREEN, WS")
       );
 
   Add(kKeywordExtraUnsafe,
@@ -98,7 +100,7 @@ KeywordManager::KeywordManager() {
       );
 
   Add(kKeywordEpisodePrefix,
-      _TEXT("E, EP, EP., EPS, EPS., EPISODE, ")
+      _TEXT("E, EP, EP., EPS, EPS., EPISODE, EPISODE., ")
       _TEXT("VOL, VOL., VOLUME, ")
 #ifdef ANITOMY_USE_WIDE_CHARACTERS
       _TEXT("\x7B2C")
