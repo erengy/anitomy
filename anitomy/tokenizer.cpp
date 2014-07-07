@@ -205,7 +205,7 @@ char_t Tokenizer::GetDelimiter(TokenRange range) const {
                             static_cast<float>(frequency[delimiter]);
     // The constant value was chosen by trial and error. There should be room
     // for improvement.
-    if (frequency_ratio / character_distance > 0.8f)
+    if (frequency_ratio / abs(character_distance) > 0.8f)
       delimiter = it->first;
   }
 
