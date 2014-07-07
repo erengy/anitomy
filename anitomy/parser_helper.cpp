@@ -84,7 +84,7 @@ bool Parser::IsResolution(const string_t& str) {
 
   // *###p
   } else if (str.size() >= 3 + 1) {
-    if (str.back() == 'p') {
+    if (str.back() == 'p' || str.back() == 'P') {
       for (size_t i = 0; i < str.size() - 1; i++)
         if (!IsNumericChar(str.at(i)))
           return false;
