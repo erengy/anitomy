@@ -53,7 +53,7 @@ bool Parser::NumberComesAfterEpisodePrefix(Token& token, size_t number_begin) {
 bool Parser::NumberComesAfterEpisodeKeyword(const token_iterator_t& token) {
   auto previous_token = GetPreviousValidToken(token);
 
-  if (previous_token != tokens_->end()) {
+  if (previous_token != tokens_.end()) {
     if (previous_token->category == kUnknown) {
       auto keyword = StringToUpperCopy(previous_token->content);
 
@@ -72,11 +72,11 @@ bool Parser::NumberComesAfterEpisodeKeyword(const token_iterator_t& token) {
 bool Parser::NumberComesBeforeTotalNumber(const token_iterator_t& token) {
   auto next_token = GetNextValidToken(token);
 
-  if (next_token != tokens_->end()) {
+  if (next_token != tokens_.end()) {
     if (IsStringEqualTo(next_token->content, _TEXT("of"))) {
       auto other_token = GetNextValidToken(next_token);
 
-      if (other_token != tokens_->end()) {
+      if (other_token != tokens_.end()) {
         if (IsNumericString(other_token->content)) {
           SetEpisodeNumber(token->content, *token);
           next_token->category = kIdentifier;
@@ -93,7 +93,7 @@ bool Parser::NumberComesBeforeTotalNumber(const token_iterator_t& token) {
 bool Parser::SearchForEpisodePatterns(std::vector<size_t>& tokens) {
   for (auto token_index = tokens.begin();
        token_index != tokens.end(); ++token_index) {
-    auto token = tokens_->begin() + *token_index;
+    auto token = tokens_.begin() + *token_index;
     size_t number_begin = FindNumberInString(token->content);
 
     if (number_begin > 0) {
@@ -200,14 +200,14 @@ bool Parser::MatchEpisodePatterns(const string_t& word, Token& token) {
 bool Parser::SearchForIsolatedNumbers(std::vector<size_t>& tokens) {
   for (auto token_index = tokens.begin();
        token_index != tokens.end(); ++token_index) {
-    auto token = tokens_->begin() + *token_index;
+    auto token = tokens_.begin() + *token_index;
     auto previous_token = GetPreviousValidToken(token);
 
-    if (previous_token != tokens_->end() &&
+    if (previous_token != tokens_.end() &&
         previous_token->category == kBracket) {
       auto next_token = GetNextValidToken(token);
 
-      if (next_token != tokens_->end() &&
+      if (next_token != tokens_.end() &&
           next_token->category == kBracket) {
         auto number = StringToInt(token->content);
 
@@ -233,11 +233,11 @@ bool Parser::SearchForIsolatedNumbers(std::vector<size_t>& tokens) {
 bool Parser::SearchForSeparatedNumbers(std::vector<size_t>& tokens) {
   for (auto token_index = tokens.begin();
        token_index != tokens.end(); ++token_index) {
-    auto token = tokens_->begin() + *token_index;
+    auto token = tokens_.begin() + *token_index;
     auto previous_token = GetPreviousValidToken(token);
 
     // See if the number has a preceding "-" separator
-    if (previous_token != tokens_->end() &&
+    if (previous_token != tokens_.end() &&
         previous_token->category == kUnknown &&
         previous_token->content == _TEXT("-")) {
       SetEpisodeNumber(token->content, *token);
@@ -252,7 +252,7 @@ bool Parser::SearchForSeparatedNumbers(std::vector<size_t>& tokens) {
 bool Parser::SearchForLastNumber(std::vector<size_t>& tokens) {
   for (auto it = tokens.rbegin(); it != tokens.rend(); ++it) {
     size_t token_index = *it;
-    auto& token = tokens_->begin() + token_index;
+    auto& token = tokens_.begin() + token_index;
 
     // Assuming that episode number always comes after the title, first token
     // cannot be what we're looking for
@@ -264,23 +264,23 @@ bool Parser::SearchForLastNumber(std::vector<size_t>& tokens) {
       continue;
 
     // Ignore if it's the first non-enclosed token
-    if (std::all_of(tokens_->begin(), tokens_->begin() + token_index,
+    if (std::all_of(tokens_.begin(), tokens_.begin() + token_index,
             [](const Token& token) { return token.enclosed; }))
       continue;
 
     // Ignore if there's an identified token placed before this one
-    if (std::any_of(tokens_->begin(), tokens_->begin() + token_index,
+    if (std::any_of(tokens_.begin(), tokens_.begin() + token_index,
             [](const Token& token) { return token.category == kIdentifier; }))
       continue;
 
     // Check if the previous token is "Season" or "Movie"
     auto previous_token = GetPreviousValidToken(token);
-    if (previous_token != tokens_->end() &&
+    if (previous_token != tokens_.end() &&
         previous_token->category == kUnknown) {
       if (IsStringEqualTo(previous_token->content, _TEXT("Season"))) {
         // We can't bail out yet; it can still be in "2nd Season 01" format
         previous_token = GetPreviousValidToken(previous_token);
-        if (previous_token != tokens_->end()) {
+        if (previous_token != tokens_.end()) {
           if (IsOrdinalNumber(previous_token->content)) {
             elements_.Add(kElementAnimeSeason, previous_token->content);
           } else {

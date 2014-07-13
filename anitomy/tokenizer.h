@@ -38,8 +38,8 @@ private:
   char_t GetDelimiter(TokenRange range) const;
   bool ValidateDelimiter(const char_t delimiter, bool enclosed, const TokenRange& range) const;
 
-  string_t filename_;
-  token_container_t* tokens_;
+  const string_t& filename_;
+  token_container_t& tokens_;
 };
 
 }  // namespace anitomy

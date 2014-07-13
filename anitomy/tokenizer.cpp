@@ -25,24 +25,24 @@ namespace anitomy {
 
 Tokenizer::Tokenizer(const string_t& filename, token_container_t& tokens)
     : filename_(filename),
-      tokens_(&tokens) {
+      tokens_(tokens) {
 }
 
 bool Tokenizer::Tokenize() {
-  tokens_->reserve(32);  // Usually there are no more than 20 tokens
+  tokens_.reserve(32);  // Usually there are no more than 20 tokens
 
   TokenizeByBrackets();
 
-  return !tokens_->empty();
+  return !tokens_.empty();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 void Tokenizer::AddToken(TokenCategory category, bool enclosed,
                          const TokenRange& range) {
-  tokens_->push_back(Token(category,
-                           filename_.substr(range.offset, range.size),
-                           enclosed));
+  tokens_.push_back(Token(category,
+                          filename_.substr(range.offset, range.size),
+                          enclosed));
 }
 
 void Tokenizer::TokenizeByBrackets() {

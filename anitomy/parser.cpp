@@ -26,7 +26,7 @@ namespace anitomy {
 
 Parser::Parser(Elements& elements, token_container_t& tokens)
     : elements_(elements),
-      tokens_(&tokens) {
+      tokens_(tokens) {
 }
 
 bool Parser::Parse() {
@@ -50,7 +50,7 @@ bool Parser::Parse() {
 ////////////////////////////////////////////////////////////////////////////////
 
 void Parser::SearchForKeywords() {
-  for (auto token = tokens_->begin(); token != tokens_->end(); ++token) {
+  for (auto token = tokens_.begin(); token != tokens_.end(); ++token) {
     if (token->category != kUnknown)
       continue;
 
@@ -117,8 +117,8 @@ void Parser::SearchForKeywords() {
 void Parser::SearchForEpisodeNumber() {
   // List all tokens that contain a number
   std::vector<size_t> tokens;
-  for (size_t i = 0; i < tokens_->size(); i++) {
-    auto& token = tokens_->at(i);
+  for (size_t i = 0; i < tokens_.size(); i++) {
+    auto& token = tokens_.at(i);
     if (token.category != kUnknown)
       continue;  // Skip previously identified tokens
     if (FindNumberInString(token.content) != token.content.npos)
@@ -133,7 +133,7 @@ void Parser::SearchForEpisodeNumber() {
 
   // From now on, we're only interested in numeric tokens
   for (auto it = tokens.begin(); it != tokens.end(); ) {
-    if (!IsNumericString(tokens_->at(*it).content)) {
+    if (!IsNumericString(tokens_.at(*it).content)) {
       it = tokens.erase(it);
     } else {
       ++it;
@@ -158,15 +158,15 @@ void Parser::SearchForEpisodeNumber() {
 
 void Parser::SearchForAnimeTitle() {
   // Find the first non-enclosed unknown token
-  auto token_begin = std::find_if(tokens_->begin(), tokens_->end(),
+  auto token_begin = std::find_if(tokens_.begin(), tokens_.end(),
       [](const Token& token) {
         return !token.enclosed && token.category == kUnknown;
       });
-  if (token_begin == tokens_->end())
+  if (token_begin == tokens_.end())
     return;
 
   // Continue until an identifier is found
-  auto token_end = std::find_if(token_begin, tokens_->end(),
+  auto token_end = std::find_if(token_begin, tokens_.end(),
       [](const Token& token) {
         return token.category == kIdentifier;
       });
@@ -188,20 +188,20 @@ void Parser::SearchForAnimeTitle() {
 }
 
 void Parser::SearchForReleaseGroup() {
-  auto token_begin = tokens_->begin();
-  auto token_end = tokens_->begin();
+  auto token_begin = tokens_.begin();
+  auto token_end = tokens_.begin();
 
   do {
     // Find the first enclosed unknown token
-    token_begin = std::find_if(token_end, tokens_->end(),
+    token_begin = std::find_if(token_end, tokens_.end(),
         [](const Token& token) {
           return token.enclosed && token.category == kUnknown;
         });
-    if (token_begin == tokens_->end())
+    if (token_begin == tokens_.end())
       continue;
 
     // Continue until a bracket or identifier is found
-    token_end = std::find_if(token_begin, tokens_->end(),
+    token_end = std::find_if(token_begin, tokens_.end(),
         [](const Token& token) {
           return token.category == kBracket || token.category == kIdentifier;
         });
@@ -210,7 +210,7 @@ void Parser::SearchForReleaseGroup() {
 
     // Ignore if it's not the first token in group
     auto previous_token = GetPreviousValidToken(token_begin);
-    if (previous_token != tokens_->end() &&
+    if (previous_token != tokens_.end() &&
         previous_token->category != kBracket) {
       continue;
     }
@@ -225,20 +225,20 @@ void Parser::SearchForReleaseGroup() {
       return;
     }
 
-  } while (token_begin != tokens_->end());
+  } while (token_begin != tokens_.end());
 }
 
 void Parser::SearchForEpisodeTitle() {
   // Find the first non-enclosed unknown token
-  auto token_begin = std::find_if(tokens_->begin(), tokens_->end(),
+  auto token_begin = std::find_if(tokens_.begin(), tokens_.end(),
       [](const Token& token) {
         return !token.enclosed && token.category == kUnknown;
       });
-  if (token_begin == tokens_->end())
+  if (token_begin == tokens_.end())
     return;
 
   // Continue until a bracket or identifier is found
-  auto token_end = std::find_if(token_begin, tokens_->end(),
+  auto token_end = std::find_if(token_begin, tokens_.end(),
       [](const Token& token) {
         return token.category == kBracket || token.category == kIdentifier;
       });

@@ -81,7 +81,7 @@ private:
                     const token_iterator_t& token_end) const;
 
   Elements& elements_;
-  token_container_t* tokens_;
+  token_container_t& tokens_;
 };
 
 }  // namespace anitomy
