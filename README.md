@@ -17,9 +17,9 @@ The following filename...
 - Release version: *2*
 - Episode title: *Tiger and Dragon*
 - Video resolution: *1280x720*
-- Video codec: *H.264*
-- Audio codec: *FLAC*
-- Checksum: *1234ABCD*
+- Video term: *H.264*
+- Audio term: *FLAC*
+- File checksum: *1234ABCD*
 
 Here's an example code snippet...
 
@@ -28,13 +28,21 @@ Here's an example code snippet...
 #include <anitomy/anitomy.h>
 
 int main() {
-  anitomy::Anitomy a;
-  a.Parse(L"[Ouroboros]_Fullmetal_Alchemist_Brotherhood_-_01.mkv");
+  anitomy::Anitomy anitomy;
+  anitomy.Parse(L"[Ouroboros]_Fullmetal_Alchemist_Brotherhood_-_01.mkv");
 
-  auto& e = a.elements();
-  std::wcout << e[anitomy::kElementAnimeTitle] << L" #" <<
-                e[anitomy::kElementEpisodeNumber] << L" by " <<
-                e[anitomy::kElementReleaseGroup] << std::endl;
+  auto& elements = anitomy.elements();
+
+  // Elements are iterable, where each element is a category-value pair
+  for (auto& element : elements) {
+    std::wcout << element.first << L"\t" << element.second << std::endl;
+  }
+  std::wcout << std::endl;
+
+  // You can access values directly by using get() and get_all() methods
+  std::wcout << elements.get(anitomy::kElementAnimeTitle) << L" #" <<
+                elements.get(anitomy::kElementEpisodeNumber) << L" by " <<
+                elements.get(anitomy::kElementReleaseGroup) << std::endl;
 
   return 0;
 }
@@ -42,7 +50,15 @@ int main() {
 
 ...which will output:
 
-    Fullmetal Alchemist Brotherhood #01 by Ouroboros
+```
+10      mkv
+11      [Ouroboros]_Fullmetal_Alchemist_Brotherhood_-_01
+6       01
+1       Fullmetal Alchemist Brotherhood
+14      Ouroboros
+
+Fullmetal Alchemist Brotherhood #01 by Ouroboros
+```
 
 ## License
 

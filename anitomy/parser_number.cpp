@@ -29,7 +29,7 @@ namespace anitomy {
 void Parser::SetEpisodeNumber(string_t number, Token& token) {
   TrimString(number);
 
-  elements_.Add(kElementEpisodeNumber, number);
+  elements_.insert(kElementEpisodeNumber, number);
 
   token.category = kIdentifier;
 }
@@ -127,7 +127,7 @@ bool Parser::MatchSingleEpisodePattern(const string_t& word, Token& token) {
 
   if (std::regex_match(word, match_results, pattern)) {
     SetEpisodeNumber(match_results[1].str(), token);
-    elements_.Add(kElementReleaseVersion, match_results[2].str());
+    elements_.insert(kElementReleaseVersion, match_results[2].str());
     return true;
   }
 
@@ -145,7 +145,7 @@ bool Parser::MatchMultiEpisodePattern(const string_t& word, Token& token) {
     if (StringToInt(lower_bound) < StringToInt(upper_bound)) {
       SetEpisodeNumber(lower_bound + _TEXT("-") + upper_bound, token);
       if (match_results[4].matched)
-        elements_.Add(kElementReleaseVersion, match_results[4].str());
+        elements_.insert(kElementReleaseVersion, match_results[4].str());
       return true;
     }
   }
@@ -158,7 +158,7 @@ bool Parser::MatchSeasonAndEpisodePattern(const string_t& word, Token& token) {
   regex_match_results_t match_results;
 
   if (std::regex_match(word, match_results, pattern)) {
-    elements_.Add(kElementAnimeSeason, match_results[1]);
+    elements_.insert(kElementAnimeSeason, match_results[1]);
     SetEpisodeNumber(match_results[2], token);
     return true;
   }
@@ -215,7 +215,7 @@ bool Parser::SearchForIsolatedNumbers(std::vector<size_t>& tokens) {
         // episodes (e.g. Doraemon), it's safe to assume that any number within
         // the interval is not the episode number.
         if (number > 1900 && number < 2050) {
-          elements_.Add(kElementAnimeYear, token->content);
+          elements_.insert(kElementAnimeYear, token->content);
           // We don't set token category to identifier here, because there might
           // be a good reason to keep the year as a part of the title, as in
           // "Fullmetal Alchemist (2009)".
@@ -282,9 +282,9 @@ bool Parser::SearchForLastNumber(std::vector<size_t>& tokens) {
         previous_token = GetPreviousValidToken(previous_token);
         if (previous_token != tokens_.end()) {
           if (IsOrdinalNumber(previous_token->content)) {
-            elements_.Add(kElementAnimeSeason, previous_token->content);
+            elements_.insert(kElementAnimeSeason, previous_token->content);
           } else {
-            elements_.Add(kElementAnimeSeason, token->content);
+            elements_.insert(kElementAnimeSeason, token->content);
             continue;
           }
         }

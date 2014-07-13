@@ -38,13 +38,13 @@ bool Parser::Parse() {
   SearchForAnimeTitle();
 
   if (parse_options.parse_release_group &&
-      elements_.Empty(kElementReleaseGroup))
+      elements_.empty(kElementReleaseGroup))
     SearchForReleaseGroup();
 
   if (parse_options.parse_episode_title)
     SearchForEpisodeTitle();
 
-  return !elements_.Empty(kElementAnimeTitle);
+  return !elements_.empty(kElementAnimeTitle);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -75,7 +75,7 @@ void Parser::SearchForKeywords() {
         continue;
 
       if (IsElementCategorySingular(category))
-        if (!elements_.Empty(category))
+        if (!elements_.empty(category))
           continue;
 
       bool add_keyword = false;
@@ -96,10 +96,10 @@ void Parser::SearchForKeywords() {
       if (add_keyword) {
         switch (category) {
           case kElementReleaseVersion:
-            elements_.Add(category, word.substr(1));  // number without "v"
+            elements_.insert(category, word.substr(1));  // number without "v"
             break;
           default:
-            elements_.Add(category, word);
+            elements_.insert(category, word);
             break;
         }
 
@@ -216,11 +216,11 @@ void Parser::SearchForReleaseGroup() {
     }
 
     // Build release group, or anime title if it wasn't found earlier
-    if (elements_.Empty(kElementReleaseGroup)) {
+    if (elements_.empty(kElementReleaseGroup)) {
       BuildElement(kElementReleaseGroup, true, token_begin, token_end);
-      if (elements_.Empty(kElementAnimeTitle))
+      if (elements_.empty(kElementAnimeTitle))
         continue;
-    } else if (elements_.Empty(kElementAnimeTitle)) {
+    } else if (elements_.empty(kElementAnimeTitle)) {
       BuildElement(kElementAnimeTitle, false, token_begin, token_end);
       return;
     }

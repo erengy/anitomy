@@ -59,19 +59,39 @@ typedef element_container_t::const_iterator element_const_iterator_t;
 
 class Elements {
 public:
-  size_t Count(ElementCategory category) const;
-  bool Empty(ElementCategory category) const;
+  // Capacity
+  bool empty() const;
+  size_t size() const;
 
-  string_t& operator[](ElementCategory category);
-  std::vector<string_t> operator[](ElementCategory category) const;
+  // Iterators
+  element_iterator_t begin();
+  element_const_iterator_t begin() const;
+  element_const_iterator_t cbegin() const;
+  element_iterator_t end();
+  element_const_iterator_t end() const;
+  element_const_iterator_t cend() const;
 
-  void Add(ElementCategory category, const string_t& value);
-  void Clear();
+  // Element access
+  element_pair_t& at(size_t position);
+  const element_pair_t& at(size_t position) const;
+  element_pair_t& operator[](size_t position);
+  const element_pair_t& operator[](size_t position) const;
+
+  // Value access
+  string_t& get(ElementCategory category);
+  std::vector<string_t> get_all(ElementCategory category) const;
+
+  // Modifiers
+  void clear();
+  void insert(ElementCategory category, const string_t& value);
+
+  // Lookup
+  size_t count(ElementCategory category) const;
+  bool empty(ElementCategory category) const;
+  element_iterator_t find(ElementCategory category);
+  element_const_iterator_t find(ElementCategory category) const;
 
 private:
-  element_iterator_t Find(ElementCategory category);
-  element_const_iterator_t Find(ElementCategory category) const;
-
   element_container_t elements_;
 };
 

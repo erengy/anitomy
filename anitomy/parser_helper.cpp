@@ -174,7 +174,7 @@ void Parser::BuildElement(ElementCategory category, bool keep_delimiters,
   if (!keep_delimiters)
     TrimString(element, _TEXT(" -"));
 
-  elements_.Add(category, element);
+  elements_.insert(category, element);
 }
 
 }  // namespace anitomy

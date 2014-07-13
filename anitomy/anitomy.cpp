@@ -25,17 +25,17 @@
 namespace anitomy {
 
 bool Anitomy::Parse(string_t filename) {
-  elements_.Clear();
+  elements_.clear();
   tokens_.clear();
 
   string_t extension;
   if (RemoveExtensionFromFilename(filename, extension))
-    elements_.Add(kElementFileExtension, extension);
+    elements_.insert(kElementFileExtension, extension);
 
   if (filename.empty())
     return false;
 
-  elements_.Add(kElementFileName, filename);
+  elements_.insert(kElementFileName, filename);
 
   Tokenizer tokenizer(filename, tokens_);
   if (!tokenizer.Tokenize())
