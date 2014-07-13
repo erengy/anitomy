@@ -27,15 +27,15 @@ namespace anitomy {
 
 class Anitomy {
 public:
-  bool Parse(const string_t& filename);
+  bool Parse(string_t filename);
 
-  const Elements& elements() const;
+  Elements& elements();
   const token_container_t& tokens() const;
 
 private:
-  void RemoveExtensionFromFilename(string_t& filename);
+  bool RemoveExtensionFromFilename(string_t& filename, string_t& extension);
 
-  Elements data_;
+  Elements elements_;
   token_container_t tokens_;
 };
 

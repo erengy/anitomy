@@ -36,7 +36,7 @@ struct ParseOptions {
 
 class Parser {
 public:
-  Parser(Elements& data, token_container_t& tokens);
+  Parser(Elements& elements, token_container_t& tokens);
 
   bool Parse();
 
@@ -64,22 +64,23 @@ private:
   bool MatchSeasonAndEpisodePattern(const string_t& word, Token& token);
   bool MatchJapaneseCounterPattern(const string_t& word, Token& token);
 
-  void SetEpisodeNumber(const string_t& number, Token& token);
+  void SetEpisodeNumber(string_t number, Token& token);
 
-  void AppendKeyword(string_t& str, const string_t& keyword);
   size_t FindNumberInString(const string_t& str);
   bool IsCrc32(const string_t& str);
   bool IsOrdinalNumber(const string_t& word);
   bool IsResolution(const string_t& str);
+  bool IsElementCategorySearchable(ElementCategory category);
+  bool IsElementCategorySingular(ElementCategory category);
 
   token_iterator_t GetPreviousValidToken(token_iterator_t it) const;
   token_iterator_t GetNextValidToken(token_iterator_t it) const;
 
-  void BuildElement(string_t& element, bool keep_delimiters,
+  void BuildElement(ElementCategory category, bool keep_delimiters,
                     const token_iterator_t& token_begin,
                     const token_iterator_t& token_end) const;
 
-  Elements* data_;
+  Elements& elements_;
   token_container_t* tokens_;
 };
 

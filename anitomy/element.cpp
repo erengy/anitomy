@@ -16,28 +16,73 @@
 ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <algorithm>
+
 #include "element.h"
 
 namespace anitomy {
 
+size_t Elements::Count(ElementCategory category) const {
+  return std::count_if(elements_.begin(), elements_.end(),
+      [&](const element_pair_t& element) {
+        return element.first == category;
+      });
+}
+
+bool Elements::Empty(ElementCategory category) const {
+  return Find(category) == elements_.end();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+string_t& Elements::operator[](ElementCategory category) {
+  auto element = Find(category);
+
+  if (element == elements_.end()) {
+    elements_.push_back(std::make_pair(category, string_t()));
+    return elements_.back().second;
+  }
+
+  return element->second;
+}
+
+std::vector<string_t> Elements::operator[](ElementCategory category) const {
+  std::vector<string_t> elements;
+
+  std::for_each(elements_.cbegin(), elements_.cend(),
+      [&](const element_pair_t& element) {
+        if (element.first == category)
+          elements.push_back(element.second);
+        });
+
+  return elements;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void Elements::Add(ElementCategory category, const string_t& value) {
+  if (!value.empty())
+    elements_.push_back(std::make_pair(category, value));
+}
+
 void Elements::Clear() {
-  filename.clear();
+  elements_.clear();
+}
 
-  anime_season.clear();
-  anime_title.clear();
-  anime_year.clear();
+////////////////////////////////////////////////////////////////////////////////
 
-  episode_number.clear();
-  episode_title.clear();
+element_iterator_t Elements::Find(ElementCategory category) {
+  return std::find_if(elements_.begin(), elements_.end(),
+      [&](const element_pair_t& element) {
+        return element.first == category;
+      });
+}
 
-  release_group.clear();
-  release_version.clear();
-
-  audio.clear();
-  checksum.clear();
-  extras.clear();
-  resolution.clear();
-  video.clear();
+element_const_iterator_t Elements::Find(ElementCategory category) const {
+  return std::find_if(elements_.cbegin(), elements_.cend(),
+      [&](const element_pair_t& element) {
+        return element.first == category;
+      });
 }
 
 }  // namespace anitomy

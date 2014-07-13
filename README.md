@@ -29,12 +29,12 @@ Here's an example code snippet...
 
 int main() {
   anitomy::Anitomy a;
-  a.Parse(L"[Ouroboros]_Fullmetal_Alchemist_Brotherhood_-_01");
+  a.Parse(L"[Ouroboros]_Fullmetal_Alchemist_Brotherhood_-_01.mkv");
 
-  const auto& e = a.elements();
-  std::wcout << e.anime_title << L" #" << 
-                e.episode_number << L" by " <<
-                e.release_group << std::endl;
+  auto& e = a.elements();
+  std::wcout << e[anitomy::kElementAnimeTitle] << L" #" <<
+                e[anitomy::kElementEpisodeNumber] << L" by " <<
+                e[anitomy::kElementReleaseGroup] << std::endl;
 
   return 0;
 }

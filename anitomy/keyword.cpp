@@ -22,114 +22,166 @@ namespace anitomy {
 
 KeywordManager keyword_manager;
 
-KeywordList::KeywordList()
-    : max_length_(0),
-      min_length_(static_cast<size_t>(-1)) {
+KeywordOptions::KeywordOptions()
+    : safe(true) {
 }
 
-void KeywordList::Add(const string_t& str) {
-  keys_.insert(str);
+KeywordOptions::KeywordOptions(bool safe)
+    : safe(safe) {
+}
 
-  if (str.size() > max_length_)
-    max_length_ = str.size();
-  if (str.size() < min_length_)
-    min_length_ = str.size();
+////////////////////////////////////////////////////////////////////////////////
+
+KeywordList::KeywordList()
+    : length_min_max_(static_cast<size_t>(-1), 0) {
+}
+
+void KeywordList::Add(const string_t& str, const KeywordOptions& options) {
+  if (str.empty())
+    return;
+
+  keys_.insert(std::make_pair(str, options));
+
+  if (str.size() > length_min_max_.second)
+    length_min_max_.second = str.size();
+  if (str.size() < length_min_max_.first)
+    length_min_max_.first = str.size();
 }
 
 bool KeywordList::Find(const string_t& str) const {
-  if (str.size() < min_length_ || str.size() > max_length_)
+  if (str.size() < length_min_max_.first ||
+      str.size() > length_min_max_.second)
     return false;
 
   return keys_.find(str) != keys_.end();
 }
 
+bool KeywordList::Find(const string_t& str,
+                       KeywordOptions& options) const {
+  if (str.size() < length_min_max_.first ||
+      str.size() > length_min_max_.second)
+    return false;
+
+  auto key = keys_.find(str);
+
+  if (key != keys_.end()) {
+    options = key->second;
+    return true;
+  }
+
+  return false;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 KeywordManager::KeywordManager() {
-  Add(kKeywordAudio,
+  const KeywordOptions options_safe(true);
+  const KeywordOptions options_unsafe(false);
+
+  Add(kElementAnimeType, options_unsafe,
+      _TEXT("ED, OAV, ONA, OP, OVA"));
+
+  Add(kElementAudioTerm, options_safe,
       // Audio channels
       _TEXT("2CH, 5.1, 5.1CH, DTS, DTS-ES, DTS5.1, TRUEHD5.1, ")
-      // Audio codecs
-      _TEXT("AAC, AC3, FLAC, OGG, MP3, VORBIS, ")
+      // Audio codec
+      _TEXT("AAC, AC3, FLAC, MP3, OGG, VORBIS, ")
       // Audio language
-      _TEXT("DUALAUDIO, DUAL AUDIO")
-      );
+      _TEXT("DUALAUDIO, DUAL AUDIO"));
 
-  Add(kKeywordVideo,
-      // Video codecs
-      _TEXT("8BIT, 8-BIT, 10BIT, 10-BIT, HI10P, ")
-      _TEXT("H264, H.264, X264, X.264, ")
-      _TEXT("AVC, DIVX, XVID, ")
-      // Video formats
-      _TEXT("AVI, RMVB, WMV, WMV3, WMV9, ")
-      // Video quality
-      _TEXT("HQ, LQ, ")
-      // Video resolution
-      _TEXT("HD, SD, ")
-      // Other
-      _TEXT("TS, VFR")
-      );
+  Add(kElementDeviceCompatibility, options_unsafe,
+      _TEXT("ANDROID"));
+  Add(kElementDeviceCompatibility, options_safe,
+      _TEXT("IPAD3, IPHONE5, IPOD, PS3, XBOX, XBOX360"));
 
-  Add(kKeywordExtra,
-      // Language
-      _TEXT("ENG, ENGLISH, ESP, ESPANOL, ITA, JAP, SPANISH, VOSTFR, ")
-      // Release
-      _TEXT("BATCH, COMPLETE, ")
-      // Source
-      _TEXT("BD, BDRIP, BLURAY, BLU-RAY, ")
-      _TEXT("DVD, DVD5, DVD9, DVD-R2J, DVDRIP, DVD-RIP, R2DVD, R2J, R2JDVD, R2JDVDRIP, ")
-      _TEXT("HDTV, HDTVRIP, TV-RIP, TVRIP, WEBCAST, ")
-      // Subtitles
-      _TEXT("ASS, BIG5, HARDSUB, RAW, SOFTSUB, SUB, SUBBED, ")
-      // Device compatibility
-      _TEXT("IPAD3, IPHONE5, IPOD, PS3, XBOX, XBOX360, ")
-      // Other
-      _TEXT("DIRECTOR'S CUT, UNCENSORED, UNCUT, PS3, REMASTERED, WIDESCREEN, WS")
-      );
-
-  Add(kKeywordExtraUnsafe,
-      // These words can be a part of the anime/episode title
-      _TEXT("END, FINAL, OAV, ONA, OVA")
-      );
-
-  Add(kKeywordVersion,
-      _TEXT("V0, V1, V2, V3, V4"));
-
-  Add(kKeywordValidExtension,
-      _TEXT("3GP, AVI, DIVX, FLV, MKV, MOV, MP4, MPG, OGM, RM, RMVB, WMV")
-      );
-
-  Add(kKeywordEpisodePrefix,
+  Add(kElementEpisodePrefix, options_safe,
       _TEXT("E, EP, EP., EPS, EPS., EPISODE, EPISODE., ")
       _TEXT("VOL, VOL., VOLUME, ")
 #ifdef ANITOMY_USE_WIDE_CHARACTERS
       _TEXT("\x7B2C")
+#else
+      // TODO
 #endif
       );
 
-  Add(kKeywordGroup,
-      _TEXT("THORA")
-      );
+  Add(kElementFileExtension, options_safe,
+      _TEXT("3GP, AVI, DIVX, FLV, MKV, MOV, MP4, MPG, OGM, RM, RMVB, WMV"));
+
+  Add(kElementLanguage, options_safe,
+      _TEXT("ENG, ENGLISH, ESP, ESPANOL, ITA, JAP, SPANISH, VOSTFR"));
+
+  Add(kElementOther, options_safe,
+      _TEXT("REMASTERED, UNCENSORED, UNCUT, ")
+      _TEXT("TS, VFR, WIDESCREEN, WS"));
+
+  Add(kElementReleaseGroup, options_safe,
+      _TEXT("THORA"));
+
+  Add(kElementReleaseInformation, options_safe,
+      _TEXT("BATCH, COMPLETE"));
+  Add(kElementReleaseInformation, options_unsafe,
+      _TEXT("END, FINAL"));
+
+  Add(kElementReleaseVersion, options_safe,
+      _TEXT("V0, V1, V2, V3, V4"));
+
+  Add(kElementSource, options_safe,
+      _TEXT("BD, BDRIP, BLURAY, BLU-RAY, ")
+      _TEXT("DVD, DVD5, DVD9, DVD-R2J, DVDRIP, DVD-RIP, ")
+      _TEXT("R2DVD, R2J, R2JDVD, R2JDVDRIP, ")
+      _TEXT("HDTV, HDTVRIP, TVRIP, TV-RIP, WEBCAST"));
+
+  Add(kElementSubtitles, options_safe,
+      _TEXT("ASS, BIG5, HARDSUB, RAW, SOFTSUB, SUB, SUBBED"));
+
+  Add(kElementVideoTerm, options_safe,
+      // Video codec
+      _TEXT("8BIT, 8-BIT, 10BIT, 10-BIT, HI10P, ")
+      _TEXT("H264, H.264, X264, X.264, ")
+      _TEXT("AVC, DIVX, XVID, ")
+      // Video format
+      _TEXT("AVI, RMVB, WMV, WMV3, WMV9, ")
+      // Video quality
+      _TEXT("HQ, LQ, ")
+      // Video resolution
+      _TEXT("HD, SD"));
 }
 
-void KeywordManager::Add(KeywordCategory category, const string_t& input) {
+void KeywordManager::Add(ElementCategory category,
+                         const KeywordOptions& options,
+                         const string_t& keywords) {
   auto& keyword_lists = keyword_lists_[category];
 
   const string_t separator = _TEXT(", ");
   size_t index_begin = 0, index_end;
 
   do {
-    index_end = input.find(separator, index_begin);
+    index_end = keywords.find(separator, index_begin);
     if (index_end == string_t::npos)
-      index_end = input.size();
-    keyword_lists.Add(input.substr(index_begin, index_end - index_begin));
+      index_end = keywords.size();
+    keyword_lists.Add(
+        keywords.substr(index_begin, index_end - index_begin), options);
     index_begin = index_end + separator.length();
-  } while (index_begin <= input.size());
+  } while (index_begin <= keywords.size());
 }
 
-bool KeywordManager::Find(KeywordCategory category,
-                          const string_t& str) {
-  return keyword_lists_[category].Find(str);
+bool KeywordManager::Find(ElementCategory category, const string_t& str) {
+  const auto& keyword_list = keyword_lists_.find(category);
+
+  if (keyword_list != keyword_lists_.end())
+    return keyword_list->second.Find(str);
+
+  return false;
+}
+
+bool KeywordManager::Find(ElementCategory category, const string_t& str,
+                          KeywordOptions& options) {
+  const auto& keyword_list = keyword_lists_.find(category);
+
+  if (keyword_list != keyword_lists_.end())
+    return keyword_list->second.Find(str, options);
+
+  return false;
 }
 
 }  // namespace anitomy

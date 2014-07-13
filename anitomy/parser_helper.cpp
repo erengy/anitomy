@@ -34,16 +34,6 @@ ParseOptions::ParseOptions()
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void Parser::AppendKeyword(string_t& str, const string_t& keyword) {
-  if (keyword.empty())
-    return;
-
-  if (!str.empty())
-    str.push_back(L' ');
-
-  str.append(keyword);
-}
-
 size_t Parser::FindNumberInString(const string_t& str) {
   auto it = std::find_if(str.begin(), str.end(), IsNumericChar);
 
@@ -95,6 +85,43 @@ bool Parser::IsResolution(const string_t& str) {
   return false;
 }
 
+bool Parser::IsElementCategorySearchable(ElementCategory category) {
+  switch (category) {
+    case kElementAnimeType:
+    case kElementAudioTerm:
+    case kElementDeviceCompatibility:
+    case kElementFileChecksum:
+    case kElementLanguage:
+    case kElementOther:
+    case kElementReleaseGroup:
+    case kElementReleaseInformation:
+    case kElementReleaseVersion:
+    case kElementSource:
+    case kElementSubtitles:
+    case kElementVideoResolution:
+    case kElementVideoTerm:
+      return true;
+  }
+
+  return false;
+}
+
+bool Parser::IsElementCategorySingular(ElementCategory category) {
+  switch (category) {
+    case kElementAudioTerm:
+    case kElementDeviceCompatibility:
+    case kElementEpisodeNumber:
+    case kElementLanguage:
+    case kElementOther:
+    case kElementReleaseInformation:
+    case kElementSource:
+    case kElementVideoTerm:
+      return false;
+  }
+
+  return true;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 token_iterator_t Parser::GetPreviousValidToken(token_iterator_t it) const {
@@ -120,9 +147,11 @@ token_iterator_t Parser::GetNextValidToken(token_iterator_t it) const {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void Parser::BuildElement(string_t& element, bool keep_delimiters,
+void Parser::BuildElement(ElementCategory category, bool keep_delimiters,
                           const token_iterator_t& token_begin,
                           const token_iterator_t& token_end) const {
+  string_t element;
+
   for (auto token = token_begin; token != token_end; ++token) {
     switch (token->category) {
       case kUnknown:
@@ -144,6 +173,8 @@ void Parser::BuildElement(string_t& element, bool keep_delimiters,
 
   if (!keep_delimiters)
     TrimString(element, _TEXT(" -"));
+
+  elements_.Add(category, element);
 }
 
 }  // namespace anitomy

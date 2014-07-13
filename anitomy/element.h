@@ -19,33 +19,60 @@
 #ifndef ANITOMY_ELEMENT_H
 #define ANITOMY_ELEMENT_H
 
+#include <vector>
+
 #include "string.h"
 
 namespace anitomy {
 
-typedef string_t element_container_t;  // TODO: use vector
+enum ElementCategory {
+  kElementIterateFirst,
+  kElementAnimeSeason = kElementIterateFirst,
+  kElementAnimeTitle,
+  kElementAnimeType,
+  kElementAnimeYear,
+  kElementAudioTerm,
+  kElementDeviceCompatibility,
+  kElementEpisodeNumber,
+  kElementEpisodePrefix,
+  kElementEpisodeTitle,
+  kElementFileChecksum,
+  kElementFileExtension,
+  kElementFileName,
+  kElementLanguage,
+  kElementOther,
+  kElementReleaseGroup,
+  kElementReleaseInformation,
+  kElementReleaseVersion,
+  kElementSource,
+  kElementSubtitles,
+  kElementVideoResolution,
+  kElementVideoTerm,
+  kElementIterateLast
+};
+
+typedef std::pair<ElementCategory, string_t> element_pair_t;
+typedef std::vector<element_pair_t> element_container_t;
+
+typedef element_container_t::iterator element_iterator_t;
+typedef element_container_t::const_iterator element_const_iterator_t;
 
 class Elements {
 public:
+  size_t Count(ElementCategory category) const;
+  bool Empty(ElementCategory category) const;
+
+  string_t& operator[](ElementCategory category);
+  std::vector<string_t> operator[](ElementCategory category) const;
+
+  void Add(ElementCategory category, const string_t& value);
   void Clear();
 
-  string_t filename;
+private:
+  element_iterator_t Find(ElementCategory category);
+  element_const_iterator_t Find(ElementCategory category) const;
 
-  string_t anime_season;
-  string_t anime_title;
-  string_t anime_year;
-
-  element_container_t episode_number;
-  string_t episode_title;
-
-  string_t release_group;
-  string_t release_version;
-
-  element_container_t audio;
-  element_container_t extras;
-  element_container_t video;
-  string_t checksum;
-  string_t resolution;
+  element_container_t elements_;
 };
 
 }  // namespace anitomy

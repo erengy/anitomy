@@ -20,21 +20,19 @@
 #define ANITOMY_KEYWORD_H
 
 #include <map>
-#include <unordered_set>
+#include <unordered_map>
 
+#include "element.h"
 #include "string.h"
 
 namespace anitomy {
 
-enum KeywordCategory {
-  kKeywordAudio,
-  kKeywordVideo,
-  kKeywordExtra,
-  kKeywordExtraUnsafe,
-  kKeywordVersion,
-  kKeywordValidExtension,
-  kKeywordEpisodePrefix,
-  kKeywordGroup
+class KeywordOptions {
+public:
+  KeywordOptions();
+  KeywordOptions(bool safe);
+
+  bool safe;
 };
 
 class KeywordList {
@@ -42,13 +40,13 @@ public:
   KeywordList();
   ~KeywordList() {}
 
-  void Add(const string_t& str);
+  void Add(const string_t& str, const KeywordOptions& options);
   bool Find(const string_t& str) const;
+  bool Find(const string_t& str, KeywordOptions& options) const;
 
 private:
-  std::unordered_set<string_t> keys_;
-  size_t max_length_;
-  size_t min_length_;
+  std::unordered_map<string_t, KeywordOptions> keys_;
+  std::pair<size_t, size_t> length_min_max_;
 };
 
 class KeywordManager {
@@ -56,11 +54,12 @@ public:
   KeywordManager();
   ~KeywordManager() {}
 
-  void Add(KeywordCategory category, const string_t& input);
-  bool Find(KeywordCategory category, const string_t& str);
+  void Add(ElementCategory category, const KeywordOptions& options, const string_t& keywords);
+  bool Find(ElementCategory category, const string_t& str);
+  bool Find(ElementCategory category, const string_t& str, KeywordOptions& options);
 
 private:
-  std::map<KeywordCategory, KeywordList> keyword_lists_;
+  std::map<ElementCategory, KeywordList> keyword_lists_;
 };
 
 extern KeywordManager keyword_manager;

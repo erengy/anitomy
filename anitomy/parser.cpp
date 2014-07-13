@@ -24,8 +24,8 @@
 
 namespace anitomy {
 
-Parser::Parser(Elements& data, token_container_t& tokens)
-    : data_(&data),
+Parser::Parser(Elements& elements, token_container_t& tokens)
+    : elements_(elements),
       tokens_(&tokens) {
 }
 
@@ -38,13 +38,13 @@ bool Parser::Parse() {
   SearchForAnimeTitle();
 
   if (parse_options.parse_release_group &&
-      data_->release_group.empty())
+      elements_.Empty(kElementReleaseGroup))
     SearchForReleaseGroup();
 
   if (parse_options.parse_episode_title)
     SearchForEpisodeTitle();
 
-  return !data_->anime_title.empty();
+  return !elements_.Empty(kElementAnimeTitle);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -61,55 +61,53 @@ void Parser::SearchForKeywords() {
     if (word.size() != 8 && IsNumericString(word))
       continue;
 
-    // Checksum
-    if (data_->checksum.empty() && IsCrc32(word)) {
-      data_->checksum = word;
-      token->category = kIdentifier;
-      continue;
-
-    // Video resolution
-    } else if (data_->resolution.empty() && IsResolution(word)) {
-      data_->resolution = word;
-      token->category = kIdentifier;
-      continue;
-    }
-
     // Performs better than making a case-insensitive Find
     auto keyword = StringToUpperCopy(word);
 
-    // Video info
-    if (keyword_manager.Find(kKeywordVideo, keyword)) {
-      AppendKeyword(data_->video, word);
-      token->category = kIdentifier;
+    for (int i = kElementIterateFirst; i < kElementIterateLast; i++) {
+      auto category = static_cast<ElementCategory>(i);
 
-    // Audio info
-    } else if (keyword_manager.Find(kKeywordAudio, keyword)) {
-      AppendKeyword(data_->audio, word);
-      token->category = kIdentifier;
+      if (!parse_options.parse_release_group)
+        if (category == kElementReleaseGroup)
+          continue;
 
-    // Version
-    } else if (data_->release_version.empty() &&
-               keyword_manager.Find(kKeywordVersion, keyword)) {
-      data_->release_version.push_back(word.back());  // number without "v"
-      token->category = kIdentifier;
+      if (!IsElementCategorySearchable(category))
+        continue;
 
-    // Group
-    } else if (parse_options.parse_release_group &&
-               data_->release_group.empty() &&
-               keyword_manager.Find(kKeywordGroup, keyword)) {
-      data_->release_group = word;
-      token->category = kIdentifier;
+      if (IsElementCategorySingular(category))
+        if (!elements_.Empty(category))
+          continue;
 
-    // Extras
-    } else if (parse_options.parse_extra_keywords &&
-               keyword_manager.Find(kKeywordExtra, keyword)) {
-      AppendKeyword(data_->extras, word);
-      token->category = kIdentifier;
-    } else if (parse_options.parse_extra_keywords &&
-               keyword_manager.Find(kKeywordExtraUnsafe, keyword)) {
-      AppendKeyword(data_->extras, word);
-      if (token->enclosed)
-        token->category = kIdentifier;
+      bool add_keyword = false;
+      KeywordOptions options;
+
+      switch (category) {
+        case kElementFileChecksum:
+          add_keyword = IsCrc32(word);
+          break;
+        case kElementVideoResolution:
+          add_keyword = IsResolution(word);
+          break;
+        default:
+          add_keyword = keyword_manager.Find(category, keyword, options);
+          break;
+      }
+
+      if (add_keyword) {
+        switch (category) {
+          case kElementReleaseVersion:
+            elements_.Add(category, word.substr(1));  // number without "v"
+            break;
+          default:
+            elements_.Add(category, word);
+            break;
+        }
+
+        if (options.safe || token->enclosed)
+          token->category = kIdentifier;
+
+        break;
+      }
     }
   }
 }
@@ -186,7 +184,7 @@ void Parser::SearchForAnimeTitle() {
     token_end = last_bracket;
 
   // Build anime title
-  BuildElement(data_->anime_title, false, token_begin, token_end);
+  BuildElement(kElementAnimeTitle, false, token_begin, token_end);
 }
 
 void Parser::SearchForReleaseGroup() {
@@ -218,12 +216,12 @@ void Parser::SearchForReleaseGroup() {
     }
 
     // Build release group, or anime title if it wasn't found earlier
-    if (data_->release_group.empty()) {
-      BuildElement(data_->release_group, true, token_begin, token_end);
-      if (data_->anime_title.empty())
+    if (elements_.Empty(kElementReleaseGroup)) {
+      BuildElement(kElementReleaseGroup, true, token_begin, token_end);
+      if (elements_.Empty(kElementAnimeTitle))
         continue;
-    } else if (data_->anime_title.empty()) {
-      BuildElement(data_->anime_title, false, token_begin, token_end);
+    } else if (elements_.Empty(kElementAnimeTitle)) {
+      BuildElement(kElementAnimeTitle, false, token_begin, token_end);
       return;
     }
 
@@ -246,7 +244,7 @@ void Parser::SearchForEpisodeTitle() {
       });
 
   // Build episode title
-  BuildElement(data_->episode_title, false, token_begin, token_end);
+  BuildElement(kElementEpisodeTitle, false, token_begin, token_end);
 }
 
 }  // namespace anitomy

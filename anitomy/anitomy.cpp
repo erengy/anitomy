@@ -17,53 +17,65 @@
 */
 
 #include "anitomy.h"
+#include "keyword.h"
 #include "parser.h"
 #include "string.h"
 #include "tokenizer.h"
 
 namespace anitomy {
 
-bool Anitomy::Parse(const string_t& filename) {
-  data_.Clear();
-  data_.filename = filename;
+bool Anitomy::Parse(string_t filename) {
+  elements_.Clear();
   tokens_.clear();
 
-  RemoveExtensionFromFilename(data_.filename);
+  string_t extension;
+  if (RemoveExtensionFromFilename(filename, extension))
+    elements_.Add(kElementFileExtension, extension);
 
-  if (data_.filename.empty())
+  if (filename.empty())
     return false;
 
-  Tokenizer tokenizer(data_.filename, tokens_);
+  elements_.Add(kElementFileName, filename);
+
+  Tokenizer tokenizer(filename, tokens_);
   if (!tokenizer.Tokenize())
     return false;
 
-  Parser parser(data_, tokens_);
+  Parser parser(elements_, tokens_);
   if (!parser.Parse())
     return false;
 
   return true;
 }
 
-void Anitomy::RemoveExtensionFromFilename(string_t& filename) {
+bool Anitomy::RemoveExtensionFromFilename(string_t& filename,
+                                          string_t& extension) {
   const size_t position = filename.find_last_of(L'.');
 
   if (position == string_t::npos)
-    return;
+    return false;
 
-  string_t extension = filename.substr(position + 1);
+  extension = filename.substr(position + 1);
 
   const size_t max_length = 4;
   if (extension.length() > max_length)
-    return;
+    return false;
 
   if (!IsAlphanumericString(extension))
-    return;
+    return false;
+
+  // TODO: Add an option for this
+  auto keyword = StringToUpperCopy(extension);
+  if (!keyword_manager.Find(kElementFileExtension, keyword))
+    return false;
 
   filename.resize(position);
+
+  return true;
 }
 
-const Elements& Anitomy::elements() const {
-  return data_;
+Elements& Anitomy::elements() {
+  return elements_;
 }
 
 const token_container_t& Anitomy::tokens() const {

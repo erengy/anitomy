@@ -19,15 +19,17 @@
 #include <algorithm>
 #include <regex>
 
+#include "element.h"
 #include "keyword.h"
 #include "parser.h"
 #include "string.h"
 
 namespace anitomy {
 
-void Parser::SetEpisodeNumber(const string_t& number, Token& token) {
-  data_->episode_number = number;
-  TrimString(data_->episode_number);
+void Parser::SetEpisodeNumber(string_t number, Token& token) {
+  TrimString(number);
+
+  elements_.Add(kElementEpisodeNumber, number);
 
   token.category = kIdentifier;
 }
@@ -37,11 +39,11 @@ void Parser::SetEpisodeNumber(const string_t& number, Token& token) {
 bool Parser::NumberComesAfterEpisodePrefix(Token& token, size_t number_begin) {
   auto prefix = StringToUpperCopy(token.content.substr(0, number_begin));
 
-  if (keyword_manager.Find(kKeywordEpisodePrefix, prefix)) {
+  if (keyword_manager.Find(kElementEpisodePrefix, prefix)) {
     auto number = token.content.substr(
         number_begin, token.content.length() - number_begin);
-    SetEpisodeNumber(number, token);
-    MatchEpisodePatterns(number, token);
+    if (!MatchEpisodePatterns(number, token))
+      SetEpisodeNumber(number, token);
     return true;
   }
 
@@ -55,9 +57,9 @@ bool Parser::NumberComesAfterEpisodeKeyword(const token_iterator_t& token) {
     if (previous_token->category == kUnknown) {
       auto keyword = StringToUpperCopy(previous_token->content);
 
-      if (keyword_manager.Find(kKeywordEpisodePrefix, keyword)) {
-        SetEpisodeNumber(token->content, *token);
-        MatchEpisodePatterns(token->content, *token);
+      if (keyword_manager.Find(kElementEpisodePrefix, keyword)) {
+        if (!MatchEpisodePatterns(token->content, *token))
+          SetEpisodeNumber(token->content, *token);
         previous_token->category = kIdentifier;
         return true;
       }
@@ -125,7 +127,7 @@ bool Parser::MatchSingleEpisodePattern(const string_t& word, Token& token) {
 
   if (std::regex_match(word, match_results, pattern)) {
     SetEpisodeNumber(match_results[1].str(), token);
-    data_->release_version = match_results[2].str();
+    elements_.Add(kElementReleaseVersion, match_results[2].str());
     return true;
   }
 
@@ -142,8 +144,8 @@ bool Parser::MatchMultiEpisodePattern(const string_t& word, Token& token) {
     // We're checking bounds to avoid matching expressions such as "009-1"
     if (StringToInt(lower_bound) < StringToInt(upper_bound)) {
       SetEpisodeNumber(lower_bound + _TEXT("-") + upper_bound, token);
-      if (match_results.size() > 4)
-        data_->release_version = match_results[4].str();
+      if (match_results[4].matched)
+        elements_.Add(kElementReleaseVersion, match_results[4].str());
       return true;
     }
   }
@@ -156,7 +158,7 @@ bool Parser::MatchSeasonAndEpisodePattern(const string_t& word, Token& token) {
   regex_match_results_t match_results;
 
   if (std::regex_match(word, match_results, pattern)) {
-    data_->anime_season = match_results[1];
+    elements_.Add(kElementAnimeSeason, match_results[1]);
     SetEpisodeNumber(match_results[2], token);
     return true;
   }
@@ -213,7 +215,7 @@ bool Parser::SearchForIsolatedNumbers(std::vector<size_t>& tokens) {
         // episodes (e.g. Doraemon), it's safe to assume that any number within
         // the interval is not the episode number.
         if (number > 1900 && number < 2050) {
-          data_->anime_year = token->content;
+          elements_.Add(kElementAnimeYear, token->content);
           // We don't set token category to identifier here, because there might
           // be a good reason to keep the year as a part of the title, as in
           // "Fullmetal Alchemist (2009)".
@@ -280,9 +282,9 @@ bool Parser::SearchForLastNumber(std::vector<size_t>& tokens) {
         previous_token = GetPreviousValidToken(previous_token);
         if (previous_token != tokens_->end()) {
           if (IsOrdinalNumber(previous_token->content)) {
-            data_->anime_season = previous_token->content;
+            elements_.Add(kElementAnimeSeason, previous_token->content);
           } else {
-            data_->anime_season = token->content;
+            elements_.Add(kElementAnimeSeason, token->content);
             continue;
           }
         }
