@@ -143,7 +143,8 @@ bool Parser::MatchMultiEpisodePattern(const string_t& word, Token& token) {
     auto upper_bound = match_results[2].str();
     // We're checking bounds to avoid matching expressions such as "009-1"
     if (StringToInt(lower_bound) < StringToInt(upper_bound)) {
-      SetEpisodeNumber(lower_bound + _TEXT("-") + upper_bound, token);
+      SetEpisodeNumber(lower_bound, token);
+      SetEpisodeNumber(upper_bound, token);
       if (match_results[4].matched)
         elements_.insert(kElementReleaseVersion, match_results[4].str());
       return true;
