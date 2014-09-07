@@ -126,7 +126,7 @@ KeywordManager::KeywordManager() {
       _TEXT("V0, V1, V2, V3, V4"));
 
   Add(kElementSource, options_safe,
-      _TEXT("BD, BDRIP, BLURAY, BLU-RAY, ")
+      _TEXT("TV, BD, BDRIP, BLURAY, BLU-RAY, ")
       _TEXT("DVD, DVD5, DVD9, DVD-R2J, DVDRIP, DVD-RIP, ")
       _TEXT("R2DVD, R2J, R2JDVD, R2JDVDRIP, ")
       _TEXT("HDTV, HDTVRIP, TVRIP, TV-RIP, WEBCAST"));
