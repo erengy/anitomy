@@ -79,7 +79,7 @@ KeywordManager::KeywordManager() {
   const KeywordOptions options_unsafe(false);
 
   Add(kElementAnimeType, options_unsafe,
-      _TEXT("ED, OAV, ONA, OP, OVA"));
+      _TEXT("ED, OAV, ONA, OP, OVA, TV"));
 
   Add(kElementAudioTerm, options_safe,
       // Audio channels
@@ -96,6 +96,7 @@ KeywordManager::KeywordManager() {
 
   Add(kElementEpisodePrefix, options_safe,
       _TEXT("E, EP, EP., EPS, EPS., EPISODE, EPISODE., ")
+      _TEXT("EPISODIO, FOLGE, ")
       _TEXT("VOL, VOL., VOLUME, ")
 #ifdef ANITOMY_USE_WIDE_CHARACTERS
       _TEXT("\x7B2C")
