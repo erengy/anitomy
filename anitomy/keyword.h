@@ -55,8 +55,8 @@ public:
   ~KeywordManager() {}
 
   void Add(ElementCategory category, const KeywordOptions& options, const string_t& keywords);
-  bool Find(ElementCategory category, const string_t& str);
-  bool Find(ElementCategory category, const string_t& str, KeywordOptions& options);
+  bool Find(ElementCategory category, const string_t& str) const;
+  bool Find(ElementCategory category, const string_t& str, KeywordOptions& options) const;
 
 private:
   std::map<ElementCategory, KeywordList> keyword_lists_;

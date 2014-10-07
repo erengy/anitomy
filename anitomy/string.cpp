@@ -57,20 +57,20 @@ bool IsNumericString(const string_t& str) {
 ////////////////////////////////////////////////////////////////////////////////
 
 inline char ToLower(const char c) {
-  return (c >= 'A' && c <= 'Z') ? (c + ('a' - 'A')) : tolower(c);
+  return (c >= 'A' && c <= 'Z') ? (c + ('a' - 'A')) : static_cast<char>(tolower(c));
 }
 
 inline wchar_t ToLower(const wchar_t c) {
-  return (c >= L'A' && c <= L'Z') ? (c + (L'a' - L'A')) : towlower(c);
+  return (c >= L'A' && c <= L'Z') ? (c + (L'a' - L'A')) : static_cast<wchar_t>(towlower(c));
 }
 
 struct ToUpper : public std::unary_function<char_t, char_t> {
   char operator ()(const char c) const {
-    return (c >= 'a' && c <= 'z') ? (c + ('A' - 'a')) : toupper(c);
+    return (c >= 'a' && c <= 'z') ? (c + ('A' - 'a')) : static_cast<char>(toupper(c));
   }
 
   wchar_t operator ()(const wchar_t c) const {
-    return (c >= L'a' && c <= L'z') ? (c + (L'A' - L'a')) : towupper(c);
+    return (c >= L'a' && c <= L'z') ? (c + (L'A' - L'a')) : static_cast<wchar_t>(towupper(c));
   }
 };
 

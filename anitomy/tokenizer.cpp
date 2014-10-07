@@ -159,13 +159,13 @@ char_t Tokenizer::GetDelimiter(TokenRange range) const {
 
   if (frequency.empty()) {
     // Initialize frequency map
-    for (auto it = kDelimiterTable.begin(); it != kDelimiterTable.end(); ++it) {
-      frequency.insert(std::make_pair(*it, 0));
+    for (const auto& character : kDelimiterTable) {
+      frequency.insert(std::make_pair(character, 0));
     }
   } else {
     // Reset frequency map
-    for (auto it = frequency.begin(); it != frequency.end(); ++it) {
-      it->second = 0;
+    for (auto& pair : frequency) {
+      pair.second = 0;
     }
   }
 
@@ -181,32 +181,32 @@ char_t Tokenizer::GetDelimiter(TokenRange range) const {
 
   char_t delimiter = L'\0';
 
-  for (auto it = frequency.begin(); it != frequency.end(); ++it) {
-    if (it->second == 0)
+  for (const auto& pair : frequency) {
+    if (pair.second == 0)
       continue;
 
     // Initialize delimiter at first iteration
     if (delimiter == L'\0') {
-      delimiter = it->first;
+      delimiter = pair.first;
       continue;
     }
 
     int character_distance =
-        static_cast<int>(kDelimiterTable.find(it->first)) -
+        static_cast<int>(kDelimiterTable.find(pair.first)) -
         static_cast<int>(kDelimiterTable.find(delimiter));
     // If the distance is negative, then the new delimiter has higher priority
     if (character_distance < 0) {
-      delimiter = it->first;
+      delimiter = pair.first;
       continue;
     }
 
     // Even if the new delimiter has lower priority, it may be much more common
-    float frequency_ratio = static_cast<float>(it->second) /
+    float frequency_ratio = static_cast<float>(pair.second) /
                             static_cast<float>(frequency[delimiter]);
     // The constant value was chosen by trial and error. There should be room
     // for improvement.
     if (frequency_ratio / abs(character_distance) > 0.8f)
-      delimiter = it->first;
+      delimiter = pair.first;
   }
 
   return delimiter;

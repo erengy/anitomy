@@ -50,11 +50,11 @@ bool Parser::Parse() {
 ////////////////////////////////////////////////////////////////////////////////
 
 void Parser::SearchForKeywords() {
-  for (auto token = tokens_.begin(); token != tokens_.end(); ++token) {
-    if (token->category != kUnknown)
+  for (auto& token : tokens_) {
+    if (token.category != kUnknown)
       continue;
 
-    auto word = token->content;
+    auto word = token.content;
     TrimString(word);
 
     // Don't bother if the word is a number that cannot be CRC
@@ -103,8 +103,8 @@ void Parser::SearchForKeywords() {
             break;
         }
 
-        if (options.safe || token->enclosed)
-          token->category = kIdentifier;
+        if (options.safe || token.enclosed)
+          token.category = kIdentifier;
 
         break;
       }
@@ -117,7 +117,7 @@ void Parser::SearchForKeywords() {
 void Parser::SearchForEpisodeNumber() {
   // List all tokens that contain a number
   std::vector<size_t> tokens;
-  for (size_t i = 0; i < tokens_.size(); i++) {
+  for (size_t i = 0; i < tokens_.size(); ++i) {
     auto& token = tokens_.at(i);
     if (token.category != kUnknown)
       continue;  // Skip previously identified tokens
@@ -132,13 +132,12 @@ void Parser::SearchForEpisodeNumber() {
     return;
 
   // From now on, we're only interested in numeric tokens
-  for (auto it = tokens.begin(); it != tokens.end(); ) {
-    if (!IsNumericString(tokens_.at(*it).content)) {
-      it = tokens.erase(it);
-    } else {
-      ++it;
-    }
-  }
+  auto not_numeric_string = [&](size_t index) -> bool {
+    return !IsNumericString(tokens_.at(index).content);
+  };
+  tokens.erase(std::remove_if(tokens.begin(), tokens.end(), not_numeric_string),
+               tokens.end());
+
   if (tokens.empty())
     return;
 

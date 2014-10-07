@@ -166,7 +166,7 @@ void KeywordManager::Add(ElementCategory category,
   } while (index_begin <= keywords.size());
 }
 
-bool KeywordManager::Find(ElementCategory category, const string_t& str) {
+bool KeywordManager::Find(ElementCategory category, const string_t& str) const {
   const auto& keyword_list = keyword_lists_.find(category);
 
   if (keyword_list != keyword_lists_.end())
@@ -176,7 +176,7 @@ bool KeywordManager::Find(ElementCategory category, const string_t& str) {
 }
 
 bool KeywordManager::Find(ElementCategory category, const string_t& str,
-                          KeywordOptions& options) {
+                          KeywordOptions& options) const {
   const auto& keyword_list = keyword_lists_.find(category);
 
   if (keyword_list != keyword_lists_.end())

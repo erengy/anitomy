@@ -89,11 +89,9 @@ string_t& Elements::get(ElementCategory category) {
 std::vector<string_t> Elements::get_all(ElementCategory category) const {
   std::vector<string_t> elements;
 
-  std::for_each(elements_.cbegin(), elements_.cend(),
-      [&](const element_pair_t& element) {
-        if (element.first == category)
-          elements.push_back(element.second);
-      });
+  for (const auto& element : elements_)
+    if (element.first == category)
+      elements.push_back(element.second);
 
   return elements;
 }

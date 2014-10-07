@@ -28,6 +28,9 @@ class Tokenizer {
 public:
   Tokenizer(const string_t& filename, token_container_t& tokens);
 
+  Tokenizer(const Tokenizer&) = delete;
+  Tokenizer& operator=(const Tokenizer&) = delete;
+
   bool Tokenize();
 
 private:

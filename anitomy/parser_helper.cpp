@@ -49,7 +49,7 @@ bool Parser::IsCrc32(const string_t& str) {
 }
 
 bool Parser::IsOrdinalNumber(const string_t& word) {
-  using namespace std::tr1::regex_constants;
+  using namespace std::regex_constants;
 
   const std::basic_regex<char_t> pattern(
       _TEXT("1st|2nd|3rd|[4-9]th|first|second|third|fourth|fifth"),

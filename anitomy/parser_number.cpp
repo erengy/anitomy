@@ -253,7 +253,7 @@ bool Parser::SearchForSeparatedNumbers(std::vector<size_t>& tokens) {
 bool Parser::SearchForLastNumber(std::vector<size_t>& tokens) {
   for (auto it = tokens.rbegin(); it != tokens.rend(); ++it) {
     size_t token_index = *it;
-    auto& token = tokens_.begin() + token_index;
+    auto token = tokens_.begin() + token_index;
 
     // Assuming that episode number always comes after the title, first token
     // cannot be what we're looking for

@@ -38,6 +38,9 @@ class Parser {
 public:
   Parser(Elements& elements, token_container_t& tokens);
 
+  Parser(const Parser&) = delete;
+  Parser& operator=(const Parser&) = delete;
+
   bool Parse();
 
   ParseOptions parse_options;
