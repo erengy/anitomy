@@ -240,7 +240,7 @@ bool Parser::SearchForSeparatedNumbers(std::vector<size_t>& tokens) {
     // See if the number has a preceding "-" separator
     if (previous_token != tokens_.end() &&
         previous_token->category == kUnknown &&
-        previous_token->content == _TEXT("-")) {
+        IsDashCharacter(previous_token->content)) {
       SetEpisodeNumber(token->content, *token);
       previous_token->category = kIdentifier;
       return true;

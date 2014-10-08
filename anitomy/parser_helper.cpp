@@ -48,6 +48,16 @@ bool Parser::IsCrc32(const string_t& str) {
   return str.size() == 8 && IsHexadecimalString(str);
 }
 
+bool Parser::IsDashCharacter(const string_t& str) {
+  if (str.size() != 1)
+    return false;
+
+  const string_t dashes = _TEXT("-\u2010\u2011\u2012\u2013\u2014\u2015");
+
+  auto result = std::find(dashes.begin(), dashes.end(), str.front());
+  return result != dashes.end();
+}
+
 bool Parser::IsOrdinalNumber(const string_t& word) {
   using namespace std::regex_constants;
 
@@ -172,7 +182,7 @@ void Parser::BuildElement(ElementCategory category, bool keep_delimiters,
   }
 
   if (!keep_delimiters)
-    TrimString(element, _TEXT(" -"));
+    TrimString(element, _TEXT(" -\u2010\u2011\u2012\u2013\u2014\u2015"));
 
   elements_.insert(category, element);
 }
