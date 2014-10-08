@@ -79,7 +79,8 @@ KeywordManager::KeywordManager() {
   const KeywordOptions options_unsafe(false);
 
   Add(kElementAnimeType, options_unsafe,
-      _TEXT("ED, OAV, ONA, OP, OVA, TV"));
+      _TEXT("OAV, ONA, OVA, TV, ")
+      _TEXT("ED, OP, PV"));
 
   Add(kElementAudioTerm, options_safe,
       // Audio channels
@@ -112,7 +113,7 @@ KeywordManager::KeywordManager() {
       _TEXT("ENG, ENGLISH, ESP, ESPANOL, ITA, JAP, SPANISH, VOSTFR"));
 
   Add(kElementOther, options_safe,
-      _TEXT("REMASTERED, UNCENSORED, UNCUT, ")
+      _TEXT("REMASTER, REMASTERED, UNCENSORED, UNCUT, ")
       _TEXT("TS, VFR, WIDESCREEN, WS"));
 
   Add(kElementReleaseGroup, options_safe,
