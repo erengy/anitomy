@@ -36,7 +36,8 @@ void Parser::SetEpisodeNumber(string_t number, Token& token) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-bool Parser::NumberComesAfterEpisodePrefix(Token& token, size_t number_begin) {
+bool Parser::NumberComesAfterEpisodePrefix(Token& token) {
+  size_t number_begin = FindNumberInString(token.content);
   auto prefix = StringToUpperCopy(token.content.substr(0, number_begin));
 
   if (keyword_manager.Find(kElementEpisodePrefix, prefix)) {
@@ -91,14 +92,13 @@ bool Parser::NumberComesBeforeTotalNumber(const token_iterator_t& token) {
 }
 
 bool Parser::SearchForEpisodePatterns(std::vector<size_t>& tokens) {
-  for (auto token_index = tokens.begin();
-       token_index != tokens.end(); ++token_index) {
-    auto token = tokens_.begin() + *token_index;
-    size_t number_begin = FindNumberInString(token->content);
+  for (const auto& token_index : tokens) {
+    auto token = tokens_.begin() + token_index;
+    bool numeric_front = IsNumericChar(token->content.front());
 
-    if (number_begin > 0) {
+    if (!numeric_front) {
       // e.g. "EP.01"
-      if (NumberComesAfterEpisodePrefix(*token, number_begin))
+      if (NumberComesAfterEpisodePrefix(*token))
         return true;
     } else {
       // e.g. "Episode 01"
@@ -107,10 +107,10 @@ bool Parser::SearchForEpisodePatterns(std::vector<size_t>& tokens) {
       // e.g. "8 of 12"
       if (NumberComesBeforeTotalNumber(token))
         return true;
-      // Look for other patterns
-      if (MatchEpisodePatterns(token->content, *token))
-        return true;
     }
+    // Look for other patterns
+    if (MatchEpisodePatterns(token->content, *token))
+      return true;
   }
 
   return false;
@@ -122,7 +122,7 @@ typedef std::basic_regex<char_t> regex_t;
 typedef std::match_results<string_t::const_iterator> regex_match_results_t;
 
 bool Parser::MatchSingleEpisodePattern(const string_t& word, Token& token) {
-  static regex_t pattern(_TEXT("(\\d+)v(\\d)"));
+  static const regex_t pattern(_TEXT("(\\d{1,3})v(\\d)"));
   regex_match_results_t match_results;
 
   if (std::regex_match(word, match_results, pattern)) {
@@ -135,18 +135,18 @@ bool Parser::MatchSingleEpisodePattern(const string_t& word, Token& token) {
 }
 
 bool Parser::MatchMultiEpisodePattern(const string_t& word, Token& token) {
-  static regex_t pattern(_TEXT("(\\d+)[-&+](\\d+)(v(\\d))?"));
+  static const regex_t pattern(_TEXT("(\\d{1,3})[-&+](\\d{1,3})(?:v(\\d))?"));
   regex_match_results_t match_results;
 
   if (std::regex_match(word, match_results, pattern)) {
     auto lower_bound = match_results[1].str();
     auto upper_bound = match_results[2].str();
-    // We're checking bounds to avoid matching expressions such as "009-1"
+    // Avoid matching expressions such as "009-1"
     if (StringToInt(lower_bound) < StringToInt(upper_bound)) {
       SetEpisodeNumber(lower_bound, token);
       SetEpisodeNumber(upper_bound, token);
-      if (match_results[4].matched)
-        elements_.insert(kElementReleaseVersion, match_results[4].str());
+      if (match_results[3].matched)
+        elements_.insert(kElementReleaseVersion, match_results[3].str());
       return true;
     }
   }
@@ -155,12 +155,20 @@ bool Parser::MatchMultiEpisodePattern(const string_t& word, Token& token) {
 }
 
 bool Parser::MatchSeasonAndEpisodePattern(const string_t& word, Token& token) {
-  static regex_t pattern(_TEXT("S?(\\d{1,2})xE?(\\d{1,2})"));
+  static const regex_t pattern(_TEXT("S?")
+                               _TEXT("(\\d{1,2})(?:-S?(\\d{1,2}))?")
+                               _TEXT("(?:x|[ ._-x]?E)")
+                               _TEXT("(\\d{1,3})(?:-E?(\\d{1,3}))?"),
+                               std::regex_constants::icase);
   regex_match_results_t match_results;
 
   if (std::regex_match(word, match_results, pattern)) {
     elements_.insert(kElementAnimeSeason, match_results[1]);
-    SetEpisodeNumber(match_results[2], token);
+    if (match_results[2].matched)
+      elements_.insert(kElementAnimeSeason, match_results[2]);
+    SetEpisodeNumber(match_results[3], token);
+    if (match_results[4].matched)
+      SetEpisodeNumber(match_results[4], token);
     return true;
   }
 
@@ -168,7 +176,10 @@ bool Parser::MatchSeasonAndEpisodePattern(const string_t& word, Token& token) {
 }
 
 bool Parser::MatchJapaneseCounterPattern(const string_t& word, Token& token) {
-  static regex_t pattern(_TEXT("(\\d+)\u8A71"));
+  if (word.back() != L'\u8A71')
+    return false;
+
+  static const regex_t pattern(_TEXT("(\\d{1,3})\u8A71"));
   regex_match_results_t match_results;
 
   if (std::regex_match(word, match_results, pattern)) {
@@ -180,18 +191,29 @@ bool Parser::MatchJapaneseCounterPattern(const string_t& word, Token& token) {
 }
 
 bool Parser::MatchEpisodePatterns(const string_t& word, Token& token) {
+  // All patterns contain at least one non-numeric character
+  if (IsNumericString(word))
+    return false;
+
+  const bool numeric_front = IsNumericChar(word.front());
+  const bool numeric_back = IsNumericChar(word.back());
+
   // e.g. "01v2"
-  if (MatchSingleEpisodePattern(word, token))
-    return true;
+  if (numeric_front && numeric_back)
+    if (MatchSingleEpisodePattern(word, token))
+      return true;
   // e.g. "01-02", "03-05v2"
-  if (MatchMultiEpisodePattern(word, token))
-    return true;
-  // e.g. "02x01", "S01xE03"
-  if (MatchSeasonAndEpisodePattern(word, token))
-    return true;
+  if (numeric_front && numeric_back)
+    if (MatchMultiEpisodePattern(word, token))
+      return true;
+  // e.g. "2x01", "S01E03", "S01-02xE001-150"
+  if (numeric_back)
+    if (MatchSeasonAndEpisodePattern(word, token))
+      return true;
   // U+8A71 is used as counter for stories, episodes of TV series, etc.
-  if (MatchJapaneseCounterPattern(word, token))
-    return true;
+  if (numeric_front)
+    if (MatchJapaneseCounterPattern(word, token))
+      return true;
 
   return false;
 }
