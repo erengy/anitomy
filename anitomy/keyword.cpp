@@ -79,74 +79,69 @@ KeywordManager::KeywordManager() {
   const KeywordOptions options_unsafe(false);
 
   Add(kElementAnimeType, options_unsafe,
-      _TEXT("OAV, ONA, OVA, TV, ")
-      _TEXT("ED, OP, PV"));
+      L"OAV, ONA, OVA, TV, "
+      L"ED, OP, PV");
 
   Add(kElementAudioTerm, options_safe,
       // Audio channels
-      _TEXT("2CH, 5.1, 5.1CH, DTS, DTS-ES, DTS5.1, TRUEHD5.1, ")
+      L"2CH, 5.1, 5.1CH, DTS, DTS-ES, DTS5.1, TRUEHD5.1, "
       // Audio codec
-      _TEXT("AAC, AC3, FLAC, MP3, OGG, VORBIS, ")
+      L"AAC, AC3, FLAC, MP3, OGG, VORBIS, "
       // Audio language
-      _TEXT("DUALAUDIO, DUAL AUDIO"));
+      L"DUALAUDIO, DUAL AUDIO");
 
   Add(kElementDeviceCompatibility, options_unsafe,
-      _TEXT("ANDROID"));
+      L"ANDROID");
   Add(kElementDeviceCompatibility, options_safe,
-      _TEXT("IPAD3, IPHONE5, IPOD, PS3, XBOX, XBOX360"));
+      L"IPAD3, IPHONE5, IPOD, PS3, XBOX, XBOX360");
 
   Add(kElementEpisodePrefix, options_safe,
-      _TEXT("E, EP, EP., EPS, EPS., EPISODE, EPISODE., ")
-      _TEXT("EPISODIO, FOLGE, ")
-      _TEXT("VOL, VOL., VOLUME, ")
-#ifdef ANITOMY_USE_WIDE_CHARACTERS
-      _TEXT("\x7B2C")
-#else
-      // TODO
-#endif
-      );
+      L"E, EP, EP., EPS, EPS., EPISODE, EPISODE., "
+      L"EPISODIO, FOLGE, "
+      L"VOL, VOL., VOLUME, "
+      L"\x7B2C");
 
   Add(kElementFileExtension, options_safe,
-      _TEXT("3GP, AVI, DIVX, FLV, MKV, MOV, MP4, MPG, OGM, RM, RMVB, WMV"));
+      L"3GP, AVI, DIVX, FLV, MKV, MOV, MP4, MPG, OGM, RM, RMVB, WMV");
 
   Add(kElementLanguage, options_safe,
-      _TEXT("ENG, ENGLISH, ESP, ESPANOL, ITA, JAP, SPANISH, VOSTFR"));
+      L"ENG, ENGLISH, ESP, ESPANOL, ITA, JAP, SPANISH, VOSTFR");
 
   Add(kElementOther, options_safe,
-      _TEXT("REMASTER, REMASTERED, UNCENSORED, UNCUT, ")
-      _TEXT("TS, VFR, WIDESCREEN, WS"));
+      L"REMASTER, REMASTERED, UNCENSORED, UNCUT, "
+      L"TS, VFR, WIDESCREEN, WS");
 
   Add(kElementReleaseGroup, options_safe,
-      _TEXT("THORA"));
+      L"THORA");
 
   Add(kElementReleaseInformation, options_safe,
-      _TEXT("BATCH, COMPLETE"));
+      L"BATCH, COMPLETE");
   Add(kElementReleaseInformation, options_unsafe,
-      _TEXT("END, FINAL"));
+      L"END, FINAL");
 
   Add(kElementReleaseVersion, options_safe,
-      _TEXT("V0, V1, V2, V3, V4"));
+      L"V0, V1, V2, V3, V4");
 
   Add(kElementSource, options_safe,
-      _TEXT("BD, BDRIP, BLURAY, BLU-RAY, ")
-      _TEXT("DVD, DVD5, DVD9, DVD-R2J, DVDRIP, DVD-RIP, ")
-      _TEXT("R2DVD, R2J, R2JDVD, R2JDVDRIP, ")
-      _TEXT("HDTV, HDTVRIP, TVRIP, TV-RIP, WEBCAST"));
+      L"BD, BDRIP, BLURAY, BLU-RAY, "
+      L"DVD, DVD5, DVD9, DVD-R2J, DVDRIP, DVD-RIP, "
+      L"R2DVD, R2J, R2JDVD, R2JDVDRIP, "
+      L"HDTV, HDTVRIP, TVRIP, TV-RIP, WEBCAST");
 
   Add(kElementSubtitles, options_safe,
-      _TEXT("ASS, BIG5, HARDSUB, RAW, SOFTSUB, SUB, SUBBED"));
+      L"ASS, BIG5, HARDSUB, RAW, SOFTSUB, SUB, SUBBED");
 
   Add(kElementVideoTerm, options_safe,
       // Video codec
-      _TEXT("8BIT, 8-BIT, 10BIT, 10-BIT, HI10P, ")
-      _TEXT("H264, H.264, X264, X.264, ")
-      _TEXT("AVC, DIVX, XVID, ")
+      L"8BIT, 8-BIT, 10BIT, 10-BIT, HI10P, "
+      L"H264, H.264, X264, X.264, "
+      L"AVC, DIVX, XVID, "
       // Video format
-      _TEXT("AVI, RMVB, WMV, WMV3, WMV9, ")
+      L"AVI, RMVB, WMV, WMV3, WMV9, "
       // Video quality
-      _TEXT("HQ, LQ, ")
+      L"HQ, LQ, "
       // Video resolution
-      _TEXT("HD, SD"));
+      L"HD, SD");
 }
 
 void KeywordManager::Add(ElementCategory category,
@@ -154,7 +149,7 @@ void KeywordManager::Add(ElementCategory category,
                          const string_t& keywords) {
   auto& keyword_lists = keyword_lists_[category];
 
-  const string_t separator = _TEXT(", ");
+  const string_t separator = L", ";
   size_t index_begin = 0, index_end;
 
   do {

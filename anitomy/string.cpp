@@ -24,19 +24,19 @@
 namespace anitomy {
 
 bool IsAlphanumericChar(const char_t c) {
-  return (c >= '0' && c <= '9') ||
-         (c >= 'A' && c <= 'Z') ||
-         (c >= 'a' && c <= 'z');
+  return (c >= L'0' && c <= L'9') ||
+         (c >= L'A' && c <= L'Z') ||
+         (c >= L'a' && c <= L'z');
 }
 
 bool IsHexadecimalChar(const char_t c) {
-  return (c >= '0' && c <= '9') ||
-         (c >= 'A' && c <= 'F') ||
-         (c >= 'a' && c <= 'f');
+  return (c >= L'0' && c <= L'9') ||
+         (c >= L'A' && c <= L'F') ||
+         (c >= L'a' && c <= L'f');
 }
 
 bool IsNumericChar(const char_t c) {
-  return c >= '0' && c <= '9';
+  return c >= L'0' && c <= L'9';
 }
 
 bool IsAlphanumericString(const string_t& str) {
@@ -56,19 +56,11 @@ bool IsNumericString(const string_t& str) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-inline char ToLower(const char c) {
-  return (c >= 'A' && c <= 'Z') ? (c + ('a' - 'A')) : static_cast<char>(tolower(c));
-}
-
 inline wchar_t ToLower(const wchar_t c) {
   return (c >= L'A' && c <= L'Z') ? (c + (L'a' - L'A')) : static_cast<wchar_t>(towlower(c));
 }
 
 struct ToUpper : public std::unary_function<char_t, char_t> {
-  char operator ()(const char c) const {
-    return (c >= 'a' && c <= 'z') ? (c + ('A' - 'a')) : static_cast<char>(toupper(c));
-  }
-
   wchar_t operator ()(const wchar_t c) const {
     return (c >= L'a' && c <= L'z') ? (c + (L'A' - L'a')) : static_cast<wchar_t>(towupper(c));
   }
@@ -87,11 +79,7 @@ bool IsStringEqualTo(const string_t& str1, const string_t& str2) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-int StringToInt(const std::string& str) {
-  return static_cast<int>(std::strtoul(str.c_str(), nullptr, 10));
-}
-
-int StringToInt(const std::wstring& str) {
+int StringToInt(const string_t& str) {
   return static_cast<int>(std::wcstol(str.c_str(), nullptr, 10));
 }
 

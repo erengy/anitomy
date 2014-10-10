@@ -21,21 +21,9 @@
 
 #include <string>
 
-#define ANITOMY_USE_WIDE_CHARACTERS
-
 namespace anitomy {
 
-#ifdef ANITOMY_USE_WIDE_CHARACTERS
-  typedef wchar_t char_t;
-  #ifndef _TEXT
-    #define _TEXT(x) L##x
-  #endif
-#else
-  typedef char char_t;
-  #ifndef _TEXT
-    #define _TEXT(x) x
-  #endif
-#endif
+typedef wchar_t char_t;
 typedef std::basic_string<char_t> string_t;
 
 bool IsAlphanumericChar(const char_t c);
@@ -47,11 +35,10 @@ bool IsNumericString(const string_t& str);
 
 bool IsStringEqualTo(const string_t& str1, const string_t& str2);
 
-int StringToInt(const std::string& str);
-int StringToInt(const std::wstring& str);
+int StringToInt(const string_t& str);
 
 string_t StringToUpperCopy(string_t str);
-void TrimString(string_t& str, const char_t trim_chars[] = _TEXT(" "));
+void TrimString(string_t& str, const char_t trim_chars[] = L" ");
 
 }  // namespace anitomy
 

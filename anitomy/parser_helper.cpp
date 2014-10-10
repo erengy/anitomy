@@ -52,7 +52,7 @@ bool Parser::IsDashCharacter(const string_t& str) {
   if (str.size() != 1)
     return false;
 
-  const string_t dashes = _TEXT("-\u2010\u2011\u2012\u2013\u2014\u2015");
+  const string_t dashes = L"-\u2010\u2011\u2012\u2013\u2014\u2015";
 
   auto result = std::find(dashes.begin(), dashes.end(), str.front());
   return result != dashes.end();
@@ -62,7 +62,7 @@ bool Parser::IsOrdinalNumber(const string_t& word) {
   using namespace std::regex_constants;
 
   const std::basic_regex<char_t> pattern(
-      _TEXT("1st|2nd|3rd|[4-9]th|first|second|third|fourth|fifth"),
+      L"1st|2nd|3rd|[4-9]th|first|second|third|fourth|fifth",
       icase | nosubs | optimize);
 
   return std::regex_search(word, pattern, match_any | match_continuous);
@@ -84,7 +84,7 @@ bool Parser::IsResolution(const string_t& str) {
 
   // *###p
   } else if (str.size() >= 3 + 1) {
-    if (str.back() == 'p' || str.back() == 'P') {
+    if (str.back() == L'p' || str.back() == L'P') {
       for (size_t i = 0; i < str.size() - 1; i++)
         if (!IsNumericChar(str.at(i)))
           return false;
@@ -182,7 +182,7 @@ void Parser::BuildElement(ElementCategory category, bool keep_delimiters,
   }
 
   if (!keep_delimiters)
-    TrimString(element, _TEXT(" -\u2010\u2011\u2012\u2013\u2014\u2015"));
+    TrimString(element, L" -\u2010\u2011\u2012\u2013\u2014\u2015");
 
   elements_.insert(category, element);
 }

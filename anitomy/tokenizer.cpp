@@ -46,8 +46,8 @@ void Tokenizer::AddToken(TokenCategory category, bool enclosed,
 }
 
 void Tokenizer::TokenizeByBrackets() {
-  static const string_t kOpeningBrackets = _TEXT("[({");
-  static const string_t kClosingBrackets = _TEXT("])}");
+  static const string_t kOpeningBrackets = L"[({";
+  static const string_t kClosingBrackets = L"])}";
 
   bool bracket_open = false;
   size_t last_bracket_index = 0;
@@ -147,7 +147,7 @@ char_t Tokenizer::GetDelimiter(TokenRange range) const {
   // common delimiters are underscore, space and dot, we give comma the priority
   // to handle the case where words are separated by ", ". Besides, we'll be
   // trimming whitespace later on.
-  static const string_t kDelimiterTable = _TEXT(",_ .-+;&|~");
+  static const string_t kDelimiterTable = L",_ .-+;&|~";
 
   // Trim whitespace so that it doesn't interfere with our frequency analysis.
   // This proves useful for handling some edge cases, and it doesn't seem to

@@ -74,7 +74,7 @@ bool Parser::NumberComesBeforeTotalNumber(const token_iterator_t& token) {
   auto next_token = GetNextValidToken(token);
 
   if (next_token != tokens_.end()) {
-    if (IsStringEqualTo(next_token->content, _TEXT("of"))) {
+    if (IsStringEqualTo(next_token->content, L"of")) {
       auto other_token = GetNextValidToken(next_token);
 
       if (other_token != tokens_.end()) {
@@ -122,7 +122,7 @@ typedef std::basic_regex<char_t> regex_t;
 typedef std::match_results<string_t::const_iterator> regex_match_results_t;
 
 bool Parser::MatchSingleEpisodePattern(const string_t& word, Token& token) {
-  static const regex_t pattern(_TEXT("(\\d{1,3})v(\\d)"));
+  static const regex_t pattern(L"(\\d{1,3})v(\\d)");
   regex_match_results_t match_results;
 
   if (std::regex_match(word, match_results, pattern)) {
@@ -135,7 +135,7 @@ bool Parser::MatchSingleEpisodePattern(const string_t& word, Token& token) {
 }
 
 bool Parser::MatchMultiEpisodePattern(const string_t& word, Token& token) {
-  static const regex_t pattern(_TEXT("(\\d{1,3})[-&+](\\d{1,3})(?:v(\\d))?"));
+  static const regex_t pattern(L"(\\d{1,3})[-&+](\\d{1,3})(?:v(\\d))?");
   regex_match_results_t match_results;
 
   if (std::regex_match(word, match_results, pattern)) {
@@ -155,10 +155,10 @@ bool Parser::MatchMultiEpisodePattern(const string_t& word, Token& token) {
 }
 
 bool Parser::MatchSeasonAndEpisodePattern(const string_t& word, Token& token) {
-  static const regex_t pattern(_TEXT("S?")
-                               _TEXT("(\\d{1,2})(?:-S?(\\d{1,2}))?")
-                               _TEXT("(?:x|[ ._-x]?E)")
-                               _TEXT("(\\d{1,3})(?:-E?(\\d{1,3}))?"),
+  static const regex_t pattern(L"S?"
+                               L"(\\d{1,2})(?:-S?(\\d{1,2}))?"
+                               L"(?:x|[ ._-x]?E)"
+                               L"(\\d{1,3})(?:-E?(\\d{1,3}))?",
                                std::regex_constants::icase);
   regex_match_results_t match_results;
 
@@ -179,7 +179,7 @@ bool Parser::MatchJapaneseCounterPattern(const string_t& word, Token& token) {
   if (word.back() != L'\u8A71')
     return false;
 
-  static const regex_t pattern(_TEXT("(\\d{1,3})\u8A71"));
+  static const regex_t pattern(L"(\\d{1,3})\u8A71");
   regex_match_results_t match_results;
 
   if (std::regex_match(word, match_results, pattern)) {
@@ -300,7 +300,7 @@ bool Parser::SearchForLastNumber(std::vector<size_t>& tokens) {
     auto previous_token = GetPreviousValidToken(token);
     if (previous_token != tokens_.end() &&
         previous_token->category == kUnknown) {
-      if (IsStringEqualTo(previous_token->content, _TEXT("Season"))) {
+      if (IsStringEqualTo(previous_token->content, L"Season")) {
         // We can't bail out yet; it can still be in "2nd Season 01" format
         previous_token = GetPreviousValidToken(previous_token);
         if (previous_token != tokens_.end()) {
@@ -311,7 +311,7 @@ bool Parser::SearchForLastNumber(std::vector<size_t>& tokens) {
             continue;
           }
         }
-      } else if (IsStringEqualTo(previous_token->content, _TEXT("Movie"))) {
+      } else if (IsStringEqualTo(previous_token->content, L"Movie")) {
         continue;
       }
     }
