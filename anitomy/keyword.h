@@ -19,6 +19,7 @@
 #ifndef ANITOMY_KEYWORD_H
 #define ANITOMY_KEYWORD_H
 
+#include <initializer_list>
 #include <map>
 #include <unordered_map>
 
@@ -41,6 +42,7 @@ public:
   ~KeywordList() {}
 
   void Add(const string_t& str, const KeywordOptions& options);
+
   bool Find(const string_t& str) const;
   bool Find(const string_t& str, KeywordOptions& options) const;
 
@@ -54,7 +56,9 @@ public:
   KeywordManager();
   ~KeywordManager() {}
 
-  void Add(ElementCategory category, const KeywordOptions& options, const string_t& keywords);
+  void Add(ElementCategory category, const KeywordOptions& options,
+           const std::initializer_list<string_t>& keywords);
+
   bool Find(ElementCategory category, const string_t& str) const;
   bool Find(ElementCategory category, const string_t& str, KeywordOptions& options) const;
 
