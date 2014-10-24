@@ -129,7 +129,8 @@ KeywordManager::KeywordManager() {
       L"HDTV", L"HDTVRIP", L"TVRIP", L"TV-RIP", L"WEBCAST"});
 
   Add(kElementSubtitles, options_safe, {
-      L"ASS", L"BIG5", L"HARDSUB", L"RAW", L"SOFTSUB", L"SUB", L"SUBBED"});
+      L"ASS", L"BIG5", L"DUBBED", L"HARDSUB", L"RAW", L"SOFTSUB", L"SUB",
+      L"SUBBED", L"SUBTITLED"});
 
   Add(kElementVideoTerm, options_safe, {
       // Video codec
