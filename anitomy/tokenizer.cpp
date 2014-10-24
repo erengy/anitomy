@@ -46,43 +46,56 @@ void Tokenizer::AddToken(TokenCategory category, bool enclosed,
 }
 
 void Tokenizer::TokenizeByBrackets() {
-  static const string_t kOpeningBrackets = L"[({";
-  static const string_t kClosingBrackets = L"])}";
+  static const std::vector<std::pair<char_t, char_t>> brackets{
+      {L'(', L')'},  // U+0028-U+0029 Parenthesis
+      {L'[', L']'},  // U+005B-U+005D Square bracket
+      {L'{', L'}'},  // U+007B-U+007D Curly bracket
+      {L'\u300C', L'\u300D'},  // Corner bracket
+      {L'\u300E', L'\u300F'},  // White corner bracket
+      {L'\u3010', L'\u3011'},  // Black lenticular bracket
+      {L'\uFF08', L'\uFF09'},  // Fullwidth parenthesis
+  };
 
-  bool bracket_open = false;
-  size_t last_bracket_index = 0;
+  bool is_bracket_open = false;
+  char_t matching_bracket = L'\0';
 
-  TokenRange range;
+  auto char_begin = filename_.begin();
+  const auto char_end = filename_.end();
 
-  for (size_t offset = 0; offset < filename_.size(); offset++) {
-    const auto& brackets = bracket_open ? kClosingBrackets : kOpeningBrackets;
-    const size_t index = brackets.find(filename_.at(offset));
-
-    // Character is a bracket
-    if (index != string_t::npos) {
-      // Check if it matches last open bracket
-      if (bracket_open) {
-        if (index != last_bracket_index)
-          continue;
-      } else {
-        last_bracket_index = index;
+  // This is basically std::find_first_of() customized to our needs
+  auto find_first_bracket = [&]() -> string_t::const_iterator {
+    for (auto it = char_begin; it != char_end; ++it) {
+      for (const auto& bracket_pair : brackets) {
+        if (*it == bracket_pair.first) {
+          matching_bracket = bracket_pair.second;
+          return it;
+        }
       }
+    }
+    return char_end;
+  };
 
-      // Add unknown token
-      if (range.offset < offset) {
-        range.size = offset - range.offset;
-        TokenizeByDelimiter(bracket_open, range);
-      }
-      // Add bracket
-      AddToken(kBracket, true, TokenRange(offset, 1));
-      bracket_open = !bracket_open;
-      range.offset = offset + 1;
+  auto current_char = char_begin;
 
-    // Character is not a bracket, and the loop reached the end
-    } else if (offset == filename_.size() - 1) {
-      // Add last unknown token
-      range.size = offset - range.offset + 1;
-      TokenizeByDelimiter(false, range);
+  while (current_char != char_end && char_begin != char_end) {
+    if (!is_bracket_open) {
+      current_char = find_first_bracket();
+    } else {
+      // Looking for the matching bracket allows us to better handle some rare
+      // cases with nested brackets.
+      current_char = std::find(char_begin, char_end, matching_bracket);
+    }
+
+    const TokenRange range(std::distance(filename_.begin(), char_begin),
+                           std::distance(char_begin, current_char));
+
+    if (range.size > 0)  // Found unknown token
+      TokenizeByDelimiter(is_bracket_open, range);
+
+    if (current_char != char_end) {  // Found bracket
+      AddToken(kBracket, true, TokenRange(range.offset + range.size, 1));
+      is_bracket_open = !is_bracket_open;
+      char_begin = ++current_char;
     }
   }
 }
@@ -98,32 +111,30 @@ void Tokenizer::TokenizeByDelimiter(bool enclosed, const TokenRange& range) {
     return;
   }
 
-  TokenRange new_range(range.offset, 0);
+  auto char_begin = filename_.begin() + range.offset;
+  const auto char_end = char_begin + range.size;
+  auto current_char = char_begin;
 
-  for (size_t offset = range.offset;
-       offset < range.offset + range.size; offset++) {
-    const char_t character = filename_.at(offset);
+  while (current_char != char_end) {
+    current_char = std::find(char_begin, char_end, delimiter);
 
-    if (character == delimiter) {
-      // Add new unknown token
-      if (new_range.offset < offset) {
-        new_range.size = offset - new_range.offset;
-        AddToken(kUnknown, enclosed, new_range);
-      }
-      // Add delimiter
-      AddToken(kDelimiter, enclosed, TokenRange(offset, 1));
-      new_range.offset = offset + 1;
-    } else if (offset == range.offset + range.size - 1) {
-      // Add last unknown token
-      new_range.size = offset - new_range.offset + 1;
-      AddToken(kUnknown, enclosed, new_range);
+    const TokenRange sub_range(std::distance(filename_.begin(), char_begin),
+                               std::distance(char_begin, current_char));
+
+    if (sub_range.size > 0)  // Found unknown token
+      AddToken(kUnknown, enclosed, sub_range);
+
+    if (current_char != char_end) {  // Found delimiter
+      AddToken(kDelimiter, enclosed,
+               TokenRange(sub_range.offset + sub_range.size, 1));
+      char_begin = ++current_char;
     }
   }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-bool TrimWhitespace(const string_t& str, TokenRange& range) {
+static bool TrimWhitespace(const string_t& str, TokenRange& range) {
   const char_t whitespace = L' ';
 
   size_t offset_end = range.offset + range.size - 1;
@@ -195,7 +206,7 @@ char_t Tokenizer::GetDelimiter(TokenRange range) const {
         static_cast<int>(kDelimiterTable.find(pair.first)) -
         static_cast<int>(kDelimiterTable.find(delimiter));
     // If the distance is negative, then the new delimiter has higher priority
-    if (character_distance < 0) {
+    if (character_distance < 0 && pair.first != L',') {
       delimiter = pair.first;
       continue;
     }
@@ -205,6 +216,8 @@ char_t Tokenizer::GetDelimiter(TokenRange range) const {
                             static_cast<float>(frequency[delimiter]);
     // The constant value was chosen by trial and error. There should be room
     // for improvement.
+    // TODO: This doesn't help at all. Increasing the value has no effect,
+    // while decreasing it causes more errors.
     if (frequency_ratio / abs(character_distance) > 0.8f)
       delimiter = pair.first;
   }
