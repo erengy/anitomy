@@ -1144,5 +1144,17 @@
 		"source": "BD",
 		"video_resolution": "720p",
 		"video_term": "h264"
+	},
+	{
+		"anime_title": "Tsukimonogatari",
+		"episode_number": [
+			"01",
+			"04"
+		],
+		"file_extension": "mkv",
+		"file_name": "[HorribleSubs] Tsukimonogatari - (01-04) [1080p].mkv",
+		"id": 28025,
+		"release_group": "HorribleSubs",
+		"video_resolution": "1080p"
 	}
 ]
