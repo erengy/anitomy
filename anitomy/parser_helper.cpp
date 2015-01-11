@@ -73,7 +73,7 @@ bool Parser::IsResolution(const string_t& str) {
 
   // *###x###*
   if (str.size() >= 3 + 1 + 3) {
-    size_t pos = str.find('x');
+    size_t pos = str.find_first_of(L"x\u00D7");  // multiplication sign
     if (pos != str.npos) {
       for (size_t i = 0; i < str.size(); i++)
         if (i != pos && !IsNumericChar(str.at(i)))

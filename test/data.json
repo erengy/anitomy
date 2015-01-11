@@ -1168,5 +1168,18 @@
 		"release_group": "Urusai",
 		"source": "DVD",
 		"video_term": "h264"
+	},
+	{
+		"anime_title": "White Album",
+		"audio_term": "FLAC",
+		"episode_number": [
+			"1",
+			"13"
+		],
+		"file_name": "[Coalgirls]_White_Album_1-13_(1280×720_Blu-Ray_FLAC)",
+		"id": 4720,
+		"release_group": "Coalgirls",
+		"source": "Blu-Ray",
+		"video_resolution": "1280×720"
 	}
 ]
