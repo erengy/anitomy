@@ -1156,5 +1156,17 @@
 		"id": 28025,
 		"release_group": "HorribleSubs",
 		"video_resolution": "1080p"
+	},
+	{
+		"anime_title": "Bokura Ga Ita",
+		"audio_term": "AC3",
+		"episode_number": "01",
+		"file_checksum": "BFCE1627",
+		"file_extension": "mkv",
+		"file_name": "[Urusai]_Bokura_Ga_Ita_01_[DVD_h264_AC3]_[BFCE1627][Fixed].mkv",
+		"id": 1222,
+		"release_group": "Urusai",
+		"source": "DVD",
+		"video_term": "h264"
 	}
 ]

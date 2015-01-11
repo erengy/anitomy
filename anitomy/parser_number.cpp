@@ -141,7 +141,7 @@ bool Parser::MatchMultiEpisodePattern(const string_t& word, Token& token) {
   if (std::regex_match(word, match_results, pattern)) {
     auto lower_bound = match_results[1].str();
     auto upper_bound = match_results[2].str();
-    // Avoid matching expressions such as "009-1"
+    // Avoid matching expressions such as "009-1" or "5-2"
     if (StringToInt(lower_bound) < StringToInt(upper_bound)) {
       SetEpisodeNumber(lower_bound, token);
       SetEpisodeNumber(upper_bound, token);

@@ -89,10 +89,10 @@ KeywordManager::KeywordManager() {
       // Audio language
       L"DUALAUDIO", L"DUAL AUDIO"});
 
-  Add(kElementDeviceCompatibility, options_unsafe, {
-      L"ANDROID"});
   Add(kElementDeviceCompatibility, options_safe, {
       L"IPAD3", L"IPHONE5", L"IPOD", L"PS3", L"XBOX", L"XBOX360"});
+  Add(kElementDeviceCompatibility, options_unsafe, {
+      L"ANDROID"});
 
   Add(kElementEpisodePrefix, options_safe, {
       L"E", L"EP", L"EP.", L"EPS", L"EPS.", L"EPISODE", L"EPISODE.",
@@ -104,8 +104,9 @@ KeywordManager::KeywordManager() {
       L"RM", L"RMVB", L"WMV"});
 
   Add(kElementLanguage, options_safe, {
-      L"ENG", L"ENGLISH", L"ESP", L"ESPANOL", L"ITA", L"JAP", L"SPANISH",
-      L"VOSTFR"});
+      L"ENG", L"ENGLISH", L"ESPANOL", L"JAP", L"SPANISH", L"VOSTFR"});
+  Add(kElementLanguage, options_unsafe, {
+      L"ESP", L"ITA"});  // e.g. "Tokyo ESP", "Bokura ga Ita"
 
   Add(kElementOther, options_safe, {
       L"REMASTER", L"REMASTERED", L"UNCENSORED", L"UNCUT",
@@ -117,7 +118,7 @@ KeywordManager::KeywordManager() {
   Add(kElementReleaseInformation, options_safe, {
       L"BATCH", L"COMPLETE"});
   Add(kElementReleaseInformation, options_unsafe, {
-      L"END", L"FINAL"});
+      L"END", L"FINAL"});  // e.g. "The End of Evangelion", "Final Approach"
 
   Add(kElementReleaseVersion, options_safe, {
       L"V0", L"V1", L"V2", L"V3", L"V4"});
