@@ -30,7 +30,6 @@ struct ParseOptions {
 
   bool parse_episode_number;
   bool parse_episode_title;
-  bool parse_extra_keywords;
   bool parse_release_group;
 };
 

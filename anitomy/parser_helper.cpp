@@ -28,7 +28,6 @@ namespace anitomy {
 ParseOptions::ParseOptions()
     : parse_episode_number(true),
       parse_episode_title(true),
-      parse_extra_keywords(true),
       parse_release_group(true) {
 }
 
