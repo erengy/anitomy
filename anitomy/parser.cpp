@@ -70,10 +70,8 @@ void Parser::SearchForKeywords() {
       if (!parse_options.parse_release_group)
         if (category == kElementReleaseGroup)
           continue;
-
       if (!IsElementCategorySearchable(category))
         continue;
-
       if (IsElementCategorySingular(category))
         if (!elements_.empty(category))
           continue;
@@ -102,10 +100,8 @@ void Parser::SearchForKeywords() {
             elements_.insert(category, word);
             break;
         }
-
         if (options.safe || token.enclosed)
           token.category = kIdentifier;
-
         break;
       }
     }

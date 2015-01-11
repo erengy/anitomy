@@ -175,6 +175,22 @@ bool Parser::MatchSeasonAndEpisodePattern(const string_t& word, Token& token) {
   return false;
 }
 
+bool Parser::MatchTypeAndEpisodePattern(const string_t& word, Token& token) {
+  if (!elements_.empty(kElementAnimeType))
+    return false;
+
+  static const regex_t pattern(L"(ED|NCED|NCOP|OP|OVA|PV)(\\d{1,2})[a-f]?");
+  regex_match_results_t match_results;
+
+  if (std::regex_match(word, match_results, pattern)) {
+    elements_.insert(kElementAnimeType, match_results[1].str());
+    SetEpisodeNumber(match_results[2].str(), token);
+    return true;
+  }
+
+  return false;
+}
+
 bool Parser::MatchJapaneseCounterPattern(const string_t& word, Token& token) {
   if (word.back() != L'\u8A71')
     return false;
@@ -209,6 +225,10 @@ bool Parser::MatchEpisodePatterns(const string_t& word, Token& token) {
   // e.g. "2x01", "S01E03", "S01-02xE001-150"
   if (numeric_back)
     if (MatchSeasonAndEpisodePattern(word, token))
+      return true;
+  // e.g. "ED1", "OP4a", "OVA2"
+  if (!numeric_front)
+    if (MatchTypeAndEpisodePattern(word, token))
       return true;
   // U+8A71 is used as counter for stories, episodes of TV series, etc.
   if (numeric_front)

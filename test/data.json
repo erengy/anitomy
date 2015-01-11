@@ -62,8 +62,10 @@
 		"video_term": "h264"
 	},
 	{
-		"anime_title": "Toradora ED2",
+		"anime_title": "Toradora",
+		"anime_type": "ED",
 		"audio_term": "AAC",
+		"episode_number": "2",
 		"file_checksum": "3B65D1E6",
 		"file_extension": "mkv",
 		"file_name": "[Coalgirls]_Toradora_ED2_(704x480_DVD_AAC)_[3B65D1E6].mkv",
@@ -1181,5 +1183,18 @@
 		"release_group": "Coalgirls",
 		"source": "Blu-Ray",
 		"video_resolution": "1280×720"
+	},
+	{
+		"anime_title": "Bakemonogatari",
+		"anime_type": "OP",
+		"audio_term": "FLAC",
+		"episode_number": "4",
+		"file_checksum": "327A2375",
+		"file_extension": "mkv",
+		"file_name": "[Coalgirls]_Bakemonogatari_OP4a_(1280x720_Blu-Ray_FLAC)_[327A2375].mkv",
+		"id": 5081,
+		"release_group": "Coalgirls",
+		"source": "Blu-Ray",
+		"video_resolution": "1280x720"
 	}
 ]

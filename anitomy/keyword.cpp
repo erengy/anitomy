@@ -79,7 +79,7 @@ KeywordManager::KeywordManager() {
 
   Add(kElementAnimeType, options_unsafe, {
       L"OAV", L"ONA", L"OVA", L"TV",
-      L"ED", L"OP", L"PV"});
+      L"ED", L"ENDING", L"NCED", L"NCOP", L"OP", L"OPENING", L"PV"});
 
   Add(kElementAudioTerm, options_safe, {
       // Audio channels
