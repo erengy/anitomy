@@ -16,7 +16,8 @@
 ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <map>
+#include <algorithm>
+#include <set>
 
 #include "string.h"
 #include "tokenizer.h"
@@ -90,7 +91,7 @@ void Tokenizer::TokenizeByBrackets() {
                            std::distance(char_begin, current_char));
 
     if (range.size > 0)  // Found unknown token
-      TokenizeByDelimiter(is_bracket_open, range);
+      TokenizeByDelimiters(is_bracket_open, range);
 
     if (current_char != char_end) {  // Found bracket
       AddToken(kBracket, true, TokenRange(range.offset + range.size, 1));
@@ -100,13 +101,12 @@ void Tokenizer::TokenizeByBrackets() {
   }
 }
 
-void Tokenizer::TokenizeByDelimiter(bool enclosed, const TokenRange& range) {
-  // Each group occasionally has a different delimiter, which is why we can't
+void Tokenizer::TokenizeByDelimiters(bool enclosed, const TokenRange& range) {
+  // Each group occasionally has different delimiters, which is why we can't
   // analyze the whole filename in one go.
-  const char_t delimiter = GetDelimiter(range);
+  string_t delimiters = GetDelimiters(range);
 
-  // TODO: Better handle groups with multiple delimiters
-  if (!ValidateDelimiter(delimiter, enclosed, range)) {
+  if (delimiters.empty()) {
     AddToken(kUnknown, enclosed, range);
     return;
   }
@@ -116,7 +116,8 @@ void Tokenizer::TokenizeByDelimiter(bool enclosed, const TokenRange& range) {
   auto current_char = char_begin;
 
   while (current_char != char_end) {
-    current_char = std::find(char_begin, char_end, delimiter);
+    current_char = std::find_first_of(current_char, char_end,
+                                      delimiters.begin(), delimiters.end());
 
     const TokenRange sub_range(std::distance(filename_.begin(), char_begin),
                                std::distance(char_begin, current_char));
@@ -130,123 +131,83 @@ void Tokenizer::TokenizeByDelimiter(bool enclosed, const TokenRange& range) {
       char_begin = ++current_char;
     }
   }
+
+  ValidateDelimiterTokens();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-static bool TrimWhitespace(const string_t& str, TokenRange& range) {
-  const char_t whitespace = L' ';
+string_t Tokenizer::GetDelimiters(const TokenRange& range) const {
+  static const string_t kValidDelimiters = L" &+,._|";
 
-  size_t offset_end = range.offset + range.size - 1;
-
-  range.offset = str.find_first_not_of(whitespace, range.offset);
-
-  if (range.offset != string_t::npos) {
-    offset_end = str.find_last_not_of(whitespace, offset_end);
-
-    if (offset_end >= range.offset) {
-      range.size = offset_end - range.offset + 1;
-      return true;
-    }
-  }
-
-  return false;  // There's nothing but whitespace
-}
-
-char_t Tokenizer::GetDelimiter(TokenRange range) const {
-  // Symbols are sorted by their precedence, in decreasing order. While the most
-  // common delimiters are underscore, space and dot, we give comma the priority
-  // to handle the case where words are separated by ", ". Besides, we'll be
-  // trimming whitespace later on.
-  static const string_t kDelimiterTable = L",_ .-+;&|~";
-
-  // Trim whitespace so that it doesn't interfere with our frequency analysis.
-  // This proves useful for handling some edge cases, and it doesn't seem to
-  // have any side effects.
-  if (!TrimWhitespace(filename_, range))
-    return L' ';
-
-  static std::map<char_t, size_t> frequency;
-
-  if (frequency.empty()) {
-    // Initialize frequency map
-    for (const auto& character : kDelimiterTable) {
-      frequency.insert(std::make_pair(character, 0));
-    }
-  } else {
-    // Reset frequency map
-    for (auto& pair : frequency) {
-      pair.second = 0;
-    }
-  }
-
-  // Count all possible delimiters
+  std::set<char_t> delimiters;
   for (size_t i = range.offset; i < range.offset + range.size; i++) {
     const char_t character = filename_.at(i);
-    if (IsAlphanumericChar(character))
-      continue;
-    if (frequency.find(character) == frequency.end())
-      continue;
-    frequency.at(character) += 1;
+    if (!IsAlphanumericChar(character))
+      if (kValidDelimiters.find(character) != kValidDelimiters.npos)
+        delimiters.insert(character);
   }
 
-  char_t delimiter = L'\0';
-
-  for (const auto& pair : frequency) {
-    if (pair.second == 0)
-      continue;
-
-    // Initialize delimiter at first iteration
-    if (delimiter == L'\0') {
-      delimiter = pair.first;
-      continue;
-    }
-
-    int character_distance =
-        static_cast<int>(kDelimiterTable.find(pair.first)) -
-        static_cast<int>(kDelimiterTable.find(delimiter));
-    // If the distance is negative, then the new delimiter has higher priority
-    if (character_distance < 0 && pair.first != L',') {
-      delimiter = pair.first;
-      continue;
-    }
-
-    // Even if the new delimiter has lower priority, it may be much more common
-    float frequency_ratio = static_cast<float>(pair.second) /
-                            static_cast<float>(frequency[delimiter]);
-    // The constant value was chosen by trial and error. There should be room
-    // for improvement.
-    // TODO: This doesn't help at all. Increasing the value has no effect,
-    // while decreasing it causes more errors.
-    if (frequency_ratio / abs(character_distance) > 0.8f)
-      delimiter = pair.first;
-  }
-
-  return delimiter;
+  string_t output;
+  for (const auto& delimiter : delimiters)
+    output.push_back(delimiter);
+  return output;
 }
 
-bool Tokenizer::ValidateDelimiter(const char_t delimiter, bool enclosed,
-                                  const TokenRange& range) const {
-  if (delimiter == L'\0')
-    return false;
+void Tokenizer::ValidateDelimiterTokens() {
+  auto get_previous_valid_token = [&](token_iterator_t it) {
+    if (it == tokens_.begin())
+      return tokens_.end();
+    do {
+      --it;
+    } while (it != tokens_.begin() && it->content.empty());
+    return it;
+  };
+  auto get_next_valid_token = [&](token_iterator_t it) {
+    do {
+      ++it;
+    } while (it != tokens_.end() && it->content.empty());
+    return it;
+  };
 
-  // This prevents splitting some group names (e.g. "m.3.3.w") and keywords
-  // (e.g. "H.264"). Ignoring " " yields better results in some edge cases.
-  if (enclosed && delimiter != L' ') {
-    size_t last_offset = range.offset;
-    for (size_t offset = range.offset;
-         offset < range.offset + range.size; offset++) {
-      if (filename_.at(offset) == delimiter) {
-        if (offset - last_offset == 1) {
-          return false;  // Found a single-character token
-        } else {
-          last_offset = offset + 1;
+  for (auto token = tokens_.begin(); token != tokens_.end(); ++token) {
+    if (token == tokens_.begin())
+      continue;
+
+    auto prev_token = get_previous_valid_token(token);
+    auto next_token = get_next_valid_token(token);
+
+    // Checking for single-character tokens prevents splitting group names,
+    // keywords and the episode number in some cases.
+    if (token->category == kDelimiter && token->content == L".") {
+      if (prev_token->category == kUnknown &&
+          prev_token->content.size() == 1) {
+        prev_token->content.append(token->content);
+        token->content.clear();
+        if (next_token != tokens_.end() &&
+            next_token->category == kUnknown) {
+          prev_token->content.append(next_token->content);
+          next_token->content.clear();
+          continue;
         }
+      }
+      if (next_token != tokens_.end() &&
+          next_token->category == kUnknown &&
+          next_token->content.size() == 1) {
+        prev_token->content.append(token->content);
+        token->content.clear();
+        prev_token->content.append(next_token->content);
+        next_token->content.clear();
       }
     }
   }
 
-  return true;
+  // Remove empty tokens
+  for (size_t i = 0; i < tokens_.size(); ++i) {
+    if (tokens_.at(i).content.empty()) {
+      tokens_.erase(tokens_.begin() + i--);
+    }
+  }
 }
 
 }  // namespace anitomy

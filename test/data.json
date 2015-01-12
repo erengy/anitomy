@@ -325,7 +325,10 @@
 	},
 	{
 		"anime_title": "Ghost in the Shell Stand Alone Complex 2nd GIG",
-		"audio_term": "AAC 5.1",
+		"audio_term": [
+			"AAC",
+			"5.1"
+		],
 		"episode_number": "05",
 		"episode_title": "EXCAVATION",
 		"file_extension": "mkv",
@@ -339,7 +342,10 @@
 	},
 	{
 		"anime_title": "Ghost in the Shell Stand Alone Complex 2nd GIG",
-		"audio_term": "AAC 5.1",
+		"audio_term": [
+			"AAC",
+			"5.1"
+		],
 		"episode_number": "06",
 		"episode_title": "Pu239",
 		"file_extension": "mkv",
@@ -1013,6 +1019,7 @@
 	},
 	{
 		"anime_title": "Queen's Blade Utsukushiki Toushi-tachi - OVA",
+		"anime_type": "OVA",
 		"audio_term": "AAC",
 		"episode_number": "01",
 		"file_extension": "mp4",
@@ -1196,5 +1203,16 @@
 		"release_group": "Coalgirls",
 		"source": "Blu-Ray",
 		"video_resolution": "1280x720"
+	},
+	{
+		"anime_title": "No.6",
+		"episode_number": "01",
+		"file_checksum": "A956075C",
+		"file_extension": "mkv",
+		"file_name": "[Ruri]No.6 01 [720p][H264][A956075C].mkv",
+		"id": 10161,
+		"release_group": "Ruri",
+		"video_resolution": "720p",
+		"video_term": "H264"
 	}
 ]

@@ -171,13 +171,23 @@ void Parser::BuildElement(ElementCategory category, bool keep_delimiters,
       case kBracket:
         element += token->content;
         break;
-      case kDelimiter:
+      case kDelimiter: {
+        auto delimiter = token->content.front();
         if (keep_delimiters) {
-          element.push_back(token->content.front());
+          element.push_back(delimiter);
         } else if (token != token_begin && token != token_end) {
-          element.push_back(L' ');
+          switch (delimiter) {
+            case L',':
+            case L'&':
+              element.push_back(delimiter);
+              break;
+            default:
+              element.push_back(L' ');
+              break;
+          }
         }
         break;
+      }
     }
   }
 

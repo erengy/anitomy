@@ -36,10 +36,10 @@ public:
 private:
   void AddToken(TokenCategory category, bool enclosed, const TokenRange& range);
   void TokenizeByBrackets();
-  void TokenizeByDelimiter(bool enclosed, const TokenRange& range);
+  void TokenizeByDelimiters(bool enclosed, const TokenRange& range);
 
-  char_t GetDelimiter(TokenRange range) const;
-  bool ValidateDelimiter(const char_t delimiter, bool enclosed, const TokenRange& range) const;
+  string_t GetDelimiters(const TokenRange& range) const;
+  void ValidateDelimiterTokens();
 
   const string_t& filename_;
   token_container_t& tokens_;
