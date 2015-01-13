@@ -837,6 +837,7 @@
 		"file_name": "[Mobile Suit Gundam Seed Destiny HD REMASTER][07][Big5][720p][AVC_AAC][encoded by SEED].mp4",
 		"id": 94,
 		"other": "REMASTER",
+		"subtitles": "Big5",
 		"release_group": "SEED",
 		"video_resolution": "720p",
 		"video_term": [
@@ -896,6 +897,7 @@
 		"id": 14837,
 		"release_group": "Hakugetsu&Speed&MGRT",
 		"source": "BDRIP",
+		"subtitles": "BIG5",
 		"video_resolution": "1280x720"
 	},
 	{

@@ -24,9 +24,11 @@
 
 namespace anitomy {
 
-Tokenizer::Tokenizer(const string_t& filename, token_container_t& tokens)
+Tokenizer::Tokenizer(const string_t& filename, token_container_t& tokens,
+                     std::vector<TokenRange>& preidentified_tokens)
     : filename_(filename),
-      tokens_(tokens) {
+      tokens_(tokens),
+      preidentified_tokens_(preidentified_tokens) {
 }
 
 bool Tokenizer::Tokenize() {
@@ -90,8 +92,8 @@ void Tokenizer::TokenizeByBrackets() {
     const TokenRange range(std::distance(filename_.begin(), char_begin),
                            std::distance(char_begin, current_char));
 
-    if (range.size > 0)  // Found unknown token
-      TokenizeByDelimiters(is_bracket_open, range);
+    if (range.size > 0)  // Found unknown token (may include preidentified ranges)
+      TokenizeByPreidentified(is_bracket_open, range);
 
     if (current_char != char_end) {  // Found bracket
       AddToken(kBracket, true, TokenRange(range.offset + range.size, 1));
@@ -101,10 +103,39 @@ void Tokenizer::TokenizeByBrackets() {
   }
 }
 
+void Tokenizer::TokenizeByPreidentified(bool enclosed, const TokenRange& range) {
+  std::vector<TokenRange> overlaps;
+
+  for (auto& preidentified_token : preidentified_tokens_) {
+    if (RangesOverlap(range, preidentified_token))
+      overlaps.push_back(preidentified_token);
+  }
+
+  size_t offset = range.offset;
+  TokenRange subrange(range.offset, 0);
+
+  while (offset < range.offset + range.size) {
+    for (const auto& overlap : overlaps) {
+      if (offset == overlap.offset) {
+        if (subrange.size > 0)
+          TokenizeByDelimiters(enclosed, subrange);
+        AddToken(kIdentifier, enclosed, overlap);
+        subrange.offset = overlap.offset + overlap.size;
+        offset = subrange.offset - 1;  // It's going to be incremented below
+        break;
+      }
+    }
+    subrange.size = ++offset - subrange.offset;
+  }
+
+  // Either there was no preidentified token range, or we're now about to
+  // process the tail of our current range.
+  if (subrange.size > 0)
+    TokenizeByDelimiters(enclosed, subrange);
+}
+
 void Tokenizer::TokenizeByDelimiters(bool enclosed, const TokenRange& range) {
-  // Each group occasionally has different delimiters, which is why we can't
-  // analyze the whole filename in one go.
-  string_t delimiters = GetDelimiters(range);
+  const string_t delimiters = GetDelimiters(range);
 
   if (delimiters.empty()) {
     AddToken(kUnknown, enclosed, range);
@@ -119,15 +150,15 @@ void Tokenizer::TokenizeByDelimiters(bool enclosed, const TokenRange& range) {
     current_char = std::find_first_of(current_char, char_end,
                                       delimiters.begin(), delimiters.end());
 
-    const TokenRange sub_range(std::distance(filename_.begin(), char_begin),
-                               std::distance(char_begin, current_char));
+    const TokenRange subrange(std::distance(filename_.begin(), char_begin),
+                              std::distance(char_begin, current_char));
 
-    if (sub_range.size > 0)  // Found unknown token
-      AddToken(kUnknown, enclosed, sub_range);
+    if (subrange.size > 0)  // Found unknown token
+      AddToken(kUnknown, enclosed, subrange);
 
     if (current_char != char_end) {  // Found delimiter
       AddToken(kDelimiter, enclosed,
-               TokenRange(sub_range.offset + sub_range.size, 1));
+               TokenRange(subrange.offset + subrange.size, 1));
       char_begin = ++current_char;
     }
   }

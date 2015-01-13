@@ -22,11 +22,14 @@
 #include <initializer_list>
 #include <map>
 #include <unordered_map>
+#include <vector>
 
 #include "element.h"
 #include "string.h"
 
 namespace anitomy {
+
+class TokenRange;
 
 class KeywordOptions {
 public:
@@ -61,6 +64,8 @@ public:
 
   bool Find(ElementCategory category, const string_t& str) const;
   bool Find(ElementCategory category, const string_t& str, KeywordOptions& options) const;
+
+  void Peek(const string_t& filename, Elements& elements, std::vector<TokenRange>& preidentified_tokens) const;
 
 private:
   std::map<ElementCategory, KeywordList> keyword_lists_;

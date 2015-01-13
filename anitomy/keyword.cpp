@@ -17,6 +17,7 @@
 */
 
 #include "keyword.h"
+#include "token.h"
 
 namespace anitomy {
 
@@ -172,6 +173,29 @@ bool KeywordManager::Find(ElementCategory category, const string_t& str,
     return keyword_list->second.Find(str, options);
 
   return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void KeywordManager::Peek(const string_t& filename, Elements& elements,
+                          std::vector<TokenRange>& preidentified_tokens) const {
+  typedef std::map<ElementCategory, std::vector<string_t>> common_keywords_t;
+  static const common_keywords_t common_keywords{
+    {kElementAudioTerm, {L"Dual Audio"}},
+    {kElementVideoTerm, {L"H264", L"H.264", L"h264", L"h.264"}},
+    {kElementVideoResolution, {L"720p", L"1080p"}},
+    {kElementSource, {L"Blu-Ray"}}
+  };
+
+  for (const auto& entry : common_keywords) {
+    for (const auto& keyword : entry.second) {
+      auto offset = filename.find(keyword);
+      if (offset != filename.npos) {
+        elements.insert(entry.first, filename.substr(offset, keyword.size()));
+        preidentified_tokens.push_back(TokenRange(offset, keyword.size()));
+      }
+    }
+  }
 }
 
 }  // namespace anitomy

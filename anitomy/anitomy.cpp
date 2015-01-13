@@ -34,10 +34,12 @@ bool Anitomy::Parse(string_t filename) {
 
   if (filename.empty())
     return false;
-
   elements_.insert(kElementFileName, filename);
 
-  Tokenizer tokenizer(filename, tokens_);
+  std::vector<TokenRange> preidentified_tokens;
+  keyword_manager.Peek(filename, elements_, preidentified_tokens);
+
+  Tokenizer tokenizer(filename, tokens_, preidentified_tokens);
   if (!tokenizer.Tokenize())
     return false;
 
@@ -47,6 +49,8 @@ bool Anitomy::Parse(string_t filename) {
 
   return true;
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 bool Anitomy::RemoveExtensionFromFilename(string_t& filename,
                                           string_t& extension) {

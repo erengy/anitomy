@@ -26,7 +26,7 @@ namespace anitomy {
 
 class Tokenizer {
 public:
-  Tokenizer(const string_t& filename, token_container_t& tokens);
+  Tokenizer(const string_t& filename, token_container_t& tokens, std::vector<TokenRange>& preidentified_tokens);
 
   Tokenizer(const Tokenizer&) = delete;
   Tokenizer& operator=(const Tokenizer&) = delete;
@@ -36,6 +36,7 @@ public:
 private:
   void AddToken(TokenCategory category, bool enclosed, const TokenRange& range);
   void TokenizeByBrackets();
+  void TokenizeByPreidentified(bool enclosed, const TokenRange& range);
   void TokenizeByDelimiters(bool enclosed, const TokenRange& range);
 
   string_t GetDelimiters(const TokenRange& range) const;
@@ -43,6 +44,7 @@ private:
 
   const string_t& filename_;
   token_container_t& tokens_;
+  std::vector<TokenRange>& preidentified_tokens_;
 };
 
 }  // namespace anitomy
