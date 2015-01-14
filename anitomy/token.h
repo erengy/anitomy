@@ -29,7 +29,8 @@ enum TokenCategory {
   kUnknown,
   kBracket,
   kDelimiter,
-  kIdentifier
+  kIdentifier,
+  kInvalid
 };
 
 class TokenRange {
@@ -55,6 +56,11 @@ public:
 
 typedef std::vector<Token> token_container_t;
 typedef token_container_t::iterator token_iterator_t;
+
+token_iterator_t GetPreviousNonDelimiterToken(token_container_t& tokens, token_iterator_t it);
+token_iterator_t GetNextNonDelimiterToken(token_container_t& tokens, token_iterator_t it);
+token_iterator_t GetPreviousValidToken(token_container_t& tokens, token_iterator_t it);
+token_iterator_t GetNextValidToken(token_container_t& tokens, token_iterator_t it);
 
 }  // namespace anitomy
 

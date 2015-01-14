@@ -77,9 +77,6 @@ private:
   bool IsElementCategorySearchable(ElementCategory category);
   bool IsElementCategorySingular(ElementCategory category);
 
-  token_iterator_t GetPreviousValidToken(token_iterator_t it) const;
-  token_iterator_t GetNextValidToken(token_iterator_t it) const;
-
   void BuildElement(ElementCategory category, bool keep_delimiters,
                     const token_iterator_t& token_begin,
                     const token_iterator_t& token_end) const;

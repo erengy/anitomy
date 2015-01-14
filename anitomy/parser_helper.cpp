@@ -134,29 +134,6 @@ bool Parser::IsElementCategorySingular(ElementCategory category) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-token_iterator_t Parser::GetPreviousValidToken(token_iterator_t it) const {
-  if (it == tokens_.begin())
-    return tokens_.end();
-
-  // Find the first previous token that's not a delimiter
-  do {
-    --it;
-  } while (it != tokens_.begin() && it->category == kDelimiter);
-
-  return it;
-}
-
-token_iterator_t Parser::GetNextValidToken(token_iterator_t it) const {
-  // Find the first next token that's not a delimiter
-  do {
-    ++it;
-  } while (it != tokens_.end() && it->category == kDelimiter);
-
-  return it;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
 void Parser::BuildElement(ElementCategory category, bool keep_delimiters,
                           const token_iterator_t& token_begin,
                           const token_iterator_t& token_end) const {

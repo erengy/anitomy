@@ -52,7 +52,7 @@ bool Parser::NumberComesAfterEpisodePrefix(Token& token) {
 }
 
 bool Parser::NumberComesAfterEpisodeKeyword(const token_iterator_t& token) {
-  auto previous_token = GetPreviousValidToken(token);
+  auto previous_token = GetPreviousNonDelimiterToken(tokens_, token);
 
   if (previous_token != tokens_.end()) {
     if (previous_token->category == kUnknown) {
@@ -71,11 +71,11 @@ bool Parser::NumberComesAfterEpisodeKeyword(const token_iterator_t& token) {
 }
 
 bool Parser::NumberComesBeforeTotalNumber(const token_iterator_t& token) {
-  auto next_token = GetNextValidToken(token);
+  auto next_token = GetNextNonDelimiterToken(tokens_, token);
 
   if (next_token != tokens_.end()) {
     if (IsStringEqualTo(next_token->content, L"of")) {
-      auto other_token = GetNextValidToken(next_token);
+      auto other_token = GetNextNonDelimiterToken(tokens_, next_token);
 
       if (other_token != tokens_.end()) {
         if (IsNumericString(other_token->content)) {
@@ -244,11 +244,11 @@ bool Parser::SearchForIsolatedNumbers(std::vector<size_t>& tokens) {
   for (auto token_index = tokens.begin();
        token_index != tokens.end(); ++token_index) {
     auto token = tokens_.begin() + *token_index;
-    auto previous_token = GetPreviousValidToken(token);
+    auto previous_token = GetPreviousNonDelimiterToken(tokens_, token);
 
     if (previous_token != tokens_.end() &&
         previous_token->category == kBracket) {
-      auto next_token = GetNextValidToken(token);
+      auto next_token = GetNextNonDelimiterToken(tokens_, token);
 
       if (next_token != tokens_.end() &&
           next_token->category == kBracket) {
@@ -277,7 +277,7 @@ bool Parser::SearchForSeparatedNumbers(std::vector<size_t>& tokens) {
   for (auto token_index = tokens.begin();
        token_index != tokens.end(); ++token_index) {
     auto token = tokens_.begin() + *token_index;
-    auto previous_token = GetPreviousValidToken(token);
+    auto previous_token = GetPreviousNonDelimiterToken(tokens_, token);
 
     // See if the number has a preceding "-" separator
     if (previous_token != tokens_.end() &&
@@ -317,12 +317,12 @@ bool Parser::SearchForLastNumber(std::vector<size_t>& tokens) {
       continue;
 
     // Check if the previous token is "Season" or "Movie"
-    auto previous_token = GetPreviousValidToken(token);
+    auto previous_token = GetPreviousNonDelimiterToken(tokens_, token);
     if (previous_token != tokens_.end() &&
         previous_token->category == kUnknown) {
       if (IsStringEqualTo(previous_token->content, L"Season")) {
         // We can't bail out yet; it can still be in "2nd Season 01" format
-        previous_token = GetPreviousValidToken(previous_token);
+        previous_token = GetPreviousNonDelimiterToken(tokens_, previous_token);
         if (previous_token != tokens_.end()) {
           if (IsOrdinalNumber(previous_token->content)) {
             elements_.insert(kElementAnimeSeason, previous_token->content);

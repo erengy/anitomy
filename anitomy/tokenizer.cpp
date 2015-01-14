@@ -169,7 +169,7 @@ void Tokenizer::TokenizeByDelimiters(bool enclosed, const TokenRange& range) {
 ////////////////////////////////////////////////////////////////////////////////
 
 string_t Tokenizer::GetDelimiters(const TokenRange& range) const {
-  static const string_t kValidDelimiters = L" &+,._|";
+  static const string_t kValidDelimiters = L" _" L".&+,|";
 
   std::set<char_t> delimiters;
   for (size_t i = range.offset; i < range.offset + range.size; i++) {
@@ -186,59 +186,61 @@ string_t Tokenizer::GetDelimiters(const TokenRange& range) const {
 }
 
 void Tokenizer::ValidateDelimiterTokens() {
-  auto get_previous_valid_token = [&](token_iterator_t it) {
-    if (it == tokens_.begin())
-      return tokens_.end();
-    do {
-      --it;
-    } while (it != tokens_.begin() && it->content.empty());
-    return it;
+  auto is_unknown_token = [&](token_iterator_t it) {
+    return it != tokens_.end() && it->category == kUnknown;
   };
-  auto get_next_valid_token = [&](token_iterator_t it) {
-    do {
-      ++it;
-    } while (it != tokens_.end() && it->content.empty());
-    return it;
+
+  auto is_single_character_token = [&](token_iterator_t it) {
+    return is_valid_token(it) && it->content.size() == 1;
+  };
+
+  auto append_token_to = [](token_iterator_t token, token_iterator_t append_to) {
+    append_to->content.append(token->content);
+    token->category = kInvalid;
   };
 
   for (auto token = tokens_.begin(); token != tokens_.end(); ++token) {
-    if (token == tokens_.begin())
+    if (token->category != kDelimiter)
       continue;
-
-    auto prev_token = get_previous_valid_token(token);
-    auto next_token = get_next_valid_token(token);
+    auto prev_token = GetPreviousValidToken(tokens_, token);
+    auto next_token = GetNextValidToken(tokens_, token);
 
     // Checking for single-character tokens prevents splitting group names,
     // keywords and the episode number in some cases.
-    if (token->category == kDelimiter && token->content == L".") {
-      if (prev_token->category == kUnknown &&
-          prev_token->content.size() == 1) {
-        prev_token->content.append(token->content);
-        token->content.clear();
-        if (next_token != tokens_.end() &&
-            next_token->category == kUnknown) {
-          prev_token->content.append(next_token->content);
-          next_token->content.clear();
+    switch (token->content.front()) {
+      case '.': case '&': case '+': case ',': case '|':
+        if (is_single_character_token(prev_token)) {
+          append_token_to(token, prev_token);
+          if (is_valid_token(next_token)) {
+            append_token_to(next_token, prev_token);
+            continue;
+          }
+        }
+        if (is_single_character_token(next_token)) {
+          append_token_to(token, prev_token);
+          append_token_to(next_token, prev_token);
           continue;
         }
-      }
-      if (next_token != tokens_.end() &&
-          next_token->category == kUnknown &&
-          next_token->content.size() == 1) {
-        prev_token->content.append(token->content);
-        token->content.clear();
-        prev_token->content.append(next_token->content);
-        next_token->content.clear();
+        break;
+    }
+
+    if (is_valid_token(prev_token) && next_token != tokens_.end() &&
+        next_token->category == kDelimiter &&
+        next_token->content != token->content) {
+      // adjacent delimiters
+      if (token->content != L",") {
+        if (next_token->content == L" " || next_token->content == L"_") {
+          append_token_to(token, prev_token);
+        }
       }
     }
   }
 
-  // Remove empty tokens
-  for (size_t i = 0; i < tokens_.size(); ++i) {
-    if (tokens_.at(i).content.empty()) {
-      tokens_.erase(tokens_.begin() + i--);
-    }
-  }
+  auto remove_if_invalid = std::remove_if(tokens_.begin(), tokens_.end(),
+      [](const Token& token) -> bool {
+        return token.category == kInvalid;
+      });
+  tokens_.erase(remove_if_invalid, tokens_.end());
 }
 
 }  // namespace anitomy

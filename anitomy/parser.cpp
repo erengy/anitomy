@@ -204,7 +204,7 @@ void Parser::SearchForReleaseGroup() {
       continue;
 
     // Ignore if it's not the first token in group
-    auto previous_token = GetPreviousValidToken(token_begin);
+    auto previous_token = GetPreviousNonDelimiterToken(tokens_, token_begin);
     if (previous_token != tokens_.end() &&
         previous_token->category != kBracket) {
       continue;
