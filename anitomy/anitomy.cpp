@@ -66,7 +66,7 @@ bool Anitomy::RemoveExtensionFromFilename(string_t& filename,
     return false;
 
   // TODO: Add an option for this
-  auto keyword = StringToUpperCopy(extension);
+  auto keyword = keyword_manager.Normalize(extension);
   if (!keyword_manager.Find(kElementFileExtension, keyword))
     return false;
 

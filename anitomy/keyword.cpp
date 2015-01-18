@@ -177,6 +177,10 @@ bool KeywordManager::Find(ElementCategory category, const string_t& str,
   return false;
 }
 
+string_t KeywordManager::Normalize(const string_t& str) const {
+  return StringToUpperCopy(str);
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 void KeywordManager::Peek(const string_t& filename,

@@ -38,7 +38,7 @@ void Parser::SetEpisodeNumber(string_t number, Token& token) {
 
 bool Parser::NumberComesAfterEpisodePrefix(Token& token) {
   size_t number_begin = FindNumberInString(token.content);
-  auto prefix = StringToUpperCopy(token.content.substr(0, number_begin));
+  auto prefix = keyword_manager.Normalize(token.content.substr(0, number_begin));
 
   if (keyword_manager.Find(kElementEpisodePrefix, prefix)) {
     auto number = token.content.substr(
@@ -56,7 +56,7 @@ bool Parser::NumberComesAfterEpisodeKeyword(const token_iterator_t& token) {
 
   if (previous_token != tokens_.end()) {
     if (previous_token->category == kUnknown) {
-      auto keyword = StringToUpperCopy(previous_token->content);
+      auto keyword = keyword_manager.Normalize(previous_token->content);
 
       if (keyword_manager.Find(kElementEpisodePrefix, keyword)) {
         if (!MatchEpisodePatterns(token->content, *token))

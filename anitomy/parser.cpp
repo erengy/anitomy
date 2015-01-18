@@ -62,7 +62,7 @@ void Parser::SearchForKeywords() {
       continue;
 
     // Performs better than making a case-insensitive Find
-    auto keyword = StringToUpperCopy(word);
+    auto keyword = keyword_manager.Normalize(word);
 
     for (int i = kElementIterateFirst; i < kElementIterateLast; i++) {
       auto category = static_cast<ElementCategory>(i);

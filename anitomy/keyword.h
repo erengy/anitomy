@@ -67,6 +67,8 @@ public:
 
   void Peek(const string_t& filename, const TokenRange& range, Elements& elements, std::vector<TokenRange>& preidentified_tokens) const;
 
+  string_t Normalize(const string_t& str) const;
+
 private:
   std::map<ElementCategory, KeywordList> keyword_lists_;
 };
