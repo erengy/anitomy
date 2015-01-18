@@ -30,11 +30,6 @@ TokenRange::TokenRange(size_t offset, size_t size)
       size(size) {
 }
 
-bool RangesOverlap(const TokenRange& r1, const TokenRange& r2) {
-  return (r1.offset <= r2.offset && r1.offset + r1.size > r2.offset) ||
-         (r2.offset <= r1.offset && r2.offset + r2.size > r1.offset);
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 
 Token::Token()

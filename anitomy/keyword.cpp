@@ -16,6 +16,8 @@
 ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <algorithm>
+
 #include "keyword.h"
 #include "token.h"
 
@@ -177,21 +179,27 @@ bool KeywordManager::Find(ElementCategory category, const string_t& str,
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void KeywordManager::Peek(const string_t& filename, Elements& elements,
+void KeywordManager::Peek(const string_t& filename,
+                          const TokenRange& range,
+                          Elements& elements,
                           std::vector<TokenRange>& preidentified_tokens) const {
-  typedef std::map<ElementCategory, std::vector<string_t>> common_keywords_t;
-  static const common_keywords_t common_keywords{
+  typedef std::pair<ElementCategory, std::vector<string_t>> entry_t;
+  static const std::vector<entry_t> entries{
     {kElementAudioTerm, {L"Dual Audio"}},
     {kElementVideoTerm, {L"H264", L"H.264", L"h264", L"h.264"}},
-    {kElementVideoResolution, {L"720p", L"1080p"}},
+    {kElementVideoResolution, {L"480p", L"720p", L"1080p"}},
     {kElementSource, {L"Blu-Ray"}}
   };
 
-  for (const auto& entry : common_keywords) {
+  auto it_begin = filename.begin() + range.offset;
+  auto it_end = it_begin + range.size;
+
+  for (const auto& entry : entries) {
     for (const auto& keyword : entry.second) {
-      auto offset = filename.find(keyword);
-      if (offset != filename.npos) {
-        elements.insert(entry.first, filename.substr(offset, keyword.size()));
+      auto it = std::search(it_begin, it_end, keyword.begin(), keyword.end());
+      if (it != it_end) {
+        auto offset = it - filename.begin();
+        elements.insert(entry.first, keyword);
         preidentified_tokens.push_back(TokenRange(offset, keyword.size()));
       }
     }

@@ -19,6 +19,7 @@
 #ifndef ANITOMY_TOKENIZER_H
 #define ANITOMY_TOKENIZER_H
 
+#include "element.h"
 #include "string.h"
 #include "token.h"
 
@@ -26,7 +27,7 @@ namespace anitomy {
 
 class Tokenizer {
 public:
-  Tokenizer(const string_t& filename, token_container_t& tokens, std::vector<TokenRange>& preidentified_tokens);
+  Tokenizer(const string_t& filename, Elements& elements, token_container_t& tokens);
 
   Tokenizer(const Tokenizer&) = delete;
   Tokenizer& operator=(const Tokenizer&) = delete;
@@ -42,9 +43,9 @@ private:
   string_t GetDelimiters(const TokenRange& range) const;
   void ValidateDelimiterTokens();
 
+  Elements& elements_;
   const string_t& filename_;
   token_container_t& tokens_;
-  std::vector<TokenRange>& preidentified_tokens_;
 };
 
 }  // namespace anitomy

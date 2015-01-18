@@ -36,10 +36,7 @@ bool Anitomy::Parse(string_t filename) {
     return false;
   elements_.insert(kElementFileName, filename);
 
-  std::vector<TokenRange> preidentified_tokens;
-  keyword_manager.Peek(filename, elements_, preidentified_tokens);
-
-  Tokenizer tokenizer(filename, tokens_, preidentified_tokens);
+  Tokenizer tokenizer(filename, elements_, tokens_);
   if (!tokenizer.Tokenize())
     return false;
 

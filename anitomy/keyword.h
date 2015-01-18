@@ -65,7 +65,7 @@ public:
   bool Find(ElementCategory category, const string_t& str) const;
   bool Find(ElementCategory category, const string_t& str, KeywordOptions& options) const;
 
-  void Peek(const string_t& filename, Elements& elements, std::vector<TokenRange>& preidentified_tokens) const;
+  void Peek(const string_t& filename, const TokenRange& range, Elements& elements, std::vector<TokenRange>& preidentified_tokens) const;
 
 private:
   std::map<ElementCategory, KeywordList> keyword_lists_;

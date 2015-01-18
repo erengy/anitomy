@@ -19,16 +19,17 @@
 #include <algorithm>
 #include <set>
 
+#include "keyword.h"
 #include "string.h"
 #include "tokenizer.h"
 
 namespace anitomy {
 
-Tokenizer::Tokenizer(const string_t& filename, token_container_t& tokens,
-                     std::vector<TokenRange>& preidentified_tokens)
-    : filename_(filename),
-      tokens_(tokens),
-      preidentified_tokens_(preidentified_tokens) {
+Tokenizer::Tokenizer(const string_t& filename, Elements& elements,
+                     token_container_t& tokens)
+    : elements_(elements),
+      filename_(filename),
+      tokens_(tokens) {
 }
 
 bool Tokenizer::Tokenize() {
@@ -92,7 +93,7 @@ void Tokenizer::TokenizeByBrackets() {
     const TokenRange range(std::distance(filename_.begin(), char_begin),
                            std::distance(char_begin, current_char));
 
-    if (range.size > 0)  // Found unknown token (may include preidentified ranges)
+    if (range.size > 0)  // Found unknown token
       TokenizeByPreidentified(is_bracket_open, range);
 
     if (current_char != char_end) {  // Found bracket
@@ -104,23 +105,19 @@ void Tokenizer::TokenizeByBrackets() {
 }
 
 void Tokenizer::TokenizeByPreidentified(bool enclosed, const TokenRange& range) {
-  std::vector<TokenRange> overlaps;
-
-  for (auto& preidentified_token : preidentified_tokens_) {
-    if (RangesOverlap(range, preidentified_token))
-      overlaps.push_back(preidentified_token);
-  }
+  std::vector<TokenRange> preidentified_tokens;
+  keyword_manager.Peek(filename_, range, elements_, preidentified_tokens);
 
   size_t offset = range.offset;
   TokenRange subrange(range.offset, 0);
 
   while (offset < range.offset + range.size) {
-    for (const auto& overlap : overlaps) {
-      if (offset == overlap.offset) {
+    for (const auto& preidentified_token : preidentified_tokens) {
+      if (offset == preidentified_token.offset) {
         if (subrange.size > 0)
           TokenizeByDelimiters(enclosed, subrange);
-        AddToken(kIdentifier, enclosed, overlap);
-        subrange.offset = overlap.offset + overlap.size;
+        AddToken(kIdentifier, enclosed, preidentified_token);
+        subrange.offset = preidentified_token.offset + preidentified_token.size;
         offset = subrange.offset - 1;  // It's going to be incremented below
         break;
       }

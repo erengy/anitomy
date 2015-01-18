@@ -42,8 +42,6 @@ public:
   size_t size;
 };
 
-bool RangesOverlap(const TokenRange& r1, const TokenRange& r2);
-
 class Token {
 public:
   Token();
