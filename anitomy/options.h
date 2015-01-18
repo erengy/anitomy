@@ -16,32 +16,18 @@
 ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef ANITOMY_ANITOMY_H
-#define ANITOMY_ANITOMY_H
-
-#include "element.h"
-#include "string.h"
-#include "options.h"
-#include "token.h"
+#ifndef ANITOMY_OPTIONS_H
+#define ANITOMY_OPTIONS_H
 
 namespace anitomy {
 
-class Anitomy {
-public:
-  bool Parse(string_t filename);
-
-  Elements& elements();
-  Options& options();
-  const token_container_t& tokens() const;
-
-private:
-  bool RemoveExtensionFromFilename(string_t& filename, string_t& extension);
-
-  Elements elements_;
-  Options options_;
-  token_container_t tokens_;
+struct Options {
+  bool parse_episode_number = true;
+  bool parse_episode_title = true;
+  bool parse_file_extension = true;
+  bool parse_release_group = true;
 };
 
 }  // namespace anitomy
 
-#endif  // ANITOMY_ANITOMY_H
+#endif  // ANITOMY_OPTIONS_H

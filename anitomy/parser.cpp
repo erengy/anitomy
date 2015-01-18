@@ -24,24 +24,25 @@
 
 namespace anitomy {
 
-Parser::Parser(Elements& elements, token_container_t& tokens)
+Parser::Parser(Elements& elements, Options& options, token_container_t& tokens)
     : elements_(elements),
+      options_(options),
       tokens_(tokens) {
 }
 
 bool Parser::Parse() {
   SearchForKeywords();
 
-  if (parse_options.parse_episode_number)
+  if (options_.parse_episode_number)
     SearchForEpisodeNumber();
 
   SearchForAnimeTitle();
 
-  if (parse_options.parse_release_group &&
+  if (options_.parse_release_group &&
       elements_.empty(kElementReleaseGroup))
     SearchForReleaseGroup();
 
-  if (parse_options.parse_episode_title)
+  if (options_.parse_episode_title)
     SearchForEpisodeTitle();
 
   return !elements_.empty(kElementAnimeTitle);
@@ -67,7 +68,7 @@ void Parser::SearchForKeywords() {
     for (int i = kElementIterateFirst; i < kElementIterateLast; i++) {
       auto category = static_cast<ElementCategory>(i);
 
-      if (!parse_options.parse_release_group)
+      if (!options_.parse_release_group)
         if (category == kElementReleaseGroup)
           continue;
       if (!IsElementCategorySearchable(category))

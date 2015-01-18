@@ -21,28 +21,19 @@
 
 #include "element.h"
 #include "string.h"
+#include "options.h"
 #include "token.h"
 
 namespace anitomy {
 
-struct ParseOptions {
-  ParseOptions();
-
-  bool parse_episode_number;
-  bool parse_episode_title;
-  bool parse_release_group;
-};
-
 class Parser {
 public:
-  Parser(Elements& elements, token_container_t& tokens);
+  Parser(Elements& elements, Options& options, token_container_t& tokens);
 
   Parser(const Parser&) = delete;
   Parser& operator=(const Parser&) = delete;
 
   bool Parse();
-
-  ParseOptions parse_options;
 
 private:
   void SearchForKeywords();
@@ -82,6 +73,7 @@ private:
                     const token_iterator_t& token_end) const;
 
   Elements& elements_;
+  Options& options_;
   token_container_t& tokens_;
 };
 

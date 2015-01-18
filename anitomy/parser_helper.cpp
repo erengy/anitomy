@@ -25,14 +25,6 @@
 
 namespace anitomy {
 
-ParseOptions::ParseOptions()
-    : parse_episode_number(true),
-      parse_episode_title(true),
-      parse_release_group(true) {
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
 size_t Parser::FindNumberInString(const string_t& str) {
   auto it = std::find_if(str.begin(), str.end(), IsNumericChar);
 
