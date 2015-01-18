@@ -103,8 +103,8 @@ KeywordManager::KeywordManager() {
       L"EPISODIO", L"FOLGE", L"\x7B2C"});
 
   Add(kElementFileExtension, options_safe, {
-      L"3GP", L"AVI", L"DIVX", L"FLV", L"MKV", L"MOV", L"MP4", L"MPG", L"OGM",
-      L"RM", L"RMVB", L"WMV"});
+      L"3GP", L"AVI", L"DIVX", L"FLV", L"M2TS", L"MKV", L"MOV", L"MP4", L"MPG",
+      L"OGM", L"RM", L"RMVB", L"WMV"});
 
   Add(kElementLanguage, options_safe, {
       L"ENG", L"ENGLISH", L"ESPANOL", L"JAP", L"SPANISH", L"VOSTFR"});
