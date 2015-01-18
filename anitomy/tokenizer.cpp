@@ -183,15 +183,17 @@ string_t Tokenizer::GetDelimiters(const TokenRange& range) const {
 }
 
 void Tokenizer::ValidateDelimiterTokens() {
+  auto is_delimiter_token = [&](token_iterator_t it) {
+    return it != tokens_.end() && it->category == kDelimiter;
+  };
   auto is_unknown_token = [&](token_iterator_t it) {
     return it != tokens_.end() && it->category == kUnknown;
   };
-
   auto is_single_character_token = [&](token_iterator_t it) {
-    return is_valid_token(it) && it->content.size() == 1;
+    return is_unknown_token(it) && it->content.size() == 1;
   };
-
-  auto append_token_to = [](token_iterator_t token, token_iterator_t append_to) {
+  auto append_token_to = [](token_iterator_t token,
+                            token_iterator_t append_to) {
     append_to->content.append(token->content);
     token->category = kInvalid;
   };
@@ -205,10 +207,13 @@ void Tokenizer::ValidateDelimiterTokens() {
     // Checking for single-character tokens prevents splitting group names,
     // keywords and the episode number in some cases.
     switch (token->content.front()) {
-      case '.': case '&': case '+': case ',': case '|':
+      case ' ':
+      case '_':
+        break;
+      default:
         if (is_single_character_token(prev_token)) {
           append_token_to(token, prev_token);
-          if (is_valid_token(next_token)) {
+          if (is_unknown_token(next_token)) {
             append_token_to(next_token, prev_token);
             continue;
           }
@@ -221,12 +226,12 @@ void Tokenizer::ValidateDelimiterTokens() {
         break;
     }
 
-    if (is_valid_token(prev_token) && next_token != tokens_.end() &&
-        next_token->category == kDelimiter &&
-        next_token->content != token->content) {
-      // adjacent delimiters
-      if (token->content != L",") {
-        if (next_token->content == L" " || next_token->content == L"_") {
+    // Check for adjacent delimiters
+    if (is_unknown_token(prev_token) && is_delimiter_token(next_token)) {
+      if (token->content != next_token->content &&
+          token->content != L",") {
+        if (next_token->content == L" " ||
+            next_token->content == L"_") {
           append_token_to(token, prev_token);
         }
       }
