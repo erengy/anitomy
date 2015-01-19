@@ -70,7 +70,7 @@ The filename is first stripped off of its extension and split into groups. Group
 
     "Spice_and_Wolf_Ep01_", "1080p,BluRay,x264", "_-_THORA"
 
-Each group is then split into tokens. Delimiters are found by applying frequency analysis to each group individually. In our current example, the delimiter for the enclosed group is `,`, while the words in other groups are separated by `_`:
+Each group is then split into tokens. In our current example, the delimiter for the enclosed group is `,`, while the words in other groups are separated by `_`:
 
     "Spice", "and", "Wolf", "Ep01", "1080p", "BluRay", "x264", "-", "THORA"
 
@@ -116,10 +116,6 @@ Here, *Anitomy* would report that this file is the 8th episode of `Arigatou Shuf
     Spice and Wolf 2
 
 Is this the 2nd episode of `Spice and Wolf`, or a batch release of `Spice and Wolf 2`? Without an extension, there's no way to know. It's up to you consider both cases.
-
-    Princess_Tutu_02.DVD(x264.vorbis)[Ahiru][ECF29034]
-
-*Anitomy* is unable to handle multiple delimiters in a single group. As the first group is split into `Princess`, `Tutu` and `02.DVD`, the episode number won't get identified.
 
 ## Suggestions to fansub groups
 
