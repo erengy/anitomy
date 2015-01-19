@@ -132,6 +132,7 @@
 	},
 	{
 		"anime_title": "One Piece Movie 9",
+		"anime_type": "Movie",
 		"file_extension": "avi",
 		"file_name": "[KAF-TEAM]_One_Piece_Movie_9_vostfr_HD.avi",
 		"id": 3848,
@@ -173,7 +174,7 @@
 		"video_term": "h264"
 	},
 	{
-		"anime_title": "Fullmetal Alchemist (2009)",
+		"anime_title": "Fullmetal Alchemist",
 		"anime_year": "2009",
 		"episode_number": "04",
 		"file_checksum": "40F2A957",
@@ -217,7 +218,7 @@
 		"source": "HDTV"
 	},
 	{
-		"anime_title": "Evangelion 1.11 You Are (Not) Alone (2009)",
+		"anime_title": "Evangelion 1.11 You Are (Not) Alone",
 		"anime_year": "2009",
 		"audio_term": "DTS-ES",
 		"file_extension": "mkv",
@@ -248,7 +249,7 @@
 		"id": 3167
 	},
 	{
-		"anime_title": "Gin'iro no Kami no Agito (2006)",
+		"anime_title": "Gin'iro no Kami no Agito",
 		"anime_year": "2006",
 		"audio_term": "DTS",
 		"file_extension": "mkv",
@@ -272,7 +273,8 @@
 		"video_term": "H264"
 	},
 	{
-		"anime_title": "Mobile Suit Gundam 00 Season 2",
+		"anime_season": "2",
+		"anime_title": "Mobile Suit Gundam 00",
 		"episode_number": "07",
 		"episode_title": "A Reunion and a Parting",
 		"file_extension": "mkv",
@@ -380,7 +382,7 @@
 		"video_term": "x264"
 	},
 	{
-		"anime_title": "Fullmetal Alchemist (2009)",
+		"anime_title": "Fullmetal Alchemist",
 		"anime_year": "2009",
 		"audio_term": "AAC",
 		"episode_number": "02",
@@ -524,8 +526,8 @@
 		"release_group": "RNA"
 	},
 	{
-		"anime_season": "2",
-		"anime_title": "Hayate no Gotoku 2nd Season",
+		"anime_season": "2nd",
+		"anime_title": "Hayate no Gotoku",
 		"episode_number": "24",
 		"file_name": "Hayate no Gotoku 2nd Season 24 (Blu-Ray 1080p) [Chihiro]",
 		"id": 4192,
@@ -552,7 +554,8 @@
 		"id": 60
 	},
 	{
-		"anime_title": "Kimi ni Todoke 2nd Season",
+		"anime_season": "2nd",
+		"anime_title": "Kimi ni Todoke",
 		"episode_number": "00",
 		"file_checksum": "BF735BC4",
 		"file_extension": "mkv",
@@ -702,7 +705,8 @@
 		"video_resolution": "720p"
 	},
 	{
-		"anime_title": "Space Battleship Yamato 2199 (2012)",
+		"anime_year": "2012",
+		"anime_title": "Space Battleship Yamato 2199",
 		"audio_term": "AAC",
 		"episode_number": "18",
 		"file_checksum": "BA70BA9C",
@@ -713,7 +717,8 @@
 		"video_term": "8 bit"
 	},
 	{
-		"anime_title": "Space Battleship Yamato 2199 (2012)",
+		"anime_year": "2012",
+		"anime_title": "Space Battleship Yamato 2199",
 		"audio_term": "AAC",
 		"episode_number": "18",
 		"file_checksum": "1F56D642",
@@ -994,7 +999,7 @@
 		"video_term": "AVC"
 	},
 	{
-		"anime_title": "Howl's Moving Castle (2004)",
+		"anime_title": "Howl's Moving Castle",
 		"anime_year": "2004",
 		"audio_term": [
 			"flac",

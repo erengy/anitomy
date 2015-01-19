@@ -41,6 +41,8 @@ private:
   void SearchForAnimeTitle();
   void SearchForReleaseGroup();
   void SearchForEpisodeTitle();
+  void SearchForAnimeSeason();
+  void SearchForAnimeYear();
 
   bool SearchForEpisodePatterns(std::vector<size_t>& tokens);
   bool SearchForIsolatedNumbers(std::vector<size_t>& tokens);

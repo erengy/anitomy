@@ -33,6 +33,9 @@ Parser::Parser(Elements& elements, Options& options, token_container_t& tokens)
 bool Parser::Parse() {
   SearchForKeywords();
 
+  SearchForAnimeSeason();
+  SearchForAnimeYear();
+
   if (options_.parse_episode_number)
     SearchForEpisodeNumber();
 
@@ -241,6 +244,61 @@ void Parser::SearchForEpisodeTitle() {
 
   // Build episode title
   BuildElement(kElementEpisodeTitle, false, token_begin, token_end);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void Parser::SearchForAnimeSeason() {
+  for (auto token = tokens_.begin(); token != tokens_.end(); ++token) {
+    if (token->category != kUnknown ||
+        !IsStringEqualTo(token->content, L"Season"))
+      continue;
+
+    auto previous_token = GetPreviousNonDelimiterToken(tokens_, token);
+    if (previous_token != tokens_.end()) {
+      if (IsOrdinalNumber(previous_token->content)) {
+        elements_.insert(kElementAnimeSeason, previous_token->content);
+        previous_token->category = kIdentifier;
+        token->category = kIdentifier;
+        return;
+      }
+    }
+
+    auto next_token = GetNextNonDelimiterToken(tokens_, token);
+    if (next_token != tokens_.end()) {
+      if (IsNumericString(next_token->content)) {
+        elements_.insert(kElementAnimeSeason, next_token->content);
+        next_token->category = kIdentifier;
+        token->category = kIdentifier;
+        return;
+      }
+    }
+  }
+}
+
+void Parser::SearchForAnimeYear() {
+  auto is_bracket_token = [&](token_iterator_t token) {
+    return token != tokens_.end() && token->category == kBracket;
+  };
+
+  for (auto token = tokens_.begin(); token != tokens_.end(); ++token) {
+    if (token->category != kUnknown || !IsNumericString(token->content))
+      continue;
+
+    auto previous_token = GetPreviousNonDelimiterToken(tokens_, token);
+    if (!is_bracket_token(previous_token))
+      continue;
+    auto next_token = GetNextNonDelimiterToken(tokens_, token);
+    if (!is_bracket_token(next_token))
+      continue;
+
+    auto number = StringToInt(token->content);
+    if (number > 1900 && number < 2050) {
+      elements_.insert(kElementAnimeYear, token->content);
+      token->category = kIdentifier;
+      return;
+    }
+  }
 }
 
 }  // namespace anitomy
