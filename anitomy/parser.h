@@ -53,7 +53,7 @@ private:
   bool NumberComesAfterEpisodeKeyword(const token_iterator_t& token);
   bool NumberComesBeforeTotalNumber(const token_iterator_t& token);
 
-  bool MatchEpisodePatterns(const string_t& word, Token& token);
+  bool MatchEpisodePatterns(string_t word, Token& token);
   bool MatchSingleEpisodePattern(const string_t& word, Token& token);
   bool MatchMultiEpisodePattern(const string_t& word, Token& token);
   bool MatchSeasonAndEpisodePattern(const string_t& word, Token& token);

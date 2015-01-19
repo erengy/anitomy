@@ -59,7 +59,7 @@ void Parser::SearchForKeywords() {
       continue;
 
     auto word = token.content;
-    TrimString(word);
+    TrimString(word, L" -");
 
     // Don't bother if the word is a number that cannot be CRC
     if (word.size() != 8 && IsNumericString(word))

@@ -201,22 +201,29 @@ void Tokenizer::ValidateDelimiterTokens() {
   for (auto token = tokens_.begin(); token != tokens_.end(); ++token) {
     if (token->category != kDelimiter)
       continue;
+    auto delimiter = token->content.front();
     auto prev_token = GetPreviousValidToken(tokens_, token);
     auto next_token = GetNextValidToken(tokens_, token);
 
     // Checking for single-character tokens prevents splitting group names,
     // keywords and the episode number in some cases.
-    switch (token->content.front()) {
+    switch (delimiter) {
       case ' ':
       case '_':
         break;
       default:
         if (is_single_character_token(prev_token)) {
           append_token_to(token, prev_token);
-          if (is_unknown_token(next_token)) {
+          while (is_unknown_token(next_token)) {
             append_token_to(next_token, prev_token);
-            continue;
+            next_token = GetNextValidToken(tokens_, next_token);
+            if (is_delimiter_token(next_token) &&
+                next_token->content.front() == delimiter) {
+              append_token_to(next_token, prev_token);
+              next_token = GetNextValidToken(tokens_, next_token);
+            }
           }
+          continue;
         }
         if (is_single_character_token(next_token)) {
           append_token_to(token, prev_token);
@@ -228,10 +235,9 @@ void Tokenizer::ValidateDelimiterTokens() {
 
     // Check for adjacent delimiters
     if (is_unknown_token(prev_token) && is_delimiter_token(next_token)) {
-      if (token->content != next_token->content &&
-          token->content != L",") {
-        if (next_token->content == L" " ||
-            next_token->content == L"_") {
+      auto next_delimiter = next_token->content.front();
+      if (delimiter != next_delimiter && delimiter != ',') {
+        if (next_delimiter == ' ' || next_delimiter == '_') {
           append_token_to(token, prev_token);
         }
       }

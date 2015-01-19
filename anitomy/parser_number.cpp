@@ -27,10 +27,7 @@
 namespace anitomy {
 
 void Parser::SetEpisodeNumber(string_t number, Token& token) {
-  TrimString(number);
-
   elements_.insert(kElementEpisodeNumber, number);
-
   token.category = kIdentifier;
 }
 
@@ -206,10 +203,12 @@ bool Parser::MatchJapaneseCounterPattern(const string_t& word, Token& token) {
   return false;
 }
 
-bool Parser::MatchEpisodePatterns(const string_t& word, Token& token) {
+bool Parser::MatchEpisodePatterns(string_t word, Token& token) {
   // All patterns contain at least one non-numeric character
   if (IsNumericString(word))
     return false;
+
+  TrimString(word, L" -");
 
   const bool numeric_front = IsNumericChar(word.front());
   const bool numeric_back = IsNumericChar(word.back());
