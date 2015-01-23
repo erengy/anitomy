@@ -60,7 +60,7 @@ private:
   bool MatchTypeAndEpisodePattern(const string_t& word, Token& token);
   bool MatchJapaneseCounterPattern(const string_t& word, Token& token);
 
-  void SetEpisodeNumber(string_t number, Token& token);
+  bool SetEpisodeNumber(const string_t& number, Token& token, bool validate);
 
   size_t FindNumberInString(const string_t& str);
   bool IsCrc32(const string_t& str);
@@ -73,6 +73,10 @@ private:
   void BuildElement(ElementCategory category, bool keep_delimiters,
                     const token_iterator_t& token_begin,
                     const token_iterator_t& token_end) const;
+
+  const int kAnimeYearMin = 1900;
+  const int kAnimeYearMax = 2050;
+  const int kEpisodeNumberMax = kAnimeYearMin - 1;
 
   Elements& elements_;
   Options& options_;

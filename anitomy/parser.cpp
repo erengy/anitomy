@@ -293,7 +293,7 @@ void Parser::SearchForAnimeYear() {
       continue;
 
     auto number = StringToInt(token->content);
-    if (number > 1900 && number < 2050) {
+    if (number >= kAnimeYearMin && number <= kAnimeYearMax) {
       elements_.insert(kElementAnimeYear, token->content);
       token->category = kIdentifier;
       return;

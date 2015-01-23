@@ -26,9 +26,15 @@
 
 namespace anitomy {
 
-void Parser::SetEpisodeNumber(string_t number, Token& token) {
+bool Parser::SetEpisodeNumber(const string_t& number, Token& token,
+                              bool validate) {
+  if (validate)
+    if (StringToInt(token.content) > kEpisodeNumberMax)
+      return false;
+
   elements_.insert(kElementEpisodeNumber, number);
   token.category = kIdentifier;
+  return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -41,7 +47,7 @@ bool Parser::NumberComesAfterEpisodePrefix(Token& token) {
     auto number = token.content.substr(
         number_begin, token.content.length() - number_begin);
     if (!MatchEpisodePatterns(number, token))
-      SetEpisodeNumber(number, token);
+      SetEpisodeNumber(number, token, false);
     return true;
   }
 
@@ -57,7 +63,7 @@ bool Parser::NumberComesAfterEpisodeKeyword(const token_iterator_t& token) {
 
       if (keyword_manager.Find(kElementEpisodePrefix, keyword)) {
         if (!MatchEpisodePatterns(token->content, *token))
-          SetEpisodeNumber(token->content, *token);
+          SetEpisodeNumber(token->content, *token, false);
         previous_token->category = kIdentifier;
         return true;
       }
@@ -76,7 +82,7 @@ bool Parser::NumberComesBeforeTotalNumber(const token_iterator_t& token) {
 
       if (other_token != tokens_.end()) {
         if (IsNumericString(other_token->content)) {
-          SetEpisodeNumber(token->content, *token);
+          SetEpisodeNumber(token->content, *token, false);
           next_token->category = kIdentifier;
           other_token->category = kIdentifier;
           return true;
@@ -123,7 +129,7 @@ bool Parser::MatchSingleEpisodePattern(const string_t& word, Token& token) {
   regex_match_results_t match_results;
 
   if (std::regex_match(word, match_results, pattern)) {
-    SetEpisodeNumber(match_results[1].str(), token);
+    SetEpisodeNumber(match_results[1].str(), token, false);
     elements_.insert(kElementReleaseVersion, match_results[2].str());
     return true;
   }
@@ -140,11 +146,12 @@ bool Parser::MatchMultiEpisodePattern(const string_t& word, Token& token) {
     auto upper_bound = match_results[2].str();
     // Avoid matching expressions such as "009-1" or "5-2"
     if (StringToInt(lower_bound) < StringToInt(upper_bound)) {
-      SetEpisodeNumber(lower_bound, token);
-      SetEpisodeNumber(upper_bound, token);
-      if (match_results[3].matched)
-        elements_.insert(kElementReleaseVersion, match_results[3].str());
-      return true;
+      if (SetEpisodeNumber(lower_bound, token, true)) {
+        SetEpisodeNumber(upper_bound, token, false);
+        if (match_results[3].matched)
+          elements_.insert(kElementReleaseVersion, match_results[3].str());
+        return true;
+      }
     }
   }
 
@@ -163,9 +170,9 @@ bool Parser::MatchSeasonAndEpisodePattern(const string_t& word, Token& token) {
     elements_.insert(kElementAnimeSeason, match_results[1]);
     if (match_results[2].matched)
       elements_.insert(kElementAnimeSeason, match_results[2]);
-    SetEpisodeNumber(match_results[3], token);
+    SetEpisodeNumber(match_results[3], token, false);
     if (match_results[4].matched)
-      SetEpisodeNumber(match_results[4], token);
+      SetEpisodeNumber(match_results[4], token, false);
     return true;
   }
 
@@ -181,8 +188,8 @@ bool Parser::MatchTypeAndEpisodePattern(const string_t& word, Token& token) {
 
   if (std::regex_match(word, match_results, pattern)) {
     elements_.insert(kElementAnimeType, match_results[1].str());
-    SetEpisodeNumber(match_results[2].str(), token);
-    return true;
+    if (SetEpisodeNumber(match_results[2].str(), token, true))
+      return true;
   }
 
   return false;
@@ -196,7 +203,7 @@ bool Parser::MatchJapaneseCounterPattern(const string_t& word, Token& token) {
   regex_match_results_t match_results;
 
   if (std::regex_match(word, match_results, pattern)) {
-    SetEpisodeNumber(match_results[1].str(), token);
+    SetEpisodeNumber(match_results[1].str(), token, false);
     return true;
   }
 
@@ -255,14 +262,8 @@ bool Parser::SearchForIsolatedNumbers(std::vector<size_t>& tokens) {
     if (!is_bracket_token(next_token))
       continue;
 
-    auto number = StringToInt(token->content);
-    // While there are about a dozen anime series with more than 1000
-    // episodes (e.g. Doraemon), it's safe to assume that any number above
-    // this line is not the episode number.
-    if (number <= 1900) {
-      SetEpisodeNumber(token->content, *token);
+    if (SetEpisodeNumber(token->content, *token, true))
       return true;
-    }
   }
 
   return false;
@@ -278,9 +279,10 @@ bool Parser::SearchForSeparatedNumbers(std::vector<size_t>& tokens) {
     if (previous_token != tokens_.end() &&
         previous_token->category == kUnknown &&
         IsDashCharacter(previous_token->content)) {
-      SetEpisodeNumber(token->content, *token);
-      previous_token->category = kIdentifier;
-      return true;
+      if (SetEpisodeNumber(token->content, *token, true)) {
+        previous_token->category = kIdentifier;
+        return true;
+      }
     }
   }
 
@@ -316,8 +318,8 @@ bool Parser::SearchForLastNumber(std::vector<size_t>& tokens) {
     }
 
     // We'll use this number after all
-    SetEpisodeNumber(token->content, *token);
-    return true;
+    if (SetEpisodeNumber(token->content, *token, true))
+      return true;
   }
 
   return false;
