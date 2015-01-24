@@ -19,9 +19,13 @@
 #ifndef ANITOMY_OPTIONS_H
 #define ANITOMY_OPTIONS_H
 
+#include "string.h"
+
 namespace anitomy {
 
 struct Options {
+  string_t allowed_delimiters = L" _.&+,|";
+
   bool parse_episode_number = true;
   bool parse_episode_title = true;
   bool parse_file_extension = true;

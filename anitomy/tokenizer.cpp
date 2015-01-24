@@ -26,9 +26,10 @@
 namespace anitomy {
 
 Tokenizer::Tokenizer(const string_t& filename, Elements& elements,
-                     token_container_t& tokens)
+                     const Options& options, token_container_t& tokens)
     : elements_(elements),
       filename_(filename),
+      options_(options),
       tokens_(tokens) {
 }
 
@@ -166,13 +167,11 @@ void Tokenizer::TokenizeByDelimiters(bool enclosed, const TokenRange& range) {
 ////////////////////////////////////////////////////////////////////////////////
 
 string_t Tokenizer::GetDelimiters(const TokenRange& range) const {
-  static const string_t kValidDelimiters = L" _" L".&+,|";
-
   std::set<char_t> delimiters;
   for (size_t i = range.offset; i < range.offset + range.size; i++) {
     const char_t character = filename_.at(i);
     if (!IsAlphanumericChar(character))
-      if (kValidDelimiters.find(character) != kValidDelimiters.npos)
+      if (options_.allowed_delimiters.find(character) != string_t::npos)
         delimiters.insert(character);
   }
 

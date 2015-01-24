@@ -20,8 +20,8 @@
 #define ANITOMY_ANITOMY_H
 
 #include "element.h"
-#include "string.h"
 #include "options.h"
+#include "string.h"
 #include "token.h"
 
 namespace anitomy {

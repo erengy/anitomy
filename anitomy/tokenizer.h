@@ -20,6 +20,7 @@
 #define ANITOMY_TOKENIZER_H
 
 #include "element.h"
+#include "options.h"
 #include "string.h"
 #include "token.h"
 
@@ -27,7 +28,8 @@ namespace anitomy {
 
 class Tokenizer {
 public:
-  Tokenizer(const string_t& filename, Elements& elements, token_container_t& tokens);
+  Tokenizer(const string_t& filename, Elements& elements,
+            const Options& options, token_container_t& tokens);
 
   Tokenizer(const Tokenizer&) = delete;
   Tokenizer& operator=(const Tokenizer&) = delete;
@@ -45,6 +47,7 @@ private:
 
   Elements& elements_;
   const string_t& filename_;
+  const Options& options_;
   token_container_t& tokens_;
 };
 

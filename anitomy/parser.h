@@ -20,15 +20,15 @@
 #define ANITOMY_PARSER_H
 
 #include "element.h"
-#include "string.h"
 #include "options.h"
+#include "string.h"
 #include "token.h"
 
 namespace anitomy {
 
 class Parser {
 public:
-  Parser(Elements& elements, Options& options, token_container_t& tokens);
+  Parser(Elements& elements, const Options& options, token_container_t& tokens);
 
   Parser(const Parser&) = delete;
   Parser& operator=(const Parser&) = delete;
@@ -79,7 +79,7 @@ private:
   const int kEpisodeNumberMax = kAnimeYearMin - 1;
 
   Elements& elements_;
-  Options& options_;
+  const Options& options_;
   token_container_t& tokens_;
 };
 

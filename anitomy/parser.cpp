@@ -24,7 +24,8 @@
 
 namespace anitomy {
 
-Parser::Parser(Elements& elements, Options& options, token_container_t& tokens)
+Parser::Parser(Elements& elements, const Options& options,
+               token_container_t& tokens)
     : elements_(elements),
       options_(options),
       tokens_(tokens) {
