@@ -167,18 +167,21 @@ void Tokenizer::TokenizeByDelimiters(bool enclosed, const TokenRange& range) {
 ////////////////////////////////////////////////////////////////////////////////
 
 string_t Tokenizer::GetDelimiters(const TokenRange& range) const {
-  std::set<char_t> delimiters;
-  for (size_t i = range.offset; i < range.offset + range.size; i++) {
-    const char_t character = filename_.at(i);
-    if (!IsAlphanumericChar(character))
-      if (options_.allowed_delimiters.find(character) != string_t::npos)
-        delimiters.insert(character);
-  }
+  string_t delimiters;
 
-  string_t output;
-  for (const auto& delimiter : delimiters)
-    output.push_back(delimiter);
-  return output;
+  auto is_delimiter = [&](const char_t& c) {
+    if (!IsAlphanumericChar(c))
+      if (options_.allowed_delimiters.find(c) != string_t::npos)
+        if (delimiters.find(c) == string_t::npos)
+          return true;
+    return false;
+  };
+
+  std::copy_if(filename_.begin() + range.offset,
+               filename_.begin() + range.offset + range.size,
+               std::back_inserter(delimiters), is_delimiter);
+
+  return delimiters;
 }
 
 void Tokenizer::ValidateDelimiterTokens() {
@@ -201,35 +204,30 @@ void Tokenizer::ValidateDelimiterTokens() {
     if (token->category != kDelimiter)
       continue;
     auto delimiter = token->content.front();
-    auto prev_token = GetPreviousValidToken(tokens_, token);
-    auto next_token = GetNextValidToken(tokens_, token);
+    auto prev_token = FindPreviousToken(tokens_, token, kFlagValid);
+    auto next_token = FindNextToken(tokens_, token, kFlagValid);
 
-    // Checking for single-character tokens prevents splitting group names,
-    // keywords and the episode number in some cases.
-    switch (delimiter) {
-      case ' ':
-      case '_':
-        break;
-      default:
-        if (is_single_character_token(prev_token)) {
-          append_token_to(token, prev_token);
-          while (is_unknown_token(next_token)) {
-            append_token_to(next_token, prev_token);
-            next_token = GetNextValidToken(tokens_, next_token);
-            if (is_delimiter_token(next_token) &&
-                next_token->content.front() == delimiter) {
-              append_token_to(next_token, prev_token);
-              next_token = GetNextValidToken(tokens_, next_token);
-            }
-          }
-          continue;
-        }
-        if (is_single_character_token(next_token)) {
-          append_token_to(token, prev_token);
+    // Check for single-character tokens to prevent splitting group names,
+    // keywords, episode number, etc.
+    if (delimiter != L' ' && delimiter != L'_') {
+      if (is_single_character_token(prev_token)) {
+        append_token_to(token, prev_token);
+        while (is_unknown_token(next_token)) {
           append_token_to(next_token, prev_token);
-          continue;
+          next_token = FindNextToken(tokens_, next_token, kFlagValid);
+          if (is_delimiter_token(next_token) &&
+              next_token->content.front() == delimiter) {
+            append_token_to(next_token, prev_token);
+            next_token = FindNextToken(tokens_, next_token, kFlagValid);
+          }
         }
-        break;
+        continue;
+      }
+      if (is_single_character_token(next_token)) {
+        append_token_to(token, prev_token);
+        append_token_to(next_token, prev_token);
+        continue;
+      }
     }
 
     // Check for adjacent delimiters
