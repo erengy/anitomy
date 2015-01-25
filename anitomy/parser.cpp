@@ -259,6 +259,12 @@ void Parser::SearchForEpisodeTitle() {
 ////////////////////////////////////////////////////////////////////////////////
 
 void Parser::SearchForAnimeSeason() {
+  auto set_anime_season = [&](token_iterator_t token, token_iterator_t other) {
+    elements_.insert(kElementAnimeSeason, other->content);
+    token->category = kIdentifier;
+    other->category = kIdentifier;
+  };
+
   for (auto token = tokens_.begin(); token != tokens_.end(); ++token) {
     if (token->category != kUnknown ||
         !IsStringEqualTo(token->content, L"Season"))
@@ -267,9 +273,7 @@ void Parser::SearchForAnimeSeason() {
     auto previous_token = FindPreviousToken(tokens_, token, kFlagNotDelimiter);
     if (previous_token != tokens_.end()) {
       if (IsOrdinalNumber(previous_token->content)) {
-        elements_.insert(kElementAnimeSeason, previous_token->content);
-        previous_token->category = kIdentifier;
-        token->category = kIdentifier;
+        set_anime_season(token, previous_token);
         return;
       }
     }
@@ -277,9 +281,7 @@ void Parser::SearchForAnimeSeason() {
     auto next_token = FindNextToken(tokens_, token, kFlagNotDelimiter);
     if (next_token != tokens_.end()) {
       if (IsNumericString(next_token->content)) {
-        elements_.insert(kElementAnimeSeason, next_token->content);
-        next_token->category = kIdentifier;
-        token->category = kIdentifier;
+        set_anime_season(token, next_token);
         return;
       }
     }
@@ -287,19 +289,10 @@ void Parser::SearchForAnimeSeason() {
 }
 
 void Parser::SearchForAnimeYear() {
-  auto is_bracket_token = [&](token_iterator_t token) {
-    return token != tokens_.end() && token->category == kBracket;
-  };
-
   for (auto token = tokens_.begin(); token != tokens_.end(); ++token) {
-    if (token->category != kUnknown || !IsNumericString(token->content))
-      continue;
-
-    auto previous_token = GetPreviousNonDelimiterToken(tokens_, token);
-    if (!is_bracket_token(previous_token))
-      continue;
-    auto next_token = GetNextNonDelimiterToken(tokens_, token);
-    if (!is_bracket_token(next_token))
+    if (token->category != kUnknown ||
+        !IsNumericString(token->content) ||
+        !IsTokenIsolated(token))
       continue;
 
     auto number = StringToInt(token->content);

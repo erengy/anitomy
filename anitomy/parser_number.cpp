@@ -247,19 +247,11 @@ bool Parser::MatchEpisodePatterns(string_t word, Token& token) {
 ////////////////////////////////////////////////////////////////////////////////
 
 bool Parser::SearchForIsolatedNumbers(std::vector<size_t>& tokens) {
-  auto is_bracket_token = [&](token_iterator_t token) {
-    return token != tokens_.end() && token->category == kBracket;
-  };
-
   for (auto token_index = tokens.begin();
        token_index != tokens.end(); ++token_index) {
     auto token = tokens_.begin() + *token_index;
-    
-    auto previous_token = GetPreviousNonDelimiterToken(tokens_, token);
-    if (!is_bracket_token(previous_token))
-      continue;
-    auto next_token = GetNextNonDelimiterToken(tokens_, token);
-    if (!is_bracket_token(next_token))
+
+    if (!IsTokenIsolated(token))
       continue;
 
     if (SetEpisodeNumber(token->content, *token, true))

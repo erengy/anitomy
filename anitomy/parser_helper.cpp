@@ -166,4 +166,18 @@ void Parser::BuildElement(ElementCategory category, bool keep_delimiters,
   elements_.insert(category, element);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
+bool Parser::IsTokenIsolated(const token_iterator_t token) const {
+  auto previous_token = FindPreviousToken(tokens_, token, kFlagNotDelimiter);
+  if (previous_token == tokens_.end() || previous_token->category != kBracket)
+    return false;
+
+  auto next_token = FindNextToken(tokens_, token, kFlagNotDelimiter);
+  if (next_token == tokens_.end() || next_token->category != kBracket)
+    return false;
+
+  return true;
+}
+
 }  // namespace anitomy
