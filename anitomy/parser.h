@@ -50,8 +50,8 @@ private:
   bool SearchForLastNumber(std::vector<size_t>& tokens);
 
   bool NumberComesAfterEpisodePrefix(Token& token);
-  bool NumberComesAfterEpisodeKeyword(const token_iterator_t& token);
-  bool NumberComesBeforeTotalNumber(const token_iterator_t& token);
+  bool NumberComesAfterEpisodeKeyword(const token_iterator_t token);
+  bool NumberComesBeforeTotalNumber(const token_iterator_t token);
 
   bool MatchEpisodePatterns(string_t word, Token& token);
   bool MatchSingleEpisodePattern(const string_t& word, Token& token);
@@ -71,8 +71,8 @@ private:
   bool IsElementCategorySingular(ElementCategory category);
 
   void BuildElement(ElementCategory category, bool keep_delimiters,
-                    const token_iterator_t& token_begin,
-                    const token_iterator_t& token_end) const;
+                    const token_iterator_t token_begin,
+                    const token_iterator_t token_end) const;
 
   bool IsTokenIsolated(const token_iterator_t token) const;
 

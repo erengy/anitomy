@@ -72,38 +72,29 @@ void Parser::SearchForKeywords() {
     for (int i = kElementIterateFirst; i < kElementIterateLast; i++) {
       auto category = static_cast<ElementCategory>(i);
 
-      if (!options_.parse_release_group)
-        if (category == kElementReleaseGroup)
-          continue;
+      if (!options_.parse_release_group && category == kElementReleaseGroup)
+        continue;
       if (!IsElementCategorySearchable(category))
         continue;
-      if (IsElementCategorySingular(category))
-        if (!elements_.empty(category))
-          continue;
+      if (IsElementCategorySingular(category) && !elements_.empty(category))
+        continue;
 
       bool add_keyword = false;
       KeywordOptions options;
 
-      switch (category) {
-        case kElementFileChecksum:
-          add_keyword = IsCrc32(word);
-          break;
-        case kElementVideoResolution:
-          add_keyword = IsResolution(word);
-          break;
-        default:
-          add_keyword = keyword_manager.Find(category, keyword, options);
-          break;
+      if (category == kElementFileChecksum) {
+        add_keyword = IsCrc32(word);
+      } else if (category == kElementVideoResolution) {
+        add_keyword = IsResolution(word);
+      } else {
+        add_keyword = keyword_manager.Find(category, keyword, options);
       }
 
       if (add_keyword) {
-        switch (category) {
-          case kElementReleaseVersion:
-            elements_.insert(category, word.substr(1));  // number without "v"
-            break;
-          default:
-            elements_.insert(category, word);
-            break;
+        if (category == kElementReleaseVersion) {
+          elements_.insert(category, word.substr(1));  // number without "v"
+        } else {
+          elements_.insert(category, word);
         }
         if (options.safe || token.enclosed)
           token.category = kIdentifier;
@@ -116,14 +107,13 @@ void Parser::SearchForKeywords() {
 ////////////////////////////////////////////////////////////////////////////////
 
 void Parser::SearchForEpisodeNumber() {
-  // List all tokens that contain a number
+  // List all unknown tokens that contain a number
   std::vector<size_t> tokens;
   for (size_t i = 0; i < tokens_.size(); ++i) {
     auto& token = tokens_.at(i);
-    if (token.category != kUnknown)
-      continue;  // Skip previously identified tokens
-    if (FindNumberInString(token.content) != token.content.npos)
-      tokens.push_back(i);
+    if (token.category == kUnknown)
+      if (FindNumberInString(token.content) != token.content.npos)
+        tokens.push_back(i);
   }
   if (tokens.empty())
     return;
@@ -271,19 +261,17 @@ void Parser::SearchForAnimeSeason() {
       continue;
 
     auto previous_token = FindPreviousToken(tokens_, token, kFlagNotDelimiter);
-    if (previous_token != tokens_.end()) {
-      if (IsOrdinalNumber(previous_token->content)) {
-        set_anime_season(token, previous_token);
-        return;
-      }
+    if (previous_token != tokens_.end() &&
+        IsOrdinalNumber(previous_token->content)) {
+      set_anime_season(token, previous_token);
+      return;
     }
 
     auto next_token = FindNextToken(tokens_, token, kFlagNotDelimiter);
-    if (next_token != tokens_.end()) {
-      if (IsNumericString(next_token->content)) {
-        set_anime_season(token, next_token);
-        return;
-      }
+    if (next_token != tokens_.end() &&
+        IsNumericString(next_token->content)) {
+      set_anime_season(token, next_token);
+      return;
     }
   }
 }

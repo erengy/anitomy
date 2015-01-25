@@ -127,8 +127,8 @@ bool Parser::IsElementCategorySingular(ElementCategory category) {
 ////////////////////////////////////////////////////////////////////////////////
 
 void Parser::BuildElement(ElementCategory category, bool keep_delimiters,
-                          const token_iterator_t& token_begin,
-                          const token_iterator_t& token_end) const {
+                          const token_iterator_t token_begin,
+                          const token_iterator_t token_end) const {
   string_t element;
 
   for (auto token = token_begin; token != token_end; ++token) {

@@ -54,7 +54,7 @@ bool Parser::NumberComesAfterEpisodePrefix(Token& token) {
   return false;
 }
 
-bool Parser::NumberComesAfterEpisodeKeyword(const token_iterator_t& token) {
+bool Parser::NumberComesAfterEpisodeKeyword(const token_iterator_t token) {
   auto previous_token = FindPreviousToken(tokens_, token, kFlagNotDelimiter);
 
   if (previous_token != tokens_.end()) {
@@ -73,7 +73,7 @@ bool Parser::NumberComesAfterEpisodeKeyword(const token_iterator_t& token) {
   return false;
 }
 
-bool Parser::NumberComesBeforeTotalNumber(const token_iterator_t& token) {
+bool Parser::NumberComesBeforeTotalNumber(const token_iterator_t token) {
   auto next_token = FindNextToken(tokens_, token, kFlagNotDelimiter);
 
   if (next_token != tokens_.end()) {
@@ -183,13 +183,15 @@ bool Parser::MatchTypeAndEpisodePattern(const string_t& word, Token& token) {
   if (!elements_.empty(kElementAnimeType))
     return false;
 
-  static const regex_t pattern(L"(ED|NCED|NCOP|OP|OVA|PV)(\\d{1,2})[a-f]?");
-  regex_match_results_t match_results;
+  size_t number_begin = FindNumberInString(word);
+  auto prefix = keyword_manager.Normalize(word.substr(0, number_begin));
 
-  if (std::regex_match(word, match_results, pattern)) {
-    elements_.insert(kElementAnimeType, match_results[1].str());
-    if (SetEpisodeNumber(match_results[2].str(), token, true))
-      return true;
+  if (keyword_manager.Find(kElementAnimeType, prefix)) {
+    elements_.insert(kElementAnimeType, word.substr(0, number_begin));
+    auto number = word.substr(number_begin);
+    if (!MatchEpisodePatterns(number, token))
+      if (SetEpisodeNumber(number, token, true))
+        return true;
   }
 
   return false;
