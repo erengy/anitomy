@@ -158,18 +158,14 @@ void Parser::SearchForEpisodeNumber() {
 
 void Parser::SearchForAnimeTitle() {
   // Find the first non-enclosed unknown token
-  auto token_begin = std::find_if(tokens_.begin(), tokens_.end(),
-      [](const Token& token) {
-        return !token.enclosed && token.category == kUnknown;
-      });
+  auto token_begin = FindToken(tokens_.begin(), tokens_.end(),
+                               kFlagNotEnclosed | kFlagUnknown);
   if (token_begin == tokens_.end())
     return;
 
   // Continue until an identifier is found
-  auto token_end = std::find_if(token_begin, tokens_.end(),
-      [](const Token& token) {
-        return token.category == kIdentifier;
-      });
+  auto token_end = FindToken(token_begin, tokens_.end(), kFlagIdentifier);
+
   // If within the interval there's an open bracket without its matching pair,
   // move the upper endpoint back to the bracket
   auto last_bracket = token_end;
@@ -193,23 +189,20 @@ void Parser::SearchForReleaseGroup() {
 
   do {
     // Find the first enclosed unknown token
-    token_begin = std::find_if(token_end, tokens_.end(),
-        [](const Token& token) {
-          return token.enclosed && token.category == kUnknown;
-        });
+    token_begin = FindToken(token_end, tokens_.end(),
+                            kFlagEnclosed | kFlagUnknown);
     if (token_begin == tokens_.end())
-      continue;
+      return;
 
     // Continue until a bracket or identifier is found
-    token_end = std::find_if(token_begin, tokens_.end(),
-        [](const Token& token) {
-          return token.category == kBracket || token.category == kIdentifier;
-        });
+    token_end = FindToken(token_begin, tokens_.end(),
+                          kFlagBracket | kFlagIdentifier);
     if (token_end->category != kBracket)
       continue;
 
-    // Ignore if it's not the first token in group
-    auto previous_token = GetPreviousNonDelimiterToken(tokens_, token_begin);
+    // Ignore if it's not the first non-delimiter token in group
+    auto previous_token = FindPreviousToken(tokens_, token_begin,
+                                            kFlagNotDelimiter);
     if (previous_token != tokens_.end() &&
         previous_token->category != kBracket) {
       continue;
@@ -230,18 +223,14 @@ void Parser::SearchForReleaseGroup() {
 
 void Parser::SearchForEpisodeTitle() {
   // Find the first non-enclosed unknown token
-  auto token_begin = std::find_if(tokens_.begin(), tokens_.end(),
-      [](const Token& token) {
-        return !token.enclosed && token.category == kUnknown;
-      });
+  auto token_begin = FindToken(tokens_.begin(), tokens_.end(),
+                               kFlagNotEnclosed | kFlagUnknown);
   if (token_begin == tokens_.end())
     return;
 
   // Continue until a bracket or identifier is found
-  auto token_end = std::find_if(token_begin, tokens_.end(),
-      [](const Token& token) {
-        return token.category == kBracket || token.category == kIdentifier;
-      });
+  auto token_end = FindToken(token_begin, tokens_.end(),
+                             kFlagBracket | kFlagIdentifier);
 
   // Build episode title
   BuildElement(kElementEpisodeTitle, false, token_begin, token_end);
@@ -255,7 +244,7 @@ void Parser::SearchForAnimeSeason() {
         !IsStringEqualTo(token->content, L"Season"))
       continue;
 
-    auto previous_token = GetPreviousNonDelimiterToken(tokens_, token);
+    auto previous_token = FindPreviousToken(tokens_, token, kFlagNotDelimiter);
     if (previous_token != tokens_.end()) {
       if (IsOrdinalNumber(previous_token->content)) {
         elements_.insert(kElementAnimeSeason, previous_token->content);
@@ -265,7 +254,7 @@ void Parser::SearchForAnimeSeason() {
       }
     }
 
-    auto next_token = GetNextNonDelimiterToken(tokens_, token);
+    auto next_token = FindNextToken(tokens_, token, kFlagNotDelimiter);
     if (next_token != tokens_.end()) {
       if (IsNumericString(next_token->content)) {
         elements_.insert(kElementAnimeSeason, next_token->content);

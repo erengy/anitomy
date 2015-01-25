@@ -55,7 +55,7 @@ bool Parser::NumberComesAfterEpisodePrefix(Token& token) {
 }
 
 bool Parser::NumberComesAfterEpisodeKeyword(const token_iterator_t& token) {
-  auto previous_token = GetPreviousNonDelimiterToken(tokens_, token);
+  auto previous_token = FindPreviousToken(tokens_, token, kFlagNotDelimiter);
 
   if (previous_token != tokens_.end()) {
     if (previous_token->category == kUnknown) {
@@ -74,11 +74,11 @@ bool Parser::NumberComesAfterEpisodeKeyword(const token_iterator_t& token) {
 }
 
 bool Parser::NumberComesBeforeTotalNumber(const token_iterator_t& token) {
-  auto next_token = GetNextNonDelimiterToken(tokens_, token);
+  auto next_token = FindNextToken(tokens_, token, kFlagNotDelimiter);
 
   if (next_token != tokens_.end()) {
     if (IsStringEqualTo(next_token->content, L"of")) {
-      auto other_token = GetNextNonDelimiterToken(tokens_, next_token);
+      auto other_token = FindNextToken(tokens_, next_token, kFlagNotDelimiter);
 
       if (other_token != tokens_.end()) {
         if (IsNumericString(other_token->content)) {
@@ -273,7 +273,7 @@ bool Parser::SearchForSeparatedNumbers(std::vector<size_t>& tokens) {
   for (auto token_index = tokens.begin();
        token_index != tokens.end(); ++token_index) {
     auto token = tokens_.begin() + *token_index;
-    auto previous_token = GetPreviousNonDelimiterToken(tokens_, token);
+    auto previous_token = FindPreviousToken(tokens_, token, kFlagNotDelimiter);
 
     // See if the number has a preceding "-" separator
     if (previous_token != tokens_.end() &&
@@ -309,7 +309,7 @@ bool Parser::SearchForLastNumber(std::vector<size_t>& tokens) {
       continue;
 
     // Check if the previous token is "Movie"
-    auto previous_token = GetPreviousNonDelimiterToken(tokens_, token);
+    auto previous_token = FindPreviousToken(tokens_, token, kFlagNotDelimiter);
     if (previous_token != tokens_.end() &&
         previous_token->category == kUnknown &&
         IsStringEqualTo(previous_token->content, L"Movie")) {
