@@ -157,27 +157,54 @@ void Parser::SearchForEpisodeNumber() {
 ////////////////////////////////////////////////////////////////////////////////
 
 void Parser::SearchForAnimeTitle() {
+  bool enclosed_title = false;
+
   // Find the first non-enclosed unknown token
   auto token_begin = FindToken(tokens_.begin(), tokens_.end(),
                                kFlagNotEnclosed | kFlagUnknown);
+
+  // If that doesn't work, find the first unknown token in the second enclosed
+  // group, assuming that the first one is the release group
+  if (token_begin == tokens_.end()) {
+    enclosed_title = true;
+    token_begin = tokens_.begin();
+    bool skipped_previous_group = false;
+    do {
+      token_begin = FindToken(token_begin, tokens_.end(), kFlagUnknown);
+      if (token_begin == tokens_.end())
+        break;
+      // Ignore groups that are composed of non-Latin characters
+      if (IsMostlyLatinString(token_begin->content))
+        if (skipped_previous_group)
+          break;  // Found it
+      // Get the first unknown token of the next group
+      token_begin = FindToken(token_begin, tokens_.end(), kFlagBracket);
+      token_begin = FindToken(token_begin, tokens_.end(), kFlagUnknown);
+      skipped_previous_group = true;
+    } while (token_begin != tokens_.end());
+  }
   if (token_begin == tokens_.end())
     return;
 
-  // Continue until an identifier is found
-  auto token_end = FindToken(token_begin, tokens_.end(), kFlagIdentifier);
+  // Continue until an identifier (or a bracket, if the title is enclosed)
+  // is found
+  auto token_end = FindToken(token_begin, tokens_.end(),
+      kFlagIdentifier | (enclosed_title ? kFlagBracket : kFlagNone));
 
   // If within the interval there's an open bracket without its matching pair,
   // move the upper endpoint back to the bracket
-  auto last_bracket = token_end;
-  bool bracket_open = false;
-  for (auto token = token_begin; token != token_end; ++token) {
-    if (token->category == kBracket) {
-      last_bracket = token;
-      bracket_open = !bracket_open;
+  if (!enclosed_title) {
+    auto last_bracket = token_end;
+    bool bracket_open = false;
+    for (auto token = token_begin; token != token_end; ++token) {
+      if (token->category == kBracket) {
+        last_bracket = token;
+        bracket_open = !bracket_open;
+      }
     }
+    if (bracket_open)
+      token_end = last_bracket;
   }
-  if (bracket_open)
-    token_end = last_bracket;
 
   // Build anime title
   BuildElement(kElementAnimeTitle, false, token_begin, token_end);
@@ -208,16 +235,9 @@ void Parser::SearchForReleaseGroup() {
       continue;
     }
 
-    // Build release group, or anime title if it wasn't found earlier
-    if (elements_.empty(kElementReleaseGroup)) {
-      BuildElement(kElementReleaseGroup, true, token_begin, token_end);
-      if (elements_.empty(kElementAnimeTitle))
-        continue;
-    } else if (elements_.empty(kElementAnimeTitle)) {
-      BuildElement(kElementAnimeTitle, false, token_begin, token_end);
-      return;
-    }
-
+    // Build release group
+    BuildElement(kElementReleaseGroup, true, token_begin, token_end);
+    return;
   } while (token_begin != tokens_.end());
 }
 

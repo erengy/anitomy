@@ -1056,6 +1056,15 @@
 		"release_group": "FFF"
 	},
 	{
+		"anime_title": "Black Bullet",
+		"episode_number": "11",
+		"file_extension": "mp4",
+		"file_name": "[異域字幕組][漆黑的子彈][Black Bullet][11][1280x720][繁体].mp4",
+		"id": 20787,
+		"release_group": "異域字幕組",
+		"video_resolution": "1280x720"
+	},
+	{
 		"anime_title": "Mangaka-san to Assistant-san to the Animation",
 		"audio_term": "AAC",
 		"episode_number": "02",
@@ -1087,6 +1096,15 @@
 		"id": 2804,
 		"release_group": "h-b",
 		"release_version": "2",
+		"source": "DVD"
+	},
+	{
+		"anime_title": "Mary Bell",
+		"episode_number": "02",
+		"file_extension": "mkv",
+		"file_name": "Mary Bell (DVD) - 02 [h-b].mkv",
+		"id": 2804,
+		"release_group": "h-b",
 		"source": "DVD"
 	},
 	{
@@ -1221,5 +1239,32 @@
 		"release_group": "Ruri",
 		"video_resolution": "720p",
 		"video_term": "H264"
+	},
+	{
+		"anime_title": "Sword Art Online Extra Edition",
+		"audio_term": [
+			"Dual Audio",
+			"Vorbis"
+		],
+		"file_name": "[CH] Sword Art Online Extra Edition Dual Audio [BD 480p][10bitH.264+Vorbis]",
+		"id": 20021,
+		"release_group": "CH",
+		"source": "BD",
+		"video_resolution": "480p",
+		"video_term": [
+			"H.264",
+			"10bit"
+		]
+	},
+	{
+		"anime_title": "Akuma no Riddle",
+		"episode_number": "01",
+		"file_checksum": "69A307A2",
+		"file_extension": "mkv",
+		"file_name": "EvoBot.[Watakushi]_Akuma_no_Riddle_-_01v2_[720p][69A307A2].mkv",
+		"id": 19429,
+		"release_group": "Watakushi",
+		"release_version": "2",
+		"video_resolution": "720p"
 	}
 ]
