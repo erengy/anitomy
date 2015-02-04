@@ -39,6 +39,7 @@ bool IsStringEqualTo(const string_t& str1, const string_t& str2);
 
 int StringToInt(const string_t& str);
 
+void EraseString(string_t& str, const string_t& erase_this);
 string_t StringToUpperCopy(string_t str);
 void TrimString(string_t& str, const char_t trim_chars[] = L" ");
 

@@ -34,6 +34,9 @@ bool Anitomy::Parse(string_t filename) {
       elements_.insert(kElementFileExtension, extension);
   }
 
+  if (!options_.ignored_strings.empty())
+    RemoveIgnoredStrings(filename);
+
   if (filename.empty())
     return false;
   elements_.insert(kElementFileName, filename);
@@ -52,7 +55,7 @@ bool Anitomy::Parse(string_t filename) {
 ////////////////////////////////////////////////////////////////////////////////
 
 bool Anitomy::RemoveExtensionFromFilename(string_t& filename,
-                                          string_t& extension) {
+                                          string_t& extension) const {
   const size_t position = filename.find_last_of(L'.');
 
   if (position == string_t::npos)
@@ -75,6 +78,14 @@ bool Anitomy::RemoveExtensionFromFilename(string_t& filename,
 
   return true;
 }
+
+void Anitomy::RemoveIgnoredStrings(string_t& filename) const {
+  for (const auto& str : options_.ignored_strings) {
+    EraseString(filename, str);
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
 
 Elements& Anitomy::elements() {
   return elements_;

@@ -100,6 +100,17 @@ int StringToInt(const string_t& str) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+void EraseString(string_t& str, const string_t& erase_this) {
+  if (erase_this.empty() || str.size() < erase_this.size())
+    return;
+
+  auto pos = str.find(erase_this);
+  while (pos != string_t::npos) {
+    str.erase(pos, erase_this.size());
+    pos = str.find(erase_this);
+  }
+}
+
 void StringToUpper(string_t& str) {
   std::transform(str.begin(), str.end(), str.begin(), ToUpper());
 }

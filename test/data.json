@@ -1263,6 +1263,9 @@
 		"file_extension": "mkv",
 		"file_name": "EvoBot.[Watakushi]_Akuma_no_Riddle_-_01v2_[720p][69A307A2].mkv",
 		"id": 19429,
+		"option_ignored_strings": [
+			"EvoBot."
+		],
 		"release_group": "Watakushi",
 		"release_version": "2",
 		"video_resolution": "720p"
