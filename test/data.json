@@ -981,7 +981,10 @@
 	},
 	{
 		"anime_title": "Evangelion Shin Gekijouban Q",
-		"audio_term": "FLACx2 5.1ch",
+		"audio_term": [
+			"FLACx2",
+			"5.1ch"
+		],
 		"file_extension": "mkv",
 		"file_name": "Evangelion Shin Gekijouban Q (BDrip 1920x1080 x264 FLACx2 5.1ch)-ank.mkv",
 		"id": 3785,
@@ -992,7 +995,7 @@
 	},
 	{
 		"anime_title": "Evangelion The New Movie Q",
-		"audio_term": "AACx2 5.1 2.0",
+		"audio_term": "AACx2",
 		"file_extension": "mp4",
 		"file_name": "Evangelion The New Movie Q (BD 1280x720 AVC AACx2 [5.1+2.0]).mp4",
 		"id": 3785,
@@ -1018,7 +1021,7 @@
 	},
 	{
 		"anime_title": "Kotonoha no Niwa",
-		"audio_term": "AACx3 5.1 2.0 2.0",
+		"audio_term": "AACx3",
 		"file_extension": "mp4",
 		"file_name": "Kotonoha no Niwa (BD 1280x720 AVC AACx3 [5.1+2.0+2.0] Subx3).mp4",
 		"id": 16782,

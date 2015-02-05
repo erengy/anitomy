@@ -55,7 +55,8 @@ KeywordManager::KeywordManager()
       // Audio channels
       L"2CH", L"5.1", L"5.1CH", L"DTS", L"DTS-ES", L"DTS5.1", L"TRUEHD5.1",
       // Audio codec
-      L"AAC", L"AC3", L"FLAC", L"MP3", L"OGG", L"VORBIS",
+      L"AAC", L"AACX2", L"AACX3", L"AACX4", L"AC3", L"FLAC", L"FLACX2",
+      L"FLACX3", L"FLACX4", L"MP3", L"OGG", L"VORBIS",
       // Audio language
       L"DUALAUDIO", L"DUAL AUDIO"});
 
