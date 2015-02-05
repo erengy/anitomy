@@ -62,7 +62,10 @@ public:
   string_t Normalize(const string_t& str) const;
 
 private:
-  std::map<string_t, Keyword> keys_;
+  typedef std::map<string_t, Keyword> keyword_container_t;
+
+  keyword_container_t file_extensions_;
+  keyword_container_t keys_;
   std::pair<size_t, size_t> length_min_max_;
 };
 

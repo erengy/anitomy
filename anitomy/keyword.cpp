@@ -126,7 +126,8 @@ void KeywordManager::Add(ElementCategory category,
     if (keys_.find(keyword) != keys_.end())
       continue;
 
-    keys_.insert(std::make_pair(keyword, Keyword(category, options)));
+    auto& keys = category == kElementFileExtension ? file_extensions_ : keys_;
+    keys.insert(std::make_pair(keyword, Keyword(category, options)));
 
     if (keyword.size() > length_min_max_.second)
       length_min_max_.second = keyword.size();
@@ -140,8 +141,9 @@ bool KeywordManager::Find(ElementCategory category, const string_t& str) const {
       str.size() > length_min_max_.second)
     return false;
 
-  auto it = keys_.find(str);
-  if (it != keys_.end() && it->second.category == category)
+  auto& keys = category == kElementFileExtension ? file_extensions_ : keys_;
+  auto it = keys.find(str);
+  if (it != keys.end() && it->second.category == category)
     return true;
 
   return false;
@@ -153,8 +155,9 @@ bool KeywordManager::Find(const string_t& str, ElementCategory& category,
       str.size() > length_min_max_.second)
     return false;
 
-  auto it = keys_.find(str);
-  if (it != keys_.end()) {
+  auto& keys = category == kElementFileExtension ? file_extensions_ : keys_;
+  auto it = keys.find(str);
+  if (it != keys.end()) {
     category = it->second.category;
     options = it->second.options;
     return true;
