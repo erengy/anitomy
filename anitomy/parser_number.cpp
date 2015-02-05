@@ -54,25 +54,6 @@ bool Parser::NumberComesAfterEpisodePrefix(Token& token) {
   return false;
 }
 
-bool Parser::NumberComesAfterEpisodeKeyword(const token_iterator_t token) {
-  auto previous_token = FindPreviousToken(tokens_, token, kFlagNotDelimiter);
-
-  if (previous_token != tokens_.end()) {
-    if (previous_token->category == kUnknown) {
-      auto keyword = keyword_manager.Normalize(previous_token->content);
-
-      if (keyword_manager.Find(kElementEpisodePrefix, keyword)) {
-        if (!MatchEpisodePatterns(token->content, *token))
-          SetEpisodeNumber(token->content, *token, false);
-        previous_token->category = kIdentifier;
-        return true;
-      }
-    }
-  }
-
-  return false;
-}
-
 bool Parser::NumberComesBeforeTotalNumber(const token_iterator_t token) {
   auto next_token = FindNextToken(tokens_, token, kFlagNotDelimiter);
 
@@ -104,9 +85,6 @@ bool Parser::SearchForEpisodePatterns(std::vector<size_t>& tokens) {
       if (NumberComesAfterEpisodePrefix(*token))
         return true;
     } else {
-      // e.g. "Episode 01"
-      if (NumberComesAfterEpisodeKeyword(token))
-        return true;
       // e.g. "8 of 12"
       if (NumberComesBeforeTotalNumber(token))
         return true;

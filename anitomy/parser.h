@@ -49,7 +49,6 @@ private:
   bool SearchForLastNumber(std::vector<size_t>& tokens);
 
   bool NumberComesAfterEpisodePrefix(Token& token);
-  bool NumberComesAfterEpisodeKeyword(const token_iterator_t token);
   bool NumberComesBeforeTotalNumber(const token_iterator_t token);
 
   bool MatchEpisodePatterns(string_t word, Token& token);
@@ -62,13 +61,15 @@ private:
   bool SetEpisodeNumber(const string_t& number, Token& token, bool validate);
 
   size_t FindNumberInString(const string_t& str);
-  bool IsAnimeSeasonKeyword(const token_iterator_t token, const string_t& keyword);
   bool IsCrc32(const string_t& str);
   bool IsDashCharacter(const string_t& str);
   bool IsOrdinalNumber(const string_t& word);
   bool IsResolution(const string_t& str);
   bool IsElementCategorySearchable(ElementCategory category);
   bool IsElementCategorySingular(ElementCategory category);
+
+  bool CheckAnimeSeasonKeyword(const token_iterator_t token);
+  bool CheckEpisodeKeyword(const token_iterator_t token);
 
   void BuildElement(ElementCategory category, bool keep_delimiters,
                     const token_iterator_t token_begin,

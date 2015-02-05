@@ -36,7 +36,8 @@ bool Parser::Parse() {
 
   SearchForAnimeYear();
 
-  if (options_.parse_episode_number)
+  if (options_.parse_episode_number &&
+      elements_.empty(kElementEpisodeNumber))
     SearchForEpisodeNumber();
 
   SearchForAnimeTitle();
@@ -63,46 +64,46 @@ void Parser::SearchForKeywords() {
     auto word = token.content;
     TrimString(word, L" -");
 
+    if (word.empty())
+      continue;
     // Don't bother if the word is a number that cannot be CRC
     if (word.size() != 8 && IsNumericString(word))
       continue;
 
     // Performs better than making a case-insensitive Find
     auto keyword = keyword_manager.Normalize(word);
+    ElementCategory category = kElementUnknown;
+    KeywordOptions options;
 
-    for (int i = kElementIterateFirst; i < kElementIterateLast; i++) {
-      auto category = static_cast<ElementCategory>(i);
-
+    if (keyword_manager.Find(keyword, category, options)) {
       if (!options_.parse_release_group && category == kElementReleaseGroup)
         continue;
       if (!IsElementCategorySearchable(category))
         continue;
       if (IsElementCategorySingular(category) && !elements_.empty(category))
         continue;
-
-      bool add_keyword = false;
-      KeywordOptions options;
-
       if (category == kElementAnimeSeasonPrefix) {
-        add_keyword = IsAnimeSeasonKeyword(it, keyword);
-      } else if (category == kElementFileChecksum) {
-        add_keyword = IsCrc32(word);
-      } else if (category == kElementVideoResolution) {
-        add_keyword = IsResolution(word);
-      } else {
-        add_keyword = keyword_manager.Find(category, keyword, options);
+        CheckAnimeSeasonKeyword(it);
+        continue;
+      } else if (category == kElementEpisodePrefix) {
+        CheckEpisodeKeyword(it);
+        continue;
+      } else if (category == kElementReleaseVersion) {
+        word = word.substr(1);  // number without "v"
       }
+    } else {
+      if (elements_.empty(kElementFileChecksum) && IsCrc32(word)) {
+        category = kElementFileChecksum;
+      } else if (elements_.empty(kElementVideoResolution) &&
+                 IsResolution(word)) {
+        category = kElementVideoResolution;
+      }
+    }
 
-      if (add_keyword) {
-        if (category == kElementReleaseVersion) {
-          elements_.insert(category, word.substr(1));  // number without "v"
-        } else {
-          elements_.insert(category, word);
-        }
-        if (options.safe || token.enclosed)
-          token.category = kIdentifier;
-        break;
-      }
+    if (category != kElementUnknown) {
+      elements_.insert(category, word);
+      if (options.safe || token.enclosed)
+        token.category = kIdentifier;
     }
   }
 }

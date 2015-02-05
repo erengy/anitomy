@@ -21,7 +21,6 @@
 
 #include <initializer_list>
 #include <map>
-#include <unordered_map>
 #include <vector>
 
 #include "element.h"
@@ -39,31 +38,23 @@ public:
   bool safe;
 };
 
-class KeywordList {
+class Keyword {
 public:
-  KeywordList();
-  ~KeywordList() {}
+  Keyword(ElementCategory category, const KeywordOptions& options);
 
-  void Add(const string_t& str, const KeywordOptions& options);
-
-  bool Find(const string_t& str) const;
-  bool Find(const string_t& str, KeywordOptions& options) const;
-
-private:
-  std::unordered_map<string_t, KeywordOptions> keys_;
-  std::pair<size_t, size_t> length_min_max_;
+  ElementCategory category;
+  KeywordOptions options;
 };
 
 class KeywordManager {
 public:
   KeywordManager();
-  ~KeywordManager() {}
 
   void Add(ElementCategory category, const KeywordOptions& options,
            const std::initializer_list<string_t>& keywords);
 
   bool Find(ElementCategory category, const string_t& str) const;
-  bool Find(ElementCategory category, const string_t& str, KeywordOptions& options) const;
+  bool Find(const string_t& str, ElementCategory& category, KeywordOptions& options) const;
 
   void Peek(const string_t& filename, const TokenRange& range, Elements& elements,
             std::vector<TokenRange>& preidentified_tokens) const;
@@ -71,7 +62,8 @@ public:
   string_t Normalize(const string_t& str) const;
 
 private:
-  std::map<ElementCategory, KeywordList> keyword_lists_;
+  std::map<string_t, Keyword> keys_;
+  std::pair<size_t, size_t> length_min_max_;
 };
 
 extern KeywordManager keyword_manager;

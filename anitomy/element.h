@@ -49,7 +49,8 @@ enum ElementCategory {
   kElementSubtitles,
   kElementVideoResolution,
   kElementVideoTerm,
-  kElementIterateLast
+  kElementIterateLast,
+  kElementUnknown = kElementIterateLast
 };
 
 typedef std::pair<ElementCategory, string_t> element_pair_t;

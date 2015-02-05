@@ -33,50 +33,14 @@ KeywordOptions::KeywordOptions(bool safe)
     : safe(safe) {
 }
 
+Keyword::Keyword(ElementCategory category, const KeywordOptions& options)
+    : category(category), options(options) {
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
-KeywordList::KeywordList()
+KeywordManager::KeywordManager()
     : length_min_max_(static_cast<size_t>(-1), 0) {
-}
-
-void KeywordList::Add(const string_t& str, const KeywordOptions& options) {
-  if (str.empty())
-    return;
-
-  keys_.insert(std::make_pair(str, options));
-
-  if (str.size() > length_min_max_.second)
-    length_min_max_.second = str.size();
-  if (str.size() < length_min_max_.first)
-    length_min_max_.first = str.size();
-}
-
-bool KeywordList::Find(const string_t& str) const {
-  if (str.size() < length_min_max_.first ||
-      str.size() > length_min_max_.second)
-    return false;
-
-  return keys_.find(str) != keys_.end();
-}
-
-bool KeywordList::Find(const string_t& str, KeywordOptions& options) const {
-  if (str.size() < length_min_max_.first ||
-      str.size() > length_min_max_.second)
-    return false;
-
-  auto key = keys_.find(str);
-
-  if (key != keys_.end()) {
-    options = key->second;
-    return true;
-  }
-
-  return false;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
-KeywordManager::KeywordManager() {
   const KeywordOptions options_safe(true);
   const KeywordOptions options_unsafe(false);
 
@@ -155,27 +119,45 @@ KeywordManager::KeywordManager() {
 void KeywordManager::Add(ElementCategory category,
                          const KeywordOptions& options,
                          const std::initializer_list<string_t>& keywords) {
-  auto& keyword_list = keyword_lists_[category];
+  for (const auto& keyword : keywords) {
+    if (keyword.empty())
+      continue;
+    if (keys_.find(keyword) != keys_.end())
+      continue;
 
-  for (const auto& keyword : keywords)
-    keyword_list.Add(keyword, options);
+    keys_.insert(std::make_pair(keyword, Keyword(category, options)));
+
+    if (keyword.size() > length_min_max_.second)
+      length_min_max_.second = keyword.size();
+    if (keyword.size() < length_min_max_.first)
+      length_min_max_.first = keyword.size();
+  }
 }
 
 bool KeywordManager::Find(ElementCategory category, const string_t& str) const {
-  const auto& keyword_list = keyword_lists_.find(category);
+  if (str.size() < length_min_max_.first ||
+      str.size() > length_min_max_.second)
+    return false;
 
-  if (keyword_list != keyword_lists_.end())
-    return keyword_list->second.Find(str);
+  auto it = keys_.find(str);
+  if (it != keys_.end() && it->second.category == category)
+    return true;
 
   return false;
 }
 
-bool KeywordManager::Find(ElementCategory category, const string_t& str,
+bool KeywordManager::Find(const string_t& str, ElementCategory& category,
                           KeywordOptions& options) const {
-  const auto& keyword_list = keyword_lists_.find(category);
+  if (str.size() < length_min_max_.first ||
+      str.size() > length_min_max_.second)
+    return false;
 
-  if (keyword_list != keyword_lists_.end())
-    return keyword_list->second.Find(str, options);
+  auto it = keys_.find(str);
+  if (it != keys_.end()) {
+    category = it->second.category;
+    options = it->second.options;
+    return true;
+  }
 
   return false;
 }

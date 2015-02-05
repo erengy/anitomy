@@ -128,6 +128,8 @@
 		"file_extension": "mkv",
 		"file_name": "[Juuni.Kokki]-(Les.12.Royaumes)-[Ep.24]-[x264+OGG]-[JAP+FR+Sub.FR]-[Chap]-[AzF].mkv",
 		"id": 153,
+		"language": "JAP",
+		"subtitles": "Sub",
 		"video_term": "x264"
 	},
 	{
@@ -1137,6 +1139,7 @@
 		"episode_number": "1",
 		"episode_title": "Data_01_Login",
 		"file_name": "DRAMAtical Murder Episode 1 - Data_01_Login",
+		"option_allowed_delimiters": " ",
 		"id": 23333
 	},
 	{
