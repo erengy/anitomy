@@ -28,6 +28,7 @@ namespace anitomy {
 enum ElementCategory {
   kElementIterateFirst,
   kElementAnimeSeason = kElementIterateFirst,
+  kElementAnimeSeasonPrefix,
   kElementAnimeTitle,
   kElementAnimeType,
   kElementAnimeYear,

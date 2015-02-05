@@ -35,6 +35,34 @@ size_t Parser::FindNumberInString(const string_t& str) {
   }
 }
 
+bool Parser::IsAnimeSeasonKeyword(const token_iterator_t token,
+                                  const string_t& keyword) {
+  auto set_anime_season = [&](token_iterator_t token, token_iterator_t other) {
+    elements_.insert(kElementAnimeSeason, other->content);
+    token->category = kIdentifier;
+    other->category = kIdentifier;
+  };
+
+  if (!keyword_manager.Find(kElementAnimeSeasonPrefix, keyword))
+    return false;
+
+  auto previous_token = FindPreviousToken(tokens_, token, kFlagNotDelimiter);
+  if (previous_token != tokens_.end() &&
+      IsOrdinalNumber(previous_token->content)) {
+    set_anime_season(token, previous_token);
+    return true;
+  }
+
+  auto next_token = FindNextToken(tokens_, token, kFlagNotDelimiter);
+  if (next_token != tokens_.end() &&
+      IsNumericString(next_token->content)) {
+    set_anime_season(token, next_token);
+    return true;
+  }
+
+  return false;
+}
+
 bool Parser::IsCrc32(const string_t& str) {
   return str.size() == 8 && IsHexadecimalString(str);
 }
@@ -88,6 +116,7 @@ bool Parser::IsResolution(const string_t& str) {
 
 bool Parser::IsElementCategorySearchable(ElementCategory category) {
   switch (category) {
+    case kElementAnimeSeasonPrefix:
     case kElementAnimeType:
     case kElementAudioTerm:
     case kElementDeviceCompatibility:

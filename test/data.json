@@ -1269,5 +1269,19 @@
 		"release_group": "Watakushi",
 		"release_version": "2",
 		"video_resolution": "720p"
+	},
+	{
+		"episode_number": "01",
+		"episode_title": "Land of Visible Pain",
+		"file_extension": "mkv",
+		"file_name": "01 - Land of Visible Pain.mkv"
+	},
+	{
+		"anime_season": "2",
+		"anime_title": "Ore no Imouto ga Konnani Kawaii Wake ga Nai.",
+		"episode_number": "14",
+		"file_name": "Episode 14 Ore no Imouto ga Konnani Kawaii Wake ga Nai. (saison 2) VOSTFR",
+		"id": 13659,
+		"language": "VOSTFR"
 	}
 ]

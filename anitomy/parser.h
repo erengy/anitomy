@@ -41,7 +41,6 @@ private:
   void SearchForAnimeTitle();
   void SearchForReleaseGroup();
   void SearchForEpisodeTitle();
-  void SearchForAnimeSeason();
   void SearchForAnimeYear();
 
   bool SearchForEpisodePatterns(std::vector<size_t>& tokens);
@@ -63,6 +62,7 @@ private:
   bool SetEpisodeNumber(const string_t& number, Token& token, bool validate);
 
   size_t FindNumberInString(const string_t& str);
+  bool IsAnimeSeasonKeyword(const token_iterator_t token, const string_t& keyword);
   bool IsCrc32(const string_t& str);
   bool IsDashCharacter(const string_t& str);
   bool IsOrdinalNumber(const string_t& word);

@@ -34,7 +34,6 @@ Parser::Parser(Elements& elements, const Options& options,
 bool Parser::Parse() {
   SearchForKeywords();
 
-  SearchForAnimeSeason();
   SearchForAnimeYear();
 
   if (options_.parse_episode_number)
@@ -55,7 +54,9 @@ bool Parser::Parse() {
 ////////////////////////////////////////////////////////////////////////////////
 
 void Parser::SearchForKeywords() {
-  for (auto& token : tokens_) {
+  for (auto it = tokens_.begin(); it != tokens_.end(); ++it) {
+    auto& token = *it;
+
     if (token.category != kUnknown)
       continue;
 
@@ -82,7 +83,9 @@ void Parser::SearchForKeywords() {
       bool add_keyword = false;
       KeywordOptions options;
 
-      if (category == kElementFileChecksum) {
+      if (category == kElementAnimeSeasonPrefix) {
+        add_keyword = IsAnimeSeasonKeyword(it, keyword);
+      } else if (category == kElementFileChecksum) {
         add_keyword = IsCrc32(word);
       } else if (category == kElementVideoResolution) {
         add_keyword = IsResolution(word);
@@ -247,34 +250,6 @@ void Parser::SearchForEpisodeTitle() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
-void Parser::SearchForAnimeSeason() {
-  auto set_anime_season = [&](token_iterator_t token, token_iterator_t other) {
-    elements_.insert(kElementAnimeSeason, other->content);
-    token->category = kIdentifier;
-    other->category = kIdentifier;
-  };
-
-  for (auto token = tokens_.begin(); token != tokens_.end(); ++token) {
-    if (token->category != kUnknown ||
-        !IsStringEqualTo(token->content, L"Season"))
-      continue;
-
-    auto previous_token = FindPreviousToken(tokens_, token, kFlagNotDelimiter);
-    if (previous_token != tokens_.end() &&
-        IsOrdinalNumber(previous_token->content)) {
-      set_anime_season(token, previous_token);
-      return;
-    }
-
-    auto next_token = FindNextToken(tokens_, token, kFlagNotDelimiter);
-    if (next_token != tokens_.end() &&
-        IsNumericString(next_token->content)) {
-      set_anime_season(token, next_token);
-      return;
-    }
-  }
-}
 
 void Parser::SearchForAnimeYear() {
   for (auto token = tokens_.begin(); token != tokens_.end(); ++token) {
