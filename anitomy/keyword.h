@@ -66,7 +66,6 @@ private:
 
   keyword_container_t file_extensions_;
   keyword_container_t keys_;
-  std::pair<size_t, size_t> length_min_max_;
 };
 
 extern KeywordManager keyword_manager;
