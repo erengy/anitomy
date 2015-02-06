@@ -33,6 +33,21 @@ size_t Parser::FindNumberInString(const string_t& str) {
   } else {
     return it - str.begin();
   }
+string_t Parser::GetNumberFromOrdinal(const string_t& word) {
+  static const std::map<string_t, string_t> ordinals{
+      {L"1st", L"1"}, {L"First", L"1"},
+      {L"2nd", L"2"}, {L"Second", L"2"},
+      {L"3rd", L"3"}, {L"Third", L"3"},
+      {L"4th", L"4"}, {L"Fourth", L"4"},
+      {L"5th", L"5"}, {L"Fifth", L"5"},
+      {L"6th", L"6"}, {L"Sixth", L"6"},
+      {L"7th", L"7"}, {L"Seventh", L"7"},
+      {L"8th", L"8"}, {L"Eighth", L"8"},
+      {L"9th", L"9"}, {L"Ninth", L"9"},
+  };
+
+  auto it = ordinals.find(word);
+  return it != ordinals.end() ? it->second : string_t();
 }
 
 bool Parser::IsCrc32(const string_t& str) {
@@ -49,14 +64,6 @@ bool Parser::IsDashCharacter(const string_t& str) {
   return result != dashes.end();
 }
 
-bool Parser::IsOrdinalNumber(const string_t& word) {
-  using namespace std::regex_constants;
-
-  const std::basic_regex<char_t> pattern(
-      L"1st|2nd|3rd|[4-9]th|first|second|third|fourth|fifth",
-      icase | nosubs | optimize);
-
-  return std::regex_search(word, pattern, match_any | match_continuous);
 }
 
 bool Parser::IsResolution(const string_t& str) {
@@ -89,23 +96,26 @@ bool Parser::IsResolution(const string_t& str) {
 ////////////////////////////////////////////////////////////////////////////////
 
 bool Parser::CheckAnimeSeasonKeyword(const token_iterator_t token) {
-  auto set_anime_season = [&](token_iterator_t token, token_iterator_t other) {
-    elements_.insert(kElementAnimeSeason, other->content);
-    token->category = kIdentifier;
-    other->category = kIdentifier;
+  auto set_anime_season = [&](token_iterator_t first, token_iterator_t second,
+                              const string_t& content) {
+    elements_.insert(kElementAnimeSeason, content);
+    first->category = kIdentifier;
+    second->category = kIdentifier;
   };
 
   auto previous_token = FindPreviousToken(tokens_, token, kFlagNotDelimiter);
-  if (previous_token != tokens_.end() &&
-      IsOrdinalNumber(previous_token->content)) {
-    set_anime_season(token, previous_token);
-    return true;
+  if (previous_token != tokens_.end()) {
+    auto number = GetNumberFromOrdinal(previous_token->content);
+    if (!number.empty()) {
+      set_anime_season(previous_token, token, number);
+      return true;
+    }
   }
 
   auto next_token = FindNextToken(tokens_, token, kFlagNotDelimiter);
   if (next_token != tokens_.end() &&
       IsNumericString(next_token->content)) {
-    set_anime_season(token, next_token);
+    set_anime_season(token, next_token, next_token->content);
     return true;
   }
 

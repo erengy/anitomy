@@ -69,6 +69,7 @@
 		"file_checksum": "3B65D1E6",
 		"file_extension": "mkv",
 		"file_name": "[Coalgirls]_Toradora_ED2_(704x480_DVD_AAC)_[3B65D1E6].mkv",
+		"id": 4224,
 		"release_group": "Coalgirls",
 		"source": "DVD",
 		"video_resolution": "704x480"
@@ -402,7 +403,7 @@
 		"episode_number": "01",
 		"file_extension": "mkv",
 		"file_name": "[FuktLogik][Sayonara_Zetsubou_Sensei][01][DVDRip][x264_AC3].mkv",
-		"id": 6377,
+		"id": 2605,
 		"release_group": "FuktLogik",
 		"source": "DVDRip",
 		"video_term": "x264"
@@ -528,7 +529,7 @@
 		"release_group": "RNA"
 	},
 	{
-		"anime_season": "2nd",
+		"anime_season": "2",
 		"anime_title": "Hayate no Gotoku",
 		"episode_number": "24",
 		"file_name": "Hayate no Gotoku 2nd Season 24 (Blu-Ray 1080p) [Chihiro]",
@@ -556,7 +557,7 @@
 		"id": 60
 	},
 	{
-		"anime_season": "2nd",
+		"anime_season": "2",
 		"anime_title": "Kimi ni Todoke",
 		"episode_number": "00",
 		"file_checksum": "BF735BC4",

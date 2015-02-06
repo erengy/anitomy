@@ -61,9 +61,9 @@ private:
   bool SetEpisodeNumber(const string_t& number, Token& token, bool validate);
 
   size_t FindNumberInString(const string_t& str);
+  string_t GetNumberFromOrdinal(const string_t& word);
   bool IsCrc32(const string_t& str);
   bool IsDashCharacter(const string_t& str);
-  bool IsOrdinalNumber(const string_t& word);
   bool IsResolution(const string_t& str);
   bool IsElementCategorySearchable(ElementCategory category);
   bool IsElementCategorySingular(ElementCategory category);
