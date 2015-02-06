@@ -25,14 +25,14 @@
 
 namespace anitomy {
 
+const string_t kDashes = L"-\u2010\u2011\u2012\u2013\u2014\u2015";
+const string_t kDashesWithSpace = L" -\u2010\u2011\u2012\u2013\u2014\u2015";
+
 size_t Parser::FindNumberInString(const string_t& str) {
   auto it = std::find_if(str.begin(), str.end(), IsNumericChar);
+  return it == str.end() ? str.npos : (it - str.begin());
+}
 
-  if (it == str.end()) {
-    return str.npos;
-  } else {
-    return it - str.begin();
-  }
 string_t Parser::GetNumberFromOrdinal(const string_t& word) {
   static const std::map<string_t, string_t> ordinals{
       {L"1st", L"1"}, {L"First", L"1"},
@@ -58,12 +58,8 @@ bool Parser::IsDashCharacter(const string_t& str) {
   if (str.size() != 1)
     return false;
 
-  const string_t dashes = L"-\u2010\u2011\u2012\u2013\u2014\u2015";
-
-  auto result = std::find(dashes.begin(), dashes.end(), str.front());
-  return result != dashes.end();
-}
-
+  auto result = std::find(kDashes.begin(), kDashes.end(), str.front());
+  return result != kDashes.end();
 }
 
 bool Parser::IsResolution(const string_t& str) {
@@ -217,9 +213,10 @@ void Parser::BuildElement(ElementCategory category, bool keep_delimiters,
   }
 
   if (!keep_delimiters)
-    TrimString(element, L" -\u2010\u2011\u2012\u2013\u2014\u2015");
+    TrimString(element, kDashesWithSpace.c_str());
 
-  elements_.insert(category, element);
+  if (!element.empty())
+    elements_.insert(category, element);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
