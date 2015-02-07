@@ -285,7 +285,6 @@ bool Parser::SearchForLastNumber(std::vector<size_t>& tokens) {
     if (previous_token != tokens_.end() &&
         previous_token->category == kUnknown &&
         IsStringEqualTo(previous_token->content, L"Movie")) {
-      elements_.insert(kElementAnimeType, previous_token->content);
       continue;
     }
 

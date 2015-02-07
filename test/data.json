@@ -982,6 +982,7 @@
 	},
 	{
 		"anime_title": "Evangelion Shin Gekijouban Q",
+		"anime_type": "Gekijouban",
 		"audio_term": [
 			"FLACx2",
 			"5.1ch"
@@ -996,6 +997,7 @@
 	},
 	{
 		"anime_title": "Evangelion The New Movie Q",
+		"anime_type": "Movie",
 		"audio_term": "AACx2",
 		"file_extension": "mp4",
 		"file_name": "Evangelion The New Movie Q (BD 1280x720 AVC AACx2 [5.1+2.0]).mp4",

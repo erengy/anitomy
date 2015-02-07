@@ -47,7 +47,7 @@ KeywordManager::KeywordManager() {
       L"SAISON", L"SEASON"});
 
   Add(kElementAnimeType, options_unsafe, {
-      L"OAV", L"ONA", L"OVA", L"TV",
+      L"GEKIJOUBAN", L"MOVIE", L"OAV", L"ONA", L"OVA", L"TV",
       L"ED", L"ENDING", L"NCED", L"NCOP", L"OP", L"OPENING", L"PV"});
 
   Add(kElementAudioTerm, options_safe, {
