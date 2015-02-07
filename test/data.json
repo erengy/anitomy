@@ -1292,5 +1292,16 @@
 		"file_name": "Episode 14 Ore no Imouto ga Konnani Kawaii Wake ga Nai. (saison 2) VOSTFR",
 		"id": 13659,
 		"language": "VOSTFR"
+	},
+	{
+		"anime_title": "Machine-Doll wa Kizutsukanai",
+		"episode_number": "01",
+		"episode_title": "Facing ''Cannibal Candy'' I",
+		"file_checksum": "B99C8DED",
+		"file_extension": "mkv",
+		"file_name": "[Zom-B] Machine-Doll wa Kizutsukanai - 01 - Facing ''Cannibal Candy'' I (kuroi, FFF remux) [B99C8DED].mkv",
+		"id": 17247,
+		"release_information": "remux",
+		"release_group": "Zom-B"
 	}
 ]
