@@ -65,9 +65,9 @@ KeywordManager::KeywordManager() {
       L"ANDROID"});
 
   Add(kElementEpisodePrefix, options_safe, {
-      L"E", L"EP", L"EP.", L"EPS", L"EPS.", L"EPISODE", L"EPISODE.",
+      L"E", L"EP", L"EP.", L"EPS", L"EPS.", L"EPISODE", L"EPISODE.", L"EPISODES",
       L"VOL", L"VOL.", L"VOLUME",
-      L"EPISODIO", L"FOLGE", L"\x7B2C"});
+      L"CAPITULO", L"EPISODIO", L"FOLGE", L"\x7B2C"});
 
   Add(kElementFileExtension, options_safe, {
       L"3GP", L"AVI", L"DIVX", L"FLV", L"M2TS", L"MKV", L"MOV", L"MP4", L"MPG",
