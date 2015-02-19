@@ -86,6 +86,8 @@ public:
   // Modifiers
   void clear();
   void insert(ElementCategory category, const string_t& value);
+  void erase(ElementCategory category);
+  element_iterator_t erase(element_iterator_t iterator);
 
   // Lookup
   size_t count(ElementCategory category) const;

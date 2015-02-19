@@ -107,6 +107,17 @@ void Elements::insert(ElementCategory category, const string_t& value) {
     elements_.push_back(std::make_pair(category, value));
 }
 
+void Elements::erase(ElementCategory category) {
+  elements_.erase(std::remove_if(elements_.begin(), elements_.end(),
+      [&](const element_pair_t& element) {
+        return element.first == category;
+      }));
+}
+
+element_iterator_t Elements::erase(element_iterator_t iterator) {
+  return elements_.erase(iterator);
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 size_t Elements::count(ElementCategory category) const {
