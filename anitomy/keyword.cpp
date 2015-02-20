@@ -86,7 +86,7 @@ KeywordManager::KeywordManager() {
       L"THORA"});
 
   Add(kElementReleaseInformation, options_safe, {
-      L"BATCH", L"COMPLETE", L"REMUX"});
+      L"BATCH", L"COMPLETE", L"PATCH", L"REMUX"});
   Add(kElementReleaseInformation, options_unsafe, {
       L"END", L"FINAL"});  // e.g. "The End of Evangelion", "Final Approach"
 

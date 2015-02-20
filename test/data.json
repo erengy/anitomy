@@ -1309,5 +1309,16 @@
 		"file_extension": "mkv",
 		"file_name": "The iDOLM@STER 765 Pro to Iu Monogatari.mkv",
 		"id": 11889
+	},
+	{
+		"anime_title": "Darker than Black - Gemini of the Meteor",
+		"episode_number": "01",
+		"file_checksum": "65274FDE",
+		"file_extension": "7z",
+		"file_name": "[Yuurisan-Subs]_Darker_than_Black_-_Gemini_of_the_Meteor_-_01v2_[65274FDE].patch.7z",
+		"id": 6573,
+		"release_information": "patch",
+		"release_group": "Yuurisan-Subs",
+		"release_version": "2"
 	}
 ]
