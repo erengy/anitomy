@@ -1333,5 +1333,34 @@
 		"release_group": "Coalgirls",
 		"source": "Blu-ray",
 		"video_resolution": "1280x720"
+	},
+	{
+		"anime_title": "Koi Kaze",
+		"audio_term": "Dual Audio",
+		"episode_number": "01",
+		"file_checksum": "c13cefe0",
+		"file_extension": "mkv",
+		"file_name": "[GrimRipper] Koi Kaze [Dual Audio] Ep01 (c13cefe0).mkv",
+		"id": 634,
+		"release_group": "GrimRipper"
+	},
+	{
+		"anime_title": "Gintama",
+		"episode_number": "111C",
+		"file_extension": "mkv",
+		"file_name": "[HorribleSubs] Gintama - 111C [1080p].mkv",
+		"id": 918,
+		"release_group": "HorribleSubs",
+		"video_resolution": "1080p"
+	},
+	{
+		"anime_title": "Hidamari Sketch x365",
+		"episode_number": "04.1",
+		"file_checksum": "B6CE8458",
+		"file_extension": "mkv",
+		"file_name": "[SpoonSubs]_Hidamari_Sketch_x365_-_04.1_(DVD)[B6CE8458].mkv",
+		"id": 3604,
+		"release_group": "SpoonSubs",
+		"source": "DVD"
 	}
 ]

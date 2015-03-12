@@ -188,6 +188,22 @@ bool Parser::MatchTypeAndEpisodePattern(const string_t& word, Token& token) {
   return false;
 }
 
+bool Parser::MatchPartialEpisodePattern(const string_t& word, Token& token) {
+  auto it = std::find_if_not(word.begin(), word.end(), IsNumericChar);
+  auto suffix_length = std::distance(it, word.end());
+
+  auto is_valid_suffix = [](const char_t c) {
+    return (c >= L'A' && c <= L'F') ||
+           (c >= L'a' && c <= L'f');
+  };
+
+  if (suffix_length == 1 && is_valid_suffix(*it))
+    if (SetEpisodeNumber(word, token, true))
+      return true;
+
+  return false;
+}
+
 bool Parser::MatchJapaneseCounterPattern(const string_t& word, Token& token) {
   if (word.back() != L'\u8A71')
     return false;
@@ -228,6 +244,10 @@ bool Parser::MatchEpisodePatterns(string_t word, Token& token) {
   // e.g. "ED1", "OP4a", "OVA2"
   if (!numeric_front)
     if (MatchTypeAndEpisodePattern(word, token))
+      return true;
+  // e.g. "4a", "111C"
+  if (numeric_front && !numeric_back)
+    if (MatchPartialEpisodePattern(word, token))
       return true;
   // U+8A71 is used as counter for stories, episodes of TV series, etc.
   if (numeric_front)
