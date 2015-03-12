@@ -66,6 +66,8 @@ public:
   Token();
   Token(TokenCategory category, const string_t& content, bool enclosed);
 
+  bool operator==(const Token& token) const;
+
   TokenCategory category;
   string_t content;
   bool enclosed;

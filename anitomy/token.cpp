@@ -45,6 +45,12 @@ Token::Token(TokenCategory category, const string_t& content, bool enclosed)
       enclosed(enclosed) {
 }
 
+bool Token::operator==(const Token& token) const {
+  return category == token.category &&
+         content == token.content &&
+         enclosed == token.enclosed;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 static bool CheckTokenFlags(const Token& token, unsigned int flags) {

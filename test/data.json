@@ -62,7 +62,7 @@
 		"video_term": "h264"
 	},
 	{
-		"anime_title": "Toradora",
+		"anime_title": "Toradora ED",
 		"anime_type": "ED",
 		"audio_term": "AAC",
 		"episode_number": "2",
@@ -1226,7 +1226,7 @@
 		"video_resolution": "1280×720"
 	},
 	{
-		"anime_title": "Bakemonogatari",
+		"anime_title": "Bakemonogatari OP",
 		"anime_type": "OP",
 		"audio_term": "FLAC",
 		"episode_number": "4a",
@@ -1320,5 +1320,18 @@
 		"release_information": "patch",
 		"release_group": "Yuurisan-Subs",
 		"release_version": "2"
+	},
+	{
+		"anime_title": "Fate Zero OVA",
+		"anime_type": "OVA",
+		"audio_term": "FLAC",
+		"episode_number": "3.5",
+		"file_checksum": "5F5AD026",
+		"file_extension": "mkv",
+		"file_name": "[Coalgirls]_Fate_Zero_OVA3.5_(1280x720_Blu-ray_FLAC)_[5F5AD026].mkv",
+		"id": 10087,
+		"release_group": "Coalgirls",
+		"source": "Blu-ray",
+		"video_resolution": "1280x720"
 	}
 ]

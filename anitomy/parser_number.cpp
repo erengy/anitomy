@@ -29,7 +29,7 @@ namespace anitomy {
 bool Parser::SetEpisodeNumber(const string_t& number, Token& token,
                               bool validate) {
   if (validate)
-    if (StringToInt(token.content) > kEpisodeNumberMax)
+    if (StringToInt(number) > kEpisodeNumberMax)
       return false;
 
   elements_.insert(kElementEpisodeNumber, number);
@@ -162,14 +162,27 @@ bool Parser::MatchTypeAndEpisodePattern(const string_t& word, Token& token) {
     return false;
 
   size_t number_begin = FindNumberInString(word);
-  auto prefix = keyword_manager.Normalize(word.substr(0, number_begin));
+  auto prefix = word.substr(0, number_begin);
 
-  if (keyword_manager.Find(kElementAnimeType, prefix)) {
-    elements_.insert(kElementAnimeType, word.substr(0, number_begin));
+  ElementCategory category = kElementAnimeType;
+  KeywordOptions options;
+
+  if (keyword_manager.Find(keyword_manager.Normalize(prefix),
+                           category, options)) {
+    elements_.insert(kElementAnimeType, prefix);
     auto number = word.substr(number_begin);
-    if (!MatchEpisodePatterns(number, token))
-      if (SetEpisodeNumber(number, token, true))
-        return true;
+    if (MatchEpisodePatterns(number, token) ||
+        SetEpisodeNumber(number, token, true)) {
+      auto it = std::find(tokens_.begin(), tokens_.end(), token);
+      if (it != tokens_.end()) {
+        // Split token (we do this last in order to avoid invalidating our
+        // token reference earlier)
+        token.content = number;
+        tokens_.insert(it, Token(options.safe ? kIdentifier : kUnknown,
+                                 prefix, token.enclosed));
+      }
+      return true;
+    }
   }
 
   return false;
