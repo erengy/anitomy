@@ -42,13 +42,15 @@ Keyword::Keyword(ElementCategory category, const KeywordOptions& options)
 KeywordManager::KeywordManager() {
   const KeywordOptions options_safe(true, true);
   const KeywordOptions options_unsafe(false, true);
-  const KeywordOptions options_invalid(true, false);
+  const KeywordOptions options_safe_invalid(true, false);
+  const KeywordOptions options_unsafe_invalid(false, false);
 
   Add(kElementAnimeSeasonPrefix, options_unsafe, {
       L"SAISON", L"SEASON"});
 
   Add(kElementAnimeType, options_unsafe, {
-      L"GEKIJOUBAN", L"MOVIE", L"OAV", L"ONA", L"OVA", L"TV",
+      L"GEKIJOUBAN", L"MOVIE", L"OAV", L"ONA", L"OVA", L"TV"});
+  Add(kElementAnimeType, options_unsafe_invalid, {
       L"ED", L"ENDING", L"NCED", L"NCOP", L"OP", L"OPENING", L"PV"});
 
   Add(kElementAudioTerm, options_safe, {
@@ -73,7 +75,7 @@ KeywordManager::KeywordManager() {
   Add(kElementFileExtension, options_safe, {
       L"3GP", L"AVI", L"DIVX", L"FLV", L"M2TS", L"MKV", L"MOV", L"MP4", L"MPG",
       L"OGM", L"RM", L"RMVB", L"WEBM", L"WMV"});
-  Add(kElementFileExtension, options_invalid, {
+  Add(kElementFileExtension, options_safe_invalid, {
       L"7Z", L"RAR", L"ZIP",
       L"ASS", L"SRT"});
 
