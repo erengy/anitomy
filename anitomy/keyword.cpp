@@ -72,7 +72,7 @@ KeywordManager::KeywordManager() {
 
   Add(kElementFileExtension, options_safe, {
       L"3GP", L"AVI", L"DIVX", L"FLV", L"M2TS", L"MKV", L"MOV", L"MP4", L"MPG",
-      L"OGM", L"RM", L"RMVB", L"WMV"});
+      L"OGM", L"RM", L"RMVB", L"WEBM", L"WMV"});
   Add(kElementFileExtension, options_invalid, {
       L"7Z", L"RAR", L"ZIP",
       L"ASS", L"SRT"});
