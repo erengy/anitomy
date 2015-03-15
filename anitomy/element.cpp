@@ -108,10 +108,11 @@ void Elements::insert(ElementCategory category, const string_t& value) {
 }
 
 void Elements::erase(ElementCategory category) {
-  elements_.erase(std::remove_if(elements_.begin(), elements_.end(),
+  auto iterator = std::remove_if(elements_.begin(), elements_.end(),
       [&](const element_pair_t& element) {
         return element.first == category;
-      }));
+      });
+  elements_.erase(iterator, elements_.end());
 }
 
 element_iterator_t Elements::erase(element_iterator_t iterator) {
