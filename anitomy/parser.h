@@ -56,6 +56,7 @@ private:
   bool MatchMultiEpisodePattern(const string_t& word, Token& token);
   bool MatchSeasonAndEpisodePattern(const string_t& word, Token& token);
   bool MatchTypeAndEpisodePattern(const string_t& word, Token& token);
+  bool MatchFractionalEpisodePattern(const string_t& word, Token& token);
   bool MatchPartialEpisodePattern(const string_t& word, Token& token);
   bool MatchJapaneseCounterPattern(const string_t& word, Token& token);
 

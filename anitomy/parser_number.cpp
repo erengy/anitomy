@@ -188,6 +188,19 @@ bool Parser::MatchTypeAndEpisodePattern(const string_t& word, Token& token) {
   return false;
 }
 
+bool Parser::MatchFractionalEpisodePattern(const string_t& word, Token& token) {
+  // We don't allow any fractional part other than ".5", because there are cases
+  // where such a number is a part of the anime title (e.g. "Evangelion: 1.11",
+  // "Tokyo Magnitude 8.0") or a keyword (e.g. "5.1").
+  static const regex_t pattern(L"\\d+\\.5");
+
+  if (std::regex_match(word, pattern))
+    if (SetEpisodeNumber(word, token, true))
+      return true;
+
+  return false;
+}
+
 bool Parser::MatchPartialEpisodePattern(const string_t& word, Token& token) {
   auto it = std::find_if_not(word.begin(), word.end(), IsNumericChar);
   auto suffix_length = std::distance(it, word.end());
@@ -244,6 +257,10 @@ bool Parser::MatchEpisodePatterns(string_t word, Token& token) {
   // e.g. "ED1", "OP4a", "OVA2"
   if (!numeric_front)
     if (MatchTypeAndEpisodePattern(word, token))
+      return true;
+  // e.g. "07.5"
+  if (numeric_front && numeric_back)
+    if (MatchFractionalEpisodePattern(word, token))
       return true;
   // e.g. "4a", "111C"
   if (numeric_front && !numeric_back)

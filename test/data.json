@@ -450,7 +450,8 @@
 		"video_term": "H264"
 	},
 	{
-		"anime_title": "Nurse Witch Komugi-chan Magikarte 02.5",
+		"anime_title": "Nurse Witch Komugi-chan Magikarte",
+		"episode_number": "02.5",
 		"file_checksum": "902BB314",
 		"file_extension": "mkv",
 		"file_name": "[EroGaKi-Team]_Nurse_Witch_Komugi-chan_Magikarte_02.5_[902BB314].mkv",
@@ -1362,5 +1363,47 @@
 		"id": 3604,
 		"release_group": "SpoonSubs",
 		"source": "DVD"
+	},
+	{
+		"episode_number": "01",
+		"episode_title": "The Boy in the Iceberg",
+		"file_name": "Ep. 01 - The Boy in the Iceberg"
+	},
+	{
+		"anime_season": "3",
+		"anime_title": "Kuroko no Basuke",
+		"episode_number": "01",
+		"file_checksum": "619C57A0",
+		"file_extension": "mkv",
+		"file_name": "[Hatsuyuki]_Kuroko_no_Basuke_S3_-_01_(51)_[720p][10bit][619C57A0].mkv",
+		"id": 24415,
+		"release_group": "Hatsuyuki",
+		"video_resolution": "720p",
+		"video_term": "10bit"
+	},
+	{
+		"anime_title": "Sora no Woto",
+		"audio_term": "AAC",
+		"episode_number": "07.5",
+		"file_checksum": "C37580F8",
+		"file_extension": "mkv",
+		"file_name": "[Elysium]Sora.no.Woto.EP07.5(BD.720p.AAC)[C37580F8].mkv",
+		"id": 6802,
+		"release_group": "Elysium",
+		"source": "BD",
+		"video_resolution": "720p"
+	},
+	{
+		"anime_title": "Sora no Woto",
+		"audio_term": "AAC",
+		"episode_number": "07.5",
+		"episode_title": "Drinking Party - Fortress Battle",
+		"file_checksum": "F7DF16F7",
+		"file_extension": "mkv",
+		"file_name": "[Zurako] Sora no Woto - 07.5 - Drinking Party - Fortress Battle (BD 1080p AAC) [F7DF16F7].mkv",
+		"id": 6802,
+		"release_group": "Zurako",
+		"source": "BD",
+		"video_resolution": "1080p"
 	}
 ]
