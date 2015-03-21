@@ -1405,5 +1405,14 @@
 		"release_group": "Zurako",
 		"source": "BD",
 		"video_resolution": "1080p"
+	},
+	{
+		"anime_title": "Maji de Watashi ni Koi Shinasai!!",
+		"episode_number": "02",
+		"file_extension": "mkv",
+		"file_name": "[Hiryuu] Maji de Watashi ni Koi Shinasai!! - 02 [720].mkv",
+		"id": 10213,
+		"release_group": "Hiryuu",
+		"video_resolution": "720"
 	}
 ]

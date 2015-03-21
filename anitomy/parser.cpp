@@ -34,7 +34,7 @@ Parser::Parser(Elements& elements, const Options& options,
 bool Parser::Parse() {
   SearchForKeywords();
 
-  SearchForAnimeYear();
+  SearchForIsolatedNumbers();
 
   if (options_.parse_episode_number &&
       elements_.empty(kElementEpisodeNumber))
@@ -252,7 +252,7 @@ void Parser::SearchForEpisodeTitle() {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void Parser::SearchForAnimeYear() {
+void Parser::SearchForIsolatedNumbers() {
   for (auto token = tokens_.begin(); token != tokens_.end(); ++token) {
     if (token->category != kUnknown ||
         !IsNumericString(token->content) ||
@@ -260,10 +260,26 @@ void Parser::SearchForAnimeYear() {
       continue;
 
     auto number = StringToInt(token->content);
+
+    // Anime year
     if (number >= kAnimeYearMin && number <= kAnimeYearMax) {
-      elements_.insert(kElementAnimeYear, token->content);
-      token->category = kIdentifier;
-      return;
+      if (elements_.empty(kElementAnimeYear)) {
+        elements_.insert(kElementAnimeYear, token->content);
+        token->category = kIdentifier;
+        continue;
+      }
+    }
+
+    // Video resolution
+    if (number == 480 || number == 720 || number == 1080) {
+      // If these numbers are isolated, it's more likely for them to be the
+      // video resolution rather than the episode number. Some fansub groups
+      // use these without the "p" suffix.
+      if (elements_.empty(kElementVideoResolution)) {
+        elements_.insert(kElementVideoResolution, token->content);
+        token->category = kIdentifier;
+        continue;
+      }
     }
   }
 }
