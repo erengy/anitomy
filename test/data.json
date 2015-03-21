@@ -1414,5 +1414,21 @@
 		"id": 10213,
 		"release_group": "Hiryuu",
 		"video_resolution": "720"
+	},
+	{
+		"anime_title": "Uchuu no Stellvia",
+		"audio_term": "AAC",
+		"episode_number": "14",
+		"file_checksum": "06EE7355",
+		"file_extension": "mkv",
+		"file_name": "[Kira-Fansub] Uchuu no Stellvia ep 14 (BD H264 1280x960 24fps AAC) [06EE7355].mkv",
+		"id": 113,
+		"release_group": "Kira-Fansub",
+		"source": "BD",
+		"video_resolution": "1280x960",
+		"video_term": [
+			"H264",
+			"24fps"
+		]
 	}
 ]

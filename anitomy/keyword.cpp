@@ -110,6 +110,8 @@ KeywordManager::KeywordManager() {
       L"SUB", L"SUBBED", L"SUBTITLED"});
 
   Add(kElementVideoTerm, options_safe, {
+      // Frame rate
+      L"23.976FPS", L"24FPS", L"29.97FPS", L"30FPS", L"60FPS",
       // Video codec
       L"8BIT", L"8-BIT", L"10BIT", L"10-BIT", L"HI10P",
       L"H264", L"H.264", L"X264", L"X.264",
