@@ -116,7 +116,7 @@ bool Parser::MatchSingleEpisodePattern(const string_t& word, Token& token) {
 }
 
 bool Parser::MatchMultiEpisodePattern(const string_t& word, Token& token) {
-  static const regex_t pattern(L"(\\d{1,3})[-&+](\\d{1,3})(?:v(\\d))?");
+  static const regex_t pattern(L"(\\d{1,3})[-~&+](\\d{1,3})(?:v(\\d))?");
   regex_match_results_t match_results;
 
   if (std::regex_match(word, match_results, pattern)) {
