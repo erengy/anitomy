@@ -150,7 +150,11 @@ bool KeywordManager::Find(const string_t& str, ElementCategory& category,
   auto& keys = category == kElementFileExtension ? file_extensions_ : keys_;
   auto it = keys.find(str);
   if (it != keys.end()) {
-    category = it->second.category;
+    if (category == kElementUnknown) {
+      category = it->second.category;
+    } else if (it->second.category != category) {
+      return false;
+    }
     options = it->second.options;
     return true;
   }
