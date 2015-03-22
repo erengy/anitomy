@@ -65,6 +65,8 @@ public:
 private:
   typedef std::map<string_t, Keyword> keyword_container_t;
 
+  keyword_container_t& GetKeywordContainer(ElementCategory category) const;
+
   keyword_container_t file_extensions_;
   keyword_container_t keys_;
 };

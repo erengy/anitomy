@@ -128,19 +128,18 @@ KeywordManager::KeywordManager() {
 void KeywordManager::Add(ElementCategory category,
                          const KeywordOptions& options,
                          const std::initializer_list<string_t>& keywords) {
+  auto& keys = GetKeywordContainer(category);
   for (const auto& keyword : keywords) {
     if (keyword.empty())
       continue;
-    if (keys_.find(keyword) != keys_.end())
+    if (keys.find(keyword) != keys.end())
       continue;
-
-    auto& keys = category == kElementFileExtension ? file_extensions_ : keys_;
     keys.insert(std::make_pair(keyword, Keyword(category, options)));
   }
 }
 
 bool KeywordManager::Find(ElementCategory category, const string_t& str) const {
-  auto& keys = category == kElementFileExtension ? file_extensions_ : keys_;
+  const auto& keys = GetKeywordContainer(category);
   auto it = keys.find(str);
   if (it != keys.end() && it->second.category == category)
     return true;
@@ -150,7 +149,7 @@ bool KeywordManager::Find(ElementCategory category, const string_t& str) const {
 
 bool KeywordManager::Find(const string_t& str, ElementCategory& category,
                           KeywordOptions& options) const {
-  auto& keys = category == kElementFileExtension ? file_extensions_ : keys_;
+  const auto& keys = GetKeywordContainer(category);
   auto it = keys.find(str);
   if (it != keys.end()) {
     if (category == kElementUnknown) {
@@ -167,6 +166,13 @@ bool KeywordManager::Find(const string_t& str, ElementCategory& category,
 
 string_t KeywordManager::Normalize(const string_t& str) const {
   return StringToUpperCopy(str);
+}
+
+KeywordManager::keyword_container_t& KeywordManager::GetKeywordContainer(
+    ElementCategory category) const {
+  return category == kElementFileExtension ?
+      const_cast<keyword_container_t&>(file_extensions_) :
+      const_cast<keyword_container_t&>(keys_);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
