@@ -51,7 +51,9 @@ KeywordManager::KeywordManager() {
   Add(kElementAnimeType, options_unsafe, {
       L"GEKIJOUBAN", L"MOVIE", L"OAV", L"ONA", L"OVA", L"TV"});
   Add(kElementAnimeType, options_unsafe_invalid, {
-      L"ED", L"ENDING", L"NCED", L"NCOP", L"OP", L"OPENING", L"PV"});
+      L"ED", L"ENDING", L"NCED",
+      L"NCOP", L"OP", L"OPENING",
+      L"PREVIEW", L"PV"});
 
   Add(kElementAudioTerm, options_safe, {
       // Audio channels
@@ -76,7 +78,7 @@ KeywordManager::KeywordManager() {
       L"3GP", L"AVI", L"DIVX", L"FLV", L"M2TS", L"MKV", L"MOV", L"MP4", L"MPG",
       L"OGM", L"RM", L"RMVB", L"WEBM", L"WMV"});
   Add(kElementFileExtension, options_safe_invalid, {
-      L"AAC", L"AIFF", L"FLAC", L"M4A", L"MP3", L"OGG", L"WAV", L"WMA",
+      L"AAC", L"AIFF", L"FLAC", L"M4A", L"MP3", L"MKA", L"OGG", L"WAV", L"WMA",
       L"7Z", L"RAR", L"ZIP",
       L"ASS", L"SRT"});
 

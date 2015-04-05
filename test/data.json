@@ -1430,5 +1430,43 @@
 			"H264",
 			"24fps"
 		]
+	},
+	{
+		"anime_title": "Yosuga no Sora",
+		"anime_type": "Preview",
+		"audio_term": "FLAC",
+		"episode_number": "01",
+		"file_extension": "mkv",
+		"file_name": "[ANE] Yosuga no Sora - Ep01 Preview (Yorihime ver) [BDRip 1080p x264 FLAC].mkv",
+		"id": 8861,
+		"release_group": "ANE",
+		"source": "BDRip",
+		"video_resolution": "1080p",
+		"video_term": "x264"
+	},
+	{
+		"anime_title": "Myself Yourself",
+		"audio_term": "DD2.0",
+		"episode_number": "12",
+		"file_checksum": "CB2B37F1",
+		"file_extension": "mkv",
+		"file_name": "[B-G_&_m.3.3.w]_Myself_Yourself_12.DVD(H.264_DD2.0)_[CB2B37F1].mkv",
+		"id": 2926,
+		"release_group": "B-G_&_m.3.3.w",
+		"source": "DVD",
+		"video_term": "H.264"
+	},
+	{
+		"anime_title": "The Animatrix",
+		"audio_term": "DTS",
+		"episode_number": "08",
+		"episode_title": "A Detective Story",
+		"file_extension": "mkv",
+		"file_name": "The.Animatrix.08.A.Detective.Story.720p.BluRay.DTS.x264-ESiR.mkv",
+		"id": 1303,
+		"release_group": "ESiR",
+		"source": "BluRay",
+		"video_resolution": "720p",
+		"video_term": "x264"
 	}
 ]
