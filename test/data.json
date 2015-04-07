@@ -1468,5 +1468,43 @@
 		"source": "BluRay",
 		"video_resolution": "720p",
 		"video_term": "x264"
+	},
+	{
+		"anime_title": "Oreshura",
+		"episode_number": "01",
+		"episode_title": "The Start Of High School Life Is A War Zone",
+		"file_extension": "mkv",
+		"file_checksum": "211375E6",
+		"file_name": "[DmonHiro] Oreshura #01v2 - The Start Of High School Life Is A War Zone [BD, 720p] [211375E6].mkv",
+		"id": 14749,
+		"release_group": "DmonHiro",
+		"release_version": "2",
+		"source": "BD",
+		"video_resolution": "720p"
+	},
+	{
+		"anime_title": "Abarenbou Rikishi!! Matsutarou",
+		"audio_term": "AAC",
+		"episode_number": "04",
+		"file_extension": "mp4",
+		"file_name": "[모에-Raws] Abarenbou Rikishi!! Matsutarou #04 (ABC 1280x720 x264 AAC).mp4",
+		"id": 22831,
+		"release_group": "모에-Raws",
+		"video_resolution": "1280x720",
+		"video_term": "x264"
+	},
+	{
+		"anime_title": "Nekomonogatari (Black)",
+		"audio_term": "AAC",
+		"episode_number": [
+			"1",
+			"4"
+		],
+		"file_extension": "mp4",
+		"file_name": "[바카-Raws] Nekomonogatari (Black) #1-4 (BS11 1280x720 x264 AAC).mp4",
+		"id": 15689,
+		"release_group": "바카-Raws",
+		"video_resolution": "1280x720",
+		"video_term": "x264"
 	}
 ]

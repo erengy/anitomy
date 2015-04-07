@@ -217,6 +217,26 @@ bool Parser::MatchPartialEpisodePattern(const string_t& word, Token& token) {
   return false;
 }
 
+bool Parser::MatchNumberSignPattern(const string_t& word, Token& token) {
+  if (word.front() != L'#')
+    return false;
+
+  static const regex_t pattern(L"#(\\d{1,3})(?:[-~&+](\\d{1,3}))?(?:v(\\d))?");
+  regex_match_results_t match_results;
+
+  if (std::regex_match(word, match_results, pattern)) {
+    if (SetEpisodeNumber(match_results[1].str(), token, true)) {
+      if (match_results[2].matched)
+        SetEpisodeNumber(match_results[2].str(), token, false);
+      if (match_results[3].matched)
+        elements_.insert(kElementReleaseVersion, match_results[3].str());
+      return true;
+    }
+  }
+
+  return false;
+}
+
 bool Parser::MatchJapaneseCounterPattern(const string_t& word, Token& token) {
   if (word.back() != L'\u8A71')
     return false;
@@ -265,6 +285,10 @@ bool Parser::MatchEpisodePatterns(string_t word, Token& token) {
   // e.g. "4a", "111C"
   if (numeric_front && !numeric_back)
     if (MatchPartialEpisodePattern(word, token))
+      return true;
+  // e.g. "#01", "#02-03v2"
+  if (numeric_back)
+    if (MatchNumberSignPattern(word, token))
       return true;
   // U+8A71 is used as counter for stories, episodes of TV series, etc.
   if (numeric_front)

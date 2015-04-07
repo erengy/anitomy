@@ -58,6 +58,7 @@ private:
   bool MatchTypeAndEpisodePattern(const string_t& word, Token& token);
   bool MatchFractionalEpisodePattern(const string_t& word, Token& token);
   bool MatchPartialEpisodePattern(const string_t& word, Token& token);
+  bool MatchNumberSignPattern(const string_t& word, Token& token);
   bool MatchJapaneseCounterPattern(const string_t& word, Token& token);
 
   bool SetEpisodeNumber(const string_t& number, Token& token, bool validate);
