@@ -32,11 +32,11 @@ class TokenRange;
 
 class KeywordOptions {
 public:
-  KeywordOptions();
-  KeywordOptions(bool safe, bool valid);
+  KeywordOptions() {}
+  KeywordOptions(bool identifiable, bool valid);
 
-  bool safe;
-  bool valid;
+  bool identifiable = true;
+  bool valid = true;
 };
 
 class Keyword {

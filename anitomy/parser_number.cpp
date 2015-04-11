@@ -178,7 +178,7 @@ bool Parser::MatchTypeAndEpisodePattern(const string_t& word, Token& token) {
         // Split token (we do this last in order to avoid invalidating our
         // token reference earlier)
         token.content = number;
-        tokens_.insert(it, Token(options.safe ? kIdentifier : kUnknown,
+        tokens_.insert(it, Token(options.identifiable ? kIdentifier : kUnknown,
                                  prefix, token.enclosed));
       }
       return true;
