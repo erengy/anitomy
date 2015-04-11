@@ -40,12 +40,15 @@ KeywordManager::KeywordManager() {
   const KeywordOptions options_invalid(true, true, false);
   const KeywordOptions options_unidentifiable(false, true, true);
   const KeywordOptions options_unidentifiable_invalid(false, true, false);
+  const KeywordOptions options_unidentifiable_unsearchable(false, false, true);
 
   Add(kElementAnimeSeasonPrefix, options_unidentifiable, {
       L"SAISON", L"SEASON"});
 
   Add(kElementAnimeType, options_unidentifiable, {
       L"GEKIJOUBAN", L"MOVIE", L"OAV", L"ONA", L"OVA", L"TV"});
+  Add(kElementAnimeType, options_unidentifiable_unsearchable, {
+      L"SP"});  // e.g. "Yumeiro Patissiere SP Professional"
   Add(kElementAnimeType, options_unidentifiable_invalid, {
       L"ED", L"ENDING", L"NCED",
       L"NCOP", L"OP", L"OPENING",
@@ -56,7 +59,7 @@ KeywordManager::KeywordManager() {
       L"2CH", L"5.1", L"5.1CH", L"DTS", L"DTS-ES", L"DTS5.1", L"TRUEHD5.1",
       // Audio codec
       L"AAC", L"AACX2", L"AACX3", L"AACX4", L"AC3", L"FLAC", L"FLACX2",
-      L"FLACX3", L"FLACX4", L"MP3", L"OGG", L"VORBIS",
+      L"FLACX3", L"FLACX4", L"LOSSLESS", L"MP3", L"OGG", L"VORBIS",
       // Audio language
       L"DUALAUDIO", L"DUAL AUDIO"});
 

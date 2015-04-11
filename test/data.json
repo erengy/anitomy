@@ -1506,5 +1506,53 @@
 		"release_group": "바카-Raws",
 		"video_resolution": "1280x720",
 		"video_term": "x264"
+	},
+	{
+		"anime_title": "Tiger & Bunny",
+		"audio_term": "AAC",
+		"episode_number": "01",
+		"episode_title": "All's well that ends well.",
+		"file_checksum": "4A9AB85F",
+		"file_extension": "mkv",
+		"file_name": "[NinjaPanda] Tiger & Bunny #01 All's well that ends well. (v3, 1080p Hi10P, DA AAC) [4A9AB85F].mkv",
+		"id": 9941,
+		"release_group": "NinjaPanda",
+		"release_version": "3",
+		"video_resolution": "1080p",
+		"video_term": "Hi10P"
+	},
+	{
+		"anime_title": "Neko no Ongaeshi",
+		"audio_term": "DualAudio",
+		"file_checksum": "0CDC2145",
+		"file_extension": "mkv",
+		"file_name": "Neko no Ongaeshi - [HQR.remux-DualAudio][NTV.1280x692.h264](0CDC2145).mkv",
+		"id": 597,
+		"release_group": "NinjaPanda",
+		"video_resolution": "1280x692",
+		"video_term": "h264"
+	},
+	{
+		"anime_title": "Memories Off 3.5",
+		"episode_number": "04",
+		"file_extension": "mkv",
+		"file_name": "[ReDone] Memories Off 3.5 - 04 (DVD 10-bit).mkv",
+		"id": 363,
+		"release_group": "ReDone",
+		"source": "DVD",
+		"video_term": "10-bit"
+	},
+	{
+		"anime_title": "Seirei Tsukai no Blade Dance - SP",
+		"anime_type": "SP",
+		"audio_term": "AAC",
+		"episode_number": "01",
+		"file_checksum": "F1FF8588",
+		"file_extension": "mkv",
+		"file_name": "[FFF] Seirei Tsukai no Blade Dance - SP01 [BD][720p-AAC][F1FF8588].mkv",
+		"id": 25285,
+		"release_group": "FFF",
+		"source": "BD",
+		"video_resolution": "720p"
 	}
 ]
