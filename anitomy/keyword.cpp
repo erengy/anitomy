@@ -25,8 +25,8 @@ namespace anitomy {
 
 KeywordManager keyword_manager;
 
-KeywordOptions::KeywordOptions(bool identifiable, bool valid)
-    : identifiable(identifiable), valid(valid) {
+KeywordOptions::KeywordOptions(bool identifiable, bool searchable, bool valid)
+    : identifiable(identifiable), searchable(searchable), valid(valid) {
 }
 
 Keyword::Keyword(ElementCategory category, const KeywordOptions& options)
@@ -37,9 +37,9 @@ Keyword::Keyword(ElementCategory category, const KeywordOptions& options)
 
 KeywordManager::KeywordManager() {
   const KeywordOptions options_default;
-  const KeywordOptions options_invalid(true, false);
-  const KeywordOptions options_unidentifiable(false, true);
-  const KeywordOptions options_unidentifiable_invalid(false, false);
+  const KeywordOptions options_invalid(true, true, false);
+  const KeywordOptions options_unidentifiable(false, true, true);
+  const KeywordOptions options_unidentifiable_invalid(false, true, false);
 
   Add(kElementAnimeSeasonPrefix, options_unidentifiable, {
       L"SAISON", L"SEASON"});

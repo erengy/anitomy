@@ -78,7 +78,7 @@ void Parser::SearchForKeywords() {
     if (keyword_manager.Find(keyword, category, options)) {
       if (!options_.parse_release_group && category == kElementReleaseGroup)
         continue;
-      if (!IsElementCategorySearchable(category))
+      if (!IsElementCategorySearchable(category) || !options.searchable)
         continue;
       if (IsElementCategorySingular(category) && !elements_.empty(category))
         continue;

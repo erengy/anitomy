@@ -33,9 +33,10 @@ class TokenRange;
 class KeywordOptions {
 public:
   KeywordOptions() {}
-  KeywordOptions(bool identifiable, bool valid);
+  KeywordOptions(bool identifiable, bool searchable, bool valid);
 
   bool identifiable = true;
+  bool searchable = true;
   bool valid = true;
 };
 
