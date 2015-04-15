@@ -1554,5 +1554,18 @@
 		"release_group": "FFF",
 		"source": "BD",
 		"video_resolution": "720p"
+	},
+	{
+		"anime_title": "Byousoku 5 Centimeter",
+		"audio_term": [
+			"2.0ch",
+			"AAC"
+		],
+		"file_name": "Byousoku 5 Centimeter [Blu-Ray][1920x1080 H.264][2.0ch AAC][SOFTSUBS]",
+		"id": 1689,
+		"source": "Blu-Ray",
+		"subtitles": "SOFTSUBS",
+		"video_resolution": "1920x1080",
+		"video_term": "H.264"
 	}
 ]

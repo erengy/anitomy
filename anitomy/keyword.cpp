@@ -56,7 +56,8 @@ KeywordManager::KeywordManager() {
 
   Add(kElementAudioTerm, options_default, {
       // Audio channels
-      L"2CH", L"5.1", L"5.1CH", L"DTS", L"DTS-ES", L"DTS5.1", L"TRUEHD5.1",
+      L"2.0CH", L"2CH", L"5.1", L"5.1CH", L"DTS", L"DTS-ES", L"DTS5.1",
+      L"TRUEHD5.1",
       // Audio codec
       L"AAC", L"AACX2", L"AACX3", L"AACX4", L"AC3", L"FLAC", L"FLACX2",
       L"FLACX3", L"FLACX4", L"LOSSLESS", L"MP3", L"OGG", L"VORBIS",
@@ -109,7 +110,7 @@ KeywordManager::KeywordManager() {
 
   Add(kElementSubtitles, options_default, {
       L"ASS", L"BIG5", L"DUB", L"DUBBED", L"HARDSUB", L"RAW", L"SOFTSUB",
-      L"SUB", L"SUBBED", L"SUBTITLED"});
+      L"SOFTSUBS", L"SUB", L"SUBBED", L"SUBTITLED"});
 
   Add(kElementVideoTerm, options_default, {
       // Frame rate
