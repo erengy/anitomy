@@ -46,7 +46,8 @@ bool Parser::Parse() {
       elements_.empty(kElementReleaseGroup))
     SearchForReleaseGroup();
 
-  if (options_.parse_episode_title)
+  if (options_.parse_episode_title &&
+      !elements_.empty(kElementEpisodeNumber))
     SearchForEpisodeTitle();
 
   return !elements_.empty(kElementAnimeTitle);

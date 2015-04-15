@@ -1567,5 +1567,20 @@
 		"subtitles": "SOFTSUBS",
 		"video_resolution": "1920x1080",
 		"video_term": "H.264"
+	},
+	{
+		"anime_title": "Swing out Sisters",
+		"audio_term": "AC3",
+		"file_checksum": "3ABD57E6",
+		"file_extension": "mp4",
+		"file_name": "[SubDESU-H] Swing out Sisters Complete Version (720p x264 8bit AC3) [3ABD57E6].mp4",
+		"id": 12143,
+		"release_group": "SubDESU-H",
+		"release_information": "Complete",
+		"video_resolution": "720p",
+		"video_term": [
+			"x264",
+			"8bit"
+		]
 	}
 ]
