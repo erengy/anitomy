@@ -44,6 +44,7 @@ private:
   void SearchForIsolatedNumbers();
 
   bool SearchForEpisodePatterns(std::vector<size_t>& tokens);
+  bool SearchForEquivalentNumbers(std::vector<size_t>& tokens);
   bool SearchForIsolatedNumbers(std::vector<size_t>& tokens);
   bool SearchForSeparatedNumbers(std::vector<size_t>& tokens);
   bool SearchForLastNumber(std::vector<size_t>& tokens);
@@ -61,6 +62,7 @@ private:
   bool MatchNumberSignPattern(const string_t& word, Token& token);
   bool MatchJapaneseCounterPattern(const string_t& word, Token& token);
 
+  bool IsValidEpisodeNumber(const string_t& number);
   bool SetEpisodeNumber(const string_t& number, Token& token, bool validate);
 
   size_t FindNumberInString(const string_t& str);

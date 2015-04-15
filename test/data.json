@@ -1370,8 +1370,7 @@
 		"file_name": "Ep. 01 - The Boy in the Iceberg"
 	},
 	{
-		"anime_season": "3",
-		"anime_title": "Kuroko no Basuke",
+		"anime_title": "Kuroko no Basuke S3",
 		"episode_number": "01",
 		"file_checksum": "619C57A0",
 		"file_extension": "mkv",
@@ -1582,5 +1581,35 @@
 			"x264",
 			"8bit"
 		]
+	},
+	{
+		"anime_title": "Cyborg 009",
+		"anime_year": "1968",
+		"episode_number": "06",
+		"file_checksum": "30C15D62",
+		"file_extension": "mp4",
+		"file_name": "Cyborg 009 (1968) [TSHS] episode 06 [30C15D62].mp4",
+		"id": 8394,
+		"release_group": "TSHS"
+	},
+	{
+		"anime_title": "Dragon Ball Kai",
+		"anime_year": "2014",
+		"episode_number": "002",
+		"file_checksum": "DD66AFB7",
+		"file_extension": "mkv",
+		"file_name": "[Hatsuyuki] Dragon Ball Kai (2014) - 002 (100) [1280x720][DD66AFB7].mkv",
+		"id": 22777,
+		"release_group": "Hatsuyuki",
+		"video_resolution": "1280x720"
+	},
+	{
+		"anime_title": "Tegami Bachi (REVERSE) - Letter Bee",
+		"episode_number": "04",
+		"file_checksum": "5203142B",
+		"file_extension": "mkv",
+		"file_name": "[Deep] Tegami Bachi (REVERSE) - Letter Bee - 29 (04) [5203142B].mkv",
+		"id": 8311,
+		"release_group": "Deep"
 	}
 ]

@@ -137,12 +137,16 @@ void Parser::SearchForEpisodeNumber() {
   if (tokens.empty())
     return;
 
-  // e.g. "[12]", "(2006)"
-  if (SearchForIsolatedNumbers(tokens))
+  // e.g. "01 (176)", "29 (04)"
+  if (SearchForEquivalentNumbers(tokens))
     return;
 
   // e.g. " - 08"
   if (SearchForSeparatedNumbers(tokens))
+    return;
+
+  // e.g. "[12]", "(2006)"
+  if (SearchForIsolatedNumbers(tokens))
     return;
 
   // Consider using the last number as a last resort

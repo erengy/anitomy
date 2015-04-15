@@ -26,10 +26,14 @@
 
 namespace anitomy {
 
+bool Parser::IsValidEpisodeNumber(const string_t& number) {
+  return StringToInt(number) <= kEpisodeNumberMax;
+}
+
 bool Parser::SetEpisodeNumber(const string_t& number, Token& token,
                               bool validate) {
   if (validate)
-    if (StringToInt(number) > kEpisodeNumberMax)
+    if (!IsValidEpisodeNumber(number))
       return false;
 
   elements_.insert(kElementEpisodeNumber, number);
@@ -299,6 +303,42 @@ bool Parser::MatchEpisodePatterns(string_t word, Token& token) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+
+bool Parser::SearchForEquivalentNumbers(std::vector<size_t>& tokens) {
+  for (auto token_index = tokens.begin();
+       token_index != tokens.end(); ++token_index) {
+    auto token = tokens_.begin() + *token_index;
+
+    if (IsTokenIsolated(token))
+      continue;
+
+    // Find the first enclosed, non-delimiter, non-bracket token
+    auto next_token = FindNextToken(tokens_, token,
+                                    kFlagEnclosed | kFlagNotDelimiter);
+    if (next_token != tokens_.end() &&
+        next_token->category == kBracket)
+      next_token = FindNextToken(tokens_, token,
+                                 kFlagEnclosed | kFlagNotBracket);
+
+    // See if it's an isolated number
+    if (next_token != tokens_.end() &&
+        next_token->category == kUnknown &&
+        IsTokenIsolated(next_token) &&
+        IsNumericString(next_token->content)) {
+      if (IsValidEpisodeNumber(token->content) &&
+          IsValidEpisodeNumber(next_token->content)) {
+        auto lower_token =
+            StringToInt(token->content) < StringToInt(next_token->content) ?
+            token : next_token;
+        SetEpisodeNumber(lower_token->content, *token, false);
+        next_token->category = kIdentifier;
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
 
 bool Parser::SearchForIsolatedNumbers(std::vector<size_t>& tokens) {
   for (auto token_index = tokens.begin();
