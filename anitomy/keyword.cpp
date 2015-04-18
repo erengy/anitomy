@@ -46,7 +46,10 @@ KeywordManager::KeywordManager() {
       L"SAISON", L"SEASON"});
 
   Add(kElementAnimeType, options_unidentifiable, {
-      L"GEKIJOUBAN", L"MOVIE", L"OAV", L"ONA", L"OVA", L"TV"});
+      L"GEKIJOUBAN", L"MOVIE",
+      L"OAD", L"OAV", L"ONA", L"OVA",
+      L"SPECIAL", L"SPECIALS",
+      L"TV"});
   Add(kElementAnimeType, options_unidentifiable_unsearchable, {
       L"SP"});  // e.g. "Yumeiro Patissiere SP Professional"
   Add(kElementAnimeType, options_unidentifiable_invalid, {
