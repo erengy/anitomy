@@ -162,9 +162,6 @@ bool Parser::MatchSeasonAndEpisodePattern(const string_t& word, Token& token) {
 }
 
 bool Parser::MatchTypeAndEpisodePattern(const string_t& word, Token& token) {
-  if (!elements_.empty(kElementAnimeType))
-    return false;
-
   size_t number_begin = FindNumberInString(word);
   auto prefix = word.substr(0, number_begin);
 
