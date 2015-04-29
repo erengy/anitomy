@@ -162,6 +162,7 @@ bool Parser::IsElementCategorySearchable(ElementCategory category) {
 bool Parser::IsElementCategorySingular(ElementCategory category) {
   switch (category) {
     case kElementAnimeSeason:
+    case kElementAnimeType:
     case kElementAudioTerm:
     case kElementDeviceCompatibility:
     case kElementEpisodeNumber:

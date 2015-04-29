@@ -1611,5 +1611,17 @@
 		"file_name": "[Deep] Tegami Bachi (REVERSE) - Letter Bee - 29 (04) [5203142B].mkv",
 		"id": 8311,
 		"release_group": "Deep"
+	},
+	{
+		"anime_title": "Love Live! The School Idol Movie - PV",
+		"anime_type": [
+			"Movie",
+			"PV"
+		],
+		"file_checksum": "D1A15D2C",
+		"file_extension": "mkv",
+		"file_name": "[FFF] Love Live! The School Idol Movie - PV [D1A15D2C].mkv",
+		"id": 24997,
+		"release_group": "FFF"
 	}
 ]
