@@ -1634,5 +1634,13 @@
 		"release_group": "Nishi-Taku",
 		"source": "BD",
 		"video_resolution": "720p"
+	},
+	{
+		"anime_title": "1001 Nights",
+		"anime_year": "1998",
+		"file_name": "[LRL] 1001 Nights (1998) [DVD]",
+		"id": 3914,
+		"release_group": "LRL",
+		"source": "DVD"
 	}
 ]

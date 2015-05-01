@@ -386,9 +386,9 @@ bool Parser::SearchForLastNumber(std::vector<size_t>& tokens) {
     if (token->enclosed)
       continue;
 
-    // Ignore if it's the first non-enclosed token
-    if (std::all_of(tokens_.begin(), tokens_.begin() + token_index,
-            [](const Token& token) { return token.enclosed; }))
+    // Ignore if it's the first non-enclosed, non-delimiter token
+    if (std::all_of(tokens_.begin(), token, [](const Token& token) {
+            return token.enclosed || token.category == kDelimiter; }))
       continue;
 
     // Ignore if the previous token is "Movie" or "Part"
