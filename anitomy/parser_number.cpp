@@ -391,12 +391,14 @@ bool Parser::SearchForLastNumber(std::vector<size_t>& tokens) {
             [](const Token& token) { return token.enclosed; }))
       continue;
 
-    // Check if the previous token is "Movie"
+    // Ignore if the previous token is "Movie" or "Part"
     auto previous_token = FindPreviousToken(tokens_, token, kFlagNotDelimiter);
     if (previous_token != tokens_.end() &&
-        previous_token->category == kUnknown &&
-        IsStringEqualTo(previous_token->content, L"Movie")) {
-      continue;
+        previous_token->category == kUnknown) {
+      if (IsStringEqualTo(previous_token->content, L"Movie") ||
+          IsStringEqualTo(previous_token->content, L"Part")) {
+        continue;
+      }
     }
 
     // We'll use this number after all

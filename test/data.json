@@ -1623,5 +1623,16 @@
 		"file_name": "[FFF] Love Live! The School Idol Movie - PV [D1A15D2C].mkv",
 		"id": 24997,
 		"release_group": "FFF"
+	},
+	{
+		"anime_title": "Tamayura ~graduation photo~ Movie Part 1",
+		"anime_type": "Movie",
+		"file_checksum": "98965607",
+		"file_extension": "mkv",
+		"file_name": "[Nishi-Taku] Tamayura ~graduation photo~ Movie Part 1 [BD][720p][98965607].mkv",
+		"id": 25729,
+		"release_group": "Nishi-Taku",
+		"source": "BD",
+		"video_resolution": "720p"
 	}
 ]
