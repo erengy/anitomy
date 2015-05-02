@@ -342,7 +342,7 @@ bool Parser::SearchForIsolatedNumbers(std::vector<size_t>& tokens) {
        token_index != tokens.end(); ++token_index) {
     auto token = tokens_.begin() + *token_index;
 
-    if (!IsTokenIsolated(token))
+    if (!token->enclosed || !IsTokenIsolated(token))
       continue;
 
     if (SetEpisodeNumber(token->content, *token, true))

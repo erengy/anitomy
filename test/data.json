@@ -1642,5 +1642,13 @@
 		"id": 3914,
 		"release_group": "LRL",
 		"source": "DVD"
+	},
+	{
+		"anime_title": "0",
+		"file_extension": "mkv",
+		"file_name": "[TardRaws] 0 [640x360].mkv",
+		"id": 20707,
+		"release_group": "TardRaws",
+		"video_resolution": "640x360"
 	}
 ]
