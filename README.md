@@ -105,6 +105,13 @@ Anime video files are commonly named in a format where the anime title is follow
 
 There are so many cases to cover that it's simply not possible to parse all filenames solely with regular expressions. *Anitomy* tries a different approach, and it succeeds: It's able to parse tens of thousands of filenames per second, with almost perfect accuracy.
 
+The following projects make use of *Anitomy*:
+
+- [Taiga](https://github.com/erengy/taiga)
+- [MAL Updater OS X](https://github.com/chikorita157/malupdaterosx-cocoa)
+- [Hachidori](https://github.com/chikorita157/hachidori)
+- [Shinjiru](https://github.com/Kazakuri/Shinjiru)
+
 ## Are there any exceptions?
 
 Yes, unfortunately. *Anitomy* fails to identify the anime title and episode number on rare occasions, mostly due to bad naming conventions. See the examples below.
@@ -115,7 +122,7 @@ Here, *Anitomy* would report that this file is the 8th episode of `Arigatou Shuf
 
     Spice and Wolf 2
 
-Is this the 2nd episode of `Spice and Wolf`, or a batch release of `Spice and Wolf 2`? Without an extension, there's no way to know. It's up to you consider both cases.
+Is this the 2nd episode of `Spice and Wolf`, or a batch release of `Spice and Wolf 2`? Without a file extension, there's no way to know. It's up to you consider both cases.
 
 ## Suggestions to fansub groups
 
