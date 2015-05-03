@@ -309,13 +309,15 @@ bool Parser::SearchForEquivalentNumbers(std::vector<size_t>& tokens) {
     if (IsTokenIsolated(token))
       continue;
 
-    // Find the first enclosed, non-delimiter, non-bracket token
-    auto next_token = FindNextToken(tokens_, token,
-                                    kFlagEnclosed | kFlagNotDelimiter);
+    // Find the first enclosed, non-delimiter token
+    auto next_token = FindNextToken(tokens_, token, kFlagNotDelimiter);
     if (next_token != tokens_.end() &&
-        next_token->category == kBracket)
-      next_token = FindNextToken(tokens_, token,
-                                 kFlagEnclosed | kFlagNotBracket);
+        next_token->category == kBracket) {
+      next_token = FindNextToken(tokens_, next_token,
+                                 kFlagEnclosed | kFlagNotDelimiter);
+    } else {
+      continue;
+    }
 
     // See if it's an isolated number
     if (next_token != tokens_.end() &&

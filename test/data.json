@@ -1663,5 +1663,16 @@
 		"release_version": "2",
 		"video_resolution": "852X480",
 		"video_term": "DivX5"
+	},
+	{
+		"anime_title": "Fairy Tail 2",
+		"episode_number": "52",
+		"file_checksum": "9DF6B8D5",
+		"file_extension": "mkv",
+		"file_name": "[Hatsuyuki-Kaitou]_Fairy_Tail_2_-_52_(227)_[720p][10bit][9DF6B8D5].mkv",
+		"id": 22043,
+		"release_group": "Hatsuyuki-Kaitou",
+		"video_resolution": "720p",
+		"video_term": "10bit"
 	}
 ]
