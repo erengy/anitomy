@@ -119,9 +119,9 @@ KeywordManager::KeywordManager() {
       // Frame rate
       L"23.976FPS", L"24FPS", L"29.97FPS", L"30FPS", L"60FPS",
       // Video codec
-      L"8BIT", L"8-BIT", L"10BIT", L"10-BIT", L"HI10P",
+      L"8BIT", L"8-BIT", L"10BIT", L"10BITS", L"10-BIT", L"10-BITS", L"HI10P",
       L"H264", L"H.264", L"X264", L"X.264",
-      L"AVC", L"DIVX", L"XVID",
+      L"AVC", L"DIVX", L"DIVX5", L"DIVX6", L"XVID",
       // Video format
       L"AVI", L"RMVB", L"WMV", L"WMV3", L"WMV9",
       // Video quality

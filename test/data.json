@@ -1650,5 +1650,18 @@
 		"id": 20707,
 		"release_group": "TardRaws",
 		"video_resolution": "640x360"
+	},
+	{
+		"anime_title": "Crayon Shin-Chan Movie 2 The Secret of Buri Buri Kingdom",
+		"anime_type": "Movie",
+		"anime_year": "1994",
+		"audio_term": "AC3",
+		"file_extension": "avi",
+		"file_name": "[FB] Crayon Shin-Chan Movie 2 The Secret of Buri Buri Kingdom [DivX5 AC3] 1994 [852X480] V2.avi",
+		"id": 3745,
+		"release_group": "FB",
+		"release_version": "2",
+		"video_resolution": "852X480",
+		"video_term": "DivX5"
 	}
 ]
