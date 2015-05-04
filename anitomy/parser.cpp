@@ -87,7 +87,8 @@ void Parser::SearchForKeywords() {
         CheckAnimeSeasonKeyword(it);
         continue;
       } else if (category == kElementEpisodePrefix) {
-        CheckEpisodeKeyword(it);
+        if (options.valid)
+          CheckEpisodeKeyword(it);
         continue;
       } else if (category == kElementReleaseVersion) {
         word = word.substr(1);  // number without "v"

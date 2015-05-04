@@ -73,9 +73,11 @@ KeywordManager::KeywordManager() {
       L"ANDROID"});
 
   Add(kElementEpisodePrefix, options_default, {
-      L"E", L"EP", L"EP.", L"EPS", L"EPS.", L"EPISODE", L"EPISODE.", L"EPISODES",
+      L"EP", L"EP.", L"EPS", L"EPS.", L"EPISODE", L"EPISODE.", L"EPISODES",
       L"VOL", L"VOL.", L"VOLUME",
-      L"CAPITULO", L"EPISODIO", L"FOLGE", L"\x7B2C"});
+      L"CAPITULO", L"EPISODIO", L"FOLGE"});
+  Add(kElementEpisodePrefix, options_invalid, {
+      L"E", L"\x7B2C"});  // single-letter episode keywords are not valid tokens
 
   Add(kElementFileExtension, options_default, {
       L"3GP", L"AVI", L"DIVX", L"FLV", L"M2TS", L"MKV", L"MOV", L"MP4", L"MPG",

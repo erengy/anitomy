@@ -1715,5 +1715,14 @@
 		"id": 1482,
 		"release_group": "KLF",
 		"release_version": "2"
+	},
+	{
+		"anime_title": "Bakuman",
+		"episode_number": "01",
+		"file_extension": "mkv",
+		"file_name": "[FaggotryRaws] Bakuman - 01 (NHK E 848x480).mkv",
+		"id": 7674,
+		"release_group": "FaggotryRaws",
+		"video_resolution": "848x480"
 	}
 ]
