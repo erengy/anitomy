@@ -1724,5 +1724,15 @@
 		"id": 7674,
 		"release_group": "FaggotryRaws",
 		"video_resolution": "848x480"
+	},
+	{
+		"anime_title": "RWBY",
+		"episode_number": "14",
+		"episode_title": "Forever Fall Part 2",
+		"file_extension": "mp4",
+		"file_name": "[5F] RWBY 14 Forever Fall Part 2 pt-BR.mp4",
+		"id": 0,
+		"language": "pt-BR",
+		"release_group": "5F"
 	}
 ]

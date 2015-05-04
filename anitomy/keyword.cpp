@@ -88,7 +88,7 @@ KeywordManager::KeywordManager() {
       L"ASS", L"SRT"});
 
   Add(kElementLanguage, options_default, {
-      L"ENG", L"ENGLISH", L"ESPANOL", L"JAP", L"SPANISH", L"VOSTFR"});
+      L"ENG", L"ENGLISH", L"ESPANOL", L"JAP", L"PT-BR", L"SPANISH", L"VOSTFR"});
   Add(kElementLanguage, options_unidentifiable, {
       L"ESP", L"ITA"});  // e.g. "Tokyo ESP", "Bokura ga Ita"
 
@@ -111,7 +111,8 @@ KeywordManager::KeywordManager() {
       L"BD", L"BDRIP", L"BLURAY", L"BLU-RAY",
       L"DVD", L"DVD5", L"DVD9", L"DVD-R2J", L"DVDRIP", L"DVD-RIP",
       L"R2DVD", L"R2J", L"R2JDVD", L"R2JDVDRIP",
-      L"HDTV", L"HDTVRIP", L"TVRIP", L"TV-RIP", L"WEBCAST"});
+      L"HDTV", L"HDTVRIP", L"TVRIP", L"TV-RIP",
+      L"WEBCAST", L"WEBRIP"});
 
   Add(kElementSubtitles, options_default, {
       L"ASS", L"BIG5", L"DUB", L"DUBBED", L"HARDSUB", L"RAW", L"SOFTSUB",
@@ -119,7 +120,7 @@ KeywordManager::KeywordManager() {
 
   Add(kElementVideoTerm, options_default, {
       // Frame rate
-      L"23.976FPS", L"24FPS", L"29.97FPS", L"30FPS", L"60FPS",
+      L"23.976FPS", L"24FPS", L"29.97FPS", L"30FPS", L"60FPS", L"120FPS",
       // Video codec
       L"8BIT", L"8-BIT", L"10BIT", L"10BITS", L"10-BIT", L"10-BITS", L"HI10P",
       L"H264", L"H.264", L"X264", L"X.264",
