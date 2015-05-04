@@ -207,8 +207,8 @@ bool Parser::MatchPartialEpisodePattern(const string_t& word, Token& token) {
   auto suffix_length = std::distance(it, word.end());
 
   auto is_valid_suffix = [](const char_t c) {
-    return (c >= L'A' && c <= L'F') ||
-           (c >= L'a' && c <= L'f');
+    return (c >= L'A' && c <= L'C') ||
+           (c >= L'a' && c <= L'c');
   };
 
   if (suffix_length == 1 && is_valid_suffix(*it))

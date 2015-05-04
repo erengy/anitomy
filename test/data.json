@@ -1674,5 +1674,37 @@
 		"release_group": "Hatsuyuki-Kaitou",
 		"video_resolution": "720p",
 		"video_term": "10bit"
+	},
+	{
+		"anime_title": "Baby Princess 3D Paradise Love",
+		"audio_term": "AAC",
+		"episode_number": "01",
+		"file_checksum": "457CC066",
+		"file_extension": "mkv",
+		"file_name": "[FBI] Baby Princess 3D Paradise Love 01v0 [BD][720p-AAC][457CC066].mkv",
+		"id": 10196,
+		"release_group": "FBI",
+		"release_version": "0",
+		"source": "BD",
+		"video_resolution": "720p"
+	},
+	{
+		"anime_title": "Macross Frontier",
+		"episode_number": "01b",
+		"file_checksum": "4D5EC315",
+		"file_extension": "avi",
+		"file_name": "[Shinsen-Subs]_Macross_Frontier_-_01b_[4D5EC315].avi",
+		"id": 3572,
+		"release_group": "Shinsen-Subs"
+	},
+	{
+		"anime_title": "Hidamari Sketch x365",
+		"episode_number": "09a",
+		"file_checksum": "49874745",
+		"file_extension": "mkv",
+		"file_name": "[NamaeNai] Hidamari Sketch x365 - 09a (DVD) [49874745].mkv",
+		"id": 3604,
+		"release_group": "NamaeNai",
+		"source": "DVD"
 	}
 ]
