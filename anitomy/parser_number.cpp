@@ -107,7 +107,7 @@ typedef std::basic_regex<char_t> regex_t;
 typedef std::match_results<string_t::const_iterator> regex_match_results_t;
 
 bool Parser::MatchSingleEpisodePattern(const string_t& word, Token& token) {
-  static const regex_t pattern(L"(\\d{1,3})v(\\d)");
+  static const regex_t pattern(L"(\\d{1,3})[vV](\\d)");
   regex_match_results_t match_results;
 
   if (std::regex_match(word, match_results, pattern)) {
@@ -120,7 +120,7 @@ bool Parser::MatchSingleEpisodePattern(const string_t& word, Token& token) {
 }
 
 bool Parser::MatchMultiEpisodePattern(const string_t& word, Token& token) {
-  static const regex_t pattern(L"(\\d{1,3})[-~&+](\\d{1,3})(?:v(\\d))?");
+  static const regex_t pattern(L"(\\d{1,3})[-~&+](\\d{1,3})(?:[vV](\\d))?");
   regex_match_results_t match_results;
 
   if (std::regex_match(word, match_results, pattern)) {
@@ -222,7 +222,7 @@ bool Parser::MatchNumberSignPattern(const string_t& word, Token& token) {
   if (word.front() != L'#')
     return false;
 
-  static const regex_t pattern(L"#(\\d{1,3})(?:[-~&+](\\d{1,3}))?(?:v(\\d))?");
+  static const regex_t pattern(L"#(\\d{1,3})(?:[-~&+](\\d{1,3}))?(?:[vV](\\d))?");
   regex_match_results_t match_results;
 
   if (std::regex_match(word, match_results, pattern)) {

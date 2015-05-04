@@ -1706,5 +1706,14 @@
 		"id": 3604,
 		"release_group": "NamaeNai",
 		"source": "DVD"
+	},
+	{
+		"anime_title": "D.Gray-man",
+		"episode_number": "04",
+		"file_extension": "avi",
+		"file_name": "[KLF]_D.Gray-man_04V2.avi",
+		"id": 1482,
+		"release_group": "KLF",
+		"release_version": "2"
 	}
 ]
