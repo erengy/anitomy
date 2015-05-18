@@ -192,7 +192,8 @@ void Tokenizer::ValidateDelimiterTokens() {
     return it != tokens_.end() && it->category == kUnknown;
   };
   auto is_single_character_token = [&](token_iterator_t it) {
-    return is_unknown_token(it) && it->content.size() == 1;
+    return is_unknown_token(it) && it->content.size() == 1 &&
+           it->content.front() != L'-';
   };
   auto append_token_to = [](token_iterator_t token,
                             token_iterator_t append_to) {

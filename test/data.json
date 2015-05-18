@@ -1734,5 +1734,15 @@
 		"id": 0,
 		"language": "pt-BR",
 		"release_group": "5F"
+	},
+	{
+		"anime_title": "Dragon Ball KAI",
+		"episode_number": "01",
+		"file_extension": "mkv",
+		"file_name": "Dragon.Ball.KAI.-.01.-.1080p.BluRay.x264.DHD.mkv",
+		"id": 6033,
+		"source": "BluRay",
+		"video_resolution": "1080p",
+		"video_term": "x264"
 	}
 ]
