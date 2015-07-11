@@ -104,7 +104,7 @@ void Parser::SearchForKeywords() {
 
     if (category != kElementUnknown) {
       elements_.insert(category, word);
-      if (options.identifiable || token.enclosed)
+      if (options.identifiable)
         token.category = kIdentifier;
     }
   }

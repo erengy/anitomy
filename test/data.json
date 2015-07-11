@@ -1744,5 +1744,15 @@
 		"source": "BluRay",
 		"video_resolution": "1080p",
 		"video_term": "x264"
+	},
+	{
+		"anime_title": "Ushio to Tora (TV)",
+		"anime_type": "TV",
+		"episode_number": "02",
+		"file_extension": "mkv",
+		"file_name": "[AnimeRG] Ushio to Tora (TV) - 02 [720p] [Xcelent].mkv",
+		"id": 29854,
+		"release_group": "AnimeRG",
+		"video_resolution": "720p"
 	}
 ]
