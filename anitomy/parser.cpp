@@ -224,7 +224,7 @@ void Parser::SearchForReleaseGroup() {
     // Continue until a bracket or identifier is found
     token_end = FindToken(token_begin, tokens_.end(),
                           kFlagBracket | kFlagIdentifier);
-    if (token_end->category != kBracket)
+    if (token_end == tokens_.end() || token_end->category != kBracket)
       continue;
 
     // Ignore if it's not the first non-delimiter token in group
