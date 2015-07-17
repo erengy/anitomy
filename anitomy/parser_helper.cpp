@@ -66,10 +66,15 @@ bool Parser::IsResolution(const string_t& str) {
   // Using a regex such as "\\d{3,4}(p|(x\\d{3,4}))$" would be more elegant,
   // but it's much slower (e.g. 2.4ms -> 24.9ms).
 
+  const size_t min_width_size = 3;
+  const size_t min_height_size = 3;
+
   // *###x###*
-  if (str.size() >= 3 + 1 + 3) {
+  if (str.size() >= min_width_size + 1 + min_height_size) {
     size_t pos = str.find_first_of(L"xX\u00D7");  // multiplication sign
-    if (pos != str.npos) {
+    if (pos != str.npos &&
+        pos >= min_width_size &&
+        pos <= str.size() - (min_height_size + 1)) {
       for (size_t i = 0; i < str.size(); i++)
         if (i != pos && !IsNumericChar(str.at(i)))
           return false;
@@ -77,7 +82,7 @@ bool Parser::IsResolution(const string_t& str) {
     }
 
   // *###p
-  } else if (str.size() >= 3 + 1) {
+  } else if (str.size() >= min_height_size + 1) {
     if (str.back() == L'p' || str.back() == L'P') {
       for (size_t i = 0; i < str.size() - 1; i++)
         if (!IsNumericChar(str.at(i)))
