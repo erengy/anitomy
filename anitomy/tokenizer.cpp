@@ -17,6 +17,7 @@
 */
 
 #include <algorithm>
+#include <iterator>
 #include <set>
 
 #include "keyword.h"
