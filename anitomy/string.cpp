@@ -17,6 +17,7 @@
 */
 
 #include <algorithm>
+#include <cwctype>
 #include <functional>
 
 #include "string.h"
@@ -70,14 +71,14 @@ bool IsNumericString(const string_t& str) {
 inline wchar_t ToLower(const wchar_t c) {
   return (c >= L'a' && c <= L'z') ? c :
          (c >= L'A' && c <= L'Z') ? (c + (L'a' - L'A')) :
-         static_cast<wchar_t>(towlower(c));
+         static_cast<wchar_t>(std::towlower(c));
 }
 
 struct ToUpper : public std::unary_function<char_t, char_t> {
   wchar_t operator ()(const wchar_t c) const {
     return (c >= L'A' && c <= L'Z') ? c :
            (c >= L'a' && c <= L'z') ? (c + (L'A' - L'a')) :
-           static_cast<wchar_t>(towupper(c));
+           static_cast<wchar_t>(std::towupper(c));
   }
 };
 
