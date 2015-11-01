@@ -1527,7 +1527,6 @@
 		"file_extension": "mkv",
 		"file_name": "Neko no Ongaeshi - [HQR.remux-DualAudio][NTV.1280x692.h264](0CDC2145).mkv",
 		"id": 597,
-		"release_group": "NinjaPanda",
 		"video_resolution": "1280x692",
 		"video_term": "h264"
 	},
@@ -1757,5 +1756,12 @@
 	},
 	{
 		"file_name": "[Anime"
+	},
+	{
+		"anime_title": "Gekkan Shoujo Nozaki-kun",
+		"file_name": "Gekkan Shoujo Nozaki-kun [HorribleSubs] (1080p)",
+		"id": 23289,
+		"release_group": "HorribleSubs",
+		"video_resolution": "1080p"
 	}
 ]

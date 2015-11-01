@@ -206,6 +206,22 @@ void Parser::SearchForAnimeTitle() {
       token_end = last_bracket;
   }
 
+  // If the interval ends with an enclosed group (e.g. "Anime Title [Fansub]"),
+  // move the upper endpoint back to the beginning of the group. We ignore
+  // parentheses in order to keep certain groups (e.g. "(TV)") intact.
+  if (!enclosed_title) {
+    auto token = FindPreviousToken(tokens_, token_end, kFlagNotDelimiter);
+    while (token != tokens_.end() &&
+           token->category == kBracket &&
+           token->content.front() != ')') {
+      token = FindPreviousToken(tokens_, token, kFlagBracket);
+      if (token != tokens_.end()) {
+        token_end = token;
+        token = FindPreviousToken(tokens_, token_end, kFlagNotDelimiter);
+      }
+    }
+  }
+
   // Build anime title
   BuildElement(kElementAnimeTitle, false, token_begin, token_end);
 }
