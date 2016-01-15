@@ -50,6 +50,8 @@ bool Parser::Parse() {
       !elements_.empty(kElementEpisodeNumber))
     SearchForEpisodeTitle();
 
+  ValidateElements();
+
   return !elements_.empty(kElementAnimeTitle);
 }
 
@@ -302,6 +304,33 @@ void Parser::SearchForIsolatedNumbers() {
         token->category = kIdentifier;
         continue;
       }
+    }
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void Parser::ValidateElements() {
+  // Validate anime type and episode title
+  if (!elements_.empty(kElementAnimeType) &&
+      !elements_.empty(kElementEpisodeTitle)) {
+    // Here we check whether the episode title contains an anime type
+    const auto& episode_title = elements_.get(kElementEpisodeTitle);
+    for (auto it = elements_.begin(); it != elements_.end(); ) {
+      if (it->first == kElementAnimeType) {
+        if (IsInString(episode_title, it->second)) {
+          if (episode_title.size() == it->second.size()) {
+            elements_.erase(kElementEpisodeTitle);  // invalid episode title
+          } else {
+            const auto keyword = keyword_manager.Normalize(it->second);
+            if (keyword_manager.Find(kElementAnimeType, keyword)) {
+              it = elements_.erase(it);  // invalid anime type
+              continue;
+            }
+          }
+        }
+      }
+      ++it;
     }
   }
 }

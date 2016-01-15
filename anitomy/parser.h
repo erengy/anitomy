@@ -42,6 +42,7 @@ private:
   void SearchForReleaseGroup();
   void SearchForEpisodeTitle();
   void SearchForIsolatedNumbers();
+  void ValidateElements();
 
   bool SearchForEpisodePatterns(std::vector<size_t>& tokens);
   bool SearchForEquivalentNumbers(std::vector<size_t>& tokens);

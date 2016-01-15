@@ -35,6 +35,7 @@ bool IsHexadecimalString(const string_t& str);
 bool IsMostlyLatinString(const string_t& str);
 bool IsNumericString(const string_t& str);
 
+bool IsInString(const string_t& str1, const string_t& str2);
 bool IsStringEqualTo(const string_t& str1, const string_t& str2);
 
 int StringToInt(const string_t& str);
