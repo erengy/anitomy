@@ -1085,8 +1085,8 @@
 		"video_term": "X264"
 	},
 	{
-		"episode_number": "01",
-		"file_name": "Vol.01"
+		"file_name": "Vol.01",
+		"volume_number": "01"
 	},
 	{
 		"anime_title": "Rozen Maiden 3",
@@ -1776,5 +1776,45 @@
 		"source": "BD",
 		"video_term": "Hi10",
 		"video_resolution": "720p"
+	},
+	{
+		"anime_title": "AKB0048",
+		"audio_term": "FLAC",
+		"file_checksum": "C09462E2",
+		"file_name": "[EveTaku] AKB0048 Vol.03 - Making of Kibou-ni-Tsuite Music Video (BDRip 1080i H.264-Hi10P FLAC)[C09462E2]",
+		"id": 12149,
+		"release_group": "EveTaku",
+		"source": "BDRip",
+		"video_term": [
+			"H.264",
+			"Hi10P"
+		],
+		"video_resolution": "1080i",
+		"volume_number": "03"
+	},
+	{
+		"anime_title": "Magi - The Labyrinth Of Magic",
+		"file_name": "[DmonHiro] Magi - The Labyrinth Of Magic - Vol.1v2 (BD, 720p)",
+		"id": 14513,
+		"release_group": "DmonHiro",
+		"release_version": "2",
+		"source": "BD",
+		"video_resolution": "720p",
+		"volume_number": "1"
+	},
+	{
+		"anime_title": "Natsume Yuujinchou Shi",
+		"audio_term": "AAC",
+		"file_name": "[tlacatlc6] Natsume Yuujinchou Shi Vol. 1v2 & Vol. 2 (BD 1280x720 x264 AAC)",
+		"id": 11665,
+		"release_group": "tlacatlc6",
+		"release_version": "2",
+		"source": "BD",
+		"video_term": "x264",
+		"video_resolution": "1280x720",
+		"volume_number": [
+			"1",
+			"2"
+		]
 	}
 ]

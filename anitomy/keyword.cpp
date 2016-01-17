@@ -74,7 +74,6 @@ KeywordManager::KeywordManager() {
 
   Add(kElementEpisodePrefix, options_default, {
       L"EP", L"EP.", L"EPS", L"EPS.", L"EPISODE", L"EPISODE.", L"EPISODES",
-      L"VOL", L"VOL.", L"VOLUME",
       L"CAPITULO", L"EPISODIO", L"FOLGE"});
   Add(kElementEpisodePrefix, options_invalid, {
       L"E", L"\x7B2C"});  // single-letter episode keywords are not valid tokens
@@ -131,6 +130,9 @@ KeywordManager::KeywordManager() {
       L"HQ", L"LQ",
       // Video resolution
       L"HD", L"SD"});
+
+  Add(kElementVolumePrefix, options_default, {
+      L"VOL", L"VOL.", L"VOLUME"});
 }
 
 void KeywordManager::Add(ElementCategory category,

@@ -49,6 +49,8 @@ enum ElementCategory {
   kElementSubtitles,
   kElementVideoResolution,
   kElementVideoTerm,
+  kElementVolumeNumber,
+  kElementVolumePrefix,
   kElementIterateLast,
   kElementUnknown = kElementIterateLast
 };

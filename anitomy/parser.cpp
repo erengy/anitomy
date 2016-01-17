@@ -90,10 +90,13 @@ void Parser::SearchForKeywords() {
         continue;
       } else if (category == kElementEpisodePrefix) {
         if (options.valid)
-          CheckEpisodeKeyword(it);
+          CheckExtentKeyword(kElementEpisodeNumber, it);
         continue;
       } else if (category == kElementReleaseVersion) {
         word = word.substr(1);  // number without "v"
+      } else if (category == kElementVolumePrefix) {
+        CheckExtentKeyword(kElementVolumeNumber, it);
+        continue;
       }
     } else {
       if (elements_.empty(kElementFileChecksum) && IsCrc32(word)) {

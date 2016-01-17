@@ -43,6 +43,23 @@ bool Parser::SetEpisodeNumber(const string_t& number, Token& token,
 
 ////////////////////////////////////////////////////////////////////////////////
 
+bool Parser::IsValidVolumeNumber(const string_t& number) {
+  return StringToInt(number) <= kVolumeNumberMax;
+}
+
+bool Parser::SetVolumeNumber(const string_t& number, Token& token,
+                             bool validate) {
+  if (validate)
+    if (!IsValidVolumeNumber(number))
+      return false;
+
+  elements_.insert(kElementVolumeNumber, number);
+  token.category = kIdentifier;
+  return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 bool Parser::NumberComesAfterEpisodePrefix(Token& token) {
   size_t number_begin = FindNumberInString(token.content);
   auto prefix = keyword_manager.Normalize(token.content.substr(0, number_begin));
@@ -294,6 +311,63 @@ bool Parser::MatchEpisodePatterns(string_t word, Token& token) {
   // U+8A71 is used as counter for stories, episodes of TV series, etc.
   if (numeric_front)
     if (MatchJapaneseCounterPattern(word, token))
+      return true;
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+bool Parser::MatchSingleVolumePattern(const string_t& word, Token& token) {
+  static const regex_t pattern(L"(\\d{1,2})[vV](\\d)");
+  regex_match_results_t match_results;
+
+  if (std::regex_match(word, match_results, pattern)) {
+    SetVolumeNumber(match_results[1].str(), token, false);
+    elements_.insert(kElementReleaseVersion, match_results[2].str());
+    return true;
+  }
+
+  return false;
+}
+
+bool Parser::MatchMultiVolumePattern(const string_t& word, Token& token) {
+  static const regex_t pattern(L"(\\d{1,2})[-~&+](\\d{1,2})(?:[vV](\\d))?");
+  regex_match_results_t match_results;
+
+  if (std::regex_match(word, match_results, pattern)) {
+    auto lower_bound = match_results[1].str();
+    auto upper_bound = match_results[2].str();
+    if (StringToInt(lower_bound) < StringToInt(upper_bound)) {
+      if (SetVolumeNumber(lower_bound, token, true)) {
+        SetVolumeNumber(upper_bound, token, false);
+        if (match_results[3].matched)
+          elements_.insert(kElementReleaseVersion, match_results[3].str());
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+bool Parser::MatchVolumePatterns(string_t word, Token& token) {
+  // All patterns contain at least one non-numeric character
+  if (IsNumericString(word))
+    return false;
+
+  TrimString(word, L" -");
+
+  const bool numeric_front = IsNumericChar(word.front());
+  const bool numeric_back = IsNumericChar(word.back());
+
+  // e.g. "01v2"
+  if (numeric_front && numeric_back)
+    if (MatchSingleVolumePattern(word, token))
+      return true;
+  // e.g. "01-02", "03-05v2"
+  if (numeric_front && numeric_back)
+    if (MatchMultiVolumePattern(word, token))
       return true;
 
   return false;

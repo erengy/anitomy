@@ -123,14 +123,25 @@ bool Parser::CheckAnimeSeasonKeyword(const token_iterator_t token) {
   return false;
 }
 
-bool Parser::CheckEpisodeKeyword(const token_iterator_t token) {
+bool Parser::CheckExtentKeyword(ElementCategory category,
+                                const token_iterator_t token) {
   auto next_token = FindNextToken(tokens_, token, kFlagNotDelimiter);
 
   if (next_token != tokens_.end() &&
       next_token->category == kUnknown) {
     if (FindNumberInString(next_token->content) == 0) {
-      if (!MatchEpisodePatterns(next_token->content, *next_token))
-        SetEpisodeNumber(next_token->content, *next_token, false);
+      switch (category) {
+        case kElementEpisodeNumber:
+          if (!MatchEpisodePatterns(next_token->content, *next_token))
+            SetEpisodeNumber(next_token->content, *next_token, false);
+          break;
+        case kElementVolumeNumber:
+          if (!MatchVolumePatterns(next_token->content, *next_token))
+            SetVolumeNumber(next_token->content, *next_token, false);
+          break;
+        default:
+          return false;
+      }
       token->category = kIdentifier;
       return true;
     }
@@ -158,6 +169,7 @@ bool Parser::IsElementCategorySearchable(ElementCategory category) {
     case kElementSubtitles:
     case kElementVideoResolution:
     case kElementVideoTerm:
+    case kElementVolumePrefix:
       return true;
   }
 

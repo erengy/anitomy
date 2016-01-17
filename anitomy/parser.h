@@ -63,8 +63,15 @@ private:
   bool MatchNumberSignPattern(const string_t& word, Token& token);
   bool MatchJapaneseCounterPattern(const string_t& word, Token& token);
 
+  bool MatchVolumePatterns(string_t word, Token& token);
+  bool MatchSingleVolumePattern(const string_t& word, Token& token);
+  bool MatchMultiVolumePattern(const string_t& word, Token& token);
+
   bool IsValidEpisodeNumber(const string_t& number);
   bool SetEpisodeNumber(const string_t& number, Token& token, bool validate);
+
+  bool IsValidVolumeNumber(const string_t& number);
+  bool SetVolumeNumber(const string_t& number, Token& token, bool validate);
 
   size_t FindNumberInString(const string_t& str);
   string_t GetNumberFromOrdinal(const string_t& word);
@@ -75,7 +82,8 @@ private:
   bool IsElementCategorySingular(ElementCategory category);
 
   bool CheckAnimeSeasonKeyword(const token_iterator_t token);
-  bool CheckEpisodeKeyword(const token_iterator_t token);
+  bool CheckExtentKeyword(ElementCategory category,
+                          const token_iterator_t token);
 
   void BuildElement(ElementCategory category, bool keep_delimiters,
                     const token_iterator_t token_begin,
@@ -86,6 +94,7 @@ private:
   const int kAnimeYearMin = 1900;
   const int kAnimeYearMax = 2050;
   const int kEpisodeNumberMax = kAnimeYearMin - 1;
+  const int kVolumeNumberMax = 20;
 
   Elements& elements_;
   const Options& options_;
