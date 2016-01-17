@@ -137,18 +137,21 @@ bool Parser::MatchSingleEpisodePattern(const string_t& word, Token& token) {
 }
 
 bool Parser::MatchMultiEpisodePattern(const string_t& word, Token& token) {
-  static const regex_t pattern(L"(\\d{1,3})[-~&+](\\d{1,3})(?:[vV](\\d))?");
+  static const regex_t pattern(L"(\\d{1,3})(?:[vV](\\d))?[-~&+]"
+                               L"(\\d{1,3})(?:[vV](\\d))?");
   regex_match_results_t match_results;
 
   if (std::regex_match(word, match_results, pattern)) {
     auto lower_bound = match_results[1].str();
-    auto upper_bound = match_results[2].str();
+    auto upper_bound = match_results[3].str();
     // Avoid matching expressions such as "009-1" or "5-2"
     if (StringToInt(lower_bound) < StringToInt(upper_bound)) {
       if (SetEpisodeNumber(lower_bound, token, true)) {
         SetEpisodeNumber(upper_bound, token, false);
-        if (match_results[3].matched)
-          elements_.insert(kElementReleaseVersion, match_results[3].str());
+        if (match_results[2].matched)
+          elements_.insert(kElementReleaseVersion, match_results[2].str());
+        if (match_results[4].matched)
+          elements_.insert(kElementReleaseVersion, match_results[4].str());
         return true;
       }
     }

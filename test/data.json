@@ -1816,5 +1816,40 @@
 			"1",
 			"2"
 		]
+	},
+	{
+		"anime_title": "Hyouka",
+		"audio_term": "FLAC",
+		"episode_number": [
+			"01",
+			"04"
+		],
+		"file_name": "[Tsundere] Hyouka - 01v2-04 [BDRip h264 1920x1080 10bit FLAC]",
+		"id": 12189,
+		"release_group": "Tsundere",
+		"release_version": "2",
+		"source": "BDRip",
+		"video_resolution": "1920x1080",
+		"video_term": [
+			"h264",
+			"10bit"
+		]
+	},
+	{
+		"anime_title": "Nogizaka Haruka no Himitsu - Purezza",
+		"audio_term": "AAC",
+		"episode_number": [
+			"01",
+			"03"
+		],
+		"file_name": "[Doki] Nogizaka Haruka no Himitsu - Purezza - 01v2-03v2 (1280x720 h264 AAC)",
+		"id": 6023,
+		"release_group": "Doki",
+		"release_version": [
+			"2",
+			"2"
+		],
+		"video_resolution": "1280x720",
+		"video_term": "h264"
 	}
 ]
