@@ -1851,5 +1851,27 @@
 		],
 		"video_resolution": "1280x720",
 		"video_term": "h264"
+	},
+	{
+		"anime_season": "06",
+		"anime_title": "Fairy Tail",
+		"episode_number": [
+			"83",
+			"32"
+		],
+		"episode_title": "Tartaros Arc Iron Fist of the Fire Dragon",
+		"file_name": "Fairy Tail - S06E32 - Tartaros Arc Iron Fist of the Fire Dragon [Episode 83]",
+		"id": 6702
+	},
+	{
+		"anime_season": "02",
+		"anime_title": "Noragami",
+		"episode_number": [
+			"6",
+			"06"
+		],
+		"episode_title": "What Must Be Done",
+		"file_name": "Noragami - S02E06 - What Must Be Done [Episode 6]",
+		"id": 30503
 	}
 ]

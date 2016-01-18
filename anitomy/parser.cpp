@@ -36,8 +36,7 @@ bool Parser::Parse() {
 
   SearchForIsolatedNumbers();
 
-  if (options_.parse_episode_number &&
-      elements_.empty(kElementEpisodeNumber))
+  if (options_.parse_episode_number)
     SearchForEpisodeNumber();
 
   SearchForAnimeTitle();
@@ -132,6 +131,9 @@ void Parser::SearchForEpisodeNumber() {
   // If a token matches a known episode pattern, it has to be the episode number
   if (SearchForEpisodePatterns(tokens))
     return;
+
+  if (!elements_.empty(kElementEpisodeNumber))
+    return;  // We have previously found an episode number via keywords
 
   // From now on, we're only interested in numeric tokens
   auto not_numeric_string = [&](size_t index) -> bool {
