@@ -216,8 +216,7 @@ void Parser::SearchForAnimeTitle() {
   // parentheses in order to keep certain groups (e.g. "(TV)") intact.
   if (!enclosed_title) {
     auto token = FindPreviousToken(tokens_, token_end, kFlagNotDelimiter);
-    while (token != tokens_.end() &&
-           token->category == kBracket &&
+    while (CheckTokenCategory(token, kBracket) &&
            token->content.front() != ')') {
       token = FindPreviousToken(tokens_, token, kFlagBracket);
       if (token != tokens_.end()) {

@@ -388,19 +388,15 @@ bool Parser::SearchForEquivalentNumbers(std::vector<size_t>& tokens) {
 
     // Find the first enclosed, non-delimiter token
     auto next_token = FindNextToken(tokens_, token, kFlagNotDelimiter);
-    if (next_token != tokens_.end() &&
-        next_token->category == kBracket) {
-      next_token = FindNextToken(tokens_, next_token,
-                                 kFlagEnclosed | kFlagNotDelimiter);
-    } else {
+    if (!CheckTokenCategory(next_token, kBracket))
       continue;
-    }
+    next_token = FindNextToken(tokens_, next_token,
+                               kFlagEnclosed | kFlagNotDelimiter);
+    if (!CheckTokenCategory(next_token, kUnknown))
+      continue;
 
     // See if it's an isolated number
-    if (next_token != tokens_.end() &&
-        next_token->category == kUnknown &&
-        IsTokenIsolated(next_token) &&
-        IsNumericString(next_token->content)) {
+    if (IsTokenIsolated(next_token) && IsNumericString(next_token->content)) {
       if (IsValidEpisodeNumber(token->content) &&
           IsValidEpisodeNumber(next_token->content)) {
         auto lower_token =
@@ -438,8 +434,7 @@ bool Parser::SearchForSeparatedNumbers(std::vector<size_t>& tokens) {
     auto previous_token = FindPreviousToken(tokens_, token, kFlagNotDelimiter);
 
     // See if the number has a preceding "-" separator
-    if (previous_token != tokens_.end() &&
-        previous_token->category == kUnknown &&
+    if (CheckTokenCategory(previous_token, kUnknown) &&
         IsDashCharacter(previous_token->content)) {
       if (SetEpisodeNumber(token->content, *token, true)) {
         previous_token->category = kIdentifier;
@@ -472,8 +467,7 @@ bool Parser::SearchForLastNumber(std::vector<size_t>& tokens) {
 
     // Ignore if the previous token is "Movie" or "Part"
     auto previous_token = FindPreviousToken(tokens_, token, kFlagNotDelimiter);
-    if (previous_token != tokens_.end() &&
-        previous_token->category == kUnknown) {
+    if (CheckTokenCategory(previous_token, kUnknown)) {
       if (IsStringEqualTo(previous_token->content, L"Movie") ||
           IsStringEqualTo(previous_token->content, L"Part")) {
         continue;

@@ -127,8 +127,7 @@ bool Parser::CheckExtentKeyword(ElementCategory category,
                                 const token_iterator_t token) {
   auto next_token = FindNextToken(tokens_, token, kFlagNotDelimiter);
 
-  if (next_token != tokens_.end() &&
-      next_token->category == kUnknown) {
+  if (CheckTokenCategory(next_token, kUnknown)) {
     if (FindNumberInString(next_token->content) == 0) {
       switch (category) {
         case kElementEpisodeNumber:
@@ -239,13 +238,18 @@ void Parser::BuildElement(ElementCategory category, bool keep_delimiters,
 
 ////////////////////////////////////////////////////////////////////////////////
 
+bool Parser::CheckTokenCategory(const token_iterator_t token,
+                                TokenCategory category) const {
+  return token != tokens_.end() && token->category == category;
+}
+
 bool Parser::IsTokenIsolated(const token_iterator_t token) const {
   auto previous_token = FindPreviousToken(tokens_, token, kFlagNotDelimiter);
-  if (previous_token == tokens_.end() || previous_token->category != kBracket)
+  if (!CheckTokenCategory(previous_token, kBracket))
     return false;
 
   auto next_token = FindNextToken(tokens_, token, kFlagNotDelimiter);
-  if (next_token == tokens_.end() || next_token->category != kBracket)
+  if (!CheckTokenCategory(next_token, kBracket))
     return false;
 
   return true;
