@@ -87,16 +87,23 @@ bool Parser::SetVolumeNumber(const string_t& number, Token& token,
 
 ////////////////////////////////////////////////////////////////////////////////
 
-bool Parser::NumberComesAfterEpisodePrefix(Token& token) {
+bool Parser::NumberComesAfterPrefix(ElementCategory category, Token& token) {
   size_t number_begin = FindNumberInString(token.content);
   auto prefix = keyword_manager.Normalize(token.content.substr(0, number_begin));
 
-  if (keyword_manager.Find(kElementEpisodePrefix, prefix)) {
+  if (keyword_manager.Find(category, prefix)) {
     auto number = token.content.substr(
         number_begin, token.content.length() - number_begin);
-    if (!MatchEpisodePatterns(number, token))
-      SetEpisodeNumber(number, token, false);
-    return true;
+    switch (category) {
+      case kElementEpisodePrefix:
+        if (!MatchEpisodePatterns(number, token))
+          SetEpisodeNumber(number, token, false);
+        return true;
+      case kElementVolumePrefix:
+        if (!MatchVolumePatterns(number, token))
+          SetVolumeNumber(number, token, false);
+        return true;
+    }
   }
 
   return false;
@@ -129,9 +136,11 @@ bool Parser::SearchForEpisodePatterns(std::vector<size_t>& tokens) {
     bool numeric_front = IsNumericChar(token->content.front());
 
     if (!numeric_front) {
-      // e.g. "EP.01"
-      if (NumberComesAfterEpisodePrefix(*token))
+      // e.g. "EP.1", "Vol.1"
+      if (NumberComesAfterPrefix(kElementEpisodePrefix, *token))
         return true;
+      if (NumberComesAfterPrefix(kElementVolumePrefix, *token))
+        continue;
     } else {
       // e.g. "8 of 12"
       if (NumberComesBeforeTotalNumber(token))

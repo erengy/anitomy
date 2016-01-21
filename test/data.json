@@ -1872,5 +1872,29 @@
 		"episode_title": "What Must Be Done",
 		"file_name": "Noragami - S02E06 - What Must Be Done [Episode 6]",
 		"id": 30503
+	},
+	{
+		"anime_title": "Classroom Crisis",
+		"audio_term": "AAC",
+		"file_name": "[Harunatsu] Classroom Crisis - Vol.1 [BD 720p-AAC]",
+		"id": 30383,
+		"release_group": "Harunatsu",
+		"source": "BD",
+		"video_resolution": "720p",
+		"volume_number": "1"
+	},
+	{
+		"anime_title": "Classroom Crisis",
+		"audio_term": "FLAC",
+		"file_name": "[GS] Classroom Crisis Vol.1&2 (BD 1080p 10bit FLAC)",
+		"id": 30383,
+		"release_group": "GS",
+		"source": "BD",
+		"video_resolution": "1080p",
+		"video_term": "10bit",
+		"volume_number": [
+			"1",
+			"2"
+		]
 	}
 ]

@@ -50,7 +50,7 @@ private:
   bool SearchForSeparatedNumbers(std::vector<size_t>& tokens);
   bool SearchForLastNumber(std::vector<size_t>& tokens);
 
-  bool NumberComesAfterEpisodePrefix(Token& token);
+  bool NumberComesAfterPrefix(ElementCategory category, Token& token);
   bool NumberComesBeforeTotalNumber(const token_iterator_t token);
 
   bool MatchEpisodePatterns(string_t word, Token& token);
