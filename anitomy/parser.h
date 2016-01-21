@@ -69,6 +69,7 @@ private:
 
   bool IsValidEpisodeNumber(const string_t& number);
   bool SetEpisodeNumber(const string_t& number, Token& token, bool validate);
+  bool SetAlternativeEpisodeNumber(const string_t& number, Token& token);
 
   bool IsValidVolumeNumber(const string_t& number);
   bool SetVolumeNumber(const string_t& number, Token& token, bool validate);
@@ -101,6 +102,8 @@ private:
   Elements& elements_;
   const Options& options_;
   token_container_t& tokens_;
+
+  bool found_episode_keywords_ = false;
 };
 
 }  // namespace anitomy

@@ -128,6 +128,8 @@ void Parser::SearchForEpisodeNumber() {
   if (tokens.empty())
     return;
 
+  found_episode_keywords_ = !elements_.empty(kElementEpisodeNumber);
+
   // If a token matches a known episode pattern, it has to be the episode number
   if (SearchForEpisodePatterns(tokens))
     return;

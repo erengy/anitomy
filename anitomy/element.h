@@ -35,6 +35,7 @@ enum ElementCategory {
   kElementAudioTerm,
   kElementDeviceCompatibility,
   kElementEpisodeNumber,
+  kElementEpisodeNumberAlt,
   kElementEpisodePrefix,
   kElementEpisodeTitle,
   kElementFileChecksum,

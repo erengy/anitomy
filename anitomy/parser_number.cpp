@@ -32,12 +32,39 @@ bool Parser::IsValidEpisodeNumber(const string_t& number) {
 
 bool Parser::SetEpisodeNumber(const string_t& number, Token& token,
                               bool validate) {
-  if (validate)
-    if (!IsValidEpisodeNumber(number))
-      return false;
+  if (validate && !IsValidEpisodeNumber(number))
+    return false;
 
-  elements_.insert(kElementEpisodeNumber, number);
   token.category = kIdentifier;
+
+  auto category = kElementEpisodeNumber;
+
+  // Handle equivalent numbers
+  if (found_episode_keywords_) {
+    for (auto& element : elements_) {
+      if (element.first != kElementEpisodeNumber)
+        continue;
+      // The larger number gets to be the alternative one
+      const int comparison = StringToInt(number) - StringToInt(element.second);
+      if (comparison > 0) {
+        category = kElementEpisodeNumberAlt;
+      } else if (comparison < 0) {
+        element.first = kElementEpisodeNumberAlt;
+      } else {
+        return false;  // No need to add the same number twice
+      }
+      break;
+    }
+  }
+
+  elements_.insert(category, number);
+  return true;
+}
+
+bool Parser::SetAlternativeEpisodeNumber(const string_t& number, Token& token) {
+  elements_.insert(kElementEpisodeNumberAlt, number);
+  token.category = kIdentifier;
+
   return true;
 }
 
@@ -383,7 +410,7 @@ bool Parser::SearchForEquivalentNumbers(std::vector<size_t>& tokens) {
        token_index != tokens.end(); ++token_index) {
     auto token = tokens_.begin() + *token_index;
 
-    if (IsTokenIsolated(token))
+    if (IsTokenIsolated(token) || !IsValidEpisodeNumber(token->content))
       continue;
 
     // Find the first enclosed, non-delimiter token
@@ -395,18 +422,20 @@ bool Parser::SearchForEquivalentNumbers(std::vector<size_t>& tokens) {
     if (!CheckTokenCategory(next_token, kUnknown))
       continue;
 
-    // See if it's an isolated number
-    if (IsTokenIsolated(next_token) && IsNumericString(next_token->content)) {
-      if (IsValidEpisodeNumber(token->content) &&
-          IsValidEpisodeNumber(next_token->content)) {
-        auto lower_token =
-            StringToInt(token->content) < StringToInt(next_token->content) ?
-            token : next_token;
-        SetEpisodeNumber(lower_token->content, *token, false);
-        next_token->category = kIdentifier;
-        return true;
-      }
-    }
+    // Check if it's an isolated number
+    if (!IsTokenIsolated(next_token) ||
+        !IsNumericString(next_token->content) ||
+        !IsValidEpisodeNumber(next_token->content))
+      continue;
+
+    auto minmax = std::minmax(token, next_token,
+        [](const token_iterator_t& a, const token_iterator_t& b) {
+          return StringToInt(a->content) < StringToInt(b->content);
+        });
+    SetEpisodeNumber(minmax.first->content, *minmax.first, false);
+    SetAlternativeEpisodeNumber(minmax.second->content, *minmax.second);
+
+    return true;
   }
 
   return false;
