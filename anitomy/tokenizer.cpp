@@ -230,6 +230,14 @@ void Tokenizer::ValidateDelimiterTokens() {
           append_token_to(token, prev_token);
         }
       }
+    } else if (is_delimiter_token(prev_token) &&
+               is_delimiter_token(next_token)) {
+      const auto prev_delimiter = prev_token->content.front();
+      const auto next_delimiter = next_token->content.front();
+      if (prev_delimiter == next_delimiter &&
+          prev_delimiter != delimiter) {
+        token->category = kUnknown;  // e.g. "&" in "_&_"
+      }
     }
   }
 
