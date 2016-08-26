@@ -1903,5 +1903,22 @@
 		"file_name": "[Infantjedi] Norn9 - Norn + Nonetto - 12",
 		"id": 31452,
 		"release_group": "Infantjedi"
+	},
+	{
+		"anime_title": "Dragon Ball Z Movies",
+		"audio_term": "DTS",
+		"episode_number": [
+			"8",
+			"10"
+		],
+		"file_name": "Dragon_Ball_Z_Movies_8_&_10_[720p,BluRay,DTS,x264]_-_THORA",
+		"id": [
+			901,
+			903
+		],
+		"release_group": "THORA",
+		"source": "BluRay",
+		"video_resolution": "720p",
+		"video_term": "x264"
 	}
 ]

@@ -41,7 +41,7 @@ private:
   bool SearchForLastNumber(std::vector<size_t>& tokens);
 
   bool NumberComesAfterPrefix(ElementCategory category, Token& token);
-  bool NumberComesBeforeTotalNumber(const token_iterator_t token);
+  bool NumberComesBeforeAnotherNumber(const token_iterator_t token);
 
   bool MatchEpisodePatterns(string_t word, Token& token);
   bool MatchSingleEpisodePattern(const string_t& word, Token& token);

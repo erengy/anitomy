@@ -99,17 +99,22 @@ bool Parser::NumberComesAfterPrefix(ElementCategory category, Token& token) {
   return false;
 }
 
-bool Parser::NumberComesBeforeTotalNumber(const token_iterator_t token) {
-  auto next_token = FindNextToken(tokens_, token, kFlagNotDelimiter);
+bool Parser::NumberComesBeforeAnotherNumber(const token_iterator_t token) {
+  auto separator_token = FindNextToken(tokens_, token, kFlagNotDelimiter);
 
-  if (next_token != tokens_.end()) {
-    if (IsStringEqualTo(next_token->content, L"of")) {
-      auto other_token = FindNextToken(tokens_, next_token, kFlagNotDelimiter);
-
-      if (other_token != tokens_.end()) {
-        if (IsNumericString(other_token->content)) {
+  if (separator_token != tokens_.end()) {
+    static const std::vector<std::pair<string_t, bool>> separators{
+      {L"&", true}, {L"of", false},
+    };
+    for (const auto& separator : separators) {
+      if (IsStringEqualTo(separator_token->content, separator.first)) {
+        auto other_token = FindNextToken(tokens_, separator_token, kFlagNotDelimiter);
+        if (other_token != tokens_.end() &&
+            IsNumericString(other_token->content)) {
           SetEpisodeNumber(token->content, *token, false);
-          next_token->category = kIdentifier;
+          if (separator.second)
+            SetEpisodeNumber(other_token->content, *other_token, false);
+          separator_token->category = kIdentifier;
           other_token->category = kIdentifier;
           return true;
         }
@@ -132,8 +137,8 @@ bool Parser::SearchForEpisodePatterns(std::vector<size_t>& tokens) {
       if (NumberComesAfterPrefix(kElementVolumePrefix, *token))
         continue;
     } else {
-      // e.g. "8 of 12"
-      if (NumberComesBeforeTotalNumber(token))
+      // e.g. "8 & 10", "01 of 24"
+      if (NumberComesBeforeAnotherNumber(token))
         return true;
     }
     // Look for other patterns
