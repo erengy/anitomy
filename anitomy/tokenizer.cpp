@@ -239,6 +239,17 @@ void Tokenizer::ValidateDelimiterTokens() {
         token->category = kUnknown;  // e.g. "&" in "_&_"
       }
     }
+
+    // Check for other special cases
+    if (delimiter == '&' || delimiter == '+') {
+      if (is_unknown_token(prev_token) && is_unknown_token(next_token)) {
+        if (IsNumericString(prev_token->content) &&
+            IsNumericString(next_token->content)) {
+          append_token_to(token, prev_token);
+          append_token_to(next_token, prev_token);  // e.g. "01+02"
+        }
+      }
+    }
   }
 
   auto remove_if_invalid = std::remove_if(tokens_.begin(), tokens_.end(),
