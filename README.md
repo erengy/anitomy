@@ -8,7 +8,7 @@ The following filename...
 
     [TaigaSubs]_Toradora!_(2008)_-_01v2_-_Tiger_and_Dragon_[1280x720_H.264_FLAC][1234ABCD].mkv
 
-...would be resolved into these elements:
+...is resolved into these elements:
 
 - Release group: *TaigaSubs*
 - Anime title: *Toradora!*
@@ -31,18 +31,18 @@ int main() {
   anitomy::Anitomy anitomy;
   anitomy.Parse(L"[Ouroboros]_Fullmetal_Alchemist_Brotherhood_-_01.mkv");
 
-  auto& elements = anitomy.elements();
+  const auto& elements = anitomy.elements();
 
   // Elements are iterable, where each element is a category-value pair
-  for (auto& element : elements) {
-    std::wcout << element.first << L"\t" << element.second << std::endl;
+  for (const auto& element : elements) {
+    std::wcout << element.first << '\t' << element.second << '\n';
   }
-  std::wcout << std::endl;
+  std::wcout << '\n';
 
   // You can access values directly by using get() and get_all() methods
   std::wcout << elements.get(anitomy::kElementAnimeTitle) << L" #" <<
                 elements.get(anitomy::kElementEpisodeNumber) << L" by " <<
-                elements.get(anitomy::kElementReleaseGroup) << std::endl;
+                elements.get(anitomy::kElementReleaseGroup) << '\n';
 
   return 0;
 }
@@ -51,11 +51,11 @@ int main() {
 ...which will output:
 
 ```
-10      mkv
-11      [Ouroboros]_Fullmetal_Alchemist_Brotherhood_-_01
-6       01
-1       Fullmetal Alchemist Brotherhood
-14      Ouroboros
+12      mkv
+13      [Ouroboros]_Fullmetal_Alchemist_Brotherhood_-_01
+7       01
+2       Fullmetal Alchemist Brotherhood
+16      Ouroboros
 
 Fullmetal Alchemist Brotherhood #01 by Ouroboros
 ```
@@ -103,7 +103,7 @@ Anime video files are commonly named in a format where the anime title is follow
 - Space and underscore are not the only delimiters in use.
 - A single filename may contain multiple delimiters.
 
-There are so many cases to cover that it's simply not possible to parse all filenames solely with regular expressions. *Anitomy* tries a different approach, and it succeeds: It's able to parse tens of thousands of filenames per second, with almost perfect accuracy.
+There are so many cases to cover that it's simply not possible to parse all filenames solely with regular expressions. *Anitomy* tries a different approach, and it succeeds: It's able to parse tens of thousands of filenames per second, with great accuracy.
 
 The following projects make use of *Anitomy*:
 
@@ -111,6 +111,8 @@ The following projects make use of *Anitomy*:
 - [MAL Updater OS X](https://github.com/chikorita157/malupdaterosx-cocoa)
 - [Hachidori](https://github.com/chikorita157/hachidori)
 - [Shinjiru](https://github.com/Kazakuri/Shinjiru)
+
+See [other repositories](https://github.com/search?utf8=%E2%9C%93&q=anitomy) for related projects (e.g. interfaces, ports, wrappers).
 
 ## Are there any exceptions?
 
@@ -131,7 +133,7 @@ Please consider abiding by these simple rules before deciding on your naming con
 - Don't enclose anime title, episode number and episode title within brackets. Enclose everything else, including the name of your group.
 - Don't use parentheses to enclose release information; use square brackets instead. Parentheses should only be used if they are a part of the anime/episode title.
 - Don't use multiple delimiters in a single filename. If possible, stick with either space or underscore.
-- Use a separator between anime title and episode number, namely a dash. There are anime titles that end with a number, which creates confusion.
+- Use a separator (e.g. a dash) between anime title and episode number. There are anime titles that end with a number, which creates ambiguity.
 - Indicate the episode interval in batch releases.
 
 ## License
