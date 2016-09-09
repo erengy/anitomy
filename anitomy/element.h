@@ -69,11 +69,9 @@ public:
   // Element access
   element_pair_t& at(size_t position);
   const element_pair_t& at(size_t position) const;
-  element_pair_t& operator[](size_t position);
-  const element_pair_t& operator[](size_t position) const;
 
   // Value access
-  string_t& get(ElementCategory category);
+  string_t get(ElementCategory category) const;
   std::vector<string_t> get_all(ElementCategory category) const;
 
   // Modifiers
@@ -81,6 +79,8 @@ public:
   void insert(ElementCategory category, const string_t& value);
   void erase(ElementCategory category);
   element_iterator_t erase(element_iterator_t iterator);
+  void set(ElementCategory category, const string_t& value);
+  string_t& operator[](ElementCategory category);
 
   // Lookup
   size_t count(ElementCategory category) const;

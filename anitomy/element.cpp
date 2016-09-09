@@ -56,24 +56,11 @@ const element_pair_t& Elements::at(size_t position) const {
   return elements_.at(position);
 }
 
-element_pair_t& Elements::operator[](size_t position) {
-  return elements_[position];
-}
-
-const element_pair_t& Elements::operator[](size_t position) const {
-  return elements_[position];
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 
-string_t& Elements::get(ElementCategory category) {
+string_t Elements::get(ElementCategory category) const {
   auto element = find(category);
-
-  if (element == elements_.end())
-    element = elements_.insert(elements_.end(),
-                               std::make_pair(category, string_t()));
-
-  return element->second;
+  return element != elements_.end() ? element->second : string_t();
 }
 
 std::vector<string_t> Elements::get_all(ElementCategory category) const {
@@ -94,7 +81,7 @@ void Elements::clear() {
 
 void Elements::insert(ElementCategory category, const string_t& value) {
   if (!value.empty())
-    elements_.push_back(std::make_pair(category, value));
+    elements_.push_back({category, value});
 }
 
 void Elements::erase(ElementCategory category) {
@@ -107,6 +94,25 @@ void Elements::erase(ElementCategory category) {
 
 element_iterator_t Elements::erase(element_iterator_t iterator) {
   return elements_.erase(iterator);
+}
+
+void Elements::set(ElementCategory category, const string_t& value) {
+  auto element = find(category);
+
+  if (element == elements_.end()) {
+    elements_.push_back({category, value});
+  } else {
+    element->second = value;
+  }
+}
+
+string_t& Elements::operator[](ElementCategory category) {
+  auto element = find(category);
+
+  if (element == elements_.end())
+    element = elements_.insert(elements_.end(), {category, string_t()});
+
+  return element->second;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
