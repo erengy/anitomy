@@ -323,7 +323,7 @@ void Parser::ValidateElements() {
   if (!elements_.empty(kElementAnimeType) &&
       !elements_.empty(kElementEpisodeTitle)) {
     // Here we check whether the episode title contains an anime type
-    const auto& episode_title = elements_.get(kElementEpisodeTitle);
+    const auto episode_title = elements_.get(kElementEpisodeTitle);
     for (auto it = elements_.begin(); it != elements_.end(); ) {
       if (it->first == kElementAnimeType) {
         if (IsInString(episode_title, it->second)) {
