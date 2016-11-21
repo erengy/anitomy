@@ -77,7 +77,7 @@ struct ToUpper : public std::unary_function<char_t, char_t> {
 bool IsInString(const string_t& str1, const string_t& str2) {
   return std::search(str1.begin(), str1.end(),
                      str2.begin(), str2.end()) != str1.end();
-};
+}
 
 inline bool IsCharEqualTo(const char_t c1, const char_t c2) {
   return ToLower(c1) == ToLower(c2);
