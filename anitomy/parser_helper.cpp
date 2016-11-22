@@ -161,7 +161,7 @@ bool Parser::IsElementCategorySearchable(ElementCategory category) {
     case kElementVolumePrefix:
       return true;
     default:
-      ;
+      break;
   }
 
   return false;
@@ -181,7 +181,7 @@ bool Parser::IsElementCategorySingular(ElementCategory category) {
     case kElementVideoTerm:
       return false;
     default:
-      ;
+      break;
   }
 
   return true;
@@ -221,7 +221,7 @@ void Parser::BuildElement(ElementCategory category, bool keep_delimiters,
         break;
       }
       default:
-        ;
+        break;
     }
   }
 
