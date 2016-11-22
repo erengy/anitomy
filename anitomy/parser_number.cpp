@@ -93,6 +93,8 @@ bool Parser::NumberComesAfterPrefix(ElementCategory category, Token& token) {
         if (!MatchVolumePatterns(number, token))
           SetVolumeNumber(number, token, false);
         return true;
+      default:
+        break;
     }
   }
 
