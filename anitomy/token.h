@@ -6,8 +6,7 @@
 ** file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
 
-#ifndef ANITOMY_TOKEN_H
-#define ANITOMY_TOKEN_H
+#pragma once
 
 #include <vector>
 
@@ -73,5 +72,3 @@ token_iterator_t FindPreviousToken(token_container_t& tokens, token_iterator_t f
 token_iterator_t FindNextToken(token_container_t& tokens, token_iterator_t first, unsigned int flags);
 
 }  // namespace anitomy
-
-#endif  // ANITOMY_TOKEN_H

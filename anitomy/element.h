@@ -6,8 +6,7 @@
 ** file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
 
-#ifndef ANITOMY_ELEMENT_H
-#define ANITOMY_ELEMENT_H
+#pragma once
 
 #include <vector>
 
@@ -93,5 +92,3 @@ private:
 };
 
 }  // namespace anitomy
-
-#endif  // ANITOMY_ELEMENT_H

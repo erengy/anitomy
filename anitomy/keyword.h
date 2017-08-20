@@ -6,8 +6,7 @@
 ** file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
 
-#ifndef ANITOMY_KEYWORD_H
-#define ANITOMY_KEYWORD_H
+#pragma once
 
 #include <initializer_list>
 #include <map>
@@ -65,5 +64,3 @@ private:
 extern KeywordManager keyword_manager;
 
 }  // namespace anitomy
-
-#endif  // ANITOMY_KEYWORD_H

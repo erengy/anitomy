@@ -6,8 +6,7 @@
 ** file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
 
-#ifndef ANITOMY_STRING_H
-#define ANITOMY_STRING_H
+#pragma once
 
 #include <string>
 
@@ -35,5 +34,3 @@ string_t StringToUpperCopy(string_t str);
 void TrimString(string_t& str, const char_t trim_chars[] = L" ");
 
 }  // namespace anitomy
-
-#endif  // ANITOMY_STRING_H

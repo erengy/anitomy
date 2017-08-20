@@ -6,8 +6,7 @@
 ** file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
 
-#ifndef ANITOMY_TOKENIZER_H
-#define ANITOMY_TOKENIZER_H
+#pragma once
 
 #include "element.h"
 #include "options.h"
@@ -42,5 +41,3 @@ private:
 };
 
 }  // namespace anitomy
-
-#endif  // ANITOMY_TOKENIZER_H

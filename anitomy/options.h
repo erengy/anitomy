@@ -6,8 +6,7 @@
 ** file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
 
-#ifndef ANITOMY_OPTIONS_H
-#define ANITOMY_OPTIONS_H
+#pragma once
 
 #include <vector>
 
@@ -26,5 +25,3 @@ struct Options {
 };
 
 }  // namespace anitomy
-
-#endif  // ANITOMY_OPTIONS_H
