@@ -15,22 +15,12 @@ namespace anitomy {
 
 KeywordManager keyword_manager;
 
-KeywordOptions::KeywordOptions(bool identifiable, bool searchable, bool valid)
-    : identifiable(identifiable), searchable(searchable), valid(valid) {
-}
-
-Keyword::Keyword(ElementCategory category, const KeywordOptions& options)
-    : category(category), options(options) {
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
 KeywordManager::KeywordManager() {
   const KeywordOptions options_default;
-  const KeywordOptions options_invalid(true, true, false);
-  const KeywordOptions options_unidentifiable(false, true, true);
-  const KeywordOptions options_unidentifiable_invalid(false, true, false);
-  const KeywordOptions options_unidentifiable_unsearchable(false, false, true);
+  const KeywordOptions options_invalid{true, true, false};
+  const KeywordOptions options_unidentifiable{false, true, true};
+  const KeywordOptions options_unidentifiable_invalid{false, true, false};
+  const KeywordOptions options_unidentifiable_unsearchable{false, false, true};
 
   Add(kElementAnimeSeasonPrefix, options_unidentifiable, {
       L"SAISON", L"SEASON"});
@@ -134,7 +124,7 @@ void KeywordManager::Add(ElementCategory category,
       continue;
     if (keys.find(keyword) != keys.end())
       continue;
-    keys.insert(std::make_pair(keyword, Keyword(category, options)));
+    keys.insert(std::make_pair(keyword, Keyword{category, options}));
   }
 }
 
@@ -196,9 +186,9 @@ void KeywordManager::Peek(const string_t& filename,
     for (const auto& keyword : entry.second) {
       auto it = std::search(it_begin, it_end, keyword.begin(), keyword.end());
       if (it != it_end) {
-        auto offset = it - filename.begin();
+        const auto offset = static_cast<size_t>(std::distance(filename.begin(), it));
         elements.insert(entry.first, keyword);
-        preidentified_tokens.push_back(TokenRange(offset, keyword.size()));
+        preidentified_tokens.push_back(TokenRange{offset, keyword.size()});
       }
     }
   }

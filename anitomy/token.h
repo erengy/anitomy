@@ -41,13 +41,9 @@ enum TokenFlag {
   kFlagMaskEnclosed = kFlagEnclosed | kFlagNotEnclosed,
 };
 
-class TokenRange {
-public:
-  TokenRange();
-  TokenRange(size_t offset, size_t size);
-
-  size_t offset;
-  size_t size;
+struct TokenRange {
+  size_t offset = 0;
+  size_t size = 0;
 };
 
 class Token {

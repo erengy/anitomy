@@ -17,22 +17,15 @@
 
 namespace anitomy {
 
-class TokenRange;
+struct TokenRange;
 
-class KeywordOptions {
-public:
-  KeywordOptions() {}
-  KeywordOptions(bool identifiable, bool searchable, bool valid);
-
+struct KeywordOptions {
   bool identifiable = true;
   bool searchable = true;
   bool valid = true;
 };
 
-class Keyword {
-public:
-  Keyword(ElementCategory category, const KeywordOptions& options);
-
+struct Keyword {
   ElementCategory category;
   KeywordOptions options;
 };

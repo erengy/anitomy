@@ -12,18 +12,6 @@
 
 namespace anitomy {
 
-TokenRange::TokenRange()
-    : offset(0),
-      size(0) {
-}
-
-TokenRange::TokenRange(size_t offset, size_t size)
-    : offset(offset),
-      size(size) {
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
 Token::Token()
     : category(kUnknown),
       enclosed(false) {

@@ -82,14 +82,16 @@ void Tokenizer::TokenizeByBrackets() {
       current_char = std::find(char_begin, char_end, matching_bracket);
     }
 
-    const TokenRange range(std::distance(filename_.begin(), char_begin),
-                           std::distance(char_begin, current_char));
+    const TokenRange range{
+        static_cast<size_t>(std::distance(filename_.begin(), char_begin)),
+        static_cast<size_t>(std::distance(char_begin, current_char))
+    };
 
     if (range.size > 0)  // Found unknown token
       TokenizeByPreidentified(is_bracket_open, range);
 
     if (current_char != char_end) {  // Found bracket
-      AddToken(kBracket, true, TokenRange(range.offset + range.size, 1));
+      AddToken(kBracket, true, TokenRange{range.offset + range.size, 1});
       is_bracket_open = !is_bracket_open;
       char_begin = ++current_char;
     }
@@ -101,7 +103,7 @@ void Tokenizer::TokenizeByPreidentified(bool enclosed, const TokenRange& range) 
   keyword_manager.Peek(filename_, range, elements_, preidentified_tokens);
 
   size_t offset = range.offset;
-  TokenRange subrange(range.offset, 0);
+  TokenRange subrange{range.offset, 0};
 
   while (offset < range.offset + range.size) {
     for (const auto& preidentified_token : preidentified_tokens) {
@@ -139,15 +141,17 @@ void Tokenizer::TokenizeByDelimiters(bool enclosed, const TokenRange& range) {
     current_char = std::find_first_of(current_char, char_end,
                                       delimiters.begin(), delimiters.end());
 
-    const TokenRange subrange(std::distance(filename_.begin(), char_begin),
-                              std::distance(char_begin, current_char));
+    const TokenRange subrange{
+        static_cast<size_t>(std::distance(filename_.begin(), char_begin)),
+        static_cast<size_t>(std::distance(char_begin, current_char))
+    };
 
     if (subrange.size > 0)  // Found unknown token
       AddToken(kUnknown, enclosed, subrange);
 
     if (current_char != char_end) {  // Found delimiter
       AddToken(kDelimiter, enclosed,
-               TokenRange(subrange.offset + subrange.size, 1));
+               TokenRange{subrange.offset + subrange.size, 1});
       char_begin = ++current_char;
     }
   }
