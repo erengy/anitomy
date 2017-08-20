@@ -53,7 +53,7 @@ public:
   string_t Normalize(const string_t& str) const;
 
 private:
-  typedef std::map<string_t, Keyword> keyword_container_t;
+  using keyword_container_t = std::map<string_t, Keyword>;
 
   keyword_container_t& GetKeywordContainer(ElementCategory category) const;
 

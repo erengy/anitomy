@@ -62,9 +62,9 @@ public:
   bool enclosed;
 };
 
-typedef std::vector<Token> token_container_t;
-typedef token_container_t::iterator token_iterator_t;
-typedef token_container_t::reverse_iterator token_reverse_iterator_t;
+using token_container_t = std::vector<Token>;
+using token_iterator_t = token_container_t::iterator;
+using token_reverse_iterator_t = token_container_t::reverse_iterator;
 
 token_iterator_t FindToken(token_iterator_t first, token_iterator_t last, unsigned int flags);
 token_reverse_iterator_t FindToken(token_reverse_iterator_t first, token_reverse_iterator_t last, unsigned int flags);

@@ -181,7 +181,7 @@ void KeywordManager::Peek(const string_t& filename,
                           const TokenRange& range,
                           Elements& elements,
                           std::vector<TokenRange>& preidentified_tokens) const {
-  typedef std::pair<ElementCategory, std::vector<string_t>> entry_t;
+  using entry_t = std::pair<ElementCategory, std::vector<string_t>>;
   static const std::vector<entry_t> entries{
     {kElementAudioTerm, {L"Dual Audio"}},
     {kElementVideoTerm, {L"H264", L"H.264", L"h264", L"h.264"}},

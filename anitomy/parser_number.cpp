@@ -153,8 +153,8 @@ bool Parser::SearchForEpisodePatterns(std::vector<size_t>& tokens) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef std::basic_regex<char_t> regex_t;
-typedef std::match_results<string_t::const_iterator> regex_match_results_t;
+using regex_t = std::basic_regex<char_t>;
+using regex_match_results_t = std::match_results<string_t::const_iterator>;
 
 bool Parser::MatchSingleEpisodePattern(const string_t& word, Token& token) {
   static const regex_t pattern(L"(\\d{1,3})[vV](\\d)");

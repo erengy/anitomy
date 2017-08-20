@@ -12,8 +12,8 @@
 
 namespace anitomy {
 
-typedef wchar_t char_t;
-typedef std::basic_string<char_t> string_t;
+using char_t = wchar_t;
+using string_t = std::basic_string<char_t>;
 
 bool IsAlphanumericChar(const char_t c);
 bool IsHexadecimalChar(const char_t c);

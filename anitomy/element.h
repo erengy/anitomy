@@ -45,11 +45,10 @@ enum ElementCategory {
   kElementUnknown = kElementIterateLast
 };
 
-typedef std::pair<ElementCategory, string_t> element_pair_t;
-typedef std::vector<element_pair_t> element_container_t;
-
-typedef element_container_t::iterator element_iterator_t;
-typedef element_container_t::const_iterator element_const_iterator_t;
+using element_pair_t = std::pair<ElementCategory, string_t>;
+using element_container_t = std::vector<element_pair_t>;
+using element_iterator_t = element_container_t::iterator;
+using element_const_iterator_t = element_container_t::const_iterator;
 
 class Elements {
 public:
