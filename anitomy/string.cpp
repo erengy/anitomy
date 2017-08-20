@@ -64,12 +64,10 @@ inline wchar_t ToLower(const wchar_t c) {
          static_cast<wchar_t>(std::towlower(c));
 }
 
-struct ToUpper : public std::unary_function<char_t, char_t> {
-  wchar_t operator ()(const wchar_t c) const {
-    return (c >= L'A' && c <= L'Z') ? c :
-           (c >= L'a' && c <= L'z') ? (c + (L'A' - L'a')) :
-           static_cast<wchar_t>(std::towupper(c));
-  }
+inline wchar_t ToUpper(const wchar_t c) {
+  return (c >= L'A' && c <= L'Z') ? c :
+         (c >= L'a' && c <= L'z') ? (c + (L'A' - L'a')) :
+         static_cast<wchar_t>(std::towupper(c));
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -108,7 +106,7 @@ void EraseString(string_t& str, const string_t& erase_this) {
 }
 
 void StringToUpper(string_t& str) {
-  std::transform(str.begin(), str.end(), str.begin(), ToUpper());
+  std::transform(str.begin(), str.end(), str.begin(), ToUpper);
 }
 
 string_t StringToUpperCopy(string_t str) {
@@ -120,8 +118,8 @@ void TrimString(string_t& str, const char_t trim_chars[]) {
   if (str.empty())
     return;
 
-  const string_t::size_type pos_begin = str.find_first_not_of(trim_chars);
-  const string_t::size_type pos_end = str.find_last_not_of(trim_chars);
+  const auto pos_begin = str.find_first_not_of(trim_chars);
+  const auto pos_end = str.find_last_not_of(trim_chars);
 
   if (pos_begin == string_t::npos || pos_end == string_t::npos) {
     str.clear();
