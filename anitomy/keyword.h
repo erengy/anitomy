@@ -20,6 +20,9 @@ namespace anitomy {
 struct TokenRange;
 
 struct KeywordOptions {
+  KeywordOptions() {}
+  KeywordOptions(bool identifiable, bool searchable, bool valid)
+      : identifiable(identifiable), searchable(searchable), valid(valid) {}
   bool identifiable = true;
   bool searchable = true;
   bool valid = true;

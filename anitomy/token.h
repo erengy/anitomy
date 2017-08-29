@@ -42,6 +42,8 @@ enum TokenFlag {
 };
 
 struct TokenRange {
+  TokenRange() {}
+  TokenRange(size_t offset, size_t size) : offset(offset), size(size) {}
   size_t offset = 0;
   size_t size = 0;
 };
