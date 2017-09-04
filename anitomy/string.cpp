@@ -68,7 +68,7 @@ inline wchar_t ToUpper(const wchar_t c) {
   return (c >= L'A' && c <= L'Z') ? c :
          (c >= L'a' && c <= L'z') ? (c + (L'A' - L'a')) :
          static_cast<wchar_t>(std::towupper(c));
-};
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 
