@@ -1,5 +1,5 @@
 /*
-** Copyright (c) 2014-2017, Eren Okka
+** Copyright (c) 2014-2018, Eren Okka
 **
 ** This Source Code Form is subject to the terms of the Mozilla Public
 ** License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -42,8 +42,9 @@ KeywordManager::KeywordManager() {
       L"2.0CH", L"2CH", L"5.1", L"5.1CH", L"DTS", L"DTS-ES", L"DTS5.1",
       L"TRUEHD5.1",
       // Audio codec
-      L"AAC", L"AACX2", L"AACX3", L"AACX4", L"AC3", L"FLAC", L"FLACX2",
-      L"FLACX3", L"FLACX4", L"LOSSLESS", L"MP3", L"OGG", L"VORBIS",
+      L"AAC", L"AACX2", L"AACX3", L"AACX4", L"AC3", L"EAC3", L"E-AC-3",
+      L"FLAC", L"FLACX2", L"FLACX3", L"FLACX4", L"LOSSLESS", L"MP3", L"OGG",
+      L"VORBIS",
       // Audio language
       L"DUALAUDIO", L"DUAL AUDIO"});
 
@@ -94,16 +95,17 @@ KeywordManager::KeywordManager() {
       L"WEBCAST", L"WEBRIP"});
 
   Add(kElementSubtitles, options_default, {
-      L"ASS", L"BIG5", L"DUB", L"DUBBED", L"HARDSUB", L"RAW", L"SOFTSUB",
-      L"SOFTSUBS", L"SUB", L"SUBBED", L"SUBTITLED"});
+      L"ASS", L"BIG5", L"DUB", L"DUBBED", L"HARDSUB", L"HARDSUBS", L"RAW",
+      L"SOFTSUB", L"SOFTSUBS", L"SUB", L"SUBBED", L"SUBTITLED"});
 
   Add(kElementVideoTerm, options_default, {
       // Frame rate
       L"23.976FPS", L"24FPS", L"29.97FPS", L"30FPS", L"60FPS", L"120FPS",
       // Video codec
-      L"8BIT", L"8-BIT", L"10BIT", L"10BITS", L"10-BIT", L"10-BITS", L"HI10", L"HI10P",
+      L"8BIT", L"8-BIT", L"10BIT", L"10BITS", L"10-BIT", L"10-BITS",
+      L"HI10", L"HI10P", L"HI444", L"HI444P", L"HI444PP",
       L"H264", L"H265", L"H.264", L"H.265", L"X264", L"X265", L"X.264",
-      L"AVC", L"HEVC", L"DIVX", L"DIVX5", L"DIVX6", L"XVID",
+      L"AVC", L"HEVC", L"HEVC2", L"DIVX", L"DIVX5", L"DIVX6", L"XVID",
       // Video format
       L"AVI", L"RMVB", L"WMV", L"WMV3", L"WMV9",
       // Video quality
