@@ -21,6 +21,7 @@ public:
 
   Elements& elements();
   Options& options();
+  const Options& options() const;
   const token_container_t& tokens() const;
 
 private:

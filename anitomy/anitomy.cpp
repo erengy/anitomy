@@ -85,6 +85,10 @@ Options& Anitomy::options() {
   return options_;
 }
 
+const Options& Anitomy::options() const {
+  return options_;
+}
+
 const token_container_t& Anitomy::tokens() const {
   return tokens_;
 }
