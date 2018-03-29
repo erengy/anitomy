@@ -81,6 +81,10 @@ Elements& Anitomy::elements() {
   return elements_;
 }
 
+const Elements& Anitomy::elements() const {
+  return elements_;
+}
+
 Options& Anitomy::options() {
   return options_;
 }

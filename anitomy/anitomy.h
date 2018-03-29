@@ -20,6 +20,7 @@ public:
   bool Parse(string_t filename);
 
   Elements& elements();
+  const Elements& elements() const;
   Options& options();
   const Options& options() const;
   const token_container_t& tokens() const;
