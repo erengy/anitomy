@@ -61,7 +61,7 @@ KeywordManager::KeywordManager() {
 
   Add(kElementFileExtension, options_default, {
       L"3GP", L"AVI", L"DIVX", L"FLV", L"M2TS", L"MKV", L"MOV", L"MP4", L"MPG",
-      L"OGM", L"RM", L"RMVB", L"WEBM", L"WMV"});
+      L"OGM", L"RM", L"RMVB", L"TS", L"WEBM", L"WMV"});
   Add(kElementFileExtension, options_invalid, {
       L"AAC", L"AIFF", L"FLAC", L"M4A", L"MP3", L"MKA", L"OGG", L"WAV", L"WMA",
       L"7Z", L"RAR", L"ZIP",
