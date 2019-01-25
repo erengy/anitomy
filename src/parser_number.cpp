@@ -1,5 +1,5 @@
 /*
-** Copyright (c) 2014-2017, Eren Okka
+** Copyright (c) 2014-2019, Eren Okka
 **
 ** This Source Code Form is subject to the terms of the Mozilla Public
 ** License, v. 2.0. If a copy of the MPL was not distributed with this
