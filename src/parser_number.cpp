@@ -32,14 +32,14 @@ bool Parser::SetEpisodeNumber(const string_t& number, Token& token,
   // Handle equivalent numbers
   if (found_episode_keywords_) {
     for (auto& element : elements_) {
-      if (element.first != kElementEpisodeNumber)
+      if (element.category != kElementEpisodeNumber)
         continue;
       // The larger number gets to be the alternative one
-      const int comparison = StringToInt(number) - StringToInt(element.second);
+      const int comparison = StringToInt(number) - StringToInt(element.value);
       if (comparison > 0) {
         category = kElementEpisodeNumberAlt;
       } else if (comparison < 0) {
-        element.first = kElementEpisodeNumberAlt;
+        element.category = kElementEpisodeNumberAlt;
       } else {
         return false;  // No need to add the same number twice
       }

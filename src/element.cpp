@@ -48,11 +48,11 @@ element_const_iterator_t Elements::cend() const {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-element_pair_t& Elements::at(size_t position) {
+Element& Elements::at(size_t position) {
   return elements_.at(position);
 }
 
-const element_pair_t& Elements::at(size_t position) const {
+const Element& Elements::at(size_t position) const {
   return elements_.at(position);
 }
 
@@ -60,15 +60,15 @@ const element_pair_t& Elements::at(size_t position) const {
 
 string_t Elements::get(ElementCategory category) const {
   auto element = find(category);
-  return element != elements_.end() ? element->second : string_t();
+  return element != elements_.end() ? element->value : string_t();
 }
 
 std::vector<string_t> Elements::get_all(ElementCategory category) const {
   std::vector<string_t> elements;
 
   for (const auto& element : elements_)
-    if (element.first == category)
-      elements.push_back(element.second);
+    if (element.category == category)
+      elements.push_back(element.value);
 
   return elements;
 }
@@ -86,8 +86,8 @@ void Elements::insert(ElementCategory category, const string_t& value) {
 
 void Elements::erase(ElementCategory category) {
   auto iterator = std::remove_if(elements_.begin(), elements_.end(),
-      [&](const element_pair_t& element) {
-        return element.first == category;
+      [&](const Element& element) {
+        return element.category == category;
       });
   elements_.erase(iterator, elements_.end());
 }
@@ -102,7 +102,7 @@ void Elements::set(ElementCategory category, const string_t& value) {
   if (element == elements_.end()) {
     elements_.push_back({category, value});
   } else {
-    element->second = value;
+    element->value = value;
   }
 }
 
@@ -112,15 +112,15 @@ string_t& Elements::operator[](ElementCategory category) {
   if (element == elements_.end())
     element = elements_.insert(elements_.end(), {category, string_t()});
 
-  return element->second;
+  return element->value;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 size_t Elements::count(ElementCategory category) const {
   return std::count_if(elements_.begin(), elements_.end(),
-      [&](const element_pair_t& element) {
-        return element.first == category;
+      [&](const Element& element) {
+        return element.category == category;
       });
 }
 
@@ -130,15 +130,15 @@ bool Elements::empty(ElementCategory category) const {
 
 element_iterator_t Elements::find(ElementCategory category) {
   return std::find_if(elements_.begin(), elements_.end(),
-      [&](const element_pair_t& element) {
-        return element.first == category;
+      [&](const Element& element) {
+        return element.category == category;
       });
 }
 
 element_const_iterator_t Elements::find(ElementCategory category) const {
   return std::find_if(elements_.cbegin(), elements_.cend(),
-      [&](const element_pair_t& element) {
-        return element.first == category;
+      [&](const Element& element) {
+        return element.category == category;
       });
 }
 

@@ -45,8 +45,12 @@ enum ElementCategory {
   kElementUnknown = kElementIterateLast
 };
 
-using element_pair_t = std::pair<ElementCategory, string_t>;
-using element_container_t = std::vector<element_pair_t>;
+struct Element {
+  ElementCategory category;
+  string_t value;
+};
+
+using element_container_t = std::vector<Element>;
 using element_iterator_t = element_container_t::iterator;
 using element_const_iterator_t = element_container_t::const_iterator;
 
@@ -65,8 +69,8 @@ public:
   element_const_iterator_t cend() const;
 
   // Element access
-  element_pair_t& at(size_t position);
-  const element_pair_t& at(size_t position) const;
+  Element& at(size_t position);
+  const Element& at(size_t position) const;
 
   // Value access
   string_t get(ElementCategory category) const;
