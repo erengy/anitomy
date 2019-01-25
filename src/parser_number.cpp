@@ -9,10 +9,10 @@
 #include <algorithm>
 #include <regex>
 
-#include "element.h"
-#include "keyword.h"
-#include "parser.h"
-#include "string.h"
+#include <anitomy/element.hpp>
+#include <anitomy/keyword.hpp>
+#include <anitomy/parser.hpp>
+#include <anitomy/string.hpp>
 
 namespace anitomy {
 

@@ -8,9 +8,9 @@
 
 #include <algorithm>
 
-#include "keyword.h"
-#include "parser.h"
-#include "string.h"
+#include <anitomy/keyword.hpp>
+#include <anitomy/parser.hpp>
+#include <anitomy/string.hpp>
 
 namespace anitomy {
 

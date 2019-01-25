@@ -8,8 +8,8 @@
 
 #include <algorithm>
 
-#include "keyword.h"
-#include "token.h"
+#include <anitomy/keyword.hpp>
+#include <anitomy/token.hpp>
 
 namespace anitomy {
 

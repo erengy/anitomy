@@ -10,7 +10,7 @@
 
 #include <vector>
 
-#include "string.h"
+#include <anitomy/string.hpp>
 
 namespace anitomy {
 

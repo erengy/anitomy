@@ -12,8 +12,8 @@
 #include <map>
 #include <vector>
 
-#include "element.h"
-#include "string.h"
+#include <anitomy/element.hpp>
+#include <anitomy/string.hpp>
 
 namespace anitomy {
 

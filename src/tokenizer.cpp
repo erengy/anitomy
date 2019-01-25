@@ -10,9 +10,9 @@
 #include <iterator>
 #include <set>
 
-#include "keyword.h"
-#include "string.h"
-#include "tokenizer.h"
+#include <anitomy/keyword.hpp>
+#include <anitomy/string.hpp>
+#include <anitomy/tokenizer.hpp>
 
 namespace anitomy {
 

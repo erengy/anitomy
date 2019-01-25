@@ -8,10 +8,10 @@
 
 #pragma once
 
-#include "element.h"
-#include "options.h"
-#include "string.h"
-#include "token.h"
+#include <anitomy/element.hpp>
+#include <anitomy/options.hpp>
+#include <anitomy/string.hpp>
+#include <anitomy/token.hpp>
 
 namespace anitomy {
 

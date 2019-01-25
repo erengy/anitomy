@@ -6,11 +6,11 @@
 ** file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
 
-#include "anitomy.h"
-#include "keyword.h"
-#include "parser.h"
-#include "string.h"
-#include "tokenizer.h"
+#include <anitomy.hpp>
+#include <anitomy/keyword.hpp>
+#include <anitomy/parser.hpp>
+#include <anitomy/string.hpp>
+#include <anitomy/tokenizer.hpp>
 
 namespace anitomy {
 

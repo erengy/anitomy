@@ -8,7 +8,7 @@
 
 #include <algorithm>
 
-#include "token.h"
+#include <anitomy/token.hpp>
 
 namespace anitomy {
 
