@@ -11,6 +11,7 @@
 #include <functional>
 
 #include <anitomy/string.hpp>
+#include <anitomy/util.hpp>
 
 namespace anitomy {
 

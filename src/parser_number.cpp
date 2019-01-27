@@ -13,6 +13,7 @@
 #include <anitomy/keyword.hpp>
 #include <anitomy/parser.hpp>
 #include <anitomy/string.hpp>
+#include <anitomy/util.hpp>
 
 namespace anitomy {
 

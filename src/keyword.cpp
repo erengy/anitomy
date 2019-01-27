@@ -10,6 +10,7 @@
 
 #include <anitomy/keyword.hpp>
 #include <anitomy/token.hpp>
+#include <anitomy/util.hpp>
 
 namespace anitomy {
 

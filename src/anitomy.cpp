@@ -11,6 +11,7 @@
 #include <anitomy/parser.hpp>
 #include <anitomy/string.hpp>
 #include <anitomy/tokenizer.hpp>
+#include <anitomy/util.hpp>
 
 namespace anitomy {
 
