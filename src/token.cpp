@@ -12,17 +12,6 @@
 
 namespace anitomy {
 
-Token::Token()
-    : category(kUnknown),
-      enclosed(false) {
-}
-
-Token::Token(TokenCategory category, const string_t& content, bool enclosed)
-    : category(category),
-      content(content),
-      enclosed(enclosed) {
-}
-
 bool Token::operator==(const Token& token) const {
   return category == token.category &&
          content == token.content &&

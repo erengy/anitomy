@@ -46,16 +46,12 @@ struct TokenRange {
   size_t size = 0;
 };
 
-class Token {
-public:
-  Token();
-  Token(TokenCategory category, const string_t& content, bool enclosed);
-
+struct Token {
   bool operator==(const Token& token) const;
 
-  TokenCategory category;
+  TokenCategory category = kUnknown;
   string_t content;
-  bool enclosed;
+  bool enclosed = false;
 };
 
 using token_container_t = std::vector<Token>;

@@ -36,9 +36,9 @@ bool Tokenizer::Tokenize() {
 
 void Tokenizer::AddToken(TokenCategory category, bool enclosed,
                          const TokenRange& range) {
-  tokens_.push_back(Token(category,
+  tokens_.push_back(Token{category,
                           filename_.substr(range.offset, range.size),
-                          enclosed));
+                          enclosed});
 }
 
 void Tokenizer::TokenizeByBrackets() {
