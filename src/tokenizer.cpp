@@ -34,9 +34,9 @@ bool Tokenizer::Tokenize() {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void Tokenizer::AddToken(TokenCategory category, bool enclosed,
+void Tokenizer::AddToken(TokenType type, bool enclosed,
                          const TokenRange& range) {
-  tokens_.push_back(Token{category,
+  tokens_.push_back(Token{type,
                           filename_.substr(range.offset, range.size),
                           enclosed});
 }
@@ -91,7 +91,7 @@ void Tokenizer::TokenizeByBrackets() {
       TokenizeByPreidentified(is_bracket_open, range);
 
     if (current_char != char_end) {  // Found bracket
-      AddToken(kBracket, true, TokenRange{range.offset + range.size, 1});
+      AddToken(TokenType::Bracket, true, TokenRange{range.offset + range.size, 1});
       is_bracket_open = !is_bracket_open;
       char_begin = ++current_char;
     }
@@ -110,7 +110,7 @@ void Tokenizer::TokenizeByPreidentified(bool enclosed, const TokenRange& range) 
       if (offset == preidentified_token.offset) {
         if (subrange.size > 0)
           TokenizeByDelimiters(enclosed, subrange);
-        AddToken(kIdentifier, enclosed, preidentified_token);
+        AddToken(TokenType::Identifier, enclosed, preidentified_token);
         subrange.offset = preidentified_token.offset + preidentified_token.size;
         offset = subrange.offset - 1;  // It's going to be incremented below
         break;
@@ -129,7 +129,7 @@ void Tokenizer::TokenizeByDelimiters(bool enclosed, const TokenRange& range) {
   const string_t delimiters = GetDelimiters(range);
 
   if (delimiters.empty()) {
-    AddToken(kUnknown, enclosed, range);
+    AddToken(TokenType::Unknown, enclosed, range);
     return;
   }
 
@@ -147,10 +147,10 @@ void Tokenizer::TokenizeByDelimiters(bool enclosed, const TokenRange& range) {
     };
 
     if (subrange.size > 0)  // Found unknown token
-      AddToken(kUnknown, enclosed, subrange);
+      AddToken(TokenType::Unknown, enclosed, subrange);
 
     if (current_char != char_end) {  // Found delimiter
-      AddToken(kDelimiter, enclosed,
+      AddToken(TokenType::Delimiter, enclosed,
                TokenRange{subrange.offset + subrange.size, 1});
       char_begin = ++current_char;
     }
@@ -181,10 +181,10 @@ string_t Tokenizer::GetDelimiters(const TokenRange& range) const {
 
 void Tokenizer::ValidateDelimiterTokens() {
   auto is_delimiter_token = [&](token_iterator_t it) {
-    return it != tokens_.end() && it->category == kDelimiter;
+    return it != tokens_.end() && it->type == TokenType::Delimiter;
   };
   auto is_unknown_token = [&](token_iterator_t it) {
-    return it != tokens_.end() && it->category == kUnknown;
+    return it != tokens_.end() && it->type == TokenType::Unknown;
   };
   auto is_single_character_token = [&](token_iterator_t it) {
     return is_unknown_token(it) && it->content.size() == 1 &&
@@ -193,11 +193,11 @@ void Tokenizer::ValidateDelimiterTokens() {
   auto append_token_to = [](token_iterator_t token,
                             token_iterator_t append_to) {
     append_to->content.append(token->content);
-    token->category = kInvalid;
+    token->type = TokenType::Invalid;
   };
 
   for (auto token = tokens_.begin(); token != tokens_.end(); ++token) {
-    if (token->category != kDelimiter)
+    if (token->type != TokenType::Delimiter)
       continue;
     auto delimiter = token->content.front();
     auto prev_token = FindPreviousToken(tokens_, token, kFlagValid);
@@ -240,7 +240,7 @@ void Tokenizer::ValidateDelimiterTokens() {
       const auto next_delimiter = next_token->content.front();
       if (prev_delimiter == next_delimiter &&
           prev_delimiter != delimiter) {
-        token->category = kUnknown;  // e.g. "&" in "_&_"
+        token->type = TokenType::Unknown;  // e.g. "&" in "_&_"
       }
     }
 
@@ -258,7 +258,7 @@ void Tokenizer::ValidateDelimiterTokens() {
 
   auto remove_if_invalid = std::remove_if(tokens_.begin(), tokens_.end(),
       [](const Token& token) -> bool {
-        return token.category == kInvalid;
+        return token.type == TokenType::Invalid;
       });
   tokens_.erase(remove_if_invalid, tokens_.end());
 }

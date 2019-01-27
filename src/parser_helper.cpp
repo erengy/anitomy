@@ -90,8 +90,8 @@ bool Parser::CheckAnimeSeasonKeyword(const token_iterator_t token) {
   auto set_anime_season = [&](token_iterator_t first, token_iterator_t second,
                               const string_t& content) {
     elements_.insert(kElementAnimeSeason, content);
-    first->category = kIdentifier;
-    second->category = kIdentifier;
+    first->type = TokenType::Identifier;
+    second->type = TokenType::Identifier;
   };
 
   auto previous_token = FindPreviousToken(tokens_, token, kFlagNotDelimiter);
@@ -117,7 +117,7 @@ bool Parser::CheckExtentKeyword(ElementCategory category,
                                 const token_iterator_t token) {
   auto next_token = FindNextToken(tokens_, token, kFlagNotDelimiter);
 
-  if (CheckTokenCategory(next_token, kUnknown)) {
+  if (CheckTokenType(next_token, TokenType::Unknown)) {
     if (FindNumberInString(next_token->content) == 0) {
       switch (category) {
         case kElementEpisodeNumber:
@@ -131,7 +131,7 @@ bool Parser::CheckExtentKeyword(ElementCategory category,
         default:
           return false;
       }
-      token->category = kIdentifier;
+      token->type = TokenType::Identifier;
       return true;
     }
   }
@@ -195,15 +195,15 @@ void Parser::BuildElement(ElementCategory category, bool keep_delimiters,
   string_t element;
 
   for (auto token = token_begin; token != token_end; ++token) {
-    switch (token->category) {
-      case kUnknown:
+    switch (token->type) {
+      case TokenType::Unknown:
         element += token->content;
-        token->category = kIdentifier;
+        token->type = TokenType::Identifier;
         break;
-      case kBracket:
+      case TokenType::Bracket:
         element += token->content;
         break;
-      case kDelimiter: {
+      case TokenType::Delimiter: {
         auto delimiter = token->content.front();
         if (keep_delimiters) {
           element.push_back(delimiter);
@@ -234,18 +234,18 @@ void Parser::BuildElement(ElementCategory category, bool keep_delimiters,
 
 ////////////////////////////////////////////////////////////////////////////////
 
-bool Parser::CheckTokenCategory(const token_iterator_t token,
-                                TokenCategory category) const {
-  return token != tokens_.end() && token->category == category;
+bool Parser::CheckTokenType(const token_iterator_t token,
+                            TokenType type) const {
+  return token != tokens_.end() && token->type == type;
 }
 
 bool Parser::IsTokenIsolated(const token_iterator_t token) const {
   auto previous_token = FindPreviousToken(tokens_, token, kFlagNotDelimiter);
-  if (!CheckTokenCategory(previous_token, kBracket))
+  if (!CheckTokenType(previous_token, TokenType::Bracket))
     return false;
 
   auto next_token = FindNextToken(tokens_, token, kFlagNotDelimiter);
-  if (!CheckTokenCategory(next_token, kBracket))
+  if (!CheckTokenType(next_token, TokenType::Bracket))
     return false;
 
   return true;

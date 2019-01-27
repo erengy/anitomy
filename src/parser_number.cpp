@@ -25,7 +25,7 @@ bool Parser::SetEpisodeNumber(const string_t& number, Token& token,
   if (validate && !IsValidEpisodeNumber(number))
     return false;
 
-  token.category = kIdentifier;
+  token.type = TokenType::Identifier;
 
   auto category = kElementEpisodeNumber;
 
@@ -53,7 +53,7 @@ bool Parser::SetEpisodeNumber(const string_t& number, Token& token,
 
 bool Parser::SetAlternativeEpisodeNumber(const string_t& number, Token& token) {
   elements_.insert(kElementEpisodeNumberAlt, number);
-  token.category = kIdentifier;
+  token.type = TokenType::Identifier;
 
   return true;
 }
@@ -71,7 +71,7 @@ bool Parser::SetVolumeNumber(const string_t& number, Token& token,
       return false;
 
   elements_.insert(kElementVolumeNumber, number);
-  token.category = kIdentifier;
+  token.type = TokenType::Identifier;
   return true;
 }
 
@@ -116,8 +116,8 @@ bool Parser::NumberComesBeforeAnotherNumber(const token_iterator_t token) {
           SetEpisodeNumber(token->content, *token, false);
           if (separator.second)
             SetEpisodeNumber(other_token->content, *other_token, false);
-          separator_token->category = kIdentifier;
-          other_token->category = kIdentifier;
+          separator_token->type = TokenType::Identifier;
+          other_token->type = TokenType::Identifier;
           return true;
         }
       }
@@ -232,7 +232,7 @@ bool Parser::MatchTypeAndEpisodePattern(const string_t& word, Token& token) {
         // Split token (we do this last in order to avoid invalidating our
         // token reference earlier)
         token.content = number;
-        tokens_.insert(it, Token{options.identifiable ? kIdentifier : kUnknown,
+        tokens_.insert(it, Token{options.identifiable ? TokenType::Identifier : TokenType::Unknown,
                                  prefix, token.enclosed});
       }
       return true;
@@ -421,11 +421,11 @@ bool Parser::SearchForEquivalentNumbers(std::vector<size_t>& tokens) {
 
     // Find the first enclosed, non-delimiter token
     auto next_token = FindNextToken(tokens_, token, kFlagNotDelimiter);
-    if (!CheckTokenCategory(next_token, kBracket))
+    if (!CheckTokenType(next_token, TokenType::Bracket))
       continue;
     next_token = FindNextToken(tokens_, next_token,
                                kFlagEnclosed | kFlagNotDelimiter);
-    if (!CheckTokenCategory(next_token, kUnknown))
+    if (!CheckTokenType(next_token, TokenType::Unknown))
       continue;
 
     // Check if it's an isolated number
@@ -469,10 +469,10 @@ bool Parser::SearchForSeparatedNumbers(std::vector<size_t>& tokens) {
     auto previous_token = FindPreviousToken(tokens_, token, kFlagNotDelimiter);
 
     // See if the number has a preceding "-" separator
-    if (CheckTokenCategory(previous_token, kUnknown) &&
+    if (CheckTokenType(previous_token, TokenType::Unknown) &&
         IsDashCharacter(previous_token->content)) {
       if (SetEpisodeNumber(token->content, *token, true)) {
-        previous_token->category = kIdentifier;
+        previous_token->type = TokenType::Identifier;
         return true;
       }
     }
@@ -497,12 +497,12 @@ bool Parser::SearchForLastNumber(std::vector<size_t>& tokens) {
 
     // Ignore if it's the first non-enclosed, non-delimiter token
     if (std::all_of(tokens_.begin(), token, [](const Token& token) {
-            return token.enclosed || token.category == kDelimiter; }))
+            return token.enclosed || token.type == TokenType::Delimiter; }))
       continue;
 
     // Ignore if the previous token is "Movie" or "Part"
     auto previous_token = FindPreviousToken(tokens_, token, kFlagNotDelimiter);
-    if (CheckTokenCategory(previous_token, kUnknown)) {
+    if (CheckTokenType(previous_token, TokenType::Unknown)) {
       if (IsStringEqualTo(previous_token->content, L"Movie") ||
           IsStringEqualTo(previous_token->content, L"Part")) {
         continue;

@@ -13,7 +13,7 @@
 namespace anitomy {
 
 bool Token::operator==(const Token& token) const {
-  return category == token.category &&
+  return type == token.type &&
          content == token.content &&
          enclosed == token.enclosed;
 }
@@ -33,16 +33,16 @@ static bool CheckTokenFlags(const Token& token, unsigned int flags) {
 
   if (flags & kFlagMaskCategories) {
     bool success = false;
-    auto check_category = [&](TokenFlag fe, TokenFlag fn, TokenCategory c) {
+    auto check_type = [&](TokenFlag fe, TokenFlag fn, TokenType t) {
       if (!success)
-        success = check_flag(fe) ? token.category == c :
-                  check_flag(fn) ? token.category != c : false;
+        success = check_flag(fe) ? token.type == t :
+                  check_flag(fn) ? token.type != t : false;
     };
-    check_category(kFlagBracket, kFlagNotBracket, kBracket);
-    check_category(kFlagDelimiter, kFlagNotDelimiter, kDelimiter);
-    check_category(kFlagIdentifier, kFlagNotIdentifier, kIdentifier);
-    check_category(kFlagUnknown, kFlagNotUnknown, kUnknown);
-    check_category(kFlagNotValid, kFlagValid, kInvalid);
+    check_type(kFlagBracket, kFlagNotBracket, TokenType::Bracket);
+    check_type(kFlagDelimiter, kFlagNotDelimiter, TokenType::Delimiter);
+    check_type(kFlagIdentifier, kFlagNotIdentifier, TokenType::Identifier);
+    check_type(kFlagUnknown, kFlagNotUnknown, TokenType::Unknown);
+    check_type(kFlagNotValid, kFlagValid, TokenType::Invalid);
     if (!success)
       return false;
   }

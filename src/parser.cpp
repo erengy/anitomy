@@ -50,7 +50,7 @@ void Parser::SearchForKeywords() {
   for (auto it = tokens_.begin(); it != tokens_.end(); ++it) {
     auto& token = *it;
 
-    if (token.category != kUnknown)
+    if (token.type != TokenType::Unknown)
       continue;
 
     auto word = token.content;
@@ -99,7 +99,7 @@ void Parser::SearchForKeywords() {
     if (category != kElementUnknown) {
       elements_.insert(category, word);
       if (options.identifiable)
-        token.category = kIdentifier;
+        token.type = TokenType::Identifier;
     }
   }
 }
@@ -111,7 +111,7 @@ void Parser::SearchForEpisodeNumber() {
   std::vector<size_t> tokens;
   for (size_t i = 0; i < tokens_.size(); ++i) {
     auto& token = tokens_.at(i);
-    if (token.category == kUnknown)
+    if (token.type == TokenType::Unknown)
       if (FindNumberInString(token.content) != token.content.npos)
         tokens.push_back(i);
   }
@@ -196,7 +196,7 @@ void Parser::SearchForAnimeTitle() {
     auto last_bracket = token_end;
     bool bracket_open = false;
     for (auto token = token_begin; token != token_end; ++token) {
-      if (token->category == kBracket) {
+      if (token->type == TokenType::Bracket) {
         last_bracket = token;
         bracket_open = !bracket_open;
       }
@@ -210,7 +210,7 @@ void Parser::SearchForAnimeTitle() {
   // parentheses in order to keep certain groups (e.g. "(TV)") intact.
   if (!enclosed_title) {
     auto token = FindPreviousToken(tokens_, token_end, kFlagNotDelimiter);
-    while (CheckTokenCategory(token, kBracket) &&
+    while (CheckTokenType(token, TokenType::Bracket) &&
            token->content.front() != ')') {
       token = FindPreviousToken(tokens_, token, kFlagBracket);
       if (token != tokens_.end()) {
@@ -238,14 +238,14 @@ void Parser::SearchForReleaseGroup() {
     // Continue until a bracket or identifier is found
     token_end = FindToken(token_begin, tokens_.end(),
                           kFlagBracket | kFlagIdentifier);
-    if (token_end == tokens_.end() || token_end->category != kBracket)
+    if (token_end == tokens_.end() || token_end->type != TokenType::Bracket)
       continue;
 
     // Ignore if it's not the first non-delimiter token in group
     auto previous_token = FindPreviousToken(tokens_, token_begin,
                                             kFlagNotDelimiter);
     if (previous_token != tokens_.end() &&
-        previous_token->category != kBracket) {
+        previous_token->type != TokenType::Bracket) {
       continue;
     }
 
@@ -286,7 +286,7 @@ void Parser::SearchForEpisodeTitle() {
 
 void Parser::SearchForIsolatedNumbers() {
   for (auto token = tokens_.begin(); token != tokens_.end(); ++token) {
-    if (token->category != kUnknown ||
+    if (token->type != TokenType::Unknown ||
         !IsNumericString(token->content) ||
         !IsTokenIsolated(token))
       continue;
@@ -297,7 +297,7 @@ void Parser::SearchForIsolatedNumbers() {
     if (number >= kAnimeYearMin && number <= kAnimeYearMax) {
       if (elements_.empty(kElementAnimeYear)) {
         elements_.insert(kElementAnimeYear, token->content);
-        token->category = kIdentifier;
+        token->type = TokenType::Identifier;
         continue;
       }
     }
@@ -309,7 +309,7 @@ void Parser::SearchForIsolatedNumbers() {
       // use these without the "p" suffix.
       if (elements_.empty(kElementVideoResolution)) {
         elements_.insert(kElementVideoResolution, token->content);
-        token->category = kIdentifier;
+        token->type = TokenType::Identifier;
         continue;
       }
     }

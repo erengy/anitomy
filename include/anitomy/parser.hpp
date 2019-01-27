@@ -79,8 +79,7 @@ private:
                     const token_iterator_t token_begin,
                     const token_iterator_t token_end) const;
 
-  bool CheckTokenCategory(const token_iterator_t token,
-                          TokenCategory category) const;
+  bool CheckTokenType(const token_iterator_t token, TokenType type) const;
   bool IsTokenIsolated(const token_iterator_t token) const;
 
   const int kAnimeYearMin = 1900;

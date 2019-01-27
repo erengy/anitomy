@@ -26,7 +26,7 @@ public:
   bool Tokenize();
 
 private:
-  void AddToken(TokenCategory category, bool enclosed, const TokenRange& range);
+  void AddToken(TokenType type, bool enclosed, const TokenRange& range);
   void TokenizeByBrackets();
   void TokenizeByPreidentified(bool enclosed, const TokenRange& range);
   void TokenizeByDelimiters(bool enclosed, const TokenRange& range);

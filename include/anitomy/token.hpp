@@ -14,12 +14,12 @@
 
 namespace anitomy {
 
-enum TokenCategory {
-  kUnknown,
-  kBracket,
-  kDelimiter,
-  kIdentifier,
-  kInvalid
+enum class TokenType {
+  Unknown,
+  Bracket,
+  Delimiter,
+  Identifier,
+  Invalid,
 };
 
 enum TokenFlag {
@@ -49,7 +49,7 @@ struct TokenRange {
 struct Token {
   bool operator==(const Token& token) const;
 
-  TokenCategory category = kUnknown;
+  TokenType type = TokenType::Unknown;
   string_t content;
   bool enclosed = false;
 };
