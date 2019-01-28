@@ -29,6 +29,7 @@ bool Tokenizer::Tokenize() {
   tokens_.reserve(32);  // Usually there are no more than 20 tokens
 
   TokenizeByBrackets();
+  ValidateDelimiterTokens();
 
   return !tokens_.empty();
 }
@@ -127,58 +128,21 @@ void Tokenizer::TokenizeByPreidentified(bool enclosed, const string_view_t view)
   /**/
 }
 
-void Tokenizer::TokenizeByDelimiters(bool enclosed, const string_view_t view) {
-  const string_t delimiters = GetDelimiters(view);
-
-  if (delimiters.empty()) {
-    AddToken(TokenType::Unknown, enclosed, view);
-    return;
-  }
-
-  auto char_begin = view.begin();
-  const auto char_end = view.end();
-  auto current_char = char_begin;
-
-  while (current_char != char_end) {
-    current_char = std::find_first_of(current_char, char_end,
-                                      delimiters.begin(), delimiters.end());
-
-    const string_view_t subview = view.substr(
-          std::distance(view.begin(), char_begin),
-          std::distance(char_begin, current_char)
-        );
-
-    if (subview.size() > 0)  // Found unknown token
-      AddToken(TokenType::Unknown, enclosed, subview);
-
-    if (current_char != char_end) {  // Found delimiter
-      AddToken(TokenType::Delimiter, enclosed,
-               view.substr(std::distance(view.begin(), current_char), 1));
-      char_begin = ++current_char;
+void Tokenizer::TokenizeByDelimiters(bool enclosed, string_view_t view) {
+  while (!view.empty()) {
+    const auto pos = view.find_first_of(options_.allowed_delimiters);
+    if (pos > 0) {
+      AddToken(TokenType::Unknown, enclosed, view.substr(0, pos));
     }
+    if (pos == view.npos) {
+      return;
+    }
+    AddToken(TokenType::Delimiter, enclosed, view.substr(pos, 1));
+    view.remove_prefix(pos + 1);
   }
-
-  ValidateDelimiterTokens();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
-string_t Tokenizer::GetDelimiters(const string_view_t view) const {
-  string_t delimiters;
-
-  auto is_delimiter = [&](const char_t& c) {
-    if (!IsAlphanumericChar(c))
-      if (options_.allowed_delimiters.find(c) != string_t::npos)
-        if (delimiters.find(c) == string_t::npos)
-          return true;
-    return false;
-  };
-
-  std::copy_if(view.begin(), view.end(),
-               std::back_inserter(delimiters), is_delimiter);
-
-  return delimiters;
-}
 
 void Tokenizer::ValidateDelimiterTokens() {
   auto is_delimiter_token = [&](token_iterator_t it) {

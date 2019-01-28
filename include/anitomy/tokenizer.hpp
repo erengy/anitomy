@@ -30,9 +30,8 @@ private:
 
   void TokenizeByBrackets();
   void TokenizeByPreidentified(bool enclosed, const string_view_t view);
-  void TokenizeByDelimiters(bool enclosed, const string_view_t view);
+  void TokenizeByDelimiters(bool enclosed, string_view_t view);
 
-  string_t GetDelimiters(const string_view_t view) const;
   void ValidateDelimiterTokens();
 
   Elements& elements_;
