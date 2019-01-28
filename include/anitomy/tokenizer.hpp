@@ -26,12 +26,13 @@ public:
   bool Tokenize();
 
 private:
-  void AddToken(TokenType type, bool enclosed, const TokenRange& range);
-  void TokenizeByBrackets();
-  void TokenizeByPreidentified(bool enclosed, const TokenRange& range);
-  void TokenizeByDelimiters(bool enclosed, const TokenRange& range);
+  void AddToken(TokenType type, bool enclosed, const string_view_t view);
 
-  string_t GetDelimiters(const TokenRange& range) const;
+  void TokenizeByBrackets();
+  void TokenizeByPreidentified(bool enclosed, const string_view_t view);
+  void TokenizeByDelimiters(bool enclosed, const string_view_t view);
+
+  string_t GetDelimiters(const string_view_t view) const;
   void ValidateDelimiterTokens();
 
   Elements& elements_;

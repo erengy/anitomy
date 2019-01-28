@@ -170,10 +170,9 @@ KeywordManager::keyword_container_t& KeywordManager::GetKeywordContainer(
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void KeywordManager::Peek(const string_t& filename,
-                          const TokenRange& range,
+void KeywordManager::Peek(const string_view_t view,
                           Elements& elements,
-                          std::vector<TokenRange>& preidentified_tokens) const {
+                          std::vector<string_view_t>& preidentified_tokens) const {
   using entry_t = std::pair<ElementCategory, std::vector<string_t>>;
   static const std::vector<entry_t> entries{
     {kElementAudioTerm, {L"Dual Audio"}},
@@ -182,16 +181,16 @@ void KeywordManager::Peek(const string_t& filename,
     {kElementSource, {L"Blu-Ray"}}
   };
 
-  auto it_begin = filename.begin() + range.offset;
-  auto it_end = it_begin + range.size;
+  auto it_begin = view.begin();
+  auto it_end = view.end();
 
   for (const auto& entry : entries) {
     for (const auto& keyword : entry.second) {
       auto it = std::search(it_begin, it_end, keyword.begin(), keyword.end());
       if (it != it_end) {
-        const auto offset = static_cast<size_t>(std::distance(filename.begin(), it));
+        const auto offset = static_cast<size_t>(std::distance(view.begin(), it));
         elements.insert(entry.first, keyword);
-        preidentified_tokens.push_back(TokenRange{offset, keyword.size()});
+        preidentified_tokens.push_back(view.substr(offset, keyword.size()));
       }
     }
   }

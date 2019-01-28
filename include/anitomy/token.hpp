@@ -41,11 +41,6 @@ enum TokenFlag {
   kFlagMaskEnclosed = kFlagEnclosed | kFlagNotEnclosed,
 };
 
-struct TokenRange {
-  size_t offset = 0;
-  size_t size = 0;
-};
-
 struct Token {
   bool operator==(const Token& token) const;
 

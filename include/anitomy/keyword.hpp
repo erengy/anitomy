@@ -17,8 +17,6 @@
 
 namespace anitomy {
 
-struct TokenRange;
-
 struct KeywordOptions {
   bool identifiable = true;
   bool searchable = true;
@@ -40,8 +38,8 @@ public:
   bool Find(ElementCategory category, const string_t& str) const;
   bool Find(const string_t& str, ElementCategory& category, KeywordOptions& options) const;
 
-  void Peek(const string_t& filename, const TokenRange& range, Elements& elements,
-            std::vector<TokenRange>& preidentified_tokens) const;
+  void Peek(const string_view_t view, Elements& elements,
+            std::vector<string_view_t>& preidentified_tokens) const;
 
   string_t Normalize(const string_t& str) const;
 

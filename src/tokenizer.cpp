@@ -36,10 +36,8 @@ bool Tokenizer::Tokenize() {
 ////////////////////////////////////////////////////////////////////////////////
 
 void Tokenizer::AddToken(TokenType type, bool enclosed,
-                         const TokenRange& range) {
-  tokens_.push_back(Token{type,
-                          filename_.substr(range.offset, range.size),
-                          enclosed});
+                         const string_view_t view) {
+  tokens_.push_back(Token{type, string_t{view}, enclosed});
 }
 
 void Tokenizer::TokenizeByBrackets() {
@@ -83,76 +81,79 @@ void Tokenizer::TokenizeByBrackets() {
       current_char = std::find(char_begin, char_end, matching_bracket);
     }
 
-    const TokenRange range{
-        static_cast<size_t>(std::distance(filename_.begin(), char_begin)),
-        static_cast<size_t>(std::distance(char_begin, current_char))
-    };
+    const string_view_t view = filename_.substr(
+          std::distance(filename_.begin(), char_begin),
+          std::distance(char_begin, current_char)
+        );
 
-    if (range.size > 0)  // Found unknown token
-      TokenizeByPreidentified(is_bracket_open, range);
+    if (view.size() > 0)  // Found unknown token
+      TokenizeByPreidentified(is_bracket_open, view);
 
     if (current_char != char_end) {  // Found bracket
-      AddToken(TokenType::Bracket, true, TokenRange{range.offset + range.size, 1});
+      AddToken(TokenType::Bracket, true,
+               filename_.substr(std::distance(filename_.begin(), current_char), 1));
       is_bracket_open = !is_bracket_open;
       char_begin = ++current_char;
     }
   }
 }
 
-void Tokenizer::TokenizeByPreidentified(bool enclosed, const TokenRange& range) {
-  std::vector<TokenRange> preidentified_tokens;
-  keyword_manager.Peek(filename_, range, elements_, preidentified_tokens);
+void Tokenizer::TokenizeByPreidentified(bool enclosed, const string_view_t view) {
+  /**
+  std::vector<string_view_t> preidentified_tokens;
+  keyword_manager.Peek(view, elements_, preidentified_tokens);
 
-  size_t offset = range.offset;
-  TokenRange subrange{range.offset, 0};
+  size_t pos = 0;
+  size_t size = 0;
 
-  while (offset < range.offset + range.size) {
+  while (pos < view.size()) {
     for (const auto& preidentified_token : preidentified_tokens) {
-      if (offset == preidentified_token.offset) {
+      if (pos == preidentified_token.offset) {
         if (subrange.size > 0)
           TokenizeByDelimiters(enclosed, subrange);
         AddToken(TokenType::Identifier, enclosed, preidentified_token);
         subrange.offset = preidentified_token.offset + preidentified_token.size;
-        offset = subrange.offset - 1;  // It's going to be incremented below
+        pos = subrange.offset - 1;  // It's going to be incremented below
         break;
       }
     }
-    subrange.size = ++offset - subrange.offset;
+    subrange.size = ++pos - subrange.offset;
   }
 
   // Either there was no preidentified token range, or we're now about to
   // process the tail of our current range.
   if (subrange.size > 0)
     TokenizeByDelimiters(enclosed, subrange);
+  /**/
 }
 
-void Tokenizer::TokenizeByDelimiters(bool enclosed, const TokenRange& range) {
-  const string_t delimiters = GetDelimiters(range);
+void Tokenizer::TokenizeByDelimiters(bool enclosed, const string_view_t view) {
+  const string_t delimiters = GetDelimiters(view);
 
   if (delimiters.empty()) {
-    AddToken(TokenType::Unknown, enclosed, range);
+    AddToken(TokenType::Unknown, enclosed, view);
     return;
   }
 
-  auto char_begin = filename_.begin() + range.offset;
-  const auto char_end = char_begin + range.size;
+  auto char_begin = view.begin();
+  const auto char_end = view.end();
   auto current_char = char_begin;
 
   while (current_char != char_end) {
     current_char = std::find_first_of(current_char, char_end,
                                       delimiters.begin(), delimiters.end());
 
-    const TokenRange subrange{
-        static_cast<size_t>(std::distance(filename_.begin(), char_begin)),
-        static_cast<size_t>(std::distance(char_begin, current_char))
-    };
+    const string_view_t subview = view.substr(
+          std::distance(view.begin(), char_begin),
+          std::distance(char_begin, current_char)
+        );
 
-    if (subrange.size > 0)  // Found unknown token
-      AddToken(TokenType::Unknown, enclosed, subrange);
+    if (subview.size() > 0)  // Found unknown token
+      AddToken(TokenType::Unknown, enclosed, subview);
 
     if (current_char != char_end) {  // Found delimiter
       AddToken(TokenType::Delimiter, enclosed,
-               TokenRange{subrange.offset + subrange.size, 1});
+               view.substr(std::distance(view.begin(), current_char), 1));
       char_begin = ++current_char;
     }
   }
@@ -162,7 +163,7 @@ void Tokenizer::TokenizeByDelimiters(bool enclosed, const TokenRange& range) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-string_t Tokenizer::GetDelimiters(const TokenRange& range) const {
+string_t Tokenizer::GetDelimiters(const string_view_t view) const {
   string_t delimiters;
 
   auto is_delimiter = [&](const char_t& c) {
@@ -173,8 +174,7 @@ string_t Tokenizer::GetDelimiters(const TokenRange& range) const {
     return false;
   };
 
-  std::copy_if(filename_.begin() + range.offset,
-               filename_.begin() + range.offset + range.size,
+  std::copy_if(view.begin(), view.end(),
                std::back_inserter(delimiters), is_delimiter);
 
   return delimiters;
