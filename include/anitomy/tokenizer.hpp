@@ -16,8 +16,8 @@ namespace anitomy {
 
 Tokens Tokenize(const string_view_t filename, const Options& options);
 
-void TokenizeByBrackets(string_view_t view, const Options& options, Tokens& tokens);
-void TokenizeByDelimiters(string_view_t view, const Options& options, const bool enclosed, Tokens& tokens);
+Tokens TokenizeByBrackets(string_view_t view);
+Tokens TokenizeByDelimiters(string_view_t view, const string_view_t delimiters, const bool enclosed);
 
 void ValidateTokens(Tokens& tokens);
 

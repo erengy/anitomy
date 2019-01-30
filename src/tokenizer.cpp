@@ -15,20 +15,30 @@
 
 namespace anitomy {
 
-Tokens Tokenize(const string_view_t filename,
-                           const Options& options) {
-  Tokens tokens;
-  tokens.reserve(32);  // Usually there are no more than 20 tokens
+Tokens Tokenize(const string_view_t filename, const Options& options) {
+  Tokens tokens = TokenizeByBrackets(filename);
 
-  TokenizeByBrackets(filename, options, tokens);
+  for (size_t i = 0; i < tokens.size(); ++i) {
+    const auto token = tokens[i];
+    if (token.type == TokenType::Unknown) {
+      const Tokens new_tokens = TokenizeByDelimiters(
+          token.content, options.allowed_delimiters, token.enclosed);
+
+      tokens.erase(tokens.begin() + i);
+      tokens.insert(tokens.begin() + i, new_tokens.begin(), new_tokens.end());
+
+      i += new_tokens.size() - 1;
+    }
+  }
 
   ValidateTokens(tokens);
 
   return tokens;
 }
 
-void TokenizeByBrackets(string_view_t view, const Options& options,
-                        Tokens& tokens) {
+Tokens TokenizeByBrackets(string_view_t view) {
+  Tokens tokens;
+
   static const string_t brackets_left =
       L"("        // Parenthesis
       L"["        // Square bracket
@@ -50,10 +60,11 @@ void TokenizeByBrackets(string_view_t view, const Options& options,
                                         view.find(matching_bracket);
 
     if (pos > 0) {
-      TokenizeByDelimiters(view.substr(0, pos), options, is_bracket_open, tokens);
+      tokens.push_back(
+          Token{TokenType::Unknown, string_t{view.substr(0, pos)}, is_bracket_open});
     }
     if (pos == view.npos) {
-      return;
+      break;
     }
 
     if (!is_bracket_open) {
@@ -66,23 +77,31 @@ void TokenizeByBrackets(string_view_t view, const Options& options,
         Token{TokenType::Bracket, string_t{view.substr(pos, 1)}, true});
     view.remove_prefix(pos + 1);
   }
+
+  return tokens;
 }
 
-void TokenizeByDelimiters(string_view_t view, const Options& options,
-                          const bool enclosed, Tokens& tokens) {
+Tokens TokenizeByDelimiters(string_view_t view, const string_view_t delimiters,
+                            const bool enclosed) {
+  Tokens tokens;
+
   while (!view.empty()) {
-    const auto pos = view.find_first_of(options.allowed_delimiters);
+    const auto pos = view.find_first_of(delimiters);
+
     if (pos > 0) {
       tokens.push_back(
           Token{TokenType::Unknown, string_t{view.substr(0, pos)}, enclosed});
     }
     if (pos == view.npos) {
-      return;
+      break;
     }
+
     tokens.push_back(
         Token{TokenType::Delimiter, string_t{view.substr(pos, 1)}, enclosed});
     view.remove_prefix(pos + 1);
   }
+
+  return tokens;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
