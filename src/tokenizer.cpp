@@ -23,7 +23,7 @@ Tokens Tokenize(const string_view_t filename, const Options& options) {
 
     if (token.type == TokenType::Unknown) {
       const auto new_tokens = TokenizeByDelimiters(
-          token.content, options.allowed_delimiters, token.enclosed);
+          token.value, options.allowed_delimiters, token.enclosed);
 
       tokens.erase(tokens.begin() + i);
       tokens.insert(tokens.begin() + i, new_tokens.begin(), new_tokens.end());
@@ -111,19 +111,19 @@ void ValidateTokens(Tokens& tokens) {
     return it != tokens.end() && it->type == TokenType::Unknown;
   };
   auto is_single_character_token = [&](token_iterator_t it) {
-    return is_unknown_token(it) && it->content.size() == 1 &&
-           it->content.front() != L'-';
+    return is_unknown_token(it) && it->value.size() == 1 &&
+           it->value.front() != L'-';
   };
   auto append_token_to = [](token_iterator_t token,
                             token_iterator_t append_to) {
-    append_to->content.append(token->content);
+    append_to->value.append(token->value);
     token->type = TokenType::Invalid;
   };
 
   for (auto token = tokens.begin(); token != tokens.end(); ++token) {
     if (token->type != TokenType::Delimiter)
       continue;
-    auto delimiter = token->content.front();
+    auto delimiter = token->value.front();
     auto prev_token = FindPreviousToken(tokens, token, kFlagValid);
     auto next_token = FindNextToken(tokens, token, kFlagValid);
 
@@ -136,7 +136,7 @@ void ValidateTokens(Tokens& tokens) {
           append_token_to(next_token, prev_token);
           next_token = FindNextToken(tokens, next_token, kFlagValid);
           if (is_delimiter_token(next_token) &&
-              next_token->content.front() == delimiter) {
+              next_token->value.front() == delimiter) {
             append_token_to(next_token, prev_token);
             next_token = FindNextToken(tokens, next_token, kFlagValid);
           }
@@ -152,7 +152,7 @@ void ValidateTokens(Tokens& tokens) {
 
     // Check for adjacent delimiters
     if (is_unknown_token(prev_token) && is_delimiter_token(next_token)) {
-      auto next_delimiter = next_token->content.front();
+      auto next_delimiter = next_token->value.front();
       if (delimiter != next_delimiter && delimiter != ',') {
         if (next_delimiter == ' ' || next_delimiter == '_') {
           append_token_to(token, prev_token);
@@ -160,8 +160,8 @@ void ValidateTokens(Tokens& tokens) {
       }
     } else if (is_delimiter_token(prev_token) &&
                is_delimiter_token(next_token)) {
-      const auto prev_delimiter = prev_token->content.front();
-      const auto next_delimiter = next_token->content.front();
+      const auto prev_delimiter = prev_token->value.front();
+      const auto next_delimiter = next_token->value.front();
       if (prev_delimiter == next_delimiter &&
           prev_delimiter != delimiter) {
         token->type = TokenType::Unknown;  // e.g. "&" in "_&_"
@@ -171,8 +171,8 @@ void ValidateTokens(Tokens& tokens) {
     // Check for other special cases
     if (delimiter == '&' || delimiter == '+') {
       if (is_unknown_token(prev_token) && is_unknown_token(next_token)) {
-        if (IsNumericString(prev_token->content) &&
-            IsNumericString(next_token->content)) {
+        if (IsNumericString(prev_token->value) &&
+            IsNumericString(next_token->value)) {
           append_token_to(token, prev_token);
           append_token_to(next_token, prev_token);  // e.g. "01+02"
         }

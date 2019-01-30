@@ -14,7 +14,7 @@ namespace anitomy {
 
 bool Token::operator==(const Token& token) const {
   return type == token.type &&
-         content == token.content &&
+         value == token.value &&
          enclosed == token.enclosed;
 }
 

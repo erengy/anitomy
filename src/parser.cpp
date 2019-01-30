@@ -54,7 +54,7 @@ void Parser::SearchForKeywords() {
     if (token.type != TokenType::Unknown)
       continue;
 
-    auto word = token.content;
+    auto word = token.value;
     TrimString(word, L" -");
 
     if (word.empty())
@@ -113,7 +113,7 @@ void Parser::SearchForEpisodeNumber() {
   for (size_t i = 0; i < tokens_.size(); ++i) {
     auto& token = tokens_.at(i);
     if (token.type == TokenType::Unknown)
-      if (FindNumberInString(token.content) != token.content.npos)
+      if (FindNumberInString(token.value) != token.value.npos)
         tokens.push_back(i);
   }
   if (tokens.empty())
@@ -130,7 +130,7 @@ void Parser::SearchForEpisodeNumber() {
 
   // From now on, we're only interested in numeric tokens
   auto not_numeric_string = [&](size_t index) -> bool {
-    return !IsNumericString(tokens_.at(index).content);
+    return !IsNumericString(tokens_.at(index).value);
   };
   tokens.erase(std::remove_if(tokens.begin(), tokens.end(), not_numeric_string),
                tokens.end());
@@ -174,7 +174,7 @@ void Parser::SearchForAnimeTitle() {
       if (token_begin == tokens_.end())
         break;
       // Ignore groups that are composed of non-Latin characters
-      if (IsMostlyLatinString(token_begin->content))
+      if (IsMostlyLatinString(token_begin->value))
         if (skipped_previous_group)
           break;  // Found it
       // Get the first unknown token of the next group
@@ -212,7 +212,7 @@ void Parser::SearchForAnimeTitle() {
   if (!enclosed_title) {
     auto token = FindPreviousToken(tokens_, token_end, kFlagNotDelimiter);
     while (CheckTokenType(token, TokenType::Bracket) &&
-           token->content.front() != ')') {
+           token->value.front() != ')') {
       token = FindPreviousToken(tokens_, token, kFlagBracket);
       if (token != tokens_.end()) {
         token_end = token;
@@ -273,7 +273,7 @@ void Parser::SearchForEpisodeTitle() {
 
     // Ignore if it's only a dash
     if (std::distance(token_begin, token_end) <= 2 &&
-        IsDashCharacter(token_begin->content)) {
+        IsDashCharacter(token_begin->value)) {
       continue;
     }
 
@@ -288,16 +288,16 @@ void Parser::SearchForEpisodeTitle() {
 void Parser::SearchForIsolatedNumbers() {
   for (auto token = tokens_.begin(); token != tokens_.end(); ++token) {
     if (token->type != TokenType::Unknown ||
-        !IsNumericString(token->content) ||
+        !IsNumericString(token->value) ||
         !IsTokenIsolated(token))
       continue;
 
-    auto number = StringToInt(token->content);
+    auto number = StringToInt(token->value);
 
     // Anime year
     if (number >= kAnimeYearMin && number <= kAnimeYearMax) {
       if (elements_.empty(ElementType::AnimeYear)) {
-        elements_.insert(ElementType::AnimeYear, token->content);
+        elements_.insert(ElementType::AnimeYear, token->value);
         token->type = TokenType::Identifier;
         continue;
       }
@@ -309,7 +309,7 @@ void Parser::SearchForIsolatedNumbers() {
       // video resolution rather than the episode number. Some fansub groups
       // use these without the "p" suffix.
       if (elements_.empty(ElementType::VideoResolution)) {
-        elements_.insert(ElementType::VideoResolution, token->content);
+        elements_.insert(ElementType::VideoResolution, token->value);
         token->type = TokenType::Identifier;
         continue;
       }

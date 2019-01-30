@@ -42,13 +42,13 @@ enum TokenFlag {
 };
 
 struct Token {
-  Token(TokenType type, string_view_t content, bool enclosed)
-      : type{type}, content{string_t{content}}, enclosed{enclosed} {}
+  Token(TokenType type, string_view_t value, bool enclosed)
+      : type{type}, value{string_t{value}}, enclosed{enclosed} {}
 
   bool operator==(const Token& token) const;
 
   TokenType type = TokenType::Unknown;
-  string_t content;
+  string_t value;
   bool enclosed = false;
 };
 

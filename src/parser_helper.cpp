@@ -89,15 +89,15 @@ bool Parser::IsResolution(const string_t& str) {
 
 bool Parser::CheckAnimeSeasonKeyword(const token_iterator_t token) {
   auto set_anime_season = [&](token_iterator_t first, token_iterator_t second,
-                              const string_t& content) {
-    elements_.insert(ElementType::AnimeSeason, content);
+                              const string_t& value) {
+    elements_.insert(ElementType::AnimeSeason, value);
     first->type = TokenType::Identifier;
     second->type = TokenType::Identifier;
   };
 
   auto previous_token = FindPreviousToken(tokens_, token, kFlagNotDelimiter);
   if (previous_token != tokens_.end()) {
-    auto number = GetNumberFromOrdinal(previous_token->content);
+    auto number = GetNumberFromOrdinal(previous_token->value);
     if (!number.empty()) {
       set_anime_season(previous_token, token, number);
       return true;
@@ -106,8 +106,8 @@ bool Parser::CheckAnimeSeasonKeyword(const token_iterator_t token) {
 
   auto next_token = FindNextToken(tokens_, token, kFlagNotDelimiter);
   if (next_token != tokens_.end() &&
-      IsNumericString(next_token->content)) {
-    set_anime_season(token, next_token, next_token->content);
+      IsNumericString(next_token->value)) {
+    set_anime_season(token, next_token, next_token->value);
     return true;
   }
 
@@ -119,15 +119,15 @@ bool Parser::CheckExtentKeyword(ElementType type,
   auto next_token = FindNextToken(tokens_, token, kFlagNotDelimiter);
 
   if (CheckTokenType(next_token, TokenType::Unknown)) {
-    if (FindNumberInString(next_token->content) == 0) {
+    if (FindNumberInString(next_token->value) == 0) {
       switch (type) {
         case ElementType::EpisodeNumber:
-          if (!MatchEpisodePatterns(next_token->content, *next_token))
-            SetEpisodeNumber(next_token->content, *next_token, false);
+          if (!MatchEpisodePatterns(next_token->value, *next_token))
+            SetEpisodeNumber(next_token->value, *next_token, false);
           break;
         case ElementType::VolumeNumber:
-          if (!MatchVolumePatterns(next_token->content, *next_token))
-            SetVolumeNumber(next_token->content, *next_token, false);
+          if (!MatchVolumePatterns(next_token->value, *next_token))
+            SetVolumeNumber(next_token->value, *next_token, false);
           break;
         default:
           return false;
@@ -198,14 +198,14 @@ void Parser::BuildElement(ElementType type, bool keep_delimiters,
   for (auto token = token_begin; token != token_end; ++token) {
     switch (token->type) {
       case TokenType::Unknown:
-        element += token->content;
+        element += token->value;
         token->type = TokenType::Identifier;
         break;
       case TokenType::Bracket:
-        element += token->content;
+        element += token->value;
         break;
       case TokenType::Delimiter: {
-        auto delimiter = token->content.front();
+        auto delimiter = token->value.front();
         if (keep_delimiters) {
           element.push_back(delimiter);
         } else if (token != token_begin && token != token_end) {
