@@ -63,9 +63,7 @@ void Tokenizer::TokenizeByBrackets(string_view_t view) {
                                         view.find(matching_bracket);
 
     if (pos > 0) {
-      //TokenizeByPreidentified(is_bracket_open, view.substr(0, pos));
       TokenizeByDelimiters(is_bracket_open, view.substr(0, pos));
-      //AddToken(TokenType::Unknown, is_bracket_open, view.substr(0, pos));
     }
     if (pos == view.npos) {
       return;
@@ -80,35 +78,6 @@ void Tokenizer::TokenizeByBrackets(string_view_t view) {
     AddToken(TokenType::Bracket, true, view.substr(pos, 1));
     view.remove_prefix(pos + 1);
   }
-}
-
-void Tokenizer::TokenizeByPreidentified(bool enclosed, const string_view_t view) {
-  /**
-  std::vector<string_view_t> preidentified_tokens;
-  keyword_manager.Peek(view, elements_, preidentified_tokens);
-
-  size_t pos = 0;
-  size_t size = 0;
-
-  while (pos < view.size()) {
-    for (const auto& preidentified_token : preidentified_tokens) {
-      if (pos == preidentified_token.offset) {
-        if (subrange.size > 0)
-          TokenizeByDelimiters(enclosed, subrange);
-        AddToken(TokenType::Identifier, enclosed, preidentified_token);
-        subrange.offset = preidentified_token.offset + preidentified_token.size;
-        pos = subrange.offset - 1;  // It's going to be incremented below
-        break;
-      }
-    }
-    subrange.size = ++pos - subrange.offset;
-  }
-
-  // Either there was no preidentified token range, or we're now about to
-  // process the tail of our current range.
-  if (subrange.size > 0)
-    TokenizeByDelimiters(enclosed, subrange);
-  /**/
 }
 
 void Tokenizer::TokenizeByDelimiters(bool enclosed, string_view_t view) {

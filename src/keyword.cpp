@@ -168,32 +168,4 @@ KeywordManager::keyword_container_t& KeywordManager::GetKeywordContainer(
       const_cast<keyword_container_t&>(keys_);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-
-void KeywordManager::Peek(const string_view_t view,
-                          Elements& elements,
-                          std::vector<string_view_t>& preidentified_tokens) const {
-  using entry_t = std::pair<ElementCategory, std::vector<string_t>>;
-  static const std::vector<entry_t> entries{
-    {kElementAudioTerm, {L"Dual Audio"}},
-    {kElementVideoTerm, {L"H264", L"H.264", L"h264", L"h.264"}},
-    {kElementVideoResolution, {L"480p", L"720p", L"1080p"}},
-    {kElementSource, {L"Blu-Ray"}}
-  };
-
-  auto it_begin = view.begin();
-  auto it_end = view.end();
-
-  for (const auto& entry : entries) {
-    for (const auto& keyword : entry.second) {
-      auto it = std::search(it_begin, it_end, keyword.begin(), keyword.end());
-      if (it != it_end) {
-        const auto offset = static_cast<size_t>(std::distance(view.begin(), it));
-        elements.insert(entry.first, keyword);
-        preidentified_tokens.push_back(view.substr(offset, keyword.size()));
-      }
-    }
-  }
-}
-
 }  // namespace anitomy
