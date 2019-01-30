@@ -17,18 +17,15 @@
 
 namespace anitomy {
 
-Tokenizer::Tokenizer(const string_t& filename, Elements& elements,
-                     const Options& options, token_container_t& tokens)
-    : elements_(elements),
-      filename_(filename),
-      options_(options),
+Tokenizer::Tokenizer(const Options& options, token_container_t& tokens)
+    : options_(options),
       tokens_(tokens) {
 }
 
-bool Tokenizer::Tokenize() {
+bool Tokenizer::Tokenize(const string_view_t filename) {
   tokens_.reserve(32);  // Usually there are no more than 20 tokens
 
-  TokenizeByBrackets(filename_);
+  TokenizeByBrackets(filename);
   ValidateDelimiterTokens();
 
   return !tokens_.empty();

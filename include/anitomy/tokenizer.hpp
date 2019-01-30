@@ -17,13 +17,12 @@ namespace anitomy {
 
 class Tokenizer {
 public:
-  Tokenizer(const string_t& filename, Elements& elements,
-            const Options& options, token_container_t& tokens);
+  Tokenizer(const Options& options, token_container_t& tokens);
 
   Tokenizer(const Tokenizer&) = delete;
   Tokenizer& operator=(const Tokenizer&) = delete;
 
-  bool Tokenize();
+  bool Tokenize(const string_view_t filename);
 
 private:
   void AddToken(TokenType type, bool enclosed, const string_view_t view);
@@ -33,8 +32,6 @@ private:
 
   void ValidateDelimiterTokens();
 
-  Elements& elements_;
-  const string_t& filename_;
   const Options& options_;
   token_container_t& tokens_;
 };

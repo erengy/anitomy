@@ -32,8 +32,8 @@ bool Anitomy::Parse(string_t filename) {
     return false;
   elements_.insert(kElementFileName, filename);
 
-  Tokenizer tokenizer(filename, elements_, options_, tokens_);
-  if (!tokenizer.Tokenize())
+  Tokenizer tokenizer(options_, tokens_);
+  if (!tokenizer.Tokenize(filename))
     return false;
 
   Parser parser(elements_, options_, tokens_);
