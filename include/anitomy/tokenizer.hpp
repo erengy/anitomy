@@ -14,11 +14,11 @@
 
 namespace anitomy {
 
-token_container_t Tokenize(const string_view_t filename, const Options& options);
+Tokens Tokenize(const string_view_t filename, const Options& options);
 
-void TokenizeByBrackets(string_view_t view, const Options& options, token_container_t& tokens);
-void TokenizeByDelimiters(string_view_t view, const Options& options, const bool enclosed, token_container_t& tokens);
+void TokenizeByBrackets(string_view_t view, const Options& options, Tokens& tokens);
+void TokenizeByDelimiters(string_view_t view, const Options& options, const bool enclosed, Tokens& tokens);
 
-void ValidateTokens(token_container_t& tokens);
+void ValidateTokens(Tokens& tokens);
 
 }  // namespace anitomy

@@ -69,7 +69,7 @@ token_reverse_iterator_t FindToken(token_reverse_iterator_t first,
   return FindTokenBase(first, last, flags);
 }
 
-token_iterator_t FindPreviousToken(token_container_t& tokens,
+token_iterator_t FindPreviousToken(Tokens& tokens,
                                    token_iterator_t first,
                                    unsigned int flags) {
   auto it = FindToken(std::reverse_iterator<token_iterator_t>(first),
@@ -77,7 +77,7 @@ token_iterator_t FindPreviousToken(token_container_t& tokens,
   return it == tokens.rend() ? tokens.end() : (++it).base();
 }
 
-token_iterator_t FindNextToken(token_container_t& tokens,
+token_iterator_t FindNextToken(Tokens& tokens,
                                token_iterator_t first,
                                unsigned int flags) {
   return FindToken(++first, tokens.end(), flags);

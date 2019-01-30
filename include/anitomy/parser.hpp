@@ -17,7 +17,7 @@ namespace anitomy {
 
 class Parser {
 public:
-  Parser(Elements& elements, const Options& options, token_container_t& tokens);
+  Parser(Elements& elements, const Options& options, Tokens& tokens);
 
   Parser(const Parser&) = delete;
   Parser& operator=(const Parser&) = delete;
@@ -89,7 +89,7 @@ private:
 
   Elements& elements_;
   const Options& options_;
-  token_container_t& tokens_;
+  Tokens& tokens_;
 
   bool found_episode_keywords_ = false;
 };

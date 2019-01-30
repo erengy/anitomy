@@ -15,9 +15,9 @@
 
 namespace anitomy {
 
-token_container_t Tokenize(const string_view_t filename,
+Tokens Tokenize(const string_view_t filename,
                            const Options& options) {
-  token_container_t tokens;
+  Tokens tokens;
   tokens.reserve(32);  // Usually there are no more than 20 tokens
 
   TokenizeByBrackets(filename, options, tokens);
@@ -28,7 +28,7 @@ token_container_t Tokenize(const string_view_t filename,
 }
 
 void TokenizeByBrackets(string_view_t view, const Options& options,
-                        token_container_t& tokens) {
+                        Tokens& tokens) {
   static const string_t brackets_left =
       L"("        // Parenthesis
       L"["        // Square bracket
@@ -69,7 +69,7 @@ void TokenizeByBrackets(string_view_t view, const Options& options,
 }
 
 void TokenizeByDelimiters(string_view_t view, const Options& options,
-                          const bool enclosed, token_container_t& tokens) {
+                          const bool enclosed, Tokens& tokens) {
   while (!view.empty()) {
     const auto pos = view.find_first_of(options.allowed_delimiters);
     if (pos > 0) {
@@ -87,7 +87,7 @@ void TokenizeByDelimiters(string_view_t view, const Options& options,
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void ValidateTokens(token_container_t& tokens) {
+void ValidateTokens(Tokens& tokens) {
   auto is_delimiter_token = [&](token_iterator_t it) {
     return it != tokens.end() && it->type == TokenType::Delimiter;
   };

@@ -21,7 +21,7 @@ public:
 
   Elements& elements();
   Options& options();
-  const token_container_t& tokens() const;
+  const Tokens& tokens() const;
 
 private:
   bool RemoveExtensionFromFilename(string_t& filename, string_t& extension) const;
@@ -29,7 +29,7 @@ private:
 
   Elements elements_;
   Options options_;
-  token_container_t tokens_;
+  Tokens tokens_;
 };
 
 }  // namespace anitomy
