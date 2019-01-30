@@ -28,7 +28,7 @@ Tokenizer::Tokenizer(const string_t& filename, Elements& elements,
 bool Tokenizer::Tokenize() {
   tokens_.reserve(32);  // Usually there are no more than 20 tokens
 
-  TokenizeByBrackets();
+  TokenizeByBrackets(filename_);
   ValidateDelimiterTokens();
 
   return !tokens_.empty();
@@ -41,61 +41,44 @@ void Tokenizer::AddToken(TokenType type, bool enclosed,
   tokens_.push_back(Token{type, string_t{view}, enclosed});
 }
 
-void Tokenizer::TokenizeByBrackets() {
-  static const std::vector<std::pair<char_t, char_t>> brackets{
-      {L'(', L')'},  // U+0028-U+0029 Parenthesis
-      {L'[', L']'},  // U+005B-U+005D Square bracket
-      {L'{', L'}'},  // U+007B-U+007D Curly bracket
-      {L'\u300C', L'\u300D'},  // Corner bracket
-      {L'\u300E', L'\u300F'},  // White corner bracket
-      {L'\u3010', L'\u3011'},  // Black lenticular bracket
-      {L'\uFF08', L'\uFF09'},  // Fullwidth parenthesis
-  };
+void Tokenizer::TokenizeByBrackets(string_view_t view) {
+  static const string_t brackets_left =
+      L"("        // Parenthesis
+      L"["        // Square bracket
+      L"{"        // Curly bracket
+      L"\u300C"   // Corner bracket
+      L"\u300E"   // White corner bracket
+      L"\u3010"   // Black lenticular bracket
+      L"\uFF08";  // Fullwidth parenthesis
+  static const string_t brackets_right =
+      L")]}\u300D\u300F\u3011\uFF09";
 
   bool is_bracket_open = false;
-  char_t matching_bracket = L'\0';
+  char_t matching_bracket{};
 
-  auto char_begin = filename_.begin();
-  const auto char_end = filename_.end();
+  while (!view.empty()) {
+    // Looking for the matching bracket allows us to better handle some rare
+    // cases with nested brackets.
+    const auto pos = !is_bracket_open ? view.find_first_of(brackets_left) :
+                                        view.find(matching_bracket);
 
-  // This is basically std::find_first_of() customized to our needs
-  auto find_first_bracket = [&]() -> string_t::const_iterator {
-    for (auto it = char_begin; it != char_end; ++it) {
-      for (const auto& bracket_pair : brackets) {
-        if (*it == bracket_pair.first) {
-          matching_bracket = bracket_pair.second;
-          return it;
-        }
-      }
+    if (pos > 0) {
+      //TokenizeByPreidentified(is_bracket_open, view.substr(0, pos));
+      TokenizeByDelimiters(is_bracket_open, view.substr(0, pos));
+      //AddToken(TokenType::Unknown, is_bracket_open, view.substr(0, pos));
     }
-    return char_end;
-  };
+    if (pos == view.npos) {
+      return;
+    }
 
-  auto current_char = char_begin;
-
-  while (current_char != char_end && char_begin != char_end) {
     if (!is_bracket_open) {
-      current_char = find_first_bracket();
-    } else {
-      // Looking for the matching bracket allows us to better handle some rare
-      // cases with nested brackets.
-      current_char = std::find(char_begin, char_end, matching_bracket);
+      const auto bracket_index = brackets_left.find(view.at(pos));
+      matching_bracket = brackets_right.at(bracket_index);
     }
+    is_bracket_open = !is_bracket_open;
 
-    const string_view_t view = filename_.substr(
-          std::distance(filename_.begin(), char_begin),
-          std::distance(char_begin, current_char)
-        );
-
-    if (view.size() > 0)  // Found unknown token
-      TokenizeByPreidentified(is_bracket_open, view);
-
-    if (current_char != char_end) {  // Found bracket
-      AddToken(TokenType::Bracket, true,
-               filename_.substr(std::distance(filename_.begin(), current_char), 1));
-      is_bracket_open = !is_bracket_open;
-      char_begin = ++current_char;
-    }
+    AddToken(TokenType::Bracket, true, view.substr(pos, 1));
+    view.remove_prefix(pos + 1);
   }
 }
 

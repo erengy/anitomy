@@ -28,7 +28,7 @@ public:
 private:
   void AddToken(TokenType type, bool enclosed, const string_view_t view);
 
-  void TokenizeByBrackets();
+  void TokenizeByBrackets(string_view_t view);
   void TokenizeByPreidentified(bool enclosed, const string_view_t view);
   void TokenizeByDelimiters(bool enclosed, string_view_t view);
 
