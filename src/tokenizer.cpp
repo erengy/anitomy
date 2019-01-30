@@ -8,32 +8,27 @@
 
 #include <algorithm>
 #include <iterator>
-#include <set>
 
-#include <anitomy/keyword.hpp>
 #include <anitomy/string.hpp>
 #include <anitomy/tokenizer.hpp>
 #include <anitomy/util.hpp>
 
 namespace anitomy {
 
-Tokenizer::Tokenizer(const Options& options, token_container_t& tokens)
-    : options_(options),
-      tokens_(tokens) {
+token_container_t Tokenize(const string_view_t filename,
+                           const Options& options) {
+  token_container_t tokens;
+  tokens.reserve(32);  // Usually there are no more than 20 tokens
+
+  TokenizeByBrackets(filename, options, tokens);
+
+  ValidateTokens(tokens);
+
+  return tokens;
 }
 
-bool Tokenizer::Tokenize(const string_view_t filename) {
-  tokens_.reserve(32);  // Usually there are no more than 20 tokens
-
-  TokenizeByBrackets(filename);
-  ValidateDelimiterTokens();
-
-  return !tokens_.empty();
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
-void Tokenizer::TokenizeByBrackets(string_view_t view) {
+void TokenizeByBrackets(string_view_t view, const Options& options,
+                        token_container_t& tokens) {
   static const string_t brackets_left =
       L"("        // Parenthesis
       L"["        // Square bracket
@@ -55,7 +50,7 @@ void Tokenizer::TokenizeByBrackets(string_view_t view) {
                                         view.find(matching_bracket);
 
     if (pos > 0) {
-      TokenizeByDelimiters(is_bracket_open, view.substr(0, pos));
+      TokenizeByDelimiters(view.substr(0, pos), options, is_bracket_open, tokens);
     }
     if (pos == view.npos) {
       return;
@@ -67,23 +62,24 @@ void Tokenizer::TokenizeByBrackets(string_view_t view) {
     }
     is_bracket_open = !is_bracket_open;
 
-    tokens_.push_back(
+    tokens.push_back(
         Token{TokenType::Bracket, string_t{view.substr(pos, 1)}, true});
     view.remove_prefix(pos + 1);
   }
 }
 
-void Tokenizer::TokenizeByDelimiters(bool enclosed, string_view_t view) {
+void TokenizeByDelimiters(string_view_t view, const Options& options,
+                          const bool enclosed, token_container_t& tokens) {
   while (!view.empty()) {
-    const auto pos = view.find_first_of(options_.allowed_delimiters);
+    const auto pos = view.find_first_of(options.allowed_delimiters);
     if (pos > 0) {
-      tokens_.push_back(
+      tokens.push_back(
           Token{TokenType::Unknown, string_t{view.substr(0, pos)}, enclosed});
     }
     if (pos == view.npos) {
       return;
     }
-    tokens_.push_back(
+    tokens.push_back(
         Token{TokenType::Delimiter, string_t{view.substr(pos, 1)}, enclosed});
     view.remove_prefix(pos + 1);
   }
@@ -91,12 +87,12 @@ void Tokenizer::TokenizeByDelimiters(bool enclosed, string_view_t view) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void Tokenizer::ValidateDelimiterTokens() {
+void ValidateTokens(token_container_t& tokens) {
   auto is_delimiter_token = [&](token_iterator_t it) {
-    return it != tokens_.end() && it->type == TokenType::Delimiter;
+    return it != tokens.end() && it->type == TokenType::Delimiter;
   };
   auto is_unknown_token = [&](token_iterator_t it) {
-    return it != tokens_.end() && it->type == TokenType::Unknown;
+    return it != tokens.end() && it->type == TokenType::Unknown;
   };
   auto is_single_character_token = [&](token_iterator_t it) {
     return is_unknown_token(it) && it->content.size() == 1 &&
@@ -108,12 +104,12 @@ void Tokenizer::ValidateDelimiterTokens() {
     token->type = TokenType::Invalid;
   };
 
-  for (auto token = tokens_.begin(); token != tokens_.end(); ++token) {
+  for (auto token = tokens.begin(); token != tokens.end(); ++token) {
     if (token->type != TokenType::Delimiter)
       continue;
     auto delimiter = token->content.front();
-    auto prev_token = FindPreviousToken(tokens_, token, kFlagValid);
-    auto next_token = FindNextToken(tokens_, token, kFlagValid);
+    auto prev_token = FindPreviousToken(tokens, token, kFlagValid);
+    auto next_token = FindNextToken(tokens, token, kFlagValid);
 
     // Check for single-character tokens to prevent splitting group names,
     // keywords, episode number, etc.
@@ -122,11 +118,11 @@ void Tokenizer::ValidateDelimiterTokens() {
         append_token_to(token, prev_token);
         while (is_unknown_token(next_token)) {
           append_token_to(next_token, prev_token);
-          next_token = FindNextToken(tokens_, next_token, kFlagValid);
+          next_token = FindNextToken(tokens, next_token, kFlagValid);
           if (is_delimiter_token(next_token) &&
               next_token->content.front() == delimiter) {
             append_token_to(next_token, prev_token);
-            next_token = FindNextToken(tokens_, next_token, kFlagValid);
+            next_token = FindNextToken(tokens, next_token, kFlagValid);
           }
         }
         continue;
@@ -168,11 +164,11 @@ void Tokenizer::ValidateDelimiterTokens() {
     }
   }
 
-  auto remove_if_invalid = std::remove_if(tokens_.begin(), tokens_.end(),
+  auto remove_if_invalid = std::remove_if(tokens.begin(), tokens.end(),
       [](const Token& token) -> bool {
         return token.type == TokenType::Invalid;
       });
-  tokens_.erase(remove_if_invalid, tokens_.end());
+  tokens.erase(remove_if_invalid, tokens.end());
 }
 
 }  // namespace anitomy

@@ -8,30 +8,17 @@
 
 #pragma once
 
-#include <anitomy/element.hpp>
 #include <anitomy/options.hpp>
 #include <anitomy/string.hpp>
 #include <anitomy/token.hpp>
 
 namespace anitomy {
 
-class Tokenizer {
-public:
-  Tokenizer(const Options& options, token_container_t& tokens);
+token_container_t Tokenize(const string_view_t filename, const Options& options);
 
-  Tokenizer(const Tokenizer&) = delete;
-  Tokenizer& operator=(const Tokenizer&) = delete;
+void TokenizeByBrackets(string_view_t view, const Options& options, token_container_t& tokens);
+void TokenizeByDelimiters(string_view_t view, const Options& options, const bool enclosed, token_container_t& tokens);
 
-  bool Tokenize(const string_view_t filename);
-
-private:
-  void TokenizeByBrackets(string_view_t view);
-  void TokenizeByDelimiters(bool enclosed, string_view_t view);
-
-  void ValidateDelimiterTokens();
-
-  const Options& options_;
-  token_container_t& tokens_;
-};
+void ValidateTokens(token_container_t& tokens);
 
 }  // namespace anitomy
