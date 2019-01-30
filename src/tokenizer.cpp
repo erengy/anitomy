@@ -33,11 +33,6 @@ bool Tokenizer::Tokenize(const string_view_t filename) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void Tokenizer::AddToken(TokenType type, bool enclosed,
-                         const string_view_t view) {
-  tokens_.push_back(Token{type, string_t{view}, enclosed});
-}
-
 void Tokenizer::TokenizeByBrackets(string_view_t view) {
   static const string_t brackets_left =
       L"("        // Parenthesis
@@ -72,7 +67,8 @@ void Tokenizer::TokenizeByBrackets(string_view_t view) {
     }
     is_bracket_open = !is_bracket_open;
 
-    AddToken(TokenType::Bracket, true, view.substr(pos, 1));
+    tokens_.push_back(
+        Token{TokenType::Bracket, string_t{view.substr(pos, 1)}, true});
     view.remove_prefix(pos + 1);
   }
 }
@@ -81,12 +77,14 @@ void Tokenizer::TokenizeByDelimiters(bool enclosed, string_view_t view) {
   while (!view.empty()) {
     const auto pos = view.find_first_of(options_.allowed_delimiters);
     if (pos > 0) {
-      AddToken(TokenType::Unknown, enclosed, view.substr(0, pos));
+      tokens_.push_back(
+          Token{TokenType::Unknown, string_t{view.substr(0, pos)}, enclosed});
     }
     if (pos == view.npos) {
       return;
     }
-    AddToken(TokenType::Delimiter, enclosed, view.substr(pos, 1));
+    tokens_.push_back(
+        Token{TokenType::Delimiter, string_t{view.substr(pos, 1)}, enclosed});
     view.remove_prefix(pos + 1);
   }
 }
