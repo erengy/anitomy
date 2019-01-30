@@ -90,7 +90,7 @@ bool Parser::IsResolution(const string_t& str) {
 bool Parser::CheckAnimeSeasonKeyword(const token_iterator_t token) {
   auto set_anime_season = [&](token_iterator_t first, token_iterator_t second,
                               const string_t& content) {
-    elements_.insert(kElementAnimeSeason, content);
+    elements_.insert(ElementType::AnimeSeason, content);
     first->type = TokenType::Identifier;
     second->type = TokenType::Identifier;
   };
@@ -114,18 +114,18 @@ bool Parser::CheckAnimeSeasonKeyword(const token_iterator_t token) {
   return false;
 }
 
-bool Parser::CheckExtentKeyword(ElementCategory category,
+bool Parser::CheckExtentKeyword(ElementType type,
                                 const token_iterator_t token) {
   auto next_token = FindNextToken(tokens_, token, kFlagNotDelimiter);
 
   if (CheckTokenType(next_token, TokenType::Unknown)) {
     if (FindNumberInString(next_token->content) == 0) {
-      switch (category) {
-        case kElementEpisodeNumber:
+      switch (type) {
+        case ElementType::EpisodeNumber:
           if (!MatchEpisodePatterns(next_token->content, *next_token))
             SetEpisodeNumber(next_token->content, *next_token, false);
           break;
-        case kElementVolumeNumber:
+        case ElementType::VolumeNumber:
           if (!MatchVolumePatterns(next_token->content, *next_token))
             SetVolumeNumber(next_token->content, *next_token, false);
           break;
@@ -142,24 +142,24 @@ bool Parser::CheckExtentKeyword(ElementCategory category,
 
 ////////////////////////////////////////////////////////////////////////////////
 
-bool Parser::IsElementCategorySearchable(ElementCategory category) {
-  switch (category) {
-    case kElementAnimeSeasonPrefix:
-    case kElementAnimeType:
-    case kElementAudioTerm:
-    case kElementDeviceCompatibility:
-    case kElementEpisodePrefix:
-    case kElementFileChecksum:
-    case kElementLanguage:
-    case kElementOther:
-    case kElementReleaseGroup:
-    case kElementReleaseInformation:
-    case kElementReleaseVersion:
-    case kElementSource:
-    case kElementSubtitles:
-    case kElementVideoResolution:
-    case kElementVideoTerm:
-    case kElementVolumePrefix:
+bool Parser::IsElementTypeSearchable(ElementType type) {
+  switch (type) {
+    case ElementType::AnimeSeasonPrefix:
+    case ElementType::AnimeType:
+    case ElementType::AudioTerm:
+    case ElementType::DeviceCompatibility:
+    case ElementType::EpisodePrefix:
+    case ElementType::FileChecksum:
+    case ElementType::Language:
+    case ElementType::Other:
+    case ElementType::ReleaseGroup:
+    case ElementType::ReleaseInformation:
+    case ElementType::ReleaseVersion:
+    case ElementType::Source:
+    case ElementType::Subtitles:
+    case ElementType::VideoResolution:
+    case ElementType::VideoTerm:
+    case ElementType::VolumePrefix:
       return true;
     default:
       break;
@@ -168,18 +168,18 @@ bool Parser::IsElementCategorySearchable(ElementCategory category) {
   return false;
 }
 
-bool Parser::IsElementCategorySingular(ElementCategory category) {
-  switch (category) {
-    case kElementAnimeSeason:
-    case kElementAnimeType:
-    case kElementAudioTerm:
-    case kElementDeviceCompatibility:
-    case kElementEpisodeNumber:
-    case kElementLanguage:
-    case kElementOther:
-    case kElementReleaseInformation:
-    case kElementSource:
-    case kElementVideoTerm:
+bool Parser::IsElementTypeSingular(ElementType type) {
+  switch (type) {
+    case ElementType::AnimeSeason:
+    case ElementType::AnimeType:
+    case ElementType::AudioTerm:
+    case ElementType::DeviceCompatibility:
+    case ElementType::EpisodeNumber:
+    case ElementType::Language:
+    case ElementType::Other:
+    case ElementType::ReleaseInformation:
+    case ElementType::Source:
+    case ElementType::VideoTerm:
       return false;
     default:
       break;
@@ -190,7 +190,7 @@ bool Parser::IsElementCategorySingular(ElementCategory category) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void Parser::BuildElement(ElementCategory category, bool keep_delimiters,
+void Parser::BuildElement(ElementType type, bool keep_delimiters,
                           const token_iterator_t token_begin,
                           const token_iterator_t token_end) const {
   string_t element;
@@ -230,7 +230,7 @@ void Parser::BuildElement(ElementCategory category, bool keep_delimiters,
     TrimString(element, kDashesWithSpace.c_str());
 
   if (!element.empty())
-    elements_.insert(category, element);
+    elements_.insert(type, element);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

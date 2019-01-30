@@ -22,7 +22,7 @@ bool Anitomy::Parse(string_t filename) {
   if (options_.parse_file_extension) {
     string_t extension;
     if (RemoveExtensionFromFilename(filename, extension))
-      elements_.insert(kElementFileExtension, extension);
+      elements_.insert(ElementType::FileExtension, extension);
   }
 
   if (!options_.ignored_strings.empty())
@@ -30,7 +30,7 @@ bool Anitomy::Parse(string_t filename) {
 
   if (filename.empty())
     return false;
-  elements_.insert(kElementFileName, filename);
+  elements_.insert(ElementType::FileName, filename);
 
   tokens_ = Tokenize(filename, options_);
   if (tokens_.empty())
@@ -62,7 +62,7 @@ bool Anitomy::RemoveExtensionFromFilename(string_t& filename,
     return false;
 
   auto keyword = keyword_manager.Normalize(extension);
-  if (!keyword_manager.Find(kElementFileExtension, keyword))
+  if (!keyword_manager.Find(ElementType::FileExtension, keyword))
     return false;
 
   filename.resize(position);

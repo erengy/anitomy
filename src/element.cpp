@@ -58,16 +58,16 @@ const Element& Elements::at(size_t position) const {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-string_t Elements::get(ElementCategory category) const {
-  auto element = find(category);
+string_t Elements::get(ElementType type) const {
+  auto element = find(type);
   return element != elements_.end() ? element->value : string_t();
 }
 
-std::vector<string_t> Elements::get_all(ElementCategory category) const {
+std::vector<string_t> Elements::get_all(ElementType type) const {
   std::vector<string_t> elements;
 
   for (const auto& element : elements_)
-    if (element.category == category)
+    if (element.type == type)
       elements.push_back(element.value);
 
   return elements;
@@ -79,15 +79,15 @@ void Elements::clear() {
   elements_.clear();
 }
 
-void Elements::insert(ElementCategory category, const string_t& value) {
+void Elements::insert(ElementType type, const string_t& value) {
   if (!value.empty())
-    elements_.push_back({category, value});
+    elements_.push_back({type, value});
 }
 
-void Elements::erase(ElementCategory category) {
+void Elements::erase(ElementType type) {
   auto iterator = std::remove_if(elements_.begin(), elements_.end(),
       [&](const Element& element) {
-        return element.category == category;
+        return element.type == type;
       });
   elements_.erase(iterator, elements_.end());
 }
@@ -96,49 +96,49 @@ element_iterator_t Elements::erase(element_iterator_t iterator) {
   return elements_.erase(iterator);
 }
 
-void Elements::set(ElementCategory category, const string_t& value) {
-  auto element = find(category);
+void Elements::set(ElementType type, const string_t& value) {
+  auto element = find(type);
 
   if (element == elements_.end()) {
-    elements_.push_back({category, value});
+    elements_.push_back({type, value});
   } else {
     element->value = value;
   }
 }
 
-string_t& Elements::operator[](ElementCategory category) {
-  auto element = find(category);
+string_t& Elements::operator[](ElementType type) {
+  auto element = find(type);
 
   if (element == elements_.end())
-    element = elements_.insert(elements_.end(), {category, string_t()});
+    element = elements_.insert(elements_.end(), {type, string_t()});
 
   return element->value;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-size_t Elements::count(ElementCategory category) const {
+size_t Elements::count(ElementType type) const {
   return std::count_if(elements_.begin(), elements_.end(),
       [&](const Element& element) {
-        return element.category == category;
+        return element.type == type;
       });
 }
 
-bool Elements::empty(ElementCategory category) const {
-  return find(category) == elements_.end();
+bool Elements::empty(ElementType type) const {
+  return find(type) == elements_.end();
 }
 
-element_iterator_t Elements::find(ElementCategory category) {
+element_iterator_t Elements::find(ElementType type) {
   return std::find_if(elements_.begin(), elements_.end(),
       [&](const Element& element) {
-        return element.category == category;
+        return element.type == type;
       });
 }
 
-element_const_iterator_t Elements::find(ElementCategory category) const {
+element_const_iterator_t Elements::find(ElementType type) const {
   return std::find_if(elements_.cbegin(), elements_.cend(),
       [&](const Element& element) {
-        return element.category == category;
+        return element.type == type;
       });
 }
 

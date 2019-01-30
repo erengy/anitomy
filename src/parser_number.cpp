@@ -28,19 +28,19 @@ bool Parser::SetEpisodeNumber(const string_t& number, Token& token,
 
   token.type = TokenType::Identifier;
 
-  auto category = kElementEpisodeNumber;
+  auto type = ElementType::EpisodeNumber;
 
   // Handle equivalent numbers
   if (found_episode_keywords_) {
     for (auto& element : elements_) {
-      if (element.category != kElementEpisodeNumber)
+      if (element.type != ElementType::EpisodeNumber)
         continue;
       // The larger number gets to be the alternative one
       const int comparison = StringToInt(number) - StringToInt(element.value);
       if (comparison > 0) {
-        category = kElementEpisodeNumberAlt;
+        type = ElementType::EpisodeNumberAlt;
       } else if (comparison < 0) {
-        element.category = kElementEpisodeNumberAlt;
+        element.type = ElementType::EpisodeNumberAlt;
       } else {
         return false;  // No need to add the same number twice
       }
@@ -48,12 +48,12 @@ bool Parser::SetEpisodeNumber(const string_t& number, Token& token,
     }
   }
 
-  elements_.insert(category, number);
+  elements_.insert(type, number);
   return true;
 }
 
 bool Parser::SetAlternativeEpisodeNumber(const string_t& number, Token& token) {
-  elements_.insert(kElementEpisodeNumberAlt, number);
+  elements_.insert(ElementType::EpisodeNumberAlt, number);
   token.type = TokenType::Identifier;
 
   return true;
@@ -71,26 +71,26 @@ bool Parser::SetVolumeNumber(const string_t& number, Token& token,
     if (!IsValidVolumeNumber(number))
       return false;
 
-  elements_.insert(kElementVolumeNumber, number);
+  elements_.insert(ElementType::VolumeNumber, number);
   token.type = TokenType::Identifier;
   return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-bool Parser::NumberComesAfterPrefix(ElementCategory category, Token& token) {
+bool Parser::NumberComesAfterPrefix(ElementType type, Token& token) {
   size_t number_begin = FindNumberInString(token.content);
   auto prefix = keyword_manager.Normalize(token.content.substr(0, number_begin));
 
-  if (keyword_manager.Find(category, prefix)) {
+  if (keyword_manager.Find(type, prefix)) {
     auto number = token.content.substr(
         number_begin, token.content.length() - number_begin);
-    switch (category) {
-      case kElementEpisodePrefix:
+    switch (type) {
+      case ElementType::EpisodePrefix:
         if (!MatchEpisodePatterns(number, token))
           SetEpisodeNumber(number, token, false);
         return true;
-      case kElementVolumePrefix:
+      case ElementType::VolumePrefix:
         if (!MatchVolumePatterns(number, token))
           SetVolumeNumber(number, token, false);
         return true;
@@ -135,9 +135,9 @@ bool Parser::SearchForEpisodePatterns(std::vector<size_t>& tokens) {
 
     if (!numeric_front) {
       // e.g. "EP.1", "Vol.1"
-      if (NumberComesAfterPrefix(kElementEpisodePrefix, *token))
+      if (NumberComesAfterPrefix(ElementType::EpisodePrefix, *token))
         return true;
-      if (NumberComesAfterPrefix(kElementVolumePrefix, *token))
+      if (NumberComesAfterPrefix(ElementType::VolumePrefix, *token))
         continue;
     } else {
       // e.g. "8 & 10", "01 of 24"
@@ -163,7 +163,7 @@ bool Parser::MatchSingleEpisodePattern(const string_t& word, Token& token) {
 
   if (std::regex_match(word, match_results, pattern)) {
     SetEpisodeNumber(match_results[1].str(), token, false);
-    elements_.insert(kElementReleaseVersion, match_results[2].str());
+    elements_.insert(ElementType::ReleaseVersion, match_results[2].str());
     return true;
   }
 
@@ -183,9 +183,9 @@ bool Parser::MatchMultiEpisodePattern(const string_t& word, Token& token) {
       if (SetEpisodeNumber(lower_bound, token, true)) {
         SetEpisodeNumber(upper_bound, token, false);
         if (match_results[2].matched)
-          elements_.insert(kElementReleaseVersion, match_results[2].str());
+          elements_.insert(ElementType::ReleaseVersion, match_results[2].str());
         if (match_results[4].matched)
-          elements_.insert(kElementReleaseVersion, match_results[4].str());
+          elements_.insert(ElementType::ReleaseVersion, match_results[4].str());
         return true;
       }
     }
@@ -203,9 +203,9 @@ bool Parser::MatchSeasonAndEpisodePattern(const string_t& word, Token& token) {
   regex_match_results_t match_results;
 
   if (std::regex_match(word, match_results, pattern)) {
-    elements_.insert(kElementAnimeSeason, match_results[1]);
+    elements_.insert(ElementType::AnimeSeason, match_results[1]);
     if (match_results[2].matched)
-      elements_.insert(kElementAnimeSeason, match_results[2]);
+      elements_.insert(ElementType::AnimeSeason, match_results[2]);
     SetEpisodeNumber(match_results[3], token, false);
     if (match_results[4].matched)
       SetEpisodeNumber(match_results[4], token, false);
@@ -219,12 +219,12 @@ bool Parser::MatchTypeAndEpisodePattern(const string_t& word, Token& token) {
   size_t number_begin = FindNumberInString(word);
   auto prefix = word.substr(0, number_begin);
 
-  ElementCategory category = kElementAnimeType;
+  ElementType type = ElementType::AnimeType;
   KeywordOptions options;
 
   if (keyword_manager.Find(keyword_manager.Normalize(prefix),
-                           category, options)) {
-    elements_.insert(kElementAnimeType, prefix);
+                           type, options)) {
+    elements_.insert(ElementType::AnimeType, prefix);
     auto number = word.substr(number_begin);
     if (MatchEpisodePatterns(number, token) ||
         SetEpisodeNumber(number, token, true)) {
@@ -285,7 +285,7 @@ bool Parser::MatchNumberSignPattern(const string_t& word, Token& token) {
       if (match_results[2].matched)
         SetEpisodeNumber(match_results[2].str(), token, false);
       if (match_results[3].matched)
-        elements_.insert(kElementReleaseVersion, match_results[3].str());
+        elements_.insert(ElementType::ReleaseVersion, match_results[3].str());
       return true;
     }
   }
@@ -362,7 +362,7 @@ bool Parser::MatchSingleVolumePattern(const string_t& word, Token& token) {
 
   if (std::regex_match(word, match_results, pattern)) {
     SetVolumeNumber(match_results[1].str(), token, false);
-    elements_.insert(kElementReleaseVersion, match_results[2].str());
+    elements_.insert(ElementType::ReleaseVersion, match_results[2].str());
     return true;
   }
 
@@ -380,7 +380,7 @@ bool Parser::MatchMultiVolumePattern(const string_t& word, Token& token) {
       if (SetVolumeNumber(lower_bound, token, true)) {
         SetVolumeNumber(upper_bound, token, false);
         if (match_results[3].matched)
-          elements_.insert(kElementReleaseVersion, match_results[3].str());
+          elements_.insert(ElementType::ReleaseVersion, match_results[3].str());
         return true;
       }
     }

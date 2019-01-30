@@ -33,16 +33,16 @@ bool Parser::Parse() {
   SearchForAnimeTitle();
 
   if (options_.parse_release_group &&
-      elements_.empty(kElementReleaseGroup))
+      elements_.empty(ElementType::ReleaseGroup))
     SearchForReleaseGroup();
 
   if (options_.parse_episode_title &&
-      !elements_.empty(kElementEpisodeNumber))
+      !elements_.empty(ElementType::EpisodeNumber))
     SearchForEpisodeTitle();
 
   ValidateElements();
 
-  return !elements_.empty(kElementAnimeTitle);
+  return !elements_.empty(ElementType::AnimeTitle);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -65,40 +65,40 @@ void Parser::SearchForKeywords() {
 
     // Performs better than making a case-insensitive Find
     auto keyword = keyword_manager.Normalize(word);
-    ElementCategory category = kElementUnknown;
+    ElementType type = ElementType::Unknown;
     KeywordOptions options;
 
-    if (keyword_manager.Find(keyword, category, options)) {
-      if (!options_.parse_release_group && category == kElementReleaseGroup)
+    if (keyword_manager.Find(keyword, type, options)) {
+      if (!options_.parse_release_group && type == ElementType::ReleaseGroup)
         continue;
-      if (!IsElementCategorySearchable(category) || !options.searchable)
+      if (!IsElementTypeSearchable(type) || !options.searchable)
         continue;
-      if (IsElementCategorySingular(category) && !elements_.empty(category))
+      if (IsElementTypeSingular(type) && !elements_.empty(type))
         continue;
-      if (category == kElementAnimeSeasonPrefix) {
+      if (type == ElementType::AnimeSeasonPrefix) {
         CheckAnimeSeasonKeyword(it);
         continue;
-      } else if (category == kElementEpisodePrefix) {
+      } else if (type == ElementType::EpisodePrefix) {
         if (options.valid)
-          CheckExtentKeyword(kElementEpisodeNumber, it);
+          CheckExtentKeyword(ElementType::EpisodeNumber, it);
         continue;
-      } else if (category == kElementReleaseVersion) {
+      } else if (type == ElementType::ReleaseVersion) {
         word = word.substr(1);  // number without "v"
-      } else if (category == kElementVolumePrefix) {
-        CheckExtentKeyword(kElementVolumeNumber, it);
+      } else if (type == ElementType::VolumePrefix) {
+        CheckExtentKeyword(ElementType::VolumeNumber, it);
         continue;
       }
     } else {
-      if (elements_.empty(kElementFileChecksum) && IsCrc32(word)) {
-        category = kElementFileChecksum;
-      } else if (elements_.empty(kElementVideoResolution) &&
+      if (elements_.empty(ElementType::FileChecksum) && IsCrc32(word)) {
+        type = ElementType::FileChecksum;
+      } else if (elements_.empty(ElementType::VideoResolution) &&
                  IsResolution(word)) {
-        category = kElementVideoResolution;
+        type = ElementType::VideoResolution;
       }
     }
 
-    if (category != kElementUnknown) {
-      elements_.insert(category, word);
+    if (type != ElementType::Unknown) {
+      elements_.insert(type, word);
       if (options.identifiable)
         token.type = TokenType::Identifier;
     }
@@ -119,13 +119,13 @@ void Parser::SearchForEpisodeNumber() {
   if (tokens.empty())
     return;
 
-  found_episode_keywords_ = !elements_.empty(kElementEpisodeNumber);
+  found_episode_keywords_ = !elements_.empty(ElementType::EpisodeNumber);
 
   // If a token matches a known episode pattern, it has to be the episode number
   if (SearchForEpisodePatterns(tokens))
     return;
 
-  if (!elements_.empty(kElementEpisodeNumber))
+  if (!elements_.empty(ElementType::EpisodeNumber))
     return;  // We have previously found an episode number via keywords
 
   // From now on, we're only interested in numeric tokens
@@ -222,7 +222,7 @@ void Parser::SearchForAnimeTitle() {
   }
 
   // Build anime title
-  BuildElement(kElementAnimeTitle, false, token_begin, token_end);
+  BuildElement(ElementType::AnimeTitle, false, token_begin, token_end);
 }
 
 void Parser::SearchForReleaseGroup() {
@@ -251,7 +251,7 @@ void Parser::SearchForReleaseGroup() {
     }
 
     // Build release group
-    BuildElement(kElementReleaseGroup, true, token_begin, token_end);
+    BuildElement(ElementType::ReleaseGroup, true, token_begin, token_end);
     return;
   } while (token_begin != tokens_.end());
 }
@@ -278,7 +278,7 @@ void Parser::SearchForEpisodeTitle() {
     }
 
     // Build episode title
-    BuildElement(kElementEpisodeTitle, false, token_begin, token_end);
+    BuildElement(ElementType::EpisodeTitle, false, token_begin, token_end);
     return;
   } while (token_begin != tokens_.end());
 }
@@ -296,8 +296,8 @@ void Parser::SearchForIsolatedNumbers() {
 
     // Anime year
     if (number >= kAnimeYearMin && number <= kAnimeYearMax) {
-      if (elements_.empty(kElementAnimeYear)) {
-        elements_.insert(kElementAnimeYear, token->content);
+      if (elements_.empty(ElementType::AnimeYear)) {
+        elements_.insert(ElementType::AnimeYear, token->content);
         token->type = TokenType::Identifier;
         continue;
       }
@@ -308,8 +308,8 @@ void Parser::SearchForIsolatedNumbers() {
       // If these numbers are isolated, it's more likely for them to be the
       // video resolution rather than the episode number. Some fansub groups
       // use these without the "p" suffix.
-      if (elements_.empty(kElementVideoResolution)) {
-        elements_.insert(kElementVideoResolution, token->content);
+      if (elements_.empty(ElementType::VideoResolution)) {
+        elements_.insert(ElementType::VideoResolution, token->content);
         token->type = TokenType::Identifier;
         continue;
       }
@@ -321,18 +321,18 @@ void Parser::SearchForIsolatedNumbers() {
 
 void Parser::ValidateElements() {
   // Validate anime type and episode title
-  if (!elements_.empty(kElementAnimeType) &&
-      !elements_.empty(kElementEpisodeTitle)) {
+  if (!elements_.empty(ElementType::AnimeType) &&
+      !elements_.empty(ElementType::EpisodeTitle)) {
     // Here we check whether the episode title contains an anime type
-    const auto episode_title = elements_.get(kElementEpisodeTitle);
+    const auto episode_title = elements_.get(ElementType::EpisodeTitle);
     for (auto it = elements_.begin(); it != elements_.end(); ) {
-      if (it->category == kElementAnimeType) {
+      if (it->type == ElementType::AnimeType) {
         if (IsInString(episode_title, it->value)) {
           if (episode_title.size() == it->value.size()) {
-            elements_.erase(kElementEpisodeTitle);  // invalid episode title
+            elements_.erase(ElementType::EpisodeTitle);  // invalid episode title
           } else {
             const auto keyword = keyword_manager.Normalize(it->value);
-            if (keyword_manager.Find(kElementAnimeType, keyword)) {
+            if (keyword_manager.Find(ElementType::AnimeType, keyword)) {
               it = elements_.erase(it);  // invalid anime type
               continue;
             }

@@ -39,7 +39,7 @@ private:
   bool SearchForSeparatedNumbers(std::vector<size_t>& tokens);
   bool SearchForLastNumber(std::vector<size_t>& tokens);
 
-  bool NumberComesAfterPrefix(ElementCategory category, Token& token);
+  bool NumberComesAfterPrefix(ElementType type, Token& token);
   bool NumberComesBeforeAnotherNumber(const token_iterator_t token);
 
   bool MatchEpisodePatterns(string_t word, Token& token);
@@ -68,14 +68,14 @@ private:
   bool IsCrc32(const string_t& str);
   bool IsDashCharacter(const string_t& str);
   bool IsResolution(const string_t& str);
-  bool IsElementCategorySearchable(ElementCategory category);
-  bool IsElementCategorySingular(ElementCategory category);
+  bool IsElementTypeSearchable(ElementType type);
+  bool IsElementTypeSingular(ElementType type);
 
   bool CheckAnimeSeasonKeyword(const token_iterator_t token);
-  bool CheckExtentKeyword(ElementCategory category,
+  bool CheckExtentKeyword(ElementType type,
                           const token_iterator_t token);
 
-  void BuildElement(ElementCategory category, bool keep_delimiters,
+  void BuildElement(ElementType type, bool keep_delimiters,
                     const token_iterator_t token_begin,
                     const token_iterator_t token_end) const;
 

@@ -14,39 +14,37 @@
 
 namespace anitomy {
 
-enum ElementCategory {
-  kElementIterateFirst,
-  kElementAnimeSeason = kElementIterateFirst,
-  kElementAnimeSeasonPrefix,
-  kElementAnimeTitle,
-  kElementAnimeType,
-  kElementAnimeYear,
-  kElementAudioTerm,
-  kElementDeviceCompatibility,
-  kElementEpisodeNumber,
-  kElementEpisodeNumberAlt,
-  kElementEpisodePrefix,
-  kElementEpisodeTitle,
-  kElementFileChecksum,
-  kElementFileExtension,
-  kElementFileName,
-  kElementLanguage,
-  kElementOther,
-  kElementReleaseGroup,
-  kElementReleaseInformation,
-  kElementReleaseVersion,
-  kElementSource,
-  kElementSubtitles,
-  kElementVideoResolution,
-  kElementVideoTerm,
-  kElementVolumeNumber,
-  kElementVolumePrefix,
-  kElementIterateLast,
-  kElementUnknown = kElementIterateLast
+enum class ElementType {
+  AnimeSeason,
+  AnimeSeasonPrefix,
+  AnimeTitle,
+  AnimeType,
+  AnimeYear,
+  AudioTerm,
+  DeviceCompatibility,
+  EpisodeNumber,
+  EpisodeNumberAlt,
+  EpisodePrefix,
+  EpisodeTitle,
+  FileChecksum,
+  FileExtension,
+  FileName,
+  Language,
+  Other,
+  ReleaseGroup,
+  ReleaseInformation,
+  ReleaseVersion,
+  Source,
+  Subtitles,
+  Unknown,
+  VideoResolution,
+  VideoTerm,
+  VolumeNumber,
+  VolumePrefix,
 };
 
 struct Element {
-  ElementCategory category;
+  ElementType type;
   string_t value;
 };
 
@@ -73,22 +71,22 @@ public:
   const Element& at(size_t position) const;
 
   // Value access
-  string_t get(ElementCategory category) const;
-  std::vector<string_t> get_all(ElementCategory category) const;
+  string_t get(ElementType type) const;
+  std::vector<string_t> get_all(ElementType type) const;
 
   // Modifiers
   void clear();
-  void insert(ElementCategory category, const string_t& value);
-  void erase(ElementCategory category);
+  void insert(ElementType type, const string_t& value);
+  void erase(ElementType type);
   element_iterator_t erase(element_iterator_t iterator);
-  void set(ElementCategory category, const string_t& value);
-  string_t& operator[](ElementCategory category);
+  void set(ElementType type, const string_t& value);
+  string_t& operator[](ElementType type);
 
   // Lookup
-  size_t count(ElementCategory category) const;
-  bool empty(ElementCategory category) const;
-  element_iterator_t find(ElementCategory category);
-  element_const_iterator_t find(ElementCategory category) const;
+  size_t count(ElementType type) const;
+  bool empty(ElementType type) const;
+  element_iterator_t find(ElementType type);
+  element_const_iterator_t find(ElementType type) const;
 
 private:
   element_container_t elements_;

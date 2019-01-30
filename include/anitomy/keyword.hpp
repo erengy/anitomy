@@ -24,7 +24,7 @@ struct KeywordOptions {
 };
 
 struct Keyword {
-  ElementCategory category;
+  ElementType type;
   KeywordOptions options;
 };
 
@@ -32,18 +32,18 @@ class KeywordManager {
 public:
   KeywordManager();
 
-  void Add(ElementCategory category, const KeywordOptions& options,
+  void Add(ElementType type, const KeywordOptions& options,
            const std::initializer_list<string_t>& keywords);
 
-  bool Find(ElementCategory category, const string_t& str) const;
-  bool Find(const string_t& str, ElementCategory& category, KeywordOptions& options) const;
+  bool Find(ElementType type, const string_t& str) const;
+  bool Find(const string_t& str, ElementType& type, KeywordOptions& options) const;
 
   string_t Normalize(const string_t& str) const;
 
 private:
   using keyword_container_t = std::map<string_t, Keyword>;
 
-  keyword_container_t& GetKeywordContainer(ElementCategory category) const;
+  keyword_container_t& GetKeywordContainer(ElementType type) const;
 
   keyword_container_t file_extensions_;
   keyword_container_t keys_;
