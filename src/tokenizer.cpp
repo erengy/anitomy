@@ -19,9 +19,10 @@ Tokens Tokenize(const string_view_t filename, const Options& options) {
   Tokens tokens = TokenizeByBrackets(filename);
 
   for (size_t i = 0; i < tokens.size(); ++i) {
-    const auto token = tokens[i];
+    const auto& token = tokens[i];
+
     if (token.type == TokenType::Unknown) {
-      const Tokens new_tokens = TokenizeByDelimiters(
+      const auto new_tokens = TokenizeByDelimiters(
           token.content, options.allowed_delimiters, token.enclosed);
 
       tokens.erase(tokens.begin() + i);
@@ -50,31 +51,29 @@ Tokens TokenizeByBrackets(string_view_t view) {
   static const string_t brackets_right =
       L")]}\u300D\u300F\u3011\uFF09";
 
-  bool is_bracket_open = false;
+  bool enclosed = false;
   char_t matching_bracket{};
 
   while (!view.empty()) {
     // Looking for the matching bracket allows us to better handle some rare
     // cases with nested brackets.
-    const auto pos = !is_bracket_open ? view.find_first_of(brackets_left) :
-                                        view.find(matching_bracket);
+    const auto pos = !enclosed ? view.find_first_of(brackets_left) :
+                                 view.find(matching_bracket);
 
     if (pos > 0) {
-      tokens.push_back(
-          Token{TokenType::Unknown, string_t{view.substr(0, pos)}, is_bracket_open});
+      tokens.emplace_back(TokenType::Unknown, view.substr(0, pos), enclosed);
     }
     if (pos == view.npos) {
       break;
     }
 
-    if (!is_bracket_open) {
+    if (!enclosed) {
       const auto bracket_index = brackets_left.find(view.at(pos));
       matching_bracket = brackets_right.at(bracket_index);
     }
-    is_bracket_open = !is_bracket_open;
+    enclosed = !enclosed;
 
-    tokens.push_back(
-        Token{TokenType::Bracket, string_t{view.substr(pos, 1)}, true});
+    tokens.emplace_back(TokenType::Bracket, view.substr(pos, 1), true);
     view.remove_prefix(pos + 1);
   }
 
@@ -89,15 +88,13 @@ Tokens TokenizeByDelimiters(string_view_t view, const string_view_t delimiters,
     const auto pos = view.find_first_of(delimiters);
 
     if (pos > 0) {
-      tokens.push_back(
-          Token{TokenType::Unknown, string_t{view.substr(0, pos)}, enclosed});
+      tokens.emplace_back(TokenType::Unknown, view.substr(0, pos), enclosed);
     }
     if (pos == view.npos) {
       break;
     }
 
-    tokens.push_back(
-        Token{TokenType::Delimiter, string_t{view.substr(pos, 1)}, enclosed});
+    tokens.emplace_back(TokenType::Delimiter, view.substr(pos, 1), enclosed);
     view.remove_prefix(pos + 1);
   }
 
