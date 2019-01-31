@@ -104,18 +104,18 @@ Tokens TokenizeByDelimiters(string_view_t view, const string_view_t delimiters,
 ////////////////////////////////////////////////////////////////////////////////
 
 void ValidateTokens(Tokens& tokens) {
-  auto is_delimiter_token = [&](token_iterator_t it) {
+  auto is_delimiter_token = [&](Tokens::iterator it) {
     return it != tokens.end() && it->type == TokenType::Delimiter;
   };
-  auto is_unknown_token = [&](token_iterator_t it) {
+  auto is_unknown_token = [&](Tokens::iterator it) {
     return it != tokens.end() && it->type == TokenType::Unknown;
   };
-  auto is_single_character_token = [&](token_iterator_t it) {
+  auto is_single_character_token = [&](Tokens::iterator it) {
     return is_unknown_token(it) && it->value.size() == 1 &&
            it->value.front() != L'-';
   };
-  auto append_token_to = [](token_iterator_t token,
-                            token_iterator_t append_to) {
+  auto append_token_to = [](Tokens::iterator token,
+                            Tokens::iterator append_to) {
     append_to->value.append(token->value);
     token->type = TokenType::Invalid;
   };

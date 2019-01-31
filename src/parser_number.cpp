@@ -102,7 +102,7 @@ bool Parser::NumberComesAfterPrefix(ElementType type, Token& token) {
   return false;
 }
 
-bool Parser::NumberComesBeforeAnotherNumber(const token_iterator_t token) {
+bool Parser::NumberComesBeforeAnotherNumber(const Tokens::iterator token) {
   auto separator_token = FindNextToken(tokens_, token, kFlagNotDelimiter);
 
   if (separator_token != tokens_.end()) {
@@ -437,7 +437,7 @@ bool Parser::SearchForEquivalentNumbers(std::vector<size_t>& tokens) {
       continue;
 
     auto minmax = std::minmax(token, next_token,
-        [](const token_iterator_t& a, const token_iterator_t& b) {
+        [](const Tokens::iterator& a, const Tokens::iterator& b) {
           return StringToInt(a->value) < StringToInt(b->value);
         });
     SetEpisodeNumber(minmax.first->value, *minmax.first, false);

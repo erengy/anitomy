@@ -40,7 +40,7 @@ private:
   bool SearchForLastNumber(std::vector<size_t>& tokens);
 
   bool NumberComesAfterPrefix(ElementType type, Token& token);
-  bool NumberComesBeforeAnotherNumber(const token_iterator_t token);
+  bool NumberComesBeforeAnotherNumber(const Tokens::iterator token);
 
   bool MatchEpisodePatterns(string_t word, Token& token);
   bool MatchSingleEpisodePattern(const string_t& word, Token& token);
@@ -71,16 +71,16 @@ private:
   bool IsElementTypeSearchable(ElementType type);
   bool IsElementTypeSingular(ElementType type);
 
-  bool CheckAnimeSeasonKeyword(const token_iterator_t token);
+  bool CheckAnimeSeasonKeyword(const Tokens::iterator token);
   bool CheckExtentKeyword(ElementType type,
-                          const token_iterator_t token);
+                          const Tokens::iterator token);
 
   void BuildElement(ElementType type, bool keep_delimiters,
-                    const token_iterator_t token_begin,
-                    const token_iterator_t token_end) const;
+                    const Tokens::iterator token_begin,
+                    const Tokens::iterator token_end) const;
 
-  bool CheckTokenType(const token_iterator_t token, TokenType type) const;
-  bool IsTokenIsolated(const token_iterator_t token) const;
+  bool CheckTokenType(const Tokens::iterator token, TokenType type) const;
+  bool IsTokenIsolated(const Tokens::iterator token) const;
 
   const int kAnimeYearMin = 1900;
   const int kAnimeYearMax = 2050;

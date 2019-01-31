@@ -53,12 +53,10 @@ struct Token {
 };
 
 using Tokens = std::vector<Token>;
-using token_iterator_t = Tokens::iterator;
-using token_reverse_iterator_t = Tokens::reverse_iterator;
 
-token_iterator_t FindToken(token_iterator_t first, token_iterator_t last, unsigned int flags);
-token_reverse_iterator_t FindToken(token_reverse_iterator_t first, token_reverse_iterator_t last, unsigned int flags);
-token_iterator_t FindPreviousToken(Tokens& tokens, token_iterator_t first, unsigned int flags);
-token_iterator_t FindNextToken(Tokens& tokens, token_iterator_t first, unsigned int flags);
+Tokens::iterator FindToken(Tokens::iterator first, Tokens::iterator last, unsigned int flags);
+Tokens::reverse_iterator FindToken(Tokens::reverse_iterator first, Tokens::reverse_iterator last, unsigned int flags);
+Tokens::iterator FindPreviousToken(Tokens& tokens, Tokens::iterator first, unsigned int flags);
+Tokens::iterator FindNextToken(Tokens& tokens, Tokens::iterator first, unsigned int flags);
 
 }  // namespace anitomy

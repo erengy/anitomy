@@ -87,8 +87,8 @@ bool Parser::IsResolution(const string_t& str) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-bool Parser::CheckAnimeSeasonKeyword(const token_iterator_t token) {
-  auto set_anime_season = [&](token_iterator_t first, token_iterator_t second,
+bool Parser::CheckAnimeSeasonKeyword(const Tokens::iterator token) {
+  auto set_anime_season = [&](Tokens::iterator first, Tokens::iterator second,
                               const string_t& value) {
     elements_.insert(ElementType::AnimeSeason, value);
     first->type = TokenType::Identifier;
@@ -115,7 +115,7 @@ bool Parser::CheckAnimeSeasonKeyword(const token_iterator_t token) {
 }
 
 bool Parser::CheckExtentKeyword(ElementType type,
-                                const token_iterator_t token) {
+                                const Tokens::iterator token) {
   auto next_token = FindNextToken(tokens_, token, kFlagNotDelimiter);
 
   if (CheckTokenType(next_token, TokenType::Unknown)) {
@@ -191,8 +191,8 @@ bool Parser::IsElementTypeSingular(ElementType type) {
 ////////////////////////////////////////////////////////////////////////////////
 
 void Parser::BuildElement(ElementType type, bool keep_delimiters,
-                          const token_iterator_t token_begin,
-                          const token_iterator_t token_end) const {
+                          const Tokens::iterator token_begin,
+                          const Tokens::iterator token_end) const {
   string_t element;
 
   for (auto token = token_begin; token != token_end; ++token) {
@@ -235,12 +235,12 @@ void Parser::BuildElement(ElementType type, bool keep_delimiters,
 
 ////////////////////////////////////////////////////////////////////////////////
 
-bool Parser::CheckTokenType(const token_iterator_t token,
+bool Parser::CheckTokenType(const Tokens::iterator token,
                             TokenType type) const {
   return token != tokens_.end() && token->type == type;
 }
 
-bool Parser::IsTokenIsolated(const token_iterator_t token) const {
+bool Parser::IsTokenIsolated(const Tokens::iterator token) const {
   auto previous_token = FindPreviousToken(tokens_, token, kFlagNotDelimiter);
   if (!CheckTokenType(previous_token, TokenType::Bracket))
     return false;
