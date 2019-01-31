@@ -44,6 +44,9 @@ enum class ElementType {
 };
 
 struct Element {
+  Element(ElementType type, string_view_t value)
+      : type{type}, value{string_t{value}} {}
+
   ElementType type;
   string_t value;
 };

@@ -81,7 +81,7 @@ void Elements::clear() {
 
 void Elements::insert(ElementType type, const string_t& value) {
   if (!value.empty())
-    elements_.push_back({type, value});
+    elements_.emplace_back(type, value);
 }
 
 void Elements::erase(ElementType type) {
@@ -100,7 +100,7 @@ void Elements::set(ElementType type, const string_t& value) {
   auto element = find(type);
 
   if (element == elements_.end()) {
-    elements_.push_back({type, value});
+    elements_.emplace_back(type, value);
   } else {
     element->value = value;
   }
@@ -109,8 +109,10 @@ void Elements::set(ElementType type, const string_t& value) {
 string_t& Elements::operator[](ElementType type) {
   auto element = find(type);
 
-  if (element == elements_.end())
-    element = elements_.insert(elements_.end(), {type, string_t()});
+  if (element == elements_.end()) {
+    elements_.emplace_back(type, string_t{});
+    element = elements_.end() - 1;
+  }
 
   return element->value;
 }
