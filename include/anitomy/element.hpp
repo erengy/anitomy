@@ -48,23 +48,23 @@ struct Element {
   string_t value;
 };
 
-using element_container_t = std::vector<Element>;
-using element_iterator_t = element_container_t::iterator;
-using element_const_iterator_t = element_container_t::const_iterator;
-
 class Elements {
 public:
+  using container_t = std::vector<Element>;
+  using iterator_t = container_t::iterator;
+  using const_iterator_t = container_t::const_iterator;
+
   // Capacity
   bool empty() const;
   size_t size() const;
 
   // Iterators
-  element_iterator_t begin();
-  element_const_iterator_t begin() const;
-  element_const_iterator_t cbegin() const;
-  element_iterator_t end();
-  element_const_iterator_t end() const;
-  element_const_iterator_t cend() const;
+  iterator_t begin();
+  const_iterator_t begin() const;
+  const_iterator_t cbegin() const;
+  iterator_t end();
+  const_iterator_t end() const;
+  const_iterator_t cend() const;
 
   // Element access
   Element& at(size_t position);
@@ -78,18 +78,18 @@ public:
   void clear();
   void insert(ElementType type, const string_t& value);
   void erase(ElementType type);
-  element_iterator_t erase(element_iterator_t iterator);
+  iterator_t erase(iterator_t iterator);
   void set(ElementType type, const string_t& value);
   string_t& operator[](ElementType type);
 
   // Lookup
   size_t count(ElementType type) const;
   bool empty(ElementType type) const;
-  element_iterator_t find(ElementType type);
-  element_const_iterator_t find(ElementType type) const;
+  iterator_t find(ElementType type);
+  const_iterator_t find(ElementType type) const;
 
 private:
-  element_container_t elements_;
+  container_t elements_;
 };
 
 }  // namespace anitomy

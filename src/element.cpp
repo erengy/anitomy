@@ -22,27 +22,27 @@ size_t Elements::size() const {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-element_iterator_t Elements::begin() {
+Elements::iterator_t Elements::begin() {
   return elements_.begin();
 }
 
-element_const_iterator_t Elements::begin() const {
+Elements::const_iterator_t Elements::begin() const {
   return elements_.begin();
 }
 
-element_const_iterator_t Elements::cbegin() const {
+Elements::const_iterator_t Elements::cbegin() const {
   return elements_.begin();
 }
 
-element_iterator_t Elements::end() {
+Elements::iterator_t Elements::end() {
   return elements_.end();
 }
 
-element_const_iterator_t Elements::end() const {
+Elements::const_iterator_t Elements::end() const {
   return elements_.end();
 }
 
-element_const_iterator_t Elements::cend() const {
+Elements::const_iterator_t Elements::cend() const {
   return elements_.end();
 }
 
@@ -92,7 +92,7 @@ void Elements::erase(ElementType type) {
   elements_.erase(iterator, elements_.end());
 }
 
-element_iterator_t Elements::erase(element_iterator_t iterator) {
+Elements::iterator_t Elements::erase(Elements::iterator_t iterator) {
   return elements_.erase(iterator);
 }
 
@@ -128,14 +128,14 @@ bool Elements::empty(ElementType type) const {
   return find(type) == elements_.end();
 }
 
-element_iterator_t Elements::find(ElementType type) {
+Elements::iterator_t Elements::find(ElementType type) {
   return std::find_if(elements_.begin(), elements_.end(),
       [&](const Element& element) {
         return element.type == type;
       });
 }
 
-element_const_iterator_t Elements::find(ElementType type) const {
+Elements::const_iterator_t Elements::find(ElementType type) const {
   return std::find_if(elements_.cbegin(), elements_.cend(),
       [&](const Element& element) {
         return element.type == type;
