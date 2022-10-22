@@ -197,7 +197,8 @@ bool Parser::MatchSeasonAndEpisodePattern(const string_t& word, Token& token) {
   static const regex_t pattern(L"S?"
                                L"(\\d{1,2})(?:-S?(\\d{1,2}))?"
                                L"(?:x|[ ._-x]?E)"
-                               L"(\\d{1,4})(?:-E?(\\d{1,4}))?",
+                               L"(\\d{1,4})(?:-E?(\\d{1,4}))?"
+                               L"(?:[vV](\\d))?",
                                std::regex_constants::icase);
   regex_match_results_t match_results;
 
