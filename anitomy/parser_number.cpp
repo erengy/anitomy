@@ -203,6 +203,8 @@ bool Parser::MatchSeasonAndEpisodePattern(const string_t& word, Token& token) {
   regex_match_results_t match_results;
 
   if (std::regex_match(word, match_results, pattern)) {
+    if (StringToInt(match_results[1]) == 0)
+      return false;
     elements_.insert(kElementAnimeSeason, match_results[1]);
     if (match_results[2].matched)
       elements_.insert(kElementAnimeSeason, match_results[2]);
