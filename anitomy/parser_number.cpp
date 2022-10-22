@@ -157,7 +157,7 @@ using regex_t = std::basic_regex<char_t>;
 using regex_match_results_t = std::match_results<string_t::const_iterator>;
 
 bool Parser::MatchSingleEpisodePattern(const string_t& word, Token& token) {
-  static const regex_t pattern(L"(\\d{1,3})[vV](\\d)");
+  static const regex_t pattern(L"(\\d{1,4})[vV](\\d)");
   regex_match_results_t match_results;
 
   if (std::regex_match(word, match_results, pattern)) {
@@ -170,8 +170,8 @@ bool Parser::MatchSingleEpisodePattern(const string_t& word, Token& token) {
 }
 
 bool Parser::MatchMultiEpisodePattern(const string_t& word, Token& token) {
-  static const regex_t pattern(L"(\\d{1,3})(?:[vV](\\d))?[-~&+]"
-                               L"(\\d{1,3})(?:[vV](\\d))?");
+  static const regex_t pattern(L"(\\d{1,4})(?:[vV](\\d))?[-~&+]"
+                               L"(\\d{1,4})(?:[vV](\\d))?");
   regex_match_results_t match_results;
 
   if (std::regex_match(word, match_results, pattern)) {
@@ -197,7 +197,7 @@ bool Parser::MatchSeasonAndEpisodePattern(const string_t& word, Token& token) {
   static const regex_t pattern(L"S?"
                                L"(\\d{1,2})(?:-S?(\\d{1,2}))?"
                                L"(?:x|[ ._-x]?E)"
-                               L"(\\d{1,3})(?:-E?(\\d{1,3}))?",
+                               L"(\\d{1,4})(?:-E?(\\d{1,4}))?",
                                std::regex_constants::icase);
   regex_match_results_t match_results;
 
@@ -275,7 +275,7 @@ bool Parser::MatchNumberSignPattern(const string_t& word, Token& token) {
   if (word.front() != L'#')
     return false;
 
-  static const regex_t pattern(L"#(\\d{1,3})(?:[-~&+](\\d{1,3}))?(?:[vV](\\d))?");
+  static const regex_t pattern(L"#(\\d{1,4})(?:[-~&+](\\d{1,4}))?(?:[vV](\\d))?");
   regex_match_results_t match_results;
 
   if (std::regex_match(word, match_results, pattern)) {
@@ -295,7 +295,7 @@ bool Parser::MatchJapaneseCounterPattern(const string_t& word, Token& token) {
   if (word.back() != L'\u8A71')
     return false;
 
-  static const regex_t pattern(L"(\\d{1,3})\u8A71");
+  static const regex_t pattern(L"(\\d{1,4})\u8A71");
   regex_match_results_t match_results;
 
   if (std::regex_match(word, match_results, pattern)) {
