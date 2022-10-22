@@ -55,7 +55,7 @@ KeywordManager::KeywordManager() {
 
   Add(kElementEpisodePrefix, options_default, {
       L"EP", L"EP.", L"EPS", L"EPS.", L"EPISODE", L"EPISODE.", L"EPISODES",
-      L"CAPITULO", L"EPISODIO", L"FOLGE"});
+      L"CAPITULO", L"EPISODIO", L"EPIS\u00F3DIO", L"FOLGE"});
   Add(kElementEpisodePrefix, options_invalid, {
       L"E", L"\x7B2C"});  // single-letter episode keywords are not valid tokens
 
