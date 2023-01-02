@@ -106,6 +106,7 @@ KeywordManager::KeywordManager() {
       L"HI10", L"HI10P", L"HI444", L"HI444P", L"HI444PP",
       L"H264", L"H265", L"H.264", L"H.265", L"X264", L"X265", L"X.264",
       L"AVC", L"HEVC", L"HEVC2", L"DIVX", L"DIVX5", L"DIVX6", L"XVID",
+      L"AV1",
       // Video format
       L"AVI", L"RMVB", L"WMV", L"WMV3", L"WMV9",
       // Video quality
