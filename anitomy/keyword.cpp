@@ -44,10 +44,12 @@ KeywordManager::KeywordManager() {
       // Audio codec
       L"AAC", L"AACX2", L"AACX3", L"AACX4", L"AC3", L"EAC3", L"E-AC-3",
       L"FLAC", L"FLACX2", L"FLACX3", L"FLACX4", L"LOSSLESS", L"MP3", L"OGG",
-      L"VORBIS", L"OPUS",
+      L"VORBIS",
       L"ATMOS", L"DOLBY ATMOS",
       // Audio language
       L"DUALAUDIO", L"DUAL AUDIO"});
+  Add(kElementAudioTerm, options_unidentifiable, {
+      L"OPUS"});  // e.g. "Opus.COLORs"
 
   Add(kElementDeviceCompatibility, options_default, {
       L"IPAD3", L"IPHONE5", L"IPOD", L"PS3", L"XBOX", L"XBOX360"});
