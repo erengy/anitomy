@@ -117,7 +117,7 @@ KeywordManager::KeywordManager() {
       // Video quality
       L"HQ", L"LQ",
       // Video resolution
-      L"HD", L"SD"});
+      L"4K", L"HD", L"SD"});
 
   Add(kElementVolumePrefix, options_default, {
       L"VOL", L"VOL.", L"VOLUME"});
@@ -183,7 +183,7 @@ void KeywordManager::Peek(const string_t& filename,
   static const std::vector<entry_t> entries{
     {kElementAudioTerm, {L"Dual Audio"}},
     {kElementVideoTerm, {L"H264", L"H.264", L"h264", L"h.264"}},
-    {kElementVideoResolution, {L"480p", L"720p", L"1080p", L"2160p", L"4K"}},
+    {kElementVideoResolution, {L"480p", L"720p", L"1080p", L"2160p"}},
     {kElementSource, {L"Blu-Ray"}}
   };
 
