@@ -39,14 +39,17 @@ KeywordManager::KeywordManager() {
 
   Add(kElementAudioTerm, options_default, {
       // Audio channels
-      L"2.0CH", L"2CH", L"5.1", L"5.1CH", L"DTS", L"DTS-ES", L"DTS5.1",
-      L"TRUEHD5.1",
+      L"2.0CH", L"2CH", L"5.1", L"5.1CH", L"7.1", L"7.1CH", L"DTS", L"DTS-ES", L"DTS5.1",
+      L"DOLBY TRUEHD", L"TRUEHD", L"TRUEHD5.1",
       // Audio codec
       L"AAC", L"AACX2", L"AACX3", L"AACX4", L"AC3", L"EAC3", L"E-AC-3",
       L"FLAC", L"FLACX2", L"FLACX3", L"FLACX4", L"LOSSLESS", L"MP3", L"OGG",
       L"VORBIS",
+      L"ATMOS", L"DOLBY ATMOS",
       // Audio language
       L"DUALAUDIO", L"DUAL AUDIO"});
+  Add(kElementAudioTerm, options_unidentifiable, {
+      L"OPUS"});  // e.g. "Opus.COLORs"
 
   Add(kElementDeviceCompatibility, options_default, {
       L"IPAD3", L"IPHONE5", L"IPOD", L"PS3", L"XBOX", L"XBOX360"});
@@ -96,7 +99,8 @@ KeywordManager::KeywordManager() {
 
   Add(kElementSubtitles, options_default, {
       L"ASS", L"BIG5", L"DUB", L"DUBBED", L"HARDSUB", L"HARDSUBS", L"RAW",
-      L"SOFTSUB", L"SOFTSUBS", L"SUB", L"SUBBED", L"SUBTITLED"});
+      L"SOFTSUB", L"SOFTSUBS", L"SUB", L"SUBBED", L"SUBTITLED",
+      L"MULTISUB", L"MULTI SUB"});
 
   Add(kElementVideoTerm, options_default, {
       // Frame rate
@@ -104,6 +108,7 @@ KeywordManager::KeywordManager() {
       // Video codec
       L"8BIT", L"8-BIT", L"10BIT", L"10BITS", L"10-BIT", L"10-BITS",
       L"HI10", L"HI10P", L"HI444", L"HI444P", L"HI444PP",
+      L"HDR", L"DV", L"DOLBY VISION",
       L"H264", L"H265", L"H.264", L"H.265", L"X264", L"X265", L"X.264",
       L"AVC", L"HEVC", L"HEVC2", L"DIVX", L"DIVX5", L"DIVX6", L"XVID",
       L"AV1",
@@ -112,7 +117,7 @@ KeywordManager::KeywordManager() {
       // Video quality
       L"HQ", L"LQ",
       // Video resolution
-      L"HD", L"SD"});
+      L"4K", L"HD", L"SD"});
 
   Add(kElementVolumePrefix, options_default, {
       L"VOL", L"VOL.", L"VOLUME"});
@@ -178,7 +183,7 @@ void KeywordManager::Peek(const string_t& filename,
   static const std::vector<entry_t> entries{
     {kElementAudioTerm, {L"Dual Audio"}},
     {kElementVideoTerm, {L"H264", L"H.264", L"h264", L"h.264"}},
-    {kElementVideoResolution, {L"480p", L"720p", L"1080p"}},
+    {kElementVideoResolution, {L"480p", L"720p", L"1080p", L"2160p"}},
     {kElementSource, {L"Blu-Ray"}}
   };
 
