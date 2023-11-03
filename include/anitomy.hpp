@@ -1,35 +1,22 @@
-/*
-** Copyright (c) 2014-2019, Eren Okka
-**
-** This Source Code Form is subject to the terms of the Mozilla Public
-** License, v. 2.0. If a copy of the MPL was not distributed with this
-** file, You can obtain one at https://mozilla.org/MPL/2.0/.
-*/
-
 #pragma once
 
-#include <anitomy/element.hpp>
-#include <anitomy/options.hpp>
-#include <anitomy/string.hpp>
-#include <anitomy/token.hpp>
+#include <string_view>
+#include <vector>
+
+#include "anitomy/options.hpp"
+#include "anitomy/parser.hpp"
+#include "anitomy/tokenizer.hpp"
 
 namespace anitomy {
 
-class Anitomy {
-public:
-  bool Parse(string_t filename);
+inline std::vector<Element> parse(std::string_view input, const Options& options) noexcept {
+  detail::Tokenizer tokenizer{input};
+  tokenizer.tokenize(options);
 
-  Elements& elements();
-  Options& options();
-  const Tokens& tokens() const;
+  detail::Parser parser{tokenizer.tokens()};
+  parser.parse(options);
 
-private:
-  bool RemoveExtensionFromFilename(string_t& filename, string_t& extension) const;
-  void RemoveIgnoredStrings(string_t& filename) const;
-
-  Elements elements_;
-  Options options_;
-  Tokens tokens_;
-};
+  return parser.elements();
+}
 
 }  // namespace anitomy

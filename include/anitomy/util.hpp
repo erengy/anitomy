@@ -1,33 +1,64 @@
-/*
-** Copyright (c) 2014-2019, Eren Okka
-**
-** This Source Code Form is subject to the terms of the Mozilla Public
-** License, v. 2.0. If a copy of the MPL was not distributed with this
-** file, You can obtain one at https://mozilla.org/MPL/2.0/.
-*/
-
 #pragma once
 
-#include <anitomy/string.hpp>
+#include <charconv>
+#include <string_view>
+#include <unordered_map>
 
-namespace anitomy {
+namespace anitomy::detail {
 
-bool IsAlphanumericChar(const char_t c);
-bool IsHexadecimalChar(const char_t c);
-bool IsLatinChar(const char_t c);
-bool IsNumericChar(const char_t c);
-bool IsAlphanumericString(const string_t& str);
-bool IsHexadecimalString(const string_t& str);
-bool IsMostlyLatinString(const string_t& str);
-bool IsNumericString(const string_t& str);
+inline std::string_view from_ordinal_number(std::string_view input) {
+  static const std::unordered_map<std::string_view, std::string_view> table{
+      // clang-format off
+      {"1st", "1"}, {"First",   "1"},
+      {"2nd", "2"}, {"Second",  "2"},
+      {"3rd", "3"}, {"Third",   "3"},
+      {"4th", "4"}, {"Fourth",  "4"},
+      {"5th", "5"}, {"Fifth",   "5"},
+      {"6th", "6"}, {"Sixth",   "6"},
+      {"7th", "7"}, {"Seventh", "7"},
+      {"8th", "8"}, {"Eighth",  "8"},
+      {"9th", "9"}, {"Ninth",   "9"},
+      // clang-format on
+  };
 
-bool IsInString(const string_t& str1, const string_t& str2);
-bool IsStringEqualTo(const string_t& str1, const string_t& str2);
+  auto it = table.find(input);
+  return it != table.end() ? it->second : std::string_view{};
+}
 
-int StringToInt(const string_t& str);
+inline std::string_view from_roman_number(std::string_view input) {
+  static const std::unordered_map<std::string_view, std::string_view> table{
+      // clang-format off
+      {"II",  "2"},
+      {"III", "3"},
+      {"IV",  "4"},
+      // clang-format on
+  };
 
-void EraseString(string_t& str, const string_t& erase_this);
-string_t StringToUpperCopy(string_t str);
-void TrimString(string_t& str, const char_t trim_chars[] = L" ");
+  auto it = table.find(input);
+  return it != table.end() ? it->second : std::string_view{};
+}
 
-}  // namespace anitomy
+constexpr bool is_alpha(const char ch) noexcept {
+  return ('A' <= ch && ch <= 'Z') || ('a' <= ch && ch <= 'z');
+}
+
+constexpr bool is_digit(const char ch) noexcept {
+  return '0' <= ch && ch <= '9';
+}
+
+constexpr bool is_xdigit(const char ch) noexcept {
+  return ('0' <= ch && ch <= '9') || ('A' <= ch && ch <= 'F') || ('a' <= ch && ch <= 'f');
+}
+
+constexpr int to_int(const std::string_view str) noexcept {
+  int value{0};
+  std::from_chars(str.data(), str.data() + str.size(), value, 10);
+  return value;
+}
+
+template <typename Char>
+constexpr Char to_lower(const Char ch) noexcept {
+  return ('A' <= ch && ch <= 'Z') ? ch + ('a' - 'A') : ch;
+}
+
+}  // namespace anitomy::detail
