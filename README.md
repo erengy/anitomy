@@ -2,6 +2,9 @@
 
 *Anitomy* is a C++ library for parsing anime video filenames. It's accurate, fast, and simple to use.
 
+> [!IMPORTANT]  
+> The library is currently being rewritten in the `develop` branch. The documentation below may be out of date.
+
 ## Examples
 
 The following filename...
@@ -24,25 +27,15 @@ The following filename...
 Here's an example code snippet...
 
 ```cpp
-#include <iostream>
-#include <anitomy/anitomy.h>
+#include <print>
+#include <anitomy.hpp>
 
 int main() {
-  anitomy::Anitomy anitomy;
-  anitomy.Parse(L"[Ouroboros]_Fullmetal_Alchemist_Brotherhood_-_01.mkv");
+  auto elements = anitomy::parse("[Ouroboros]_Fullmetal_Alchemist_Brotherhood_-_01.mkv");
 
-  const auto& elements = anitomy.elements();
-
-  // Elements are iterable, where each element is a category-value pair
-  for (const auto& element : elements) {
-    std::wcout << element.first << '\t' << element.second << '\n';
+  for (auto [kind, value] : elements) {
+    std::println("{}\t{}", anitomy::to_string(kind), value);
   }
-  std::wcout << '\n';
-
-  // You can access values directly by using get() and get_all() methods
-  std::wcout << elements.get(anitomy::kElementAnimeTitle) << L" #" <<
-                elements.get(anitomy::kElementEpisodeNumber) << L" by " <<
-                elements.get(anitomy::kElementReleaseGroup) << '\n';
 
   return 0;
 }
@@ -51,13 +44,9 @@ int main() {
 ...which will output:
 
 ```
-12      mkv
-13      [Ouroboros]_Fullmetal_Alchemist_Brotherhood_-_01
-7       01
-2       Fullmetal Alchemist Brotherhood
-16      Ouroboros
-
-Fullmetal Alchemist Brotherhood #01 by Ouroboros
+episode_number  01
+anime_title     Fullmetal Alchemist Brotherhood
+release_group   Ouroboros
 ```
 
 ## How does it work?
