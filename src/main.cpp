@@ -7,15 +7,18 @@
 #include "../include/anitomy/format.hpp"
 #include "../include/anitomy/json.hpp"
 #include "../include/anitomy/print.hpp"
+#include "../include/anitomy/version.hpp"
 
 namespace {
 
 void print_usage() {
+  std::println("anitomy {}", anitomy::version());
   std::println("Usage: anitomy [options...] <input>");
   std::println("Help: anitomy --help");
 }
 
 void print_help() {
+  std::println("anitomy {}", anitomy::version());
   std::println("Usage: anitomy [options...] <input>");
   std::println("Options:");
   std::println("  --help             You are here");
