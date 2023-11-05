@@ -9,7 +9,7 @@
 
 namespace anitomy {
 
-inline std::vector<Element> parse(std::string_view input, const Options& options) noexcept {
+inline std::vector<Element> parse(std::string_view input, Options options = {}) noexcept {
   detail::Tokenizer tokenizer{input};
   tokenizer.tokenize(options);
 
