@@ -433,6 +433,7 @@ private:
     // that the first one is the release group)
     if (token_begin == tokens_.end()) {
       // @TODO
+      return;
     }
 
     // Continue until an identifier is found

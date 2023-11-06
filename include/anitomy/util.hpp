@@ -1,6 +1,7 @@
 #pragma once
 
 #include <charconv>
+#include <fstream>
 #include <string_view>
 #include <unordered_map>
 
@@ -59,6 +60,18 @@ constexpr int to_int(const std::string_view str) noexcept {
 template <typename Char>
 constexpr Char to_lower(const Char ch) noexcept {
   return ('A' <= ch && ch <= 'Z') ? ch + ('a' - 'A') : ch;
+}
+
+inline bool read_file(const std::string& path, std::string& output) {
+  std::ifstream file{path, std::ios::in | std::ios::binary | std::ios::ate};
+
+  if (!file) return false;
+
+  output.resize(static_cast<size_t>(file.tellg()));
+  file.seekg(0, std::ios::beg);
+  file.read(output.data(), output.size());
+
+  return file.good();
 }
 
 }  // namespace anitomy::detail

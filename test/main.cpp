@@ -330,17 +330,58 @@ void test_util() {
   assert(to_lower('\0') == '\0');
 }
 
+void test_data() {
+  using namespace anitomy::detail;
+
+  std::string file;
+  if (!read_file("data.json", file)) assert(0 && "Cannot read test data");
+
+  auto data = json::parse(file);
+  if (!data.holds(json::Value::Array)) assert(0 && "Invalid test data");
+
+  const auto make_element_map = [](const std::vector<anitomy::Element>& elements) {
+    std::map<std::string, std::string> map;
+    for (const auto& [kind, value] : elements) {
+      map[std::string{anitomy::detail::to_string(kind)}] = value;
+    };
+    return map;
+  };
+
+  for (auto& item : data.as_array()) {
+    if (!item.holds(json::Value::Object)) assert(0 && "Invalid test data");
+    auto& map = item.as_object();
+
+    if (!map.contains("file_name")) assert(0 && "Invalid test data");
+    const auto file_name = map["file_name"].as_string();
+    auto elements = make_element_map(anitomy::parse(file_name));
+
+    for (auto& [name, value] : map) {
+      if (name != "anime_title" && name != "episode_title" && name != "release_group") continue;
+      if (!value.holds(json::Value::String)) continue;
+      if (elements[name] == value.as_string()) continue;
+      std::println("Expected: `{}`", value.as_string());
+      std::println("     Got: `{}`", elements[name]);
+      std::println("");
+    }
+  }
+}
+
 }  // namespace
 
-int main() {
-  test_cli();
-  test_json();
-  test_parser();
-  test_tokenizer();
-  test_unicode();
-  test_util();
+int main(int argc, char* argv[]) {
+  std::string_view arg{argc == 2 ? argv[1] : ""};
 
-  std::println("Passed all tests!");
+  if (arg == "--test-data") {
+    test_data();
+  } else {
+    test_cli();
+    test_json();
+    test_parser();
+    test_tokenizer();
+    test_unicode();
+    test_util();
+    std::println("Passed all tests!");
+  }
 
   return 0;
 }
