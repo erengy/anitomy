@@ -1945,5 +1945,32 @@
 		"file_name": "[HorribleSubs] Momokuri - 01+02 [720p]",
 		"release_group": "HorribleSubs",
 		"video_resolution": "720p"
+	},
+	{
+		"anime_season": "23",
+		"anime_title": "Nintama Rantarou",
+		"episode_number": "1821",
+		"episode_title": "Buddhist Priest-sama is a Ninja",
+		"file_name": "[(´• ω •`)] Nintama Rantarou - S23E1821 - Buddhist Priest-sama is a Ninja.mkv",
+		"release_group": "(´• ω •`)"
+	},
+	{
+		"anime_season": "01",
+		"anime_title": "Aharen-san wa Hakarenai",
+		"episode_number": "06",
+		"file_name": "[Judas] Aharen-san wa Hakarenai - S01E06v2.mkv",
+		"release_group": "Judas",
+		"release_version": "2"
+	},
+	{
+		"anime_season": "01",
+		"anime_title": "Somali and the Forest Spirit",
+		"audio_term": "AAC",
+		"episode_number": "01",
+		"file_checksum": "BB7C6531",
+		"file_name": "[0x539] Somali and the Forest Spirit - S01E01 (WEB 1080p Hi10P AAC) [BB7C6531].mkv",
+		"release_group": "0x539",
+		"video_resolution": "1080p",
+		"video_term": "Hi10P"
 	}
 ]
