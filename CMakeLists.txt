@@ -15,3 +15,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
 add_subdirectory(include)
 add_subdirectory(src)
+add_subdirectory(test)
+
+enable_testing()
+add_test(NAME "Tests" COMMAND anitomy-tests WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/test)
