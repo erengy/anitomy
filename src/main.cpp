@@ -48,6 +48,48 @@ void print_elements_json(const std::vector<anitomy::Element>& elements, bool pre
   std::print("{}", anitomy::detail::json::serialize(items, pretty));
 }
 
+bool is_trivial_token(const anitomy::detail::Token& token) noexcept {
+  using enum anitomy::detail::TokenKind;
+  switch (token.kind) {
+    case OpenBracket:
+    case CloseBracket:
+    case Delimiter:
+      return true;
+    default:
+      return false;
+  };
+}
+
+void print_tokens(const std::vector<anitomy::detail::Token>& tokens, bool skip_trivial) {
+  using anitomy::detail::to_string;
+  using row_t = std::vector<std::string>;
+
+  std::vector<row_t> rows;
+  for (const auto& token : tokens) {
+    if (skip_trivial && is_trivial_token(token)) continue;
+    rows.emplace_back(row_t{
+        std::string{to_string(token.kind)},
+        std::string{token.keyword_kind ? to_string(*token.keyword_kind) : ""},
+        std::string{token.element_kind ? to_string(*token.element_kind) : ""},
+        token.value,
+    });
+  }
+
+  anitomy::detail::print_table({"Token", "Keyword", "Element", "Value"}, rows);
+}
+
+void print_tokens_json(const std::vector<anitomy::detail::Token>& tokens, bool pretty,
+                       bool skip_trivial) {
+  std::vector<std::pair<std::string, std::string>> items;
+
+  for (const auto& token : tokens) {
+    if (skip_trivial && is_trivial_token(token)) continue;
+    items.emplace_back(anitomy::detail::to_string(token.kind), token.value);
+  }
+
+  std::print("{}", anitomy::detail::json::serialize(items, pretty));
+}
+
 }  // namespace
 
 int main(int argc, char* argv[]) {
@@ -68,13 +110,23 @@ int main(int argc, char* argv[]) {
   anitomy::detail::Parser parser{tokenizer.tokens()};
   parser.parse(options);
 
+  const std::string output = cli.get("output", "elements");
   const std::string format = cli.get("format", "table");
   const bool pretty = cli.contains("pretty");
+  const bool skip_trivial = cli.contains("skip-trivial");
 
-  if (format == "json") {
-    print_elements_json(parser.elements(), pretty);
-  } else {
-    print_elements(parser.elements());
+  if (output == "elements") {
+    if (format == "json") {
+      print_elements_json(parser.elements(), pretty);
+    } else {
+      print_elements(parser.elements());
+    }
+  } else if (output == "tokens") {
+    if (format == "json") {
+      print_tokens_json(parser.tokens(), pretty, skip_trivial);
+    } else {
+      print_tokens(parser.tokens(), skip_trivial);
+    }
   }
 
   return 0;
