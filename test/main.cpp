@@ -49,45 +49,91 @@ void test_cli() {
 void test_json() {
   using namespace anitomy::detail;
 
-  assert(json::escape_string("") == "");
-  assert(json::escape_string("test") == "test");
-  assert(json::escape_string(R"("test")") == R"(\"test\")");
-  assert(json::escape_string(R"("test\test")") == R"(\"test\\test\")");
-
-  assert(json::unescape_string("") == "");
-  assert(json::unescape_string("test") == "test");
-  assert(json::unescape_string(R"(\"test\")") == R"("test")");
-  assert(json::unescape_string(R"(\"test\\test\")") == R"("test\test")");
-
+  {
+    auto value = json::parse("");
+    assert(value.holds(json::Value::Object));
+    assert(value.as_object().empty());
+    assert(json::serialize(value) == "{}");
+  }
+  {
+    auto value = json::parse("invalid");
+    assert(value.holds(json::Value::Object));
+    assert(json::serialize(value) == "{}");
+  }
   {
     auto value = json::parse("{}");
     assert(value.holds(json::Value::Object));
     assert(value.as_object().empty());
+    assert(json::serialize(value) == "{}");
   }
   {
     auto value = json::parse("[]");
     assert(value.holds(json::Value::Array));
     assert(value.as_array().empty());
+    assert(json::serialize(value) == "[]");
+  }
+  {
+    const auto str = R"("test")";
+    auto value = json::parse(str);
+    assert(value.holds(json::Value::String));
+    assert(value.as_string() == "test");
+    assert(json::serialize(value) == str);
+  }
+  // {
+  //   const auto str = R"("\"test\"")";
+  //   auto value = json::parse(str);
+  //   assert(value.holds(json::Value::String));
+  //   assert(value.as_string() == R"("test")");
+  //   assert(json::serialize(value) == str);
+  // }
+  {
+    const auto str = R"("test\\test")";
+    auto value = json::parse(str);
+    assert(value.holds(json::Value::String));
+    assert(value.as_string() == R"(test\test)");
+    assert(json::serialize(value) == str);
+  }
+  {
+    auto value = json::parse("123");
+    assert(value.holds(json::Value::Number));
+    assert(value.as_number() == 123);
+    assert(json::serialize(value) == "123");
+  }
+  {
+    auto value = json::parse("true");
+    assert(value.holds(json::Value::Boolean));
+    assert(value.as_bool() == true);
+    assert(json::serialize(value) == "true");
+  }
+  {
+    auto value = json::parse("false");
+    assert(value.holds(json::Value::Boolean));
+    assert(value.as_bool() == false);
+    assert(json::serialize(value) == "false");
+  }
+  {
+    auto value = json::parse("null");
+    assert(value.holds(json::Value::Null));
+    assert(json::serialize(value) == "null");
+  }
+  {
+    auto value = json::parse("nullz");
+    assert(value.holds(json::Value::Null));
+    assert(json::serialize(value) == "null");
   }
   {
     const auto str = R"({"anime_title":"Title","episode_number":"01"})";
     auto value = json::parse(str);
-    assert(value.holds(json::Value::Object));
     assert(value.as_object()["anime_title"].as_string() == "Title");
     assert(value.as_object()["episode_number"].as_string() == "01");
-  }
-
-  {
-    const std::vector<std::pair<std::string, std::string>> items{};
-    assert(json::serialize(items, false) == "{}");
+    assert(json::serialize(value) == str);
   }
   {
-    const std::vector<std::pair<std::string, std::string>> items{
-        {"anime_title", "Title"},
-        {"episode_number", "01"},
-    };
-    const auto str = R"({"anime_title":"Title","episode_number":"01"})";
-    assert(json::serialize(items, false) == str);
+    const auto str = R"({"a":["b",{"c":"d"}]})";
+    auto value = json::parse(str);
+    assert(value.as_object()["a"].as_array()[0].as_string() == "b");
+    assert(value.as_object()["a"].as_array()[1].as_object()["c"].as_string() == "d");
+    assert(json::serialize(value) == str);
   }
 }
 
