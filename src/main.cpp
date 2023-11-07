@@ -39,13 +39,14 @@ void print_elements(const std::vector<anitomy::Element>& elements) {
 }
 
 void print_elements_json(const std::vector<anitomy::Element>& elements, bool pretty) {
-  std::vector<std::pair<std::string, std::string>> items;
+  using namespace anitomy::detail;
 
+  json::Value items{json::Value::object_t{}};
   for (const auto& element : elements) {
-    items.emplace_back(anitomy::detail::to_string(element.kind), element.value);
+    items.as_object().emplace(to_string(element.kind), element.value);
   }
 
-  std::print("{}", anitomy::detail::json::serialize(items, pretty));
+  std::print("{}", json::serialize(items, pretty));
 }
 
 bool is_trivial_token(const anitomy::detail::Token& token) noexcept {
@@ -80,14 +81,15 @@ void print_tokens(const std::vector<anitomy::detail::Token>& tokens, bool skip_t
 
 void print_tokens_json(const std::vector<anitomy::detail::Token>& tokens, bool pretty,
                        bool skip_trivial) {
-  std::vector<std::pair<std::string, std::string>> items;
+  using namespace anitomy::detail;
 
+  json::Value items{json::Value::object_t{}};
   for (const auto& token : tokens) {
     if (skip_trivial && is_trivial_token(token)) continue;
-    items.emplace_back(anitomy::detail::to_string(token.kind), token.value);
+    items.as_object().emplace(to_string(token.kind), token.value);
   }
 
-  std::print("{}", anitomy::detail::json::serialize(items, pretty));
+  std::print("{}", json::serialize(items, pretty));
 }
 
 }  // namespace
