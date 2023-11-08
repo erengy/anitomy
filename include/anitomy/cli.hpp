@@ -6,31 +6,19 @@
 #include <span>
 #include <string>
 #include <string_view>
+#include <vector>
 
 namespace anitomy::detail {
 
 class CommandLine final {
 public:
-  explicit CommandLine(int argc, char* argv[]) noexcept
-      : CommandLine{std::span{argv, static_cast<size_t>(argc)}} {
+  using args_t = std::vector<std::string_view>;
+
+  explicit CommandLine(int argc, char* argv[]) noexcept : CommandLine{parse_args(argc, argv)} {
   }
 
-  explicit CommandLine(std::span<char*> args) noexcept {
-    if (!args.empty()) {
-      args = args | std::views::drop(1);
-    }
-
-    if (!args.empty()) {
-      if (!std::string_view{args.back()}.starts_with("-")) {
-        input_ = unquote(args.back());
-        args = args | std::views::take(args.size() - 1);
-      }
-    }
-
-    for (const std::string arg : args) {
-      auto [option, value] = parse_arg(arg);
-      if (!option.empty()) options_[option] = value;
-    }
+  explicit CommandLine(args_t args) noexcept : args_{args} {
+    process_args(args_);
   }
 
   [[nodiscard]] constexpr std::string_view input() const noexcept {
@@ -48,7 +36,29 @@ public:
   }
 
 private:
-  [[nodiscard]] static inline std::pair<std::string, std::string> parse_arg(
+  [[nodiscard]] static inline args_t parse_args(int argc, char* argv[]) noexcept {
+    return std::span{argv, static_cast<size_t>(argc)} | std::ranges::to<args_t>();
+  }
+
+  inline void process_args(std::span<std::string_view> args) noexcept {
+    if (!args.empty()) {
+      args = args | std::views::drop(1);
+    }
+
+    if (!args.empty()) {
+      if (!args.back().starts_with("-")) {
+        input_ = unquote(args.back());
+        args = args | std::views::take(args.size() - 1);
+      }
+    }
+
+    for (auto arg : args) {
+      auto [option, value] = parse_option(std::string{arg});
+      if (!option.empty()) options_[option] = value;
+    }
+  }
+
+  [[nodiscard]] static inline std::pair<std::string, std::string> parse_option(
       const std::string& arg) noexcept {
     static const std::regex pattern{"--([a-z-]+)(?:=([^ ]*))?"};
     std::smatch matches;
@@ -62,6 +72,7 @@ private:
     return view;
   }
 
+  args_t args_;
   std::string input_;
   std::map<std::string, std::string, std::less<>> options_;
 };

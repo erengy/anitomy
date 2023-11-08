@@ -18,29 +18,24 @@ void test_cli() {
   using namespace anitomy::detail;
 
   {
-    std::vector<char*> params{(char*)"anitomy"};
-    CommandLine cl{params};
+    CommandLine cl{{"anitomy"}};
     assert(cl.input().empty());
   }
   {
-    std::vector<char*> params{(char*)"anitomy", (char*)"test"};
-    CommandLine cl{params};
+    CommandLine cl{{"anitomy", "test"}};
     assert(cl.input() == "test");
   }
   {
-    std::vector<char*> params{(char*)"anitomy", (char*)"\"test input\""};
-    CommandLine cl{params};
+    CommandLine cl{{"anitomy", "\"test input\""}};
     assert(cl.input() == "test input");
   }
   {
-    std::vector<char*> params{(char*)"anitomy", (char*)"--help", (char*)"test"};
-    CommandLine cl{params};
+    CommandLine cl{{"anitomy", "--help", "test"}};
     assert(cl.contains("help"));
     assert(cl.input() == "test");
   }
   {
-    std::vector<char*> params{(char*)"anitomy", (char*)"--format=json", (char*)"test"};
-    CommandLine cl{params};
+    CommandLine cl{{"anitomy", "--format=json", "test"}};
     assert(cl.get("format") == "json");
     assert(cl.input() == "test");
   }
