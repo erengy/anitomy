@@ -2,9 +2,7 @@
 
 #include <expected>
 #include <format>
-#include <functional>
 #include <map>
-#include <optional>
 #include <ranges>
 #include <regex>
 #include <string>
