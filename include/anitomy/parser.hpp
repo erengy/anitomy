@@ -119,28 +119,14 @@ public:
 
   inline void parse(const Options& options) noexcept {
     search_keywords();
-
-    search_file_checksum();
-
-    search_video_resolution();
-
-    search_anime_year();
-
-    search_anime_season();
-
-    if (options.parse_episode_number) {
-      search_episode_number();
-    }
-
+    if (options.parse_file_checksum) search_file_checksum();
+    if (options.parse_video_resolution) search_video_resolution();
+    if (options.parse_anime_year) search_anime_year();
+    if (options.parse_anime_season) search_anime_season();
+    if (options.parse_episode_number) search_episode_number();
     search_anime_title();
-
-    if (options.parse_release_group) {
-      search_release_group();
-    }
-
-    if (options.parse_episode_title) {
-      search_episode_title();
-    }
+    if (options.parse_release_group) search_release_group();
+    if (options.parse_episode_title) search_episode_title();
   }
 
 private:
