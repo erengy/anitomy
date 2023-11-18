@@ -1,6 +1,5 @@
 #pragma once
 
-#include <functional>
 #include <map>
 #include <ranges>
 #include <regex>
@@ -29,9 +28,6 @@ protected:
     std::string element_value;
 
     const bool has_multiple_delimiters = [&tokens]() {
-      constexpr auto is_delimiter_token = [](const Token& token) {
-        return token.kind == TokenKind::Delimiter;
-      };
       constexpr auto token_value = [](const Token& token) { return token.value.front(); };
       auto delimiters_view =
           tokens | std::views::filter(is_delimiter_token) | std::views::transform(token_value);
@@ -83,33 +79,6 @@ protected:
 
 private:
   std::vector<Element> elements_;
-};
-
-class TokenContainer {
-public:
-  explicit TokenContainer(std::vector<Token>& tokens) : tokens_{std::move(tokens)} {
-  }
-
-  [[nodiscard]] const std::vector<Token>& tokens() const noexcept {
-    return tokens_;
-  }
-
-protected:
-  std::optional<Token*> find_previous_token(std::vector<Token>::iterator it,
-                                            std::function<bool(const Token&)> predicate) noexcept {
-    auto tokens = std::span(tokens_.begin(), it) | std::views::reverse;
-    auto token = std::ranges::find_if(tokens, predicate);
-    return token != tokens.end() ? std::optional{&(*token)} : std::nullopt;
-  }
-
-  std::optional<Token*> find_next_token(std::vector<Token>::iterator it,
-                                        std::function<bool(const Token&)> predicate) noexcept {
-    auto tokens = std::span(it + 1, tokens_.end());
-    auto token = std::ranges::find_if(tokens, predicate);
-    return token != tokens.end() ? std::optional{&(*token)} : std::nullopt;
-  }
-
-  std::vector<Token> tokens_;
 };
 
 class Parser final : public ElementContainer, public TokenContainer {
@@ -233,19 +202,16 @@ private:
       return;
     }
 
-    constexpr auto is_not_delimiter = [](const Token& token) {
-      return token.kind != TokenKind::Delimiter;
-    };
-
     // Check next token for a number (e.g. `Season 2`, `Season II`)
-    if (auto result = find_next_token(season_token, is_not_delimiter)) {
-      if (Token& token = **result; is_free_token(token)) {
-        if (is_numeric_token(token)) {
-          add_element_from_token(ElementKind::AnimeSeason, token);
+    if (auto token = find_next_token(season_token, is_not_delimiter_token);
+        token != tokens_.end()) {
+      if (is_free_token(*token)) {
+        if (is_numeric_token(*token)) {
+          add_element_from_token(ElementKind::AnimeSeason, *token);
           season_token->element_kind = ElementKind::AnimeSeason;
           return;
-        } else if (auto number = from_roman_number(token.value); !number.empty()) {
-          add_element_from_token(ElementKind::AnimeSeason, token, number);
+        } else if (auto number = from_roman_number(token->value); !number.empty()) {
+          add_element_from_token(ElementKind::AnimeSeason, *token, number);
           season_token->element_kind = ElementKind::AnimeSeason;
           return;
         }
@@ -253,10 +219,11 @@ private:
     }
 
     // Check previous token for a number (e.g. `2nd Season`)
-    if (auto result = find_previous_token(season_token, is_not_delimiter)) {
-      if (Token& token = **result; is_free_token(token)) {
-        if (auto number = from_ordinal_number(token.value); !number.empty()) {
-          add_element_from_token(ElementKind::AnimeSeason, token, number);
+    if (auto token = find_prev_token(season_token, is_not_delimiter_token);
+        token != tokens_.end()) {
+      if (is_free_token(*token)) {
+        if (auto number = from_ordinal_number(token->value); !number.empty()) {
+          add_element_from_token(ElementKind::AnimeSeason, *token, number);
           season_token->element_kind = ElementKind::AnimeSeason;
           return;
         }
@@ -508,23 +475,6 @@ private:
       }
       return;
     } while (token_begin != tokens_.end());
-  }
-
-  // A free token is an unidentified text token
-  static constexpr bool is_free_token(const Token& token) noexcept {
-    return token.kind == TokenKind::Text && !token.element_kind;
-  }
-
-  static constexpr bool is_delimiter_token(const Token& token) noexcept {
-    return token.kind == TokenKind::Delimiter;
-  }
-
-  static constexpr bool is_keyword_token(const Token& token) noexcept {
-    return token.kind == TokenKind::Keyword;
-  }
-
-  static constexpr bool is_numeric_token(const Token& token) noexcept {
-    return token.is_number;
   }
 };
 
