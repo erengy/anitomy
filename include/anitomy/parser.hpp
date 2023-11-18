@@ -83,6 +83,10 @@ private:
 
 class Parser final : public ElementContainer, public TokenContainer {
 public:
+  static constexpr auto filter = std::views::filter;
+  static constexpr auto reverse = std::views::reverse;
+  static constexpr auto take = std::views::take;
+
   explicit Parser(std::vector<Token>& tokens) : TokenContainer{tokens} {
   }
 
@@ -117,7 +121,7 @@ private:
         {KeywordKind::Volume, ElementKind::VolumeNumber},
     };
 
-    for (auto& token : tokens_ | std::views::filter(is_keyword_token)) {
+    for (auto& token : tokens_ | filter(is_keyword_token)) {
       if (!token.keyword_kind) continue;
       if (const auto it = table.find(*token.keyword_kind); it != table.end()) {
         add_element_from_token(it->second, token);
@@ -132,8 +136,7 @@ private:
     };
 
     // Find the last free token that is a checksum
-    auto tokens = tokens_ | std::views::reverse | std::views::filter(is_free_token) |
-                  std::views::filter(is_checksum) | std::views::take(1);
+    auto tokens = tokens_ | reverse | filter(is_free_token) | filter(is_checksum) | take(1);
     if (!tokens.empty()) {
       add_element_from_token(ElementKind::FileChecksum, tokens.front());
     }
@@ -146,9 +149,8 @@ private:
       return std::regex_match(token.value, pattern);
     };
 
-    // Find all free tokens (usually just one) matching the pattern
-    auto tokens =
-        tokens_ | std::views::filter(is_free_token) | std::views::filter(is_video_resolution);
+    // Find all free tokens matching the pattern
+    auto tokens = tokens_ | filter(is_free_token) | filter(is_video_resolution);
     for (auto& token : tokens) {
       add_element_from_token(ElementKind::VideoResolution, token);
     }
@@ -173,9 +175,8 @@ private:
     };
 
     // Find the first free isolated number within the interval
-    auto tokens = tokens_ | std::views::adjacent<3> | std::views::filter(is_isolated) |
-                  std::views::filter(is_free_number) | std::views::filter(is_anime_year) |
-                  std::views::take(1);
+    auto tokens = tokens_ | std::views::adjacent<3> | filter(is_isolated) | filter(is_free_number) |
+                  filter(is_anime_year) | take(1);
     if (!tokens.empty()) {
       add_element_from_token(ElementKind::AnimeYear, std::get<1>(tokens.front()));
     }
@@ -194,8 +195,7 @@ private:
         static const std::regex pattern{R"(S\d{1,2})"};
         return std::regex_match(token.value, pattern);
       };
-      auto tokens = tokens_ | std::views::filter(is_free_token) | std::views::filter(is_season) |
-                    std::views::take(1);
+      auto tokens = tokens_ | filter(is_free_token) | filter(is_season) | take(1);
       if (!tokens.empty()) {
         add_element_from_token(ElementKind::VideoResolution, tokens.front());
       }
@@ -236,8 +236,7 @@ private:
 
     // number comes before another number (e.g. `8 & 10`, `01 of 24`)
     {
-      auto tokens =
-          tokens_ | std::views::filter(is_free_token) | std::views::filter(is_numeric_token);
+      auto tokens = tokens_ | filter(is_free_token) | filter(is_numeric_token);
 
       for (auto it = tokens.begin(); it != tokens.end(); ++it) {
         // skip if delimiter but not '&'
@@ -256,7 +255,7 @@ private:
 
       std::smatch matches;
 
-      for (auto& token : tokens_ | std::views::filter(is_free_token)) {
+      for (auto& token : tokens_ | filter(is_free_token)) {
         if (is_single_episode(token, matches)) {
           add_element_from_token(ElementKind::EpisodeNumber, token, matches[1].str());
           add_element(ElementKind::ReleaseVersion, matches[2].str());
@@ -281,7 +280,7 @@ private:
 
       std::smatch matches;
 
-      for (auto& token : tokens_ | std::views::filter(is_free_token)) {
+      for (auto& token : tokens_ | filter(is_free_token)) {
         if (is_season_and_episode(token, matches)) {
           if (to_int(matches[1].str()) == 0) continue;
           add_element(ElementKind::AnimeSeason, matches[1].str());
@@ -309,7 +308,7 @@ private:
 
       std::smatch matches;
 
-      for (auto& token : tokens_ | std::views::filter(is_free_token)) {
+      for (auto& token : tokens_ | filter(is_free_token)) {
         if (is_number_sign(token, matches)) {
           add_element_from_token(ElementKind::EpisodeNumber, token, matches[1].str());
           if (matches[2].matched) add_element(ElementKind::EpisodeNumber, matches[2].str());
@@ -329,7 +328,7 @@ private:
         return token.kind == TokenKind::Delimiter && token.value == "-";
       };
 
-      auto tokens = tokens_ | std::views::filter(is_dash);
+      auto tokens = tokens_ | filter(is_dash);
 
       for (auto it = tokens.begin(); it != tokens.end(); ++it) {
         auto next_token = std::ranges::find_if(it.base(), tokens_.end(), [](const Token& token) {
@@ -356,8 +355,8 @@ private:
         return is_free_token(token) && is_numeric_token(token);
       };
 
-      auto tokens = tokens_ | std::views::adjacent<3> | std::views::filter(is_isolated) |
-                    std::views::filter(is_free_number) | std::views::take(1);
+      auto tokens = tokens_ | std::views::adjacent<3> | filter(is_isolated) |
+                    filter(is_free_number) | take(1);
 
       if (!tokens.empty()) {
         add_element_from_token(ElementKind::EpisodeNumber, std::get<1>(tokens.front()));
@@ -367,8 +366,7 @@ private:
 
     // last number
     {
-      auto tokens = tokens_ | std::views::reverse | std::views::filter(is_free_token) |
-                    std::views::filter(is_numeric_token) | std::views::take(1);
+      auto tokens = tokens_ | reverse | filter(is_free_token) | filter(is_numeric_token) | take(1);
 
       if (!tokens.empty()) {
         add_element_from_token(ElementKind::EpisodeNumber, tokens.front());
