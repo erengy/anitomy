@@ -234,6 +234,23 @@ private:
 
   inline void search_episode_number() noexcept {
     // episode prefix (e.g. `EP1`, `Episode 1`, `Vol.1`...)
+    {
+      static constexpr auto is_episode_keyword = [](const Token& token) {
+        return token.keyword_kind == KeywordKind::Episode;
+      };
+
+      auto episode_token = std::ranges::find_if(tokens_, is_episode_keyword);
+
+      // Check next token for a number
+      if (auto token = find_next_token(episode_token, is_not_delimiter_token);
+          token != tokens_.end()) {
+        if (is_free_token(*token) && is_numeric_token(*token)) {
+          add_element_from_token(ElementKind::EpisodeNumber, *token);
+          episode_token->element_kind = ElementKind::EpisodeNumber;
+          return;
+        }
+      }
+    }
 
     // number comes before another number (e.g. `8 & 10`, `01 of 24`)
     {
@@ -266,6 +283,31 @@ private:
     }
 
     // multi episode (e.g. `01-02`, `03-05v2`)
+    {
+      static constexpr auto is_multi_episode = [](const Token& token, std::smatch& matches) {
+        static const std::regex pattern{R"((\d{1,4})(?:[vV](\d))?[-~&+])"
+                                        R"((\d{1,4})(?:[vV](\d))?)"};
+        return std::regex_match(token.value, matches, pattern);
+      };
+
+      std::smatch matches;
+
+      for (auto& token : tokens_ | filter(is_free_token)) {
+        if (is_multi_episode(token, matches)) {
+          auto lower = matches[1].str();
+          auto upper = matches[3].str();
+
+          // Avoid matching expressions such as `009-1` or `5-2`
+          if (to_int(lower) >= to_int(upper)) continue;
+
+          add_element_from_token(ElementKind::EpisodeNumber, token, lower);
+          if (matches[2].matched) add_element(ElementKind::ReleaseVersion, matches[2].str());
+          add_element_from_token(ElementKind::EpisodeNumber, token, upper);
+          if (matches[4].matched) add_element(ElementKind::ReleaseVersion, matches[4].str());
+          return;
+        }
+      }
+    }
 
     // season and episode (e.g. `2x01`, `S01E03`, `S01-02xE001-150`)
     {
@@ -295,10 +337,57 @@ private:
     }
 
     // type and episode (e.g. `ED1`, `OP4a`, `OVA2`)
+    {
+      static constexpr auto is_type_keyword = [](const Token& token) {
+        return token.keyword_kind == KeywordKind::AnimeType;
+      };
+
+      auto type_token = std::ranges::find_if(tokens_, is_type_keyword);
+
+      // Check next token for a number
+      if (auto token = find_next_token(type_token, is_not_delimiter_token);
+          token != tokens_.end()) {
+        if (is_free_token(*token) && is_numeric_token(*token)) {
+          add_element_from_token(ElementKind::EpisodeNumber, *token);
+          return;
+        }
+      }
+    }
 
     // fractional episode (e.g. `07.5`)
+    {
+      for (auto [number, delimiter, fraction] : tokens_ | std::views::adjacent<3>) {
+        if (is_free_token(number) && is_numeric_token(number)) {
+          if (is_delimiter_token(delimiter) && delimiter.value == ".") {
+            // We don't allow any fractional part other than `.5`, because there are cases
+            // where such a number is a part of the anime title (e.g. `Evangelion: 1.11`,
+            // `Tokyo Magnitude 8.0`) or a keyword (e.g. `5.1`).
+            if (is_free_token(fraction) && fraction.value == "5") {
+              add_element_from_token(
+                  ElementKind::EpisodeNumber, number,
+                  std::format("{}{}{}", number.value, delimiter.value, fraction.value));
+              delimiter.element_kind = ElementKind::EpisodeNumber;
+              fraction.element_kind = ElementKind::EpisodeNumber;
+              return;
+            }
+          }
+        }
+      }
+    }
 
     // partial episode (e.g. `4a`, `111C`)
+    {
+      static constexpr auto is_partial_episode = [](const Token& token) {
+        static const std::regex pattern{R"(\d{1,4}[ABCabc])"};
+        return std::regex_match(token.value, pattern);
+      };
+
+      auto tokens = tokens_ | filter(is_free_token) | filter(is_partial_episode) | take(1);
+      if (!tokens.empty()) {
+        add_element_from_token(ElementKind::EpisodeNumber, tokens.front());
+        return;
+      }
+    }
 
     // number sign (e.g. `#01`, `#02-03v2`)
     {
@@ -366,6 +455,7 @@ private:
     }
 
     // last number
+    // @TODO: should not parse `1.11`
     {
       auto tokens = tokens_ | reverse | filter(is_free_token) | filter(is_numeric_token) | take(1);
 
