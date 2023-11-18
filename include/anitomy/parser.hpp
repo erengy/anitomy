@@ -198,9 +198,21 @@ private:
     if (season_token == tokens_.end()) {
       auto tokens = tokens_ | filter(is_free_token) | filter(is_season) | take(1);
       if (!tokens.empty()) {
-        add_element_from_token(ElementKind::VideoResolution, tokens.front());
+        add_element_from_token(ElementKind::AnimeSeason, tokens.front());
       }
       return;
+    }
+
+    // Check previous token for a number (e.g. `2nd Season`)
+    if (auto token = find_prev_token(season_token, is_not_delimiter_token);
+        token != tokens_.end()) {
+      if (is_free_token(*token)) {
+        if (auto number = from_ordinal_number(token->value); !number.empty()) {
+          add_element_from_token(ElementKind::AnimeSeason, *token, number);
+          season_token->element_kind = ElementKind::AnimeSeason;
+          return;
+        }
+      }
     }
 
     // Check next token for a number (e.g. `Season 2`, `Season II`)
@@ -212,18 +224,6 @@ private:
           season_token->element_kind = ElementKind::AnimeSeason;
           return;
         } else if (auto number = from_roman_number(token->value); !number.empty()) {
-          add_element_from_token(ElementKind::AnimeSeason, *token, number);
-          season_token->element_kind = ElementKind::AnimeSeason;
-          return;
-        }
-      }
-    }
-
-    // Check previous token for a number (e.g. `2nd Season`)
-    if (auto token = find_prev_token(season_token, is_not_delimiter_token);
-        token != tokens_.end()) {
-      if (is_free_token(*token)) {
-        if (auto number = from_ordinal_number(token->value); !number.empty()) {
           add_element_from_token(ElementKind::AnimeSeason, *token, number);
           season_token->element_kind = ElementKind::AnimeSeason;
           return;
