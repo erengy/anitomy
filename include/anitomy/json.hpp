@@ -100,7 +100,7 @@ private:
   }
 
   [[nodiscard]] inline expected_t<value_t> parse_value() noexcept {
-    const auto parse = [this]() -> expected_t<value_t> {
+    static const auto parse = [this]() -> expected_t<value_t> {
       if (view_.empty()) {
         return object_t{};
       }
@@ -172,7 +172,7 @@ private:
   }
 
   [[nodiscard]] inline expected_t<string_t> parse_string() noexcept {
-    const auto parse = [this]() -> string_t {
+    static const auto parse = [this]() -> string_t {
       const auto is_string = [](const char ch) { return ch != '"'; };
       auto text = view_ | std::views::take_while(is_string);
       auto n = std::ranges::distance(text);

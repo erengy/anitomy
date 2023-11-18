@@ -129,9 +129,9 @@ private:
     }
   }
 
-  constexpr void search_file_checksum() noexcept {
+  inline void search_file_checksum() noexcept {
     // A checksum has 8 hexadecimal digits (e.g. `ABCD1234`)
-    constexpr auto is_checksum = [](const Token& token) {
+    static constexpr auto is_checksum = [](const Token& token) {
       return token.value.size() == 8 && std::ranges::all_of(token.value, is_xdigit);
     };
 
@@ -142,9 +142,9 @@ private:
     }
   }
 
-  constexpr void search_video_resolution() noexcept {
-    // A video resolution can be in either `1080p` or `1920x1080` format
-    constexpr auto is_video_resolution = [](const Token& token) {
+  inline void search_video_resolution() noexcept {
+    // A video resolution can be in `1080p` or `1920x1080` format
+    static constexpr auto is_video_resolution = [](const Token& token) {
       static const std::regex pattern{R"(\d{3,4}p|\d{3,4}[xX×]\d{3,4})"};
       return std::regex_match(token.value, pattern);
     };
@@ -156,20 +156,20 @@ private:
     }
   }
 
-  constexpr void search_anime_year() noexcept {
+  inline void search_anime_year() noexcept {
     using window_t = std::tuple<Token&, Token&, Token&>;
 
-    constexpr auto is_isolated = [](window_t tokens) {
+    static constexpr auto is_isolated = [](window_t tokens) {
       return std::get<0>(tokens).kind == TokenKind::OpenBracket &&
              std::get<2>(tokens).kind == TokenKind::CloseBracket;
     };
 
-    constexpr auto is_free_number = [](window_t tokens) {
+    static constexpr auto is_free_number = [](window_t tokens) {
       auto& token = std::get<1>(tokens);
       return is_free_token(token) && is_numeric_token(token);
     };
 
-    constexpr auto is_anime_year = [](window_t tokens) {
+    static constexpr auto is_anime_year = [](window_t tokens) {
       const int number = to_int(std::get<1>(tokens).value);
       return 1950 < number && number < 2050;
     };
@@ -182,19 +182,20 @@ private:
     }
   }
 
-  constexpr void search_anime_season() noexcept {
-    constexpr auto is_anime_season_keyword = [](const Token& token) {
+  inline void search_anime_season() noexcept {
+    static constexpr auto is_anime_season_keyword = [](const Token& token) {
       return token.keyword_kind == KeywordKind::AnimeSeason;
+    };
+
+    static constexpr auto is_season = [](const Token& token) {
+      static const std::regex pattern{R"(S\d{1,2})"};
+      return std::regex_match(token.value, pattern);
     };
 
     auto season_token = std::ranges::find_if(tokens_, is_anime_season_keyword);
 
     // Search for patterns (e.g. `S2`)
     if (season_token == tokens_.end()) {
-      constexpr auto is_season = [](const Token& token) {
-        static const std::regex pattern{R"(S\d{1,2})"};
-        return std::regex_match(token.value, pattern);
-      };
       auto tokens = tokens_ | filter(is_free_token) | filter(is_season) | take(1);
       if (!tokens.empty()) {
         add_element_from_token(ElementKind::VideoResolution, tokens.front());
@@ -248,7 +249,7 @@ private:
 
     // single episode (e.g. `01v2`)
     {
-      constexpr auto is_single_episode = [](const Token& token, std::smatch& matches) {
+      static constexpr auto is_single_episode = [](const Token& token, std::smatch& matches) {
         static const std::regex pattern{R"((\d{1,4})[vV](\d))"};
         return std::regex_match(token.value, matches, pattern);
       };
@@ -268,7 +269,7 @@ private:
 
     // season and episode (e.g. `2x01`, `S01E03`, `S01-02xE001-150`)
     {
-      constexpr auto is_season_and_episode = [](const Token& token, std::smatch& matches) {
+      static constexpr auto is_season_and_episode = [](const Token& token, std::smatch& matches) {
         static const std::regex pattern{
             "S?"
             "(\\d{1,2})(?:-S?(\\d{1,2}))?"
@@ -301,7 +302,7 @@ private:
 
     // number sign (e.g. `#01`, `#02-03v2`)
     {
-      constexpr auto is_number_sign = [](const Token& token, std::smatch& matches) {
+      static constexpr auto is_number_sign = [](const Token& token, std::smatch& matches) {
         static const std::regex pattern{"#(\\d{1,4})(?:[-~&+](\\d{1,4}))?(?:[vV](\\d))?"};
         return token.value.starts_with('#') && std::regex_match(token.value, matches, pattern);
       };
@@ -324,7 +325,7 @@ private:
 
     // separated numbers (e.g. ` - 08`)
     {
-      constexpr auto is_dash = [](const Token& token) {
+      static constexpr auto is_dash = [](const Token& token) {
         return token.kind == TokenKind::Delimiter && token.value == "-";
       };
 
@@ -345,12 +346,12 @@ private:
     {
       using window_t = std::tuple<Token&, Token&, Token&>;
 
-      constexpr auto is_isolated = [](window_t tokens) {
+      static constexpr auto is_isolated = [](window_t tokens) {
         return std::get<0>(tokens).kind == TokenKind::OpenBracket &&
                std::get<2>(tokens).kind == TokenKind::CloseBracket;
       };
 
-      constexpr auto is_free_number = [](window_t tokens) {
+      static constexpr auto is_free_number = [](window_t tokens) {
         auto& token = std::get<1>(tokens);
         return is_free_token(token) && is_numeric_token(token);
       };
