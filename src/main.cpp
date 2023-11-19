@@ -22,6 +22,7 @@ void print_help() {
   std::println("Usage: anitomy [options...] <input>");
   std::println("Options:");
   std::println("  --help             You are here");
+  std::println("  --stdin            Use standard input");
   std::println("  --format=<format>  Set output format (`json` or `table`)");
   std::println("  --pretty           Pretty print JSON");
 }

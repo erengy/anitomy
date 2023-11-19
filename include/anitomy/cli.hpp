@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <map>
 #include <ranges>
 #include <regex>
@@ -55,6 +56,10 @@ private:
     for (auto arg : args) {
       auto [option, value] = parse_option(std::string{arg});
       if (!option.empty()) options_[option] = value;
+    }
+
+    if (options_.contains("stdin")) {
+      std::getline(std::cin, input_);
     }
   }
 
