@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ranges>
+#include <string>
 #include <string_view>
 #include <unordered_map>
 
@@ -31,8 +32,7 @@ struct KeywordProps {
   enum Flags : uint8_t {
     Unidentifiable = 0x01,
     Unsearchable = 0x02,
-    Invalid = 0x04,
-    Unbounded = 0x08,
+    Unbounded = 0x04,
   };
 
   uint8_t value = 0;
@@ -43,10 +43,6 @@ struct KeywordProps {
 
   constexpr bool is_searchable() const noexcept {
     return (value & Unsearchable) != Unsearchable;
-  }
-
-  constexpr bool is_valid() const noexcept {
-    return (value & Invalid) != Invalid;
   }
 
   constexpr bool is_bounded() const noexcept {
@@ -92,14 +88,14 @@ inline auto keywords =
       {"Special",              {AnimeType, Unidentifiable}},
       {"Specials",             {AnimeType, Unidentifiable}},
       {"TV",                   {AnimeType, Unidentifiable}},
-      {"ED",                   {AnimeType, Unidentifiable | Invalid}},
-      {"Ending",               {AnimeType, Unidentifiable | Invalid}},
-      {"NCED",                 {AnimeType, Unidentifiable | Invalid}},
-      {"NCOP",                 {AnimeType, Unidentifiable | Invalid}},
-      {"OP",                   {AnimeType, Unidentifiable | Invalid}},
-      {"Opening",              {AnimeType, Unidentifiable | Invalid}},
-      {"Preview",              {AnimeType, Unidentifiable | Invalid}},
-      {"PV",                   {AnimeType, Unidentifiable | Invalid}},
+      {"ED",                   {AnimeType, Unidentifiable}},
+      {"Ending",               {AnimeType, Unidentifiable}},
+      {"NCED",                 {AnimeType, Unidentifiable}},
+      {"NCOP",                 {AnimeType, Unidentifiable}},
+      {"OP",                   {AnimeType, Unidentifiable}},
+      {"Opening",              {AnimeType, Unidentifiable}},
+      {"Preview",              {AnimeType, Unidentifiable}},
+      {"PV",                   {AnimeType, Unidentifiable}},
 
       // Audio term
       //
@@ -160,8 +156,6 @@ inline auto keywords =
       {"Episodio",             {Episode, 0}},
       {"Episódio",             {Episode, 0}},
       {"Folge",                {Episode, 0}},
-      {"E",                    {Episode, Invalid}},  // single-letter
-      {"\u7B2C",               {Episode, Invalid}},  // 第
 
       // File extension
       {"3gp",                  {FileExtension, 0}},
@@ -179,20 +173,6 @@ inline auto keywords =
       {"ts",                   {FileExtension, 0}},
       {"webm",                 {FileExtension, 0}},
       {"wmv",                  {FileExtension, 0}},
-      {"aac",                  {FileExtension, Invalid}},
-      {"aiff",                 {FileExtension, Invalid}},
-      {"flac",                 {FileExtension, Invalid}},
-      {"m4a",                  {FileExtension, Invalid}},
-      {"mp3",                  {FileExtension, Invalid}},
-      {"mka",                  {FileExtension, Invalid}},
-      {"ogg",                  {FileExtension, Invalid}},
-      {"wav",                  {FileExtension, Invalid}},
-      {"wma",                  {FileExtension, Invalid}},
-      {"7z",                   {FileExtension, Invalid}},
-      {"rar",                  {FileExtension, Invalid}},
-      {"zip",                  {FileExtension, Invalid}},
-      {"ass",                  {FileExtension, Invalid}},
-      {"srt",                  {FileExtension, Invalid}},
 
       // Language
       {"ENG",                  {Language, 0}},
