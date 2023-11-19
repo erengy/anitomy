@@ -91,6 +91,7 @@ public:
   }
 
   inline void parse(const Options& options) noexcept {
+    if (options.parse_file_extension) search_file_extension();
     search_keywords();
     if (options.parse_file_checksum) search_file_checksum();
     if (options.parse_video_resolution) search_video_resolution();
@@ -103,12 +104,23 @@ public:
   }
 
 private:
+  inline void search_file_extension() noexcept {
+    if (tokens_.size() < 2) return;
+
+    auto tokens = tokens_ | reverse | take(2);
+
+    if (tokens[0].keyword_kind == KeywordKind::FileExtension) {
+      if (is_delimiter_token(tokens[1]) && tokens[1].value == ".") {
+        add_element_from_token(ElementKind::FileExtension, tokens[0]);
+      }
+    }
+  }
+
   inline void search_keywords() noexcept {
     static const std::map<KeywordKind, ElementKind> table{
         {KeywordKind::AnimeType, ElementKind::AnimeType},
         {KeywordKind::AudioTerm, ElementKind::AudioTerm},
         {KeywordKind::DeviceCompatibility, ElementKind::DeviceCompatibility},
-        {KeywordKind::FileExtension, ElementKind::FileExtension},
         {KeywordKind::Language, ElementKind::Language},
         {KeywordKind::Other, ElementKind::Other},
         {KeywordKind::ReleaseGroup, ElementKind::ReleaseGroup},
@@ -118,7 +130,6 @@ private:
         {KeywordKind::Subtitles, ElementKind::Subtitles},
         {KeywordKind::VideoResolution, ElementKind::VideoResolution},
         {KeywordKind::VideoTerm, ElementKind::VideoTerm},
-        {KeywordKind::Volume, ElementKind::VolumeNumber},
     };
 
     for (auto& token : tokens_ | filter(is_keyword_token)) {
