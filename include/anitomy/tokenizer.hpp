@@ -193,38 +193,36 @@ private:
     return take(n);
   }
 
-  [[nodiscard]] constexpr std::pair<std::string, KeywordKind> take_keyword() noexcept {
-    constexpr auto count_candidates = [](std::string_view prefix) {
-      const auto starts_with = [&prefix](std::string_view keyword) {
-        constexpr auto equal_to = [](char a, char b) { return to_lower(a) == to_lower(b); };
+  [[nodiscard]] inline std::pair<std::string, KeywordKind> take_keyword() noexcept {
+    static constexpr auto count_candidates = [](std::string_view prefix) {
+      static const auto keys = keywords | std::views::keys;
+      return std::ranges::count_if(keys, [&prefix](std::string_view keyword) {
         return std::ranges::starts_with(keyword, prefix, equal_to);
-      };
-      return std::ranges::count_if(keywords | std::views::keys, starts_with);
+      });
     };
 
-    constexpr auto is_keyword_boundary = [](std::u32string_view view) {
+    static constexpr auto is_keyword_boundary = [](std::u32string_view view) {
       return view.empty() || is_word_boundary(view.front());
     };
 
-    std::string_view keyword{};
+    std::string keyword;
 
-    for (size_t n = 1; n < view_.size(); ++n) {
-      const auto prefix = unicode::utf32_to_utf8(peek(n));
-      const auto candidate_count = count_candidates(prefix);
-
+    for (size_t n = 1; n <= view_.size(); ++n) {
+      auto prefix = unicode::utf32_to_utf8(peek(n));
       if (keywords.contains(prefix)) keyword = prefix;
-      if (candidate_count > 0) continue;
+      if (count_candidates(prefix) > 0) continue;
       if (keyword.empty()) break;
-
-      const auto [kind, flags] = keywords[keyword];
-      const KeywordProps props{flags};
-
-      if (props.is_bounded() && !is_keyword_boundary(view_.substr(n - 1))) break;
-
-      return std::make_pair(take(n - 1), kind);
     }
 
-    return {};
+    if (keyword.empty()) return {};
+
+    const size_t n = keyword.size();
+    const auto [kind, flags] = keywords[keyword];
+    const KeywordProps props{flags};
+
+    if (props.is_bounded() && !is_keyword_boundary(view_.substr(n))) return {};
+
+    return std::make_pair(take(n), kind);
   }
 
   std::u32string input_;

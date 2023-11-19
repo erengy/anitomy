@@ -62,6 +62,10 @@ constexpr Char to_lower(const Char ch) noexcept {
   return ('A' <= ch && ch <= 'Z') ? ch + ('a' - 'A') : ch;
 }
 
+constexpr bool equal_to(char a, char b) noexcept {
+  return to_lower(a) == to_lower(b);
+};
+
 inline bool read_file(const std::string& path, std::string& output) {
   std::ifstream file{path, std::ios::in | std::ios::binary | std::ios::ate};
 
