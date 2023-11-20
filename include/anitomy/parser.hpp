@@ -97,6 +97,7 @@ public:
     if (options.parse_video_resolution) search_video_resolution();
     if (options.parse_anime_year) search_anime_year();
     if (options.parse_anime_season) search_anime_season();
+    if (options.parse_episode_number) search_volume_number();
     if (options.parse_episode_number) search_episode_number();
     search_anime_title();
     if (options.parse_release_group) search_release_group();
@@ -508,6 +509,23 @@ private:
       if (!tokens.empty()) {
         add_element_from_token(ElementKind::EpisodeNumber, tokens.front());
         return;
+      }
+    }
+  }
+
+  inline void search_volume_number() noexcept {
+    static constexpr auto is_volume_keyword = [](const Token& token) {
+      return token.keyword && token.keyword->kind == KeywordKind::Volume;
+    };
+
+    auto volume_token = std::ranges::find_if(tokens_, is_volume_keyword);
+
+    // Check next token for a number
+    if (auto token = find_next_token(volume_token, is_not_delimiter_token);
+        token != tokens_.end()) {
+      if (is_free_token(*token) && is_numeric_token(*token)) {
+        add_element_from_token(ElementKind::VolumeNumber, *token);
+        volume_token->element_kind = ElementKind::VolumeNumber;
       }
     }
   }
