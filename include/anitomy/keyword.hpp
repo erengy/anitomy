@@ -31,18 +31,13 @@ enum class KeywordKind {
 struct KeywordProps {
   enum Flags : uint8_t {
     Unidentifiable = 0x01,
-    Unsearchable = 0x02,
-    Unbounded = 0x04,
+    Unbounded = 0x02,
   };
 
   uint8_t value = 0;
 
   constexpr bool is_identifiable() const noexcept {
     return (value & Unidentifiable) != Unidentifiable;
-  }
-
-  constexpr bool is_searchable() const noexcept {
-    return (value & Unsearchable) != Unsearchable;
   }
 
   constexpr bool is_bounded() const noexcept {
@@ -84,7 +79,7 @@ inline auto keywords =
       {"OAV",                  {AnimeType, Unidentifiable}},
       {"ONA",                  {AnimeType, Unidentifiable}},
       {"OVA",                  {AnimeType, Unidentifiable}},
-      {"SP",                   {AnimeType, Unidentifiable | Unsearchable}},  // e.g. "Yumeiro Patissiere SP Professional"
+      {"SP",                   {AnimeType, Unidentifiable}},  // e.g. "Yumeiro Patissiere SP Professional"
       {"Special",              {AnimeType, Unidentifiable}},
       {"Specials",             {AnimeType, Unidentifiable}},
       {"TV",                   {AnimeType, Unidentifiable}},
