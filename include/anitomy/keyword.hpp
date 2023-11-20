@@ -142,11 +142,8 @@ inline auto keywords =
 
       // Episode prefix
       {"Ep",                   {Episode, 0}},
-      {"Ep.",                  {Episode, 0}},
       {"Eps",                  {Episode, 0}},
-      {"Eps.",                 {Episode, 0}},
       {"Episode",              {Episode, 0}},
-      {"Episode.",             {Episode, 0}},
       {"Episodes",             {Episode, 0}},
       {"Episodio",             {Episode, 0}},
       {"Episódio",             {Episode, 0}},
@@ -307,7 +304,6 @@ inline auto keywords =
 
       // Volume
       {"Vol",                  {Volume, 0}},
-      {"Vol.",                 {Volume, 0}},
       {"Volume",               {Volume, 0}},
   };
   // clang-format on
