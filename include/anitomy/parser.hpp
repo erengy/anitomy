@@ -92,7 +92,7 @@ public:
 
   inline void parse(const Options& options) noexcept {
     if (options.parse_file_extension) search_file_extension();
-    search_keywords();
+    search_keywords(options);
     if (options.parse_file_checksum) search_file_checksum();
     if (options.parse_video_resolution) search_video_resolution();
     if (options.parse_anime_year) search_anime_year();
@@ -116,7 +116,7 @@ private:
     }
   }
 
-  inline void search_keywords() noexcept {
+  inline void search_keywords(const Options& options) noexcept {
     static const std::map<KeywordKind, ElementKind> table{
         {KeywordKind::AnimeType, ElementKind::AnimeType},
         {KeywordKind::AudioTerm, ElementKind::AudioTerm},
@@ -132,8 +132,19 @@ private:
         {KeywordKind::VideoTerm, ElementKind::VideoTerm},
     };
 
+    static const auto is_allowed = [&options](const Token& token) {
+      if (!token.keyword) return false;
+      switch (token.keyword->kind) {
+        case KeywordKind::ReleaseGroup:
+          return options.parse_release_group;
+        case KeywordKind::VideoResolution:
+          return options.parse_video_resolution;
+      }
+      return true;
+    };
+
     for (auto& token : tokens_ | filter(is_keyword_token)) {
-      if (!token.keyword) continue;
+      if (!is_allowed(token)) continue;
       if (const auto it = table.find(token.keyword->kind); it != table.end()) {
         add_element_from_token(it->second, token);
       }
