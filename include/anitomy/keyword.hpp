@@ -73,6 +73,7 @@ inline auto keywords =
       {"Saison",               {AnimeSeason, Unidentifiable}},
 
       // Anime type
+      {"TV",                   {AnimeType, Unidentifiable}},
       {"Movie",                {AnimeType, Unidentifiable}},
       {"Gekijouban",           {AnimeType, Unidentifiable}},
       {"OAD",                  {AnimeType, Unidentifiable}},
@@ -82,13 +83,12 @@ inline auto keywords =
       {"SP",                   {AnimeType, Unidentifiable}},  // e.g. "Yumeiro Patissiere SP Professional"
       {"Special",              {AnimeType, Unidentifiable}},
       {"Specials",             {AnimeType, Unidentifiable}},
-      {"TV",                   {AnimeType, Unidentifiable}},
-      {"ED",                   {AnimeType, Unidentifiable}},
-      {"Ending",               {AnimeType, Unidentifiable}},
-      {"NCED",                 {AnimeType, Unidentifiable}},
-      {"NCOP",                 {AnimeType, Unidentifiable}},
       {"OP",                   {AnimeType, Unidentifiable}},
       {"Opening",              {AnimeType, Unidentifiable}},
+      {"ED",                   {AnimeType, Unidentifiable}},
+      {"Ending",               {AnimeType, Unidentifiable}},
+      {"NCED",                 {AnimeType, 0}},
+      {"NCOP",                 {AnimeType, 0}},
       {"Preview",              {AnimeType, Unidentifiable}},
       {"PV",                   {AnimeType, Unidentifiable}},
 
@@ -147,9 +147,9 @@ inline auto keywords =
       {"Episode",              {Episode, 0}},
       {"Episode.",             {Episode, 0}},
       {"Episodes",             {Episode, 0}},
-      {"Capitulo",             {Episode, 0}},
       {"Episodio",             {Episode, 0}},
       {"Episódio",             {Episode, 0}},
+      {"Capitulo",             {Episode, 0}},
       {"Folge",                {Episode, 0}},
 
       // File extension
@@ -174,10 +174,10 @@ inline auto keywords =
       {"English",              {Language, 0}},
       {"ESP",                  {Language, Unidentifiable}},  // e.g. "Tokyo ESP"
       {"Espanol",              {Language, 0}},
+      {"Spanish",              {Language, 0}},
       {"ITA",                  {Language, Unidentifiable}},  // e.g. "Bokura ga Ita"
       {"JAP",                  {Language, 0}},
       {"PT-BR",                {Language, 0}},
-      {"Spanish",              {Language, 0}},
       {"VOSTFR",               {Language, 0}},
 
       // Other
