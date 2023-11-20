@@ -90,7 +90,8 @@
 		"video_resolution": "704x480"
 	},
 	{
-		"anime_title": "Mobile Suit Gundam 00 S2",
+		"anime_season": "2",
+		"anime_title": "Mobile Suit Gundam 00",
 		"audio_term": "AAC",
 		"episode_number": "01",
 		"file_checksum": "4863FBE8",
@@ -474,7 +475,8 @@
 		"release_group": "EroGaKi-Team"
 	},
 	{
-		"anime_title": "Ookiku Furikabutte S2",
+		"anime_season": "2",
+		"anime_title": "Ookiku Furikabutte",
 		"episode_number": "09",
 		"file_checksum": "BD841253",
 		"file_extension": "mkv",
@@ -607,7 +609,8 @@
 		"video_term": "x264"
 	},
 	{
-		"anime_title": "Queen's Blade S2",
+		"anime_season": "2",
+		"anime_title": "Queen's Blade",
 		"file_name": "[SFW]_Queen's_Blade_S2",
 		"id": 6633,
 		"release_group": "SFW"
@@ -1385,7 +1388,8 @@
 		"file_name": "Ep. 01 - The Boy in the Iceberg"
 	},
 	{
-		"anime_title": "Kuroko no Basuke S3",
+		"anime_season": "3",
+		"anime_title": "Kuroko no Basuke",
 		"episode_number": "01",
 		"episode_number_alt": "51",
 		"file_checksum": "619C57A0",
