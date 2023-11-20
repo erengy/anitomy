@@ -22,7 +22,7 @@ enum class TokenKind {
 struct Token {
   TokenKind kind;
   std::string value;
-  std::optional<KeywordKind> keyword_kind;
+  std::optional<Keyword> keyword;
   std::optional<ElementKind> element_kind;
   bool is_enclosed = false;  // token is enclosed in brackets
   bool is_number = false;    // all characters in `value` are digits

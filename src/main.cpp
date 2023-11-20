@@ -71,7 +71,7 @@ void print_tokens(const std::vector<anitomy::detail::Token>& tokens, bool skip_t
     if (skip_trivial && is_trivial_token(token)) continue;
     rows.emplace_back(row_t{
         std::string{to_string(token.kind)},
-        std::string{token.keyword_kind ? to_string(*token.keyword_kind) : ""},
+        std::string{token.keyword ? to_string(token.keyword->kind) : ""},
         std::string{token.element_kind ? to_string(*token.element_kind) : ""},
         token.value,
     });

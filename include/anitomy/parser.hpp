@@ -109,7 +109,7 @@ private:
 
     auto tokens = tokens_ | reverse | take(2);
 
-    if (tokens[0].keyword_kind == KeywordKind::FileExtension) {
+    if (tokens[0].keyword && tokens[0].keyword->kind == KeywordKind::FileExtension) {
       if (is_delimiter_token(tokens[1]) && tokens[1].value == ".") {
         add_element_from_token(ElementKind::FileExtension, tokens[0]);
       }
@@ -133,8 +133,8 @@ private:
     };
 
     for (auto& token : tokens_ | filter(is_keyword_token)) {
-      if (!token.keyword_kind) continue;
-      if (const auto it = table.find(*token.keyword_kind); it != table.end()) {
+      if (!token.keyword) continue;
+      if (const auto it = table.find(token.keyword->kind); it != table.end()) {
         add_element_from_token(it->second, token);
       }
     }
@@ -195,7 +195,7 @@ private:
 
   inline void search_anime_season() noexcept {
     static constexpr auto is_anime_season_keyword = [](const Token& token) {
-      return token.keyword_kind == KeywordKind::AnimeSeason;
+      return token.keyword && token.keyword->kind == KeywordKind::AnimeSeason;
     };
 
     static constexpr auto is_season = [](const Token& token) {
@@ -247,7 +247,7 @@ private:
     // episode prefix (e.g. `EP1`, `Episode 1`, `Vol.1`...)
     {
       static constexpr auto is_episode_keyword = [](const Token& token) {
-        return token.keyword_kind == KeywordKind::Episode;
+        return token.keyword && token.keyword->kind == KeywordKind::Episode;
       };
 
       auto episode_token = std::ranges::find_if(tokens_, is_episode_keyword);
@@ -350,7 +350,7 @@ private:
     // type and episode (e.g. `ED1`, `OP4a`, `OVA2`)
     {
       static constexpr auto is_type_keyword = [](const Token& token) {
-        return token.keyword_kind == KeywordKind::AnimeType;
+        return token.keyword && token.keyword->kind == KeywordKind::AnimeType;
       };
 
       auto type_token = std::ranges::find_if(tokens_, is_type_keyword);

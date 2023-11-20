@@ -59,11 +59,11 @@ private:
       };
     }
 
-    if (auto [keyword, kind] = take_keyword(); !keyword.empty()) {
+    if (auto [value, keyword] = take_keyword(); !value.empty()) {
       return Token{
           .kind = TokenKind::Keyword,
-          .value = keyword,
-          .keyword_kind = kind,
+          .value = value,
+          .keyword = keyword,
       };
     }
 
@@ -193,7 +193,7 @@ private:
     return take(n);
   }
 
-  [[nodiscard]] inline std::pair<std::string, KeywordKind> take_keyword() noexcept {
+  [[nodiscard]] inline std::pair<std::string, Keyword> take_keyword() noexcept {
     static constexpr auto count_candidates = [](std::string_view prefix) {
       static const auto keys = keywords | std::views::keys;
       return std::ranges::count_if(keys, [&prefix](std::string_view keyword) {
@@ -205,24 +205,23 @@ private:
       return view.empty() || is_word_boundary(view.front());
     };
 
-    std::string keyword;
+    std::string key;
 
     for (size_t n = 1; n <= view_.size(); ++n) {
       auto prefix = unicode::utf32_to_utf8(peek(n));
-      if (keywords.contains(prefix)) keyword = prefix;
+      if (keywords.contains(prefix)) key = prefix;
       if (count_candidates(prefix) > 0) continue;
-      if (keyword.empty()) break;
+      if (key.empty()) break;
     }
 
-    if (keyword.empty()) return {};
+    if (key.empty()) return {};
 
-    const size_t n = keyword.size();
-    const auto [kind, flags] = keywords[keyword];
-    const KeywordProps props{flags};
+    const size_t n = key.size();
+    const auto keyword = keywords[key];
 
-    if (props.is_bounded() && !is_keyword_boundary(view_.substr(n))) return {};
+    if (keyword.is_bounded() && !is_keyword_boundary(view_.substr(n))) return {};
 
-    return std::make_pair(take(n), kind);
+    return std::make_pair(take(n), keyword);
   }
 
   std::u32string input_;

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <ranges>
 #include <string>
 #include <string_view>
@@ -28,20 +29,21 @@ enum class KeywordKind {
   Volume,
 };
 
-struct KeywordProps {
+struct Keyword {
   enum Flags : uint8_t {
     Unidentifiable = 0x01,
     Unbounded = 0x02,
   };
 
-  uint8_t value = 0;
+  KeywordKind kind;
+  uint8_t flags = 0;
 
   constexpr bool is_identifiable() const noexcept {
-    return (value & Unidentifiable) != Unidentifiable;
+    return (flags & Unidentifiable) != Unidentifiable;
   }
 
   constexpr bool is_bounded() const noexcept {
-    return (value & Unbounded) != Unbounded;
+    return (flags & Unbounded) != Unbounded;
   }
 };
 
@@ -60,10 +62,9 @@ struct KeywordEqual {
 };
 
 inline auto keywords =
-    []() -> const std::unordered_map<std::string_view, std::tuple<KeywordKind, uint8_t>,
-                                     KeywordHash, KeywordEqual> {
+    []() -> const std::unordered_map<std::string_view, Keyword, KeywordHash, KeywordEqual> {
   using enum KeywordKind;
-  using enum KeywordProps::Flags;
+  using enum Keyword::Flags;
 
   // clang-format off
   return {
