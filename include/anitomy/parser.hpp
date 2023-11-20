@@ -214,49 +214,64 @@ private:
   }
 
   inline void search_anime_season() noexcept {
+    using window_t = std::tuple<Token&, Token&, Token&>;
+
     static constexpr auto is_anime_season_keyword = [](const Token& token) {
       return token.keyword && token.keyword->kind == KeywordKind::AnimeSeason;
     };
 
-    static constexpr auto is_season = [](const Token& token) {
-      static const std::regex pattern{R"(S\d{1,2})"};
-      return std::regex_match(token.value, pattern);
+    static constexpr auto starts_with_season_keyword = [](window_t tokens) {
+      return is_anime_season_keyword(std::get<0>(tokens)) &&
+             is_delimiter_token(std::get<1>(tokens)) && is_free_token(std::get<2>(tokens));
     };
 
-    auto season_token = std::ranges::find_if(tokens_, is_anime_season_keyword);
+    static constexpr auto ends_with_season_keyword = [](window_t tokens) {
+      return is_anime_season_keyword(std::get<2>(tokens)) &&
+             is_delimiter_token(std::get<1>(tokens)) && is_free_token(std::get<0>(tokens));
+    };
 
-    // Search for patterns (e.g. `S2`)
-    if (season_token == tokens_.end()) {
-      auto tokens = tokens_ | filter(is_free_token) | filter(is_season) | take(1);
-      if (!tokens.empty()) {
-        add_element_from_token(ElementKind::AnimeSeason, tokens.front());
+    for (auto tokens : tokens_ | std::views::adjacent<3>) {
+      // Check previous token for a number (e.g. `2nd Season`)
+      if (ends_with_season_keyword(tokens)) {
+        auto [token, _, season_token] = tokens;
+        if (auto number = from_ordinal_number(token.value); !number.empty()) {
+          add_element_from_token(ElementKind::AnimeSeason, token, number);
+          season_token.element_kind = ElementKind::AnimeSeason;
+          return;
+        }
       }
-      return;
-    }
-
-    // Check previous token for a number (e.g. `2nd Season`)
-    if (auto token = find_prev_token(season_token, is_not_delimiter_token);
-        token != tokens_.end()) {
-      if (is_free_token(*token)) {
-        if (auto number = from_ordinal_number(token->value); !number.empty()) {
-          add_element_from_token(ElementKind::AnimeSeason, *token, number);
-          season_token->element_kind = ElementKind::AnimeSeason;
+      // Check next token for a number (e.g. `Season 2`, `Season II`)
+      if (starts_with_season_keyword(tokens)) {
+        auto [season_token, _, token] = tokens;
+        if (is_numeric_token(token)) {
+          add_element_from_token(ElementKind::AnimeSeason, token);
+          season_token.element_kind = ElementKind::AnimeSeason;
+          return;
+        } else if (auto number = from_roman_number(token.value); !number.empty()) {
+          add_element_from_token(ElementKind::AnimeSeason, token, number);
+          season_token.element_kind = ElementKind::AnimeSeason;
           return;
         }
       }
     }
 
-    // Check next token for a number (e.g. `Season 2`, `Season II`)
-    if (auto token = find_next_token(season_token, is_not_delimiter_token);
-        token != tokens_.end()) {
-      if (is_free_token(*token)) {
-        if (is_numeric_token(*token)) {
-          add_element_from_token(ElementKind::AnimeSeason, *token);
-          season_token->element_kind = ElementKind::AnimeSeason;
-          return;
-        } else if (auto number = from_roman_number(token->value); !number.empty()) {
-          add_element_from_token(ElementKind::AnimeSeason, *token, number);
-          season_token->element_kind = ElementKind::AnimeSeason;
+    // Other season patterns (e.g. `S2`, `第2期`)
+    {
+      static constexpr auto is_season = [](const Token& token, std::smatch& matches) {
+        static const std::regex pattern{"S(\\d{1,2})"};
+        return std::regex_match(token.value, matches, pattern);
+      };
+
+      static constexpr auto is_japanese_counter = [](const Token& token, std::smatch& matches) {
+        static const std::regex pattern{"(?:第)?(\\d{1,2})期"};
+        return std::regex_match(token.value, matches, pattern);
+      };
+
+      std::smatch matches;
+
+      for (auto& token : tokens_ | filter(is_free_token)) {
+        if (is_season(token, matches) || is_japanese_counter(token, matches)) {
+          add_element_from_token(ElementKind::AnimeSeason, token, matches[1].str());
           return;
         }
       }
