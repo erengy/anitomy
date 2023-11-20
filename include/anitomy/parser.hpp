@@ -143,10 +143,19 @@ private:
       return true;
     };
 
+    static constexpr auto token_value = [](const Token& token) -> std::string_view {
+      if (token.keyword->kind == KeywordKind::ReleaseVersion) {
+        std::string_view view{token.value};
+        if (view.starts_with('v') || view.starts_with('V')) view.remove_prefix(1);
+        return view;
+      }
+      return token.value;
+    };
+
     for (auto& token : tokens_ | filter(is_keyword_token)) {
       if (!is_allowed(token)) continue;
       if (const auto it = table.find(token.keyword->kind); it != table.end()) {
-        add_element_from_token(it->second, token);
+        add_element_from_token(it->second, token, token_value(token));
       }
     }
   }
