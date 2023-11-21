@@ -52,10 +52,11 @@ private:
       };
     }
 
-    if (is_delimiter(peek())) {
+    if (auto delimiter_kind = to_delimiter_kind(peek())) {
       return Token{
           .kind = TokenKind::Delimiter,
           .value = take(),
+          .delimiter_kind = *delimiter_kind,
       };
     }
 
@@ -129,14 +130,15 @@ private:
     return is_open_bracket(ch) || is_close_bracket(ch);
   }
 
-  [[nodiscard]] static constexpr bool is_delimiter(const char32_t ch) noexcept {
+  [[nodiscard]] static constexpr std::optional<DelimiterKind> to_delimiter_kind(
+      const char32_t ch) noexcept {
     switch (ch) {
       case U' ':       // space
       case U'\t':      // character tabulation
       case U'\u00A0':  // no-break space
       case U'\u200B':  // zero width space
       case U'\u3000':  // ideographic space
-        return true;
+        return DelimiterKind::Space;
 
       case U'-':       // hyphen-minus
       case U'\u00AD':  // soft hyphen
@@ -146,7 +148,7 @@ private:
       case U'\u2013':  // en dash
       case U'\u2014':  // em dash
       case U'\u2015':  // horizontal bar
-        return true;
+        return DelimiterKind::Dash;
 
       case U'_':  // used instead of space
       case U'.':  // used instead of space, problematic (e.g. `AAC2.0.H.264`)
@@ -154,11 +156,15 @@ private:
       case U'&':  // used for episode ranges
       case U'+':  // used in torrent titles
       case U'|':  // used in torrent titles, reserved in Windows
-        return true;
+        return DelimiterKind::Other;
 
       default:
-        return false;
+        return std::nullopt;
     }
+  }
+
+  [[nodiscard]] static constexpr bool is_delimiter(const char32_t ch) noexcept {
+    return to_delimiter_kind(ch).has_value();
   }
 
   [[nodiscard]] static constexpr bool is_text(const char32_t ch) noexcept {
