@@ -459,18 +459,16 @@ private:
 
     // equivalent numbers (e.g. `01 (176)`, `29 (04)`)
 
-    // separated numbers (e.g. ` - 08`)
+    // separated number (e.g. ` - 08`)
     {
       static constexpr auto is_dash = [](const Token& token) {
-        return token.kind == TokenKind::Delimiter && token.value == "-";
+        return token.kind == TokenKind::Delimiter && token.delimiter_kind == DelimiterKind::Dash;
       };
 
       auto tokens = tokens_ | filter(is_dash);
 
       for (auto it = tokens.begin(); it != tokens.end(); ++it) {
-        auto next_token = std::ranges::find_if(it.base(), tokens_.end(), [](const Token& token) {
-          return token.kind != TokenKind::Delimiter;
-        });
+        auto next_token = std::ranges::find_if(it.base(), tokens_.end(), is_not_delimiter_token);
         if (next_token != tokens_.end() && is_numeric_token(*next_token)) {
           add_element_from_token(ElementKind::EpisodeNumber, *next_token);
           return;
