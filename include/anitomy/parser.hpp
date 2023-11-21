@@ -99,7 +99,7 @@ public:
     if (options.parse_anime_season) search_anime_season();
     if (options.parse_episode_number) search_volume_number();
     if (options.parse_episode_number) search_episode_number();
-    search_anime_title();
+    if (options.parse_anime_title) search_anime_title();
     if (options.parse_release_group) search_release_group();
     if (options.parse_episode_title) search_episode_title();
   }

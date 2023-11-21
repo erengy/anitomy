@@ -4,6 +4,7 @@ namespace anitomy {
 
 struct Options {
   bool parse_anime_season = true;
+  bool parse_anime_title = true;
   bool parse_anime_year = true;
   bool parse_episode_number = true;
   bool parse_episode_title = true;
