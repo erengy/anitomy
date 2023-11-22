@@ -289,7 +289,7 @@ private:
   }
 
   inline void search_episode_number() noexcept {
-    // episode prefix (e.g. `EP1`, `Episode 1`, `Vol.1`...)
+    // episode prefix (e.g. `E1`, `EP1`, `Episode 1`...)
     {
       static constexpr auto is_episode_keyword = [](const Token& token) {
         return token.keyword && token.keyword->kind == KeywordKind::Episode;
@@ -303,6 +303,22 @@ private:
         if (is_free_token(*token) && is_numeric_token(*token)) {
           add_element_from_token(ElementKind::EpisodeNumber, *token);
           episode_token->element_kind = ElementKind::EpisodeNumber;
+          return;
+        }
+      }
+    }
+    {
+      static constexpr auto is_episode_prefix = [](const Token& token, std::smatch& matches) {
+        static const std::regex pattern{R"((?:E|E[Pp]|Eps)(\d{1,4})(?:[vV](\d))?)"};
+        return std::regex_match(token.value, matches, pattern);
+      };
+
+      std::smatch matches;
+
+      for (auto& token : tokens_ | filter(is_free_token)) {
+        if (is_episode_prefix(token, matches)) {
+          add_element_from_token(ElementKind::EpisodeNumber, token, matches[1].str());
+          if (matches[2].matched) add_element(ElementKind::ReleaseVersion, matches[2].str());
           return;
         }
       }
@@ -352,10 +368,7 @@ private:
         if (is_multi_episode(token, matches)) {
           auto lower = matches[1].str();
           auto upper = matches[3].str();
-
-          // Avoid matching expressions such as `009-1` or `5-2`
-          if (to_int(lower) >= to_int(upper)) continue;
-
+          if (to_int(lower) >= to_int(upper)) continue;  // avoid matching `009-1`, `5-2`, etc.
           add_element_from_token(ElementKind::EpisodeNumber, token, lower);
           if (matches[2].matched) add_element(ElementKind::ReleaseVersion, matches[2].str());
           add_element_from_token(ElementKind::EpisodeNumber, token, upper);
@@ -431,20 +444,6 @@ private:
       }
     }
 
-    // partial episode (e.g. `4a`, `111C`)
-    {
-      static constexpr auto is_partial_episode = [](const Token& token) {
-        static const std::regex pattern{R"(\d{1,4}[ABCabc])"};
-        return std::regex_match(token.value, pattern);
-      };
-
-      auto tokens = tokens_ | filter(is_free_token) | filter(is_partial_episode) | take(1);
-      if (!tokens.empty()) {
-        add_element_from_token(ElementKind::EpisodeNumber, tokens.front());
-        return;
-      }
-    }
-
     // number sign (e.g. `#01`, `#02-03v2`)
     {
       static constexpr auto is_number_sign = [](const Token& token, std::smatch& matches) {
@@ -464,7 +463,22 @@ private:
       }
     }
 
-    // japanese counter (U+8A71)
+    // japanese counter (e.g. `第01話`)
+    {
+      static constexpr auto is_japanese_counter = [](const Token& token, std::smatch& matches) {
+        static const std::regex pattern{"(?:第)?(\\d{1,4})話"};
+        return std::regex_match(token.value, matches, pattern);
+      };
+
+      std::smatch matches;
+
+      for (auto& token : tokens_ | filter(is_free_token)) {
+        if (is_japanese_counter(token, matches)) {
+          add_element_from_token(ElementKind::EpisodeNumber, token, matches[1].str());
+          return;
+        }
+      }
+    }
 
     // equivalent numbers (e.g. `01 (176)`, `29 (04)`)
 
@@ -485,7 +499,7 @@ private:
       }
     }
 
-    // isolated numbers (e.g. `[12]`, `(2006)`)
+    // isolated number (e.g. `[12]`, `(2006)`)
     {
       using window_t = std::tuple<Token&, Token&, Token&>;
 
@@ -508,8 +522,22 @@ private:
       }
     }
 
+    // partial episode (e.g. `4a`, `111C`)
+    {
+      static constexpr auto is_partial_episode = [](const Token& token) {
+        static const std::regex pattern{R"(\d{1,4}[ABCabc])"};
+        return std::regex_match(token.value, pattern);
+      };
+
+      auto tokens = tokens_ | filter(is_free_token) | filter(is_partial_episode) | take(1);
+      if (!tokens.empty()) {
+        add_element_from_token(ElementKind::EpisodeNumber, tokens.front());
+        return;
+      }
+    }
+
     // last number
-    // @TODO: should not parse `1.11`
+    // @TODO: should not parse `1.11`, `Part 2`
     {
       auto tokens = tokens_ | reverse | filter(is_free_token) | filter(is_numeric_token) | take(1);
 
