@@ -130,6 +130,7 @@ inline auto keywords =
       // Audio language
       {"DualAudio",            {AudioTerm, 0}},
       {"Dual Audio",           {AudioTerm, 0}},
+      {"Dual-Audio",           {AudioTerm, 0}},
 
       // Device compatibility
       {"Android",              {DeviceCompatibility, Unidentifiable}},  // e.g. "Dragon Ball Z: Super Android 13"
@@ -175,6 +176,7 @@ inline auto keywords =
       {"Spanish",              {Language, 0}},
       {"ITA",                  {Language, Unidentifiable}},  // e.g. "Bokura ga Ita"
       {"JAP",                  {Language, 0}},
+      {"JPN",                  {Language, 0}},
       {"PT-BR",                {Language, 0}},
       {"VOSTFR",               {Language, 0}},
 
@@ -207,26 +209,46 @@ inline auto keywords =
       {"v4",                   {ReleaseVersion, 0}},
 
       // Source
+      //
+      // Blu-Ray
       {"BD",                   {Source, 0}},
       {"BDRip",                {Source, 0}},
       {"BluRay",               {Source, 0}},
       {"Blu-Ray",              {Source, 0}},
+      // DVD
       {"DVD",                  {Source, 0}},
       {"DVD5",                 {Source, 0}},
       {"DVD9",                 {Source, 0}},
-      {"DVD-R2J",              {Source, 0}},
       {"DVDRip",               {Source, 0}},
       {"DVD-Rip",              {Source, 0}},
       {"R2DVD",                {Source, 0}},
       {"R2J",                  {Source, 0}},
       {"R2JDVD",               {Source, 0}},
       {"R2JDVDRip",            {Source, 0}},
+      // TV
       {"HDTV",                 {Source, 0}},
       {"HDTVRip",              {Source, 0}},
       {"TVRip",                {Source, 0}},
       {"TV-Rip",               {Source, 0}},
+      // Web
+      {"Web",                  {Source, Unidentifiable}},
       {"Webcast",              {Source, 0}},
+      {"WebDL",                {Source, 0}},
+      {"Web-DL",               {Source, 0}},
       {"WebRip",               {Source, 0}},
+      {"AMZN",                 {Source, 0}},  // Amazon Prime
+      {"CR",                   {Source, 0}},  // Crunchyroll
+      {"Crunchyroll",          {Source, 0}},
+      {"DSNP",                 {Source, 0}},  // Disney+
+      {"Funi",                 {Source, 0}},  // Funimation
+      {"Funimation",           {Source, 0}},
+      {"HIDI",                 {Source, 0}},  // Hidive
+      {"Hidive",               {Source, 0}},
+      {"Hulu",                 {Source, 0}},
+      {"Netflix",              {Source, 0}},
+      {"NF",                   {Source, 0}},  // Netflix
+      {"VRV",                  {Source, 0}},
+      {"YouTube",              {Source, 0}},
 
       // Subtitles
       {"ASS",                  {Subtitles, 0}},
@@ -245,7 +267,7 @@ inline auto keywords =
       {"Multi Sub",            {Subtitles, 0}},
 
       // Video resolution
-      {"1080p",                {VideoResolution, Unbounded}},  // e.g. `BD1080p`
+      {"1080p",                {VideoResolution, Unbounded}},
       {"1440p",                {VideoResolution, Unbounded}},
       {"2160p",                {VideoResolution, Unbounded}},
 
