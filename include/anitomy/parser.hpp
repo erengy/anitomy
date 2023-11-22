@@ -182,9 +182,18 @@ private:
     };
 
     // Find all free tokens matching the pattern
-    auto tokens = tokens_ | filter(is_free_token) | filter(is_video_resolution);
-    for (auto& token : tokens) {
+    for (auto& token : tokens_ | filter(is_free_token) | filter(is_video_resolution)) {
       add_element_from_token(ElementKind::VideoResolution, token);
+    }
+
+    // If not found, look for special cases
+    if (!contains(ElementKind::VideoResolution)) {
+      for (auto& token : tokens_ | filter(is_free_token) | filter(is_numeric_token)) {
+        if (token.value == "1080") {
+          add_element_from_token(ElementKind::VideoResolution, token);
+          return;
+        }
+      }
     }
   }
 
