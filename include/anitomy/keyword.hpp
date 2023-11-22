@@ -13,7 +13,9 @@ namespace anitomy::detail {
 enum class KeywordKind {
   AnimeSeason,
   AnimeType,
-  AudioTerm,
+  AudioChannels,
+  AudioCodec,
+  AudioLanguage,
   DeviceCompatibility,
   Episode,
   FileExtension,
@@ -24,8 +26,13 @@ enum class KeywordKind {
   ReleaseVersion,
   Source,
   Subtitles,
+  VideoCodec,
+  VideoColorDepth,
+  VideoFormat,
+  VideoFrameRate,
+  VideoProfile,
+  VideoQuality,
   VideoResolution,
-  VideoTerm,
   Volume,
 };
 
@@ -93,44 +100,44 @@ inline auto keywords =
       {"Preview",              {AnimeType, Unidentifiable}},
       {"PV",                   {AnimeType, Unidentifiable}},
 
-      // Audio term
+      // Audio
       //
-      // Audio channels
-      {"2.0ch",                {AudioTerm, 0}},
-      {"2ch",                  {AudioTerm, 0}},
-      {"5.1",                  {AudioTerm, 0}},
-      {"5.1ch",                {AudioTerm, 0}},
-      {"7.1",                  {AudioTerm, 0}},
-      {"7.1ch",                {AudioTerm, 0}},
-      {"DTS",                  {AudioTerm, 0}},
-      {"DTS-ES",               {AudioTerm, 0}},
-      {"DTS5.1",               {AudioTerm, 0}},
-      {"Dolby TrueHD",         {AudioTerm, 0}},
-      {"TrueHD",               {AudioTerm, 0}},
-      {"TrueHD5.1",            {AudioTerm, 0}},
-      // Audio codec
-      {"AAC",                  {AudioTerm, 0}},
-      {"AACX2",                {AudioTerm, 0}},
-      {"AACX3",                {AudioTerm, 0}},
-      {"AACX4",                {AudioTerm, 0}},
-      {"AC3",                  {AudioTerm, 0}},
-      {"EAC3",                 {AudioTerm, 0}},
-      {"E-AC-3",               {AudioTerm, 0}},
-      {"FLAC",                 {AudioTerm, 0}},
-      {"FLACX2",               {AudioTerm, 0}},
-      {"FLACX3",               {AudioTerm, 0}},
-      {"FLACX4",               {AudioTerm, 0}},
-      {"Lossless",             {AudioTerm, 0}},
-      {"MP3",                  {AudioTerm, 0}},
-      {"OGG",                  {AudioTerm, 0}},
-      {"Vorbis",               {AudioTerm, 0}},
-      {"Atmos",                {AudioTerm, 0}},
-      {"Dolby Atmos",          {AudioTerm, 0}},
-      {"Opus",                 {AudioTerm, Unidentifiable}},  // e.g. "Opus.COLORs"
-      // Audio language
-      {"DualAudio",            {AudioTerm, 0}},
-      {"Dual Audio",           {AudioTerm, 0}},
-      {"Dual-Audio",           {AudioTerm, 0}},
+      // Channels
+      {"2.0ch",                {AudioChannels, 0}},
+      {"2ch",                  {AudioChannels, 0}},
+      {"5.1",                  {AudioChannels, 0}},
+      {"5.1ch",                {AudioChannels, 0}},
+      {"7.1",                  {AudioChannels, 0}},
+      {"7.1ch",                {AudioChannels, 0}},
+      {"DTS",                  {AudioChannels, 0}},
+      {"DTS-ES",               {AudioChannels, 0}},
+      {"DTS5.1",               {AudioChannels, 0}},
+      {"Dolby TrueHD",         {AudioChannels, 0}},
+      {"TrueHD",               {AudioChannels, 0}},
+      {"TrueHD5.1",            {AudioChannels, 0}},
+      // Codec
+      {"AAC",                  {AudioCodec, 0}},
+      {"AACX2",                {AudioCodec, 0}},
+      {"AACX3",                {AudioCodec, 0}},
+      {"AACX4",                {AudioCodec, 0}},
+      {"AC3",                  {AudioCodec, 0}},
+      {"EAC3",                 {AudioCodec, 0}},
+      {"E-AC-3",               {AudioCodec, 0}},
+      {"FLAC",                 {AudioCodec, 0}},
+      {"FLACX2",               {AudioCodec, 0}},
+      {"FLACX3",               {AudioCodec, 0}},
+      {"FLACX4",               {AudioCodec, 0}},
+      {"Lossless",             {AudioCodec, 0}},
+      {"MP3",                  {AudioCodec, 0}},
+      {"OGG",                  {AudioCodec, 0}},
+      {"Vorbis",               {AudioCodec, 0}},
+      {"Atmos",                {AudioCodec, 0}},
+      {"Dolby Atmos",          {AudioCodec, 0}},
+      {"Opus",                 {AudioCodec, Unidentifiable}},  // e.g. "Opus.COLORs"
+      // Language
+      {"DualAudio",            {AudioLanguage, 0}},
+      {"Dual Audio",           {AudioLanguage, 0}},
+      {"Dual-Audio",           {AudioLanguage, 0}},
 
       // Device compatibility
       {"Android",              {DeviceCompatibility, Unidentifiable}},  // e.g. "Dragon Ball Z: Super Android 13"
@@ -210,15 +217,16 @@ inline auto keywords =
 
       // Source
       //
-      // Blu-Ray
+      // Blu-ray
       {"BD",                   {Source, 0}},
       {"BDRip",                {Source, 0}},
       {"BluRay",               {Source, 0}},
-      {"Blu-Ray",              {Source, 0}},
+      {"Blu-ray",              {Source, 0}},
       // DVD
       {"DVD",                  {Source, 0}},
       {"DVD5",                 {Source, 0}},
       {"DVD9",                 {Source, 0}},
+      {"DVDISO",               {Source, 0}},
       {"DVDRip",               {Source, 0}},
       {"DVD-Rip",              {Source, 0}},
       {"R2DVD",                {Source, 0}},
@@ -266,63 +274,63 @@ inline auto keywords =
       {"Multisub",             {Subtitles, 0}},
       {"Multi Sub",            {Subtitles, 0}},
 
-      // Video resolution
+      // Video
+      //
+      // Color depth
+      {"8bit",                 {VideoColorDepth, 0}},
+      {"8-bit",                {VideoColorDepth, 0}},
+      {"10bit",                {VideoColorDepth, 0}},
+      {"10bits",               {VideoColorDepth, 0}},
+      {"10-bit",               {VideoColorDepth, 0}},
+      {"10-bits",              {VideoColorDepth, 0}},
+      // Codec
+      {"AV1",                  {VideoCodec, 0}},
+      {"AVC",                  {VideoCodec, 0}},
+      {"DivX",                 {VideoCodec, 0}},  // @Warning: Duplicate
+      {"DivX5",                {VideoCodec, 0}},
+      {"DivX6",                {VideoCodec, 0}},
+      {"H.264",                {VideoCodec, 0}},
+      {"H.265",                {VideoCodec, 0}},
+      {"X.264",                {VideoCodec, 0}},
+      {"H264",                 {VideoCodec, 0}},
+      {"H265",                 {VideoCodec, 0}},
+      {"X264",                 {VideoCodec, 0}},
+      {"X265",                 {VideoCodec, 0}},
+      {"HEVC",                 {VideoCodec, 0}},
+      {"HEVC2",                {VideoCodec, 0}},
+      {"Xvid",                 {VideoCodec, 0}},
+      {"HDR",                  {VideoCodec, 0}},
+      {"DV",                   {VideoCodec, 0}},
+      {"Dolby Vision",         {VideoCodec, 0}},
+      // Format
+      {"AVI",                  {VideoFormat, 0}},  // @Warning: Duplicate
+      {"RMVB",                 {VideoFormat, 0}},  // @Warning: Duplicate
+      {"WMV",                  {VideoFormat, 0}},  // @Warning: Duplicate
+      {"WMV3",                 {VideoFormat, 0}},
+      {"WMV9",                 {VideoFormat, 0}},
+      // Frame rate
+      {"23.976FPS",            {VideoFrameRate, 0}},
+      {"24FPS",                {VideoFrameRate, 0}},
+      {"29.97FPS",             {VideoFrameRate, 0}},
+      {"30FPS",                {VideoFrameRate, 0}},
+      {"60FPS",                {VideoFrameRate, 0}},
+      {"120FPS",               {VideoFrameRate, 0}},
+      // Profile
+      {"Hi10",                 {VideoProfile, 0}},
+      {"Hi10p",                {VideoProfile, 0}},
+      {"Hi444",                {VideoProfile, 0}},
+      {"Hi444P",               {VideoProfile, 0}},
+      {"Hi444PP",              {VideoProfile, 0}},
+      // Quality
+      {"HD",                   {VideoQuality, 0}},
+      {"SD",                   {VideoQuality, 0}},
+      {"HQ",                   {VideoQuality, 0}},
+      {"LQ",                   {VideoQuality, 0}},
+      // Resolution
       {"1080p",                {VideoResolution, Unbounded}},
       {"1440p",                {VideoResolution, Unbounded}},
       {"2160p",                {VideoResolution, Unbounded}},
-
-      // Video term
-      //
-      // Frame rate
-      {"23.976FPS",            {VideoTerm, 0}},
-      {"24FPS",                {VideoTerm, 0}},
-      {"29.97FPS",             {VideoTerm, 0}},
-      {"30FPS",                {VideoTerm, 0}},
-      {"60FPS",                {VideoTerm, 0}},
-      {"120FPS",               {VideoTerm, 0}},
-      // Video codec
-      {"8bit",                 {VideoTerm, 0}},
-      {"8-bit",                {VideoTerm, 0}},
-      {"10bit",                {VideoTerm, 0}},
-      {"10bits",               {VideoTerm, 0}},
-      {"10-bit",               {VideoTerm, 0}},
-      {"10-bits",              {VideoTerm, 0}},
-      {"Hi10",                 {VideoTerm, 0}},
-      {"Hi10p",                {VideoTerm, 0}},
-      {"Hi444",                {VideoTerm, 0}},
-      {"Hi444P",               {VideoTerm, 0}},
-      {"Hi444PP",              {VideoTerm, 0}},
-      {"HDR",                  {VideoTerm, 0}},
-      {"DV",                   {VideoTerm, 0}},
-      {"Dolby Vision",         {VideoTerm, 0}},
-      {"H264",                 {VideoTerm, 0}},
-      {"H265",                 {VideoTerm, 0}},
-      {"H.264",                {VideoTerm, 0}},
-      {"H.265",                {VideoTerm, 0}},
-      {"X264",                 {VideoTerm, 0}},
-      {"X265",                 {VideoTerm, 0}},
-      {"X.264",                {VideoTerm, 0}},
-      {"AVC",                  {VideoTerm, 0}},
-      {"HEVC",                 {VideoTerm, 0}},
-      {"HEVC2",                {VideoTerm, 0}},
-      {"DivX",                 {VideoTerm, 0}},
-      {"DivX5",                {VideoTerm, 0}},
-      {"DivX6",                {VideoTerm, 0}},
-      {"Xvid",                 {VideoTerm, 0}},
-      {"AV1",                  {VideoTerm, 0}},
-      // Video format
-      {"AVI",                  {VideoTerm, 0}},
-      {"RMVB",                 {VideoTerm, 0}},
-      {"WMV",                  {VideoTerm, 0}},
-      {"WMV3",                 {VideoTerm, 0}},
-      {"WMV9",                 {VideoTerm, 0}},
-      // Video quality
-      {"HQ",                   {VideoTerm, 0}},
-      {"LQ",                   {VideoTerm, 0}},
-      // Video resolution
-      {"4K",                   {VideoTerm, 0}},
-      {"HD",                   {VideoTerm, 0}},
-      {"SD",                   {VideoTerm, 0}},
+      {"4K",                   {VideoResolution, 0}},
 
       // Volume
       {"Vol",                  {Volume, 0}},

@@ -29,7 +29,9 @@ constexpr std::string_view to_string(const KeywordKind kind) noexcept {
   switch (kind) {
     case AnimeSeason: return "anime_season";
     case AnimeType: return "anime_type";
-    case AudioTerm: return "audio_term";
+    case AudioChannels: return "audio_channels";
+    case AudioCodec: return "audio_codec";
+    case AudioLanguage: return "audio_language";
     case DeviceCompatibility: return "device_compatibility";
     case Episode: return "episode";
     case FileExtension: return "file_extension";
@@ -40,8 +42,13 @@ constexpr std::string_view to_string(const KeywordKind kind) noexcept {
     case ReleaseVersion: return "release_version";
     case Source: return "source";
     case Subtitles: return "subtitles";
+    case VideoCodec: return "video_codec";
+    case VideoColorDepth: return "video_color_depth";
+    case VideoFormat: return "video_format";
+    case VideoFrameRate: return "video_frame_rate";
+    case VideoProfile: return "video_profile";
+    case VideoQuality: return "video_quality";
     case VideoResolution: return "video_resolution";
-    case VideoTerm: return "video_term";
     case Volume: return "volume";
   }
   // clang-format on

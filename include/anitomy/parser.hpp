@@ -120,7 +120,9 @@ private:
   inline void search_keywords(const Options& options) noexcept {
     static const std::map<KeywordKind, ElementKind> table{
         {KeywordKind::AnimeType, ElementKind::AnimeType},
-        {KeywordKind::AudioTerm, ElementKind::AudioTerm},
+        {KeywordKind::AudioChannels, ElementKind::AudioTerm},
+        {KeywordKind::AudioCodec, ElementKind::AudioTerm},
+        {KeywordKind::AudioLanguage, ElementKind::AudioTerm},
         {KeywordKind::DeviceCompatibility, ElementKind::DeviceCompatibility},
         {KeywordKind::Language, ElementKind::Language},
         {KeywordKind::Other, ElementKind::Other},
@@ -129,8 +131,13 @@ private:
         {KeywordKind::ReleaseVersion, ElementKind::ReleaseVersion},
         {KeywordKind::Source, ElementKind::Source},
         {KeywordKind::Subtitles, ElementKind::Subtitles},
+        {KeywordKind::VideoCodec, ElementKind::VideoTerm},
+        {KeywordKind::VideoColorDepth, ElementKind::VideoTerm},
+        {KeywordKind::VideoFormat, ElementKind::VideoTerm},
+        {KeywordKind::VideoFrameRate, ElementKind::VideoTerm},
+        {KeywordKind::VideoProfile, ElementKind::VideoTerm},
+        {KeywordKind::VideoQuality, ElementKind::VideoTerm},
         {KeywordKind::VideoResolution, ElementKind::VideoResolution},
-        {KeywordKind::VideoTerm, ElementKind::VideoTerm},
     };
 
     static const auto is_allowed = [&options](const Token& token) {
