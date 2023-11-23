@@ -95,6 +95,12 @@ See [other repositories](https://github.com/search?q=anitomy&type=repositories) 
 
 *TODO: Explain the differences between v1 and v2.*
 
+- C++17 → C++23
+- `anitomy::Anitomy::Parse` → `anitomy::parse`
+- UTF-16 `std::wstring` → UTF-8 `std::string`
+- Options
+- Elements
+
 ## License
 
 Anitomy is licensed under [Mozilla Public License 2.0](https://www.mozilla.org/en-US/MPL/2.0/FAQ/).
