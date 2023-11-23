@@ -113,22 +113,22 @@ int main(int argc, char* argv[]) {
   anitomy::detail::Parser parser{tokenizer.tokens()};
   parser.parse(options);
 
-  const std::string output = cli.get("output", "elements");
   const std::string format = cli.get("format", "table");
+  const bool debug = cli.contains("debug");
   const bool pretty = cli.contains("pretty");
   const bool verbose = cli.contains("verbose");
 
-  if (output == "elements") {
-    if (format == "json") {
-      print_elements_json(parser.elements(), pretty);
-    } else {
-      print_elements(parser.elements());
-    }
-  } else if (output == "tokens") {
-    if (format == "json") {
+  if (format == "json") {
+    if (debug) {
       print_tokens_json(parser.tokens(), pretty, verbose);
     } else {
+      print_elements_json(parser.elements(), pretty);
+    }
+  } else if (format == "table") {
+    if (debug) {
       print_tokens(parser.tokens(), verbose);
+    } else {
+      print_elements(parser.elements());
     }
   }
 
