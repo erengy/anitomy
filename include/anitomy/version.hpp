@@ -12,7 +12,7 @@
 namespace anitomy {
 
 [[nodiscard]] inline std::string version() noexcept {
-  static std::string version =
+  std::string version =
       std::format("{}.{}.{}", ANITOMY_VERSION_MAJOR, ANITOMY_VERSION_MINOR, ANITOMY_VERSION_PATCH);
 
   if (!std::string_view{ANITOMY_VERSION_PRE}.empty()) {
