@@ -31,6 +31,10 @@ void print_help() {
   std::println("  --pretty           Pretty print JSON");
 }
 
+void print_error(std::string_view message) {
+  std::println(std::cerr, "Error: {}", message);
+}
+
 void print_elements_table(const std::vector<Element>& elements) {
   using row_t = std::vector<std::string>;
 
@@ -102,7 +106,7 @@ int main(int argc, char* argv[]) {
   }
   if (cli.input().empty()) {
     print_usage();
-    return 0;
+    return 1;
   }
 
   const Options options;
@@ -112,6 +116,11 @@ int main(int argc, char* argv[]) {
   parser.parse(options);
 
   const std::string format = cli.get("format", "table");
+  if (format != "json" && format != "table") {
+    print_error("Invalid format value");
+    return 1;
+  }
+
   const bool debug = cli.contains("debug");
   const bool pretty = cli.contains("pretty");
   const bool verbose = cli.contains("verbose");
