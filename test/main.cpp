@@ -397,11 +397,13 @@ void test_data() {
     auto elements = make_element_map(anitomy::parse(file_name));
 
     for (auto& [name, value] : map) {
-      if (name != "anime_title" && name != "episode_title" && name != "release_group") continue;
+      if (name == "file_name") continue;
       if (!value.holds(json::Value::String)) continue;
       if (elements[name] == value.as_string()) continue;
+      std::println("File:     `{}`", file_name);
+      std::println("Element:  `{}`", name);
       std::println("Expected: `{}`", value.as_string());
-      std::println("     Got: `{}`", elements[name]);
+      std::println("Got:      `{}`", elements[name]);
       std::println("");
     }
   }
