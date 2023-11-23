@@ -29,8 +29,8 @@ public:
     process_tokens();
   }
 
-  [[nodiscard]] constexpr std::vector<Token>& tokens() noexcept {
-    return tokens_;
+  [[nodiscard]] constexpr auto&& tokens(this auto&& self) noexcept {
+    return std::forward<decltype(self)>(self).tokens_;
   }
 
 private:

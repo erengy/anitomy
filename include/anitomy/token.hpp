@@ -44,8 +44,8 @@ public:
   explicit TokenContainer(container_t& tokens) : tokens_{std::move(tokens)} {
   }
 
-  [[nodiscard]] inline const container_t& tokens() const noexcept {
-    return tokens_;
+  [[nodiscard]] constexpr auto&& tokens(this auto&& self) noexcept {
+    return std::forward<decltype(self)>(self).tokens_;
   }
 
 protected:

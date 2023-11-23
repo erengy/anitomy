@@ -18,8 +18,8 @@ namespace anitomy::detail {
 
 class ElementContainer {
 public:
-  [[nodiscard]] const std::vector<Element>& elements() const noexcept {
-    return elements_;
+  [[nodiscard]] constexpr auto&& elements(this auto&& self) noexcept {
+    return std::forward<decltype(self)>(self).elements_;
   }
 
 protected:
