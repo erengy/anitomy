@@ -84,10 +84,10 @@ void print_tokens_json(const std::vector<anitomy::detail::Token>& tokens, bool p
                        bool skip_trivial) {
   using namespace anitomy::detail;
 
-  json::Value items{json::Value::object_t{}};
+  json::Value items{json::Value::array_t{}};
   for (const auto& token : tokens) {
     if (skip_trivial && is_trivial_token(token)) continue;
-    items.as_object().emplace(to_string(token.kind), token.value);
+    items.as_array().emplace_back(token.value);
   }
 
   std::print("{}", json::serialize(items, pretty));
