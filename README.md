@@ -10,7 +10,7 @@ Anitomy is a C++ library and a command-line tool for parsing anime video filenam
 
 ## Example
 
-    [TaigaSubs]_Toradora!_(2008)_-_01v2_-_Tiger_and_Dragon_[1280x720_H.264_FLAC][1234ABCD].mkv
+    [TaigaSubs]_Toradora!_(2008)_-_01v2_-_Tiger_and_Dragon_[1080p_H.264_FLAC][BAD7A16A].mkv
 
 Element|Value
 :------|:----
@@ -20,10 +20,10 @@ Anime year|`2008`
 Episode number|`01`
 Release version|`2`
 Episode title|`Tiger and Dragon`
-Video resolution|`1280x720`
+Video resolution|`1080p`
 Video term|`H.264`
 Audio term|`FLAC`
-File checksum|`1234ABCD`
+File checksum|`BAD7A16A`
 File extension|`mkv`
 
 ## Usage
@@ -37,7 +37,7 @@ Requires a compiler that supports [C++23](https://en.cppreference.com/w/cpp/comp
 #include <anitomy.hpp>
 
 int main() {
-  auto elements = anitomy::parse("[Ouroboros] Fullmetal Alchemist Brotherhood - 01.mkv");
+  auto elements = anitomy::parse("[Ouroboros] Fullmetal Alchemist Brotherhood - 01");
 
   for (auto [kind, value] : elements) {
     std::println("{}\t{}", anitomy::to_string(kind), value);
@@ -58,7 +58,7 @@ release_group   Ouroboros
 Use `--help` to see available options.
 
 ```bash
-anitomy --format=json --pretty "[Ouroboros] Fullmetal Alchemist Brotherhood - 01.mkv"
+anitomy --format=json --pretty "[Ouroboros] Fullmetal Alchemist Brotherhood - 01"
 ```
 
 ```json
@@ -69,78 +69,31 @@ anitomy --format=json --pretty "[Ouroboros] Fullmetal Alchemist Brotherhood - 01
 }
 ```
 
-## How does it work?
+## FAQ
 
-Suppose that we're working on the following filename:
+> **How does it work?**
 
-> `Spice_and_Wolf_Ep01_[1080p,BluRay,x264]_-_THORA.mkv`
+Anitomy makes some educated guesses on how filenames are formed. In more technical terms, the input is split into a sequence of tokens, and the tokens are inspected for various keywords and patterns to extract the elements.
 
-The filename is first split into tokens (brackets and delimiters are omitted here for our convenience):
+> **What should I do if a filename is not being parsed correctly?**
 
-> `Spice` `and` `Wolf` `Ep01` `1080p` `BluRay` `x264` `THORA` `mkv`
+Please report the issue, though it may not be possible to resolve a terribly ambiguous naming scheme.
 
-All tokens are compared against a set of known patterns and keywords. This process generally leaves us with nothing but the release group, anime title, episode number and episode title:
+> **Can I use it for other media such as movies or TV series?**
 
-> `Spice` `and` `Wolf` `Ep01`
+It should work to some extent, but the library is mostly optimized for anime.
 
-The next step is to look for the episode number. Each token that contains a number is analyzed. Here, `Ep01` is identified because it begins with a known episode prefix:
+> **Can I use it on Unicode filenames?**
 
-> `Spice` `and` `Wolf`
+Yes, just make sure your input is UTF-8 encoded and preferably in composed form.
 
-Finally, remaining tokens are combined to form the anime title, which is `Spice and Wolf`. The complete list of elements identified by Anitomy is as follows:
+> **Can I use it in another programming language?**
 
-Element|Value
-:------|:----
-Anime title|`Spice and Wolf`
-Episode number|`01`
-Video resolution|`1080p`
-Source|`BluRay`
-Video term|`x264`
-Release group|`THORA`
-File extension|`mkv`
+See [other repositories](https://github.com/search?q=anitomy&type=repositories) for related projects.
 
-## Why should I use it?
+## Migration
 
-Anime video files are commonly named in a format where the anime title is followed by the episode number, and all the technical details are enclosed in brackets. However, fansub groups tend to use their own naming conventions, and the problem is more complicated than it first appears:
-
-- Element order is not always the same.
-- Technical information is not guaranteed to be enclosed.
-- Brackets and parentheses may be grouping symbols or a part of the anime/episode title.
-- Space and underscore are not the only delimiters in use.
-- A single filename may contain multiple delimiters.
-
-There are so many cases to cover that it's simply not possible to parse all filenames solely with regular expressions. Anitomy tries a different approach, and it succeeds: It's able to parse tens of thousands of filenames per second, with great accuracy.
-
-The following projects make use of Anitomy:
-
-- [Taiga](https://github.com/erengy/taiga)
-- [MAL Updater OS X](https://github.com/chikorita157/malupdaterosx-cocoa)
-- [Hachidori](https://github.com/chikorita157/hachidori)
-- [Shinjiru](https://github.com/Kazakuri/Shinjiru)
-
-See [other repositories](https://github.com/search?utf8=%E2%9C%93&q=anitomy) for related projects (e.g. interfaces, ports, wrappers).
-
-## Are there any exceptions?
-
-Yes, unfortunately. Anitomy fails to identify the anime title and episode number on rare occasions, mostly due to bad naming conventions. See the examples below.
-
-    Arigatou.Shuffle!.Ep08.[x264.AAC][D6E43829].mkv
-
-Here, Anitomy would report that this file is the 8th episode of `Arigatou Shuffle!`, where `Arigatou` is actually the name of the fansub group.
-
-    Spice and Wolf 2
-
-Is this the 2nd episode of `Spice and Wolf`, or a batch release of `Spice and Wolf 2`? Without a file extension, there's no way to know. It's up to you to consider both cases.
-
-## Suggestions to fansub groups
-
-Please consider abiding by these simple rules before deciding on your naming convention:
-
-- Don't enclose anime title, episode number and episode title in brackets. Enclose everything else, including the name of your group.
-- Don't use parentheses to enclose release information; use square brackets instead. Parentheses should only be used if they are a part of the anime/episode title.
-- Don't use multiple delimiters in a single filename. If possible, stick with either space or underscore.
-- Use a separator (e.g. a dash) between anime title and episode number. There are anime titles that end with a number, which creates ambiguity.
-- Indicate the episode interval in batch releases.
+*TODO: Explain the differences between v1 and v2.*
 
 ## License
 
