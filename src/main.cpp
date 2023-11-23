@@ -1,5 +1,6 @@
 #include <print>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "../include/anitomy.hpp"
@@ -11,14 +12,17 @@
 
 namespace {
 
+using namespace anitomy;
+using namespace anitomy::detail;  // don't try this at home
+
 void print_usage() {
-  std::println("anitomy {}", anitomy::version());
+  std::println("anitomy {}", version());
   std::println("Usage: anitomy [options...] <input>");
   std::println("Help: anitomy --help");
 }
 
 void print_help() {
-  std::println("anitomy {}", anitomy::version());
+  std::println("anitomy {}", version());
   std::println("Usage: anitomy [options...] <input>");
   std::println("Options:");
   std::println("  --help             You are here");
@@ -27,21 +31,19 @@ void print_help() {
   std::println("  --pretty           Pretty print JSON");
 }
 
-void print_elements(const std::vector<anitomy::Element>& elements) {
+void print_elements_table(const std::vector<Element>& elements) {
   using row_t = std::vector<std::string>;
 
   std::vector<row_t> rows;
   for (const auto& element : elements) {
-    std::string kind{anitomy::detail::to_string(element.kind)};
+    std::string kind{to_string(element.kind)};
     rows.emplace_back(row_t{kind, element.value});
   }
 
-  anitomy::detail::print_table({"Element", "Value"}, rows);
+  print_table({"Element", "Value"}, rows);
 }
 
-void print_elements_json(const std::vector<anitomy::Element>& elements, bool pretty) {
-  using namespace anitomy::detail;
-
+void print_elements_json(const std::vector<Element>& elements, bool pretty) {
   json::Value items{json::Value::object_t{}};
   for (const auto& element : elements) {
     items.as_object().emplace(to_string(element.kind), element.value);
@@ -50,8 +52,8 @@ void print_elements_json(const std::vector<anitomy::Element>& elements, bool pre
   std::print("{}", json::serialize(items, pretty));
 }
 
-bool is_trivial_token(const anitomy::detail::Token& token) noexcept {
-  using enum anitomy::detail::TokenKind;
+bool is_trivial_token(const Token& token) noexcept {
+  using enum TokenKind;
   switch (token.kind) {
     case OpenBracket:
     case CloseBracket:
@@ -62,8 +64,7 @@ bool is_trivial_token(const anitomy::detail::Token& token) noexcept {
   };
 }
 
-void print_tokens(const std::vector<anitomy::detail::Token>& tokens, bool verbose) {
-  using anitomy::detail::to_string;
+void print_tokens_table(const std::vector<Token>& tokens, bool verbose) {
   using row_t = std::vector<std::string>;
 
   std::vector<row_t> rows;
@@ -77,13 +78,10 @@ void print_tokens(const std::vector<anitomy::detail::Token>& tokens, bool verbos
     });
   }
 
-  anitomy::detail::print_table({"Token", "Keyword", "Element", "Value"}, rows);
+  print_table({"Token", "Keyword", "Element", "Value"}, rows);
 }
 
-void print_tokens_json(const std::vector<anitomy::detail::Token>& tokens, bool pretty,
-                       bool verbose) {
-  using namespace anitomy::detail;
-
+void print_tokens_json(const std::vector<Token>& tokens, bool pretty, bool verbose) {
   json::Value items{json::Value::array_t{}};
   for (const auto& token : tokens) {
     if (!verbose && is_trivial_token(token)) continue;
@@ -96,7 +94,7 @@ void print_tokens_json(const std::vector<anitomy::detail::Token>& tokens, bool p
 }  // namespace
 
 int main(int argc, char* argv[]) {
-  const anitomy::detail::CommandLine cli{argc, argv};
+  const CommandLine cli{argc, argv};
 
   if (cli.contains("help")) {
     print_help();
@@ -107,10 +105,10 @@ int main(int argc, char* argv[]) {
     return 0;
   }
 
-  const anitomy::Options options;
-  anitomy::detail::Tokenizer tokenizer{cli.input()};
+  const Options options;
+  Tokenizer tokenizer{cli.input()};
   tokenizer.tokenize(options);
-  anitomy::detail::Parser parser{tokenizer.tokens()};
+  Parser parser{tokenizer.tokens()};
   parser.parse(options);
 
   const std::string format = cli.get("format", "table");
@@ -126,9 +124,9 @@ int main(int argc, char* argv[]) {
     }
   } else if (format == "table") {
     if (debug) {
-      print_tokens(parser.tokens(), verbose);
+      print_tokens_table(parser.tokens(), verbose);
     } else {
-      print_elements(parser.elements());
+      print_elements_table(parser.elements());
     }
   }
 
