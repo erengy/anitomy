@@ -1947,6 +1947,7 @@
 			"02"
 		],
 		"file_name": "[HorribleSubs] Momokuri - 01+02 [720p]",
+		"id": 30014,
 		"release_group": "HorribleSubs",
 		"video_resolution": "720p"
 	},
@@ -1956,6 +1957,7 @@
 		"episode_number": "1821",
 		"episode_title": "Buddhist Priest-sama is a Ninja",
 		"file_name": "[(´• ω •`)] Nintama Rantarou - S23E1821 - Buddhist Priest-sama is a Ninja.mkv",
+		"id": 1199,
 		"release_group": "(´• ω •`)"
 	},
 	{
@@ -1963,6 +1965,7 @@
 		"anime_title": "Aharen-san wa Hakarenai",
 		"episode_number": "06",
 		"file_name": "[Judas] Aharen-san wa Hakarenai - S01E06v2.mkv",
+		"id": 49520,
 		"release_group": "Judas",
 		"release_version": "2"
 	},
@@ -1973,8 +1976,118 @@
 		"episode_number": "01",
 		"file_checksum": "BB7C6531",
 		"file_name": "[0x539] Somali and the Forest Spirit - S01E01 (WEB 1080p Hi10P AAC) [BB7C6531].mkv",
+		"id": 39575,
 		"release_group": "0x539",
 		"video_resolution": "1080p",
 		"video_term": "Hi10P"
+	},
+	{
+		"anime_title": "Piano no Mori",
+		"anime_season": "2",
+		"anime_type": "TV",
+		"episode_number": "01",
+		"file_name": "Piano no Mori (TV) 2nd Season - 01",
+		"id": 37975
+	},
+	{
+		"anime_title": "Piano no Mori",
+		"anime_season": "2",
+		"anime_type": "TV",
+		"file_name": "Piano no Mori 2 (TV)",
+		"id": 37975
+	},
+	{
+		"anime_title": "Nichijou",
+		"audio_term": "FLAC",
+		"episode_number": "05",
+		"file_checksum": "D7F8E39D",
+		"file_extension": "mkv",
+		"file_name": "[DESS]Nichijou_05_1080.BD.FLAC.Underwater-Commie_[D7F8E39D].mkv",
+		"id": 10165,
+		"release_group": "DESS",
+		"source": "BD",
+		"video_resolution": "1080"
+	},
+	{
+		"anime_season": "2",
+		"anime_title": "Diamond no Ace",
+		"anime_type": "OVA",
+		"file_name": "Diamond no Ace Second Season OVA - 01",
+		"id": 34349
+	},
+	{
+		"anime_title": "Basilisk",
+		"audio_term": "Dual Audio",
+		"episode_number": "18",
+		"episode_title": "A Dawn Without Light",
+		"file_extension": "mkv",
+		"file_name": "[bonkai77].Basilisk.Episode.18.A.Dawn.Without.Light.[BD.1080p.Dual.Audio.x265].mkv",
+		"id": 67,
+		"release_group": "bonkai77",
+		"source": "BD",
+		"video_resolution": "1080p",
+		"video_term": "x265"
+	},
+	{
+		"anime_title": "Citrus",
+		"episode_number": "3",
+		"file_extension": "mp4",
+		"file_name": "Citrus+Episode+3.mp4",
+		"id": 34382
+	},
+	{
+		"anime_title": "kimetsu no yaiba",
+		"episode_number": "25",
+		"file_extension": "mp4",
+		"file_name": "kimetsu-no-yaiba-episode-25-1080p.mp4",
+		"id": 38000,
+		"video_resolution": "1080p"
+	},
+	{
+		"anime_title": "1p",
+		"episode_number": "122",
+		"file_name": "1p-episode-122-sub",
+		"id": 21,
+		"subtitles": "sub"
+	},
+	{
+		"anime_title": "呪術廻戦",
+		"anime_season": "2",
+		"episode_number": "01",
+		"file_name": "呪術廻戦 第2期 01話",
+		"id": 51009
+	},
+	{
+		"anime_title": "NieR:Automata Ver1.1a",
+		"episode_number": "01",
+		"file_name": "NieR:Automata Ver1.1a - 01",
+		"id": 51105
+	},
+	{
+		"anime_season": "01",
+		"anime_title": "NieR Automata Ver1.1a",
+		"episode_number": "10",
+		"file_checksum": "3703AD3A",
+		"file_name": "[Yameii] NieR Automata Ver1.1a - S01E10 [English Dub] [CR WEB-DL 1080p] [3703AD3A]",
+		"id": 51105,
+		"language": "English",
+		"release_group": "Yameii",
+		"source": "WEB-DL",
+		"subtitles": "Dub",
+		"video_resolution": "1080p"
+	},
+	{
+		"anime_title": "The Eminence in Shadow",
+		"anime_season": "01",
+		"audio_term": "DD2.0",
+		"episode_number": "05",
+		"episode_title": "I Am...",
+		"file_extension": "mkv",
+		"file_name": "The.Eminence.in.Shadow.S01E05.I.Am....1080p.BluRay.DD2.0.x265-ExCaLiBuR.mkv",
+		"id": 48316,
+		"release_group": "ExCaLiBuR",
+		"source": "BluRay",
+		"video_resolution": "1080p",
+		"video_term": "x265"
 	}
 ]
