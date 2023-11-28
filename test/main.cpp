@@ -392,15 +392,17 @@ void test_data() {
     if (!item.holds(json::Value::Object)) assert(0 && "Invalid test data");
     auto& map = item.as_object();
 
-    if (!map.contains("file_name")) assert(0 && "Invalid test data");
-    const auto file_name = map["file_name"].as_string();
-    auto elements = make_element_map(anitomy::parse(file_name));
+    if (!map.contains("input")) assert(0 && "Invalid test data");
+    const auto input = map["input"].as_string();
+    auto elements = make_element_map(anitomy::parse(input));
 
-    for (auto& [name, value] : map) {
-      if (name == "file_name") continue;
+    if (!map.contains("output")) assert(0 && "Invalid test data");
+    auto& output = map["output"].as_object();
+
+    for (auto& [name, value] : output) {
       if (!value.holds(json::Value::String)) continue;
       if (elements[name] == value.as_string()) continue;
-      std::println("File:     `{}`", file_name);
+      std::println("Input:    `{}`", input);
       std::println("Element:  `{}`", name);
       std::println("Expected: `{}`", value.as_string());
       std::println("Got:      `{}`", elements[name]);
