@@ -34,6 +34,7 @@ constexpr std::string_view to_string(const KeywordKind kind) noexcept {
     case AudioLanguage: return "audio_language";
     case DeviceCompatibility: return "device_compatibility";
     case Episode: return "episode";
+    case EpisodeType: return "episode_type";
     case FileExtension: return "file_extension";
     case Language: return "language";
     case Other: return "other";

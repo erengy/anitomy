@@ -124,6 +124,7 @@ private:
         {KeywordKind::AudioCodec, ElementKind::AudioTerm},
         {KeywordKind::AudioLanguage, ElementKind::AudioTerm},
         {KeywordKind::DeviceCompatibility, ElementKind::DeviceCompatibility},
+        {KeywordKind::EpisodeType, ElementKind::AnimeType},
         {KeywordKind::Language, ElementKind::Language},
         {KeywordKind::Other, ElementKind::Other},
         {KeywordKind::ReleaseGroup, ElementKind::ReleaseGroup},

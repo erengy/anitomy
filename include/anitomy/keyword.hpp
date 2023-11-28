@@ -18,6 +18,7 @@ enum class KeywordKind {
   AudioLanguage,
   DeviceCompatibility,
   Episode,
+  EpisodeType,
   FileExtension,
   Language,
   Other,
@@ -91,14 +92,6 @@ inline auto keywords =
       {"SP",                   {AnimeType, Unidentifiable}},  // e.g. "Yumeiro Patissiere SP Professional"
       {"Special",              {AnimeType, Unidentifiable}},
       {"Specials",             {AnimeType, Unidentifiable}},
-      {"OP",                   {AnimeType, Unidentifiable}},
-      {"Opening",              {AnimeType, Unidentifiable}},
-      {"ED",                   {AnimeType, Unidentifiable}},
-      {"Ending",               {AnimeType, Unidentifiable}},
-      {"NCED",                 {AnimeType, 0}},
-      {"NCOP",                 {AnimeType, 0}},
-      {"Preview",              {AnimeType, Unidentifiable}},
-      {"PV",                   {AnimeType, Unidentifiable}},
 
       // Audio
       //
@@ -157,6 +150,16 @@ inline auto keywords =
       {"Episódio",             {Episode, 0}},
       {"Capitulo",             {Episode, 0}},
       {"Folge",                {Episode, 0}},
+
+      // Episode type
+      {"OP",                   {EpisodeType, Unidentifiable}},
+      {"Opening",              {EpisodeType, Unidentifiable}},
+      {"ED",                   {EpisodeType, Unidentifiable}},
+      {"Ending",               {EpisodeType, Unidentifiable}},
+      {"NCED",                 {EpisodeType, 0}},
+      {"NCOP",                 {EpisodeType, 0}},
+      {"Preview",              {EpisodeType, Unidentifiable}},
+      {"PV",                   {EpisodeType, Unidentifiable}},
 
       // File extension
       {"3gp",                  {FileExtension, 0}},
