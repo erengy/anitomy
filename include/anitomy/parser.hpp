@@ -185,7 +185,7 @@ private:
   inline void search_video_resolution() noexcept {
     // A video resolution can be in `1080p` or `1920x1080` format
     static constexpr auto is_video_resolution = [](const Token& token) {
-      static const std::regex pattern{R"(\d{3,4}p|\d{3,4}[xX×]\d{3,4})"};
+      static const std::regex pattern{R"(\d{3,4}(?:[ip]|[xX×]\d{3,4}[ip]?))"};
       return std::regex_match(token.value, pattern);
     };
 

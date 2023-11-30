@@ -2488,5 +2488,25 @@
             "release_group": "ExCaLiBuR",
             "file_extension": "mkv"
         }
+    },
+    {
+        "input": "Bubblegum Crisis (BDRip 1440x1080p x265 HEVC TrueHD, AAC 2.0x)(Dual Audio)[sxales](v2)",
+        "mal_id": 1347,
+        "output": {
+            "anime_title": "Bubblegum Crisis",
+            "source": "BDRip",
+            "video_resolution": "1440x1080p",
+            "video_term": [
+                "x265",
+                "HEVC"
+            ],
+            "audio_term": [
+                "TrueHD",
+                "AAC",
+                "Dual Audio"
+            ],
+            "release_group": "sxales",
+            "release_version": "2"
+        }
     }
 ]
