@@ -19,16 +19,9 @@ enum class TokenKind {
   Text,
 };
 
-enum class DelimiterKind {
-  Space,
-  Dash,
-  Other,
-};
-
 struct Token {
   TokenKind kind;
   std::string value;
-  std::optional<DelimiterKind> delimiter_kind;
   std::optional<Keyword> keyword;
   std::optional<ElementKind> element_kind;
   bool is_enclosed = false;  // token is enclosed in brackets

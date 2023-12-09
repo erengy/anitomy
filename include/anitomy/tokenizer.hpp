@@ -6,6 +6,8 @@
 #include <string_view>
 #include <vector>
 
+#include "bracket.hpp"
+#include "delimiter.hpp"
 #include "keyword.hpp"
 #include "options.hpp"
 #include "token.hpp"
@@ -52,11 +54,10 @@ private:
       };
     }
 
-    if (auto delimiter_kind = to_delimiter_kind(peek())) {
+    if (is_delimiter(peek())) {
       return Token{
           .kind = TokenKind::Delimiter,
           .value = take(),
-          .delimiter_kind = *delimiter_kind,
       };
     }
 
@@ -92,87 +93,12 @@ private:
     }
   }
 
-  [[nodiscard]] static constexpr bool is_open_bracket(const char32_t ch) noexcept {
-    switch (ch) {
-      case U'(':       // parenthesis
-      case U'[':       // square bracket
-      case U'{':       // curly bracket
-      case U'\u300C':  // corner bracket
-      case U'\u300E':  // white corner bracket
-      case U'\u3010':  // black lenticular bracket
-      case U'\uFF08':  // fullwidth parenthesis
-      case U'\uFF3B':  // fullwidth square bracket
-      case U'\uFF5B':  // fullwidth curly bracket
-        return true;
-      default:
-        return false;
-    }
-  }
-
-  [[nodiscard]] static constexpr bool is_close_bracket(const char32_t ch) noexcept {
-    switch (ch) {
-      case U')':       // parenthesis
-      case U']':       // square bracket
-      case U'}':       // curly bracket
-      case U'\u300D':  // corner bracket
-      case U'\u300F':  // white corner bracket
-      case U'\u3011':  // black lenticular bracket
-      case U'\uFF09':  // fullwidth parenthesis
-      case U'\uFF3D':  // fullwidth square bracket
-      case U'\uFF5D':  // fullwidth curly bracket
-        return true;
-      default:
-        return false;
-    }
-  }
-
-  [[nodiscard]] static constexpr bool is_bracket(const char32_t ch) noexcept {
-    return is_open_bracket(ch) || is_close_bracket(ch);
-  }
-
-  [[nodiscard]] static constexpr std::optional<DelimiterKind> to_delimiter_kind(
-      const char32_t ch) noexcept {
-    switch (ch) {
-      case U' ':       // space
-      case U'\t':      // character tabulation
-      case U'\u00A0':  // no-break space
-      case U'\u200B':  // zero width space
-      case U'\u3000':  // ideographic space
-        return DelimiterKind::Space;
-
-      case U'-':       // hyphen-minus
-      case U'\u00AD':  // soft hyphen
-      case U'\u2010':  // hyphen
-      case U'\u2011':  // non-breaking hyphen
-      case U'\u2012':  // figure dash
-      case U'\u2013':  // en dash
-      case U'\u2014':  // em dash
-      case U'\u2015':  // horizontal bar
-        return DelimiterKind::Dash;
-
-      case U'_':  // used instead of space
-      case U'.':  // used instead of space, problematic (e.g. `AAC2.0.H.264`)
-      case U',':  // used to separate keywords
-      case U'&':  // used for episode ranges
-      case U'+':  // used in torrent titles
-      case U'|':  // used in torrent titles, reserved in Windows
-        return DelimiterKind::Other;
-
-      default:
-        return std::nullopt;
-    }
-  }
-
-  [[nodiscard]] static constexpr bool is_delimiter(const char32_t ch) noexcept {
-    return to_delimiter_kind(ch).has_value();
-  }
-
   [[nodiscard]] static constexpr bool is_text(const char32_t ch) noexcept {
     return !is_bracket(ch) && !is_delimiter(ch);
   }
 
   [[nodiscard]] static constexpr bool is_word_boundary(const char32_t ch) noexcept {
-    return is_bracket(ch) || is_delimiter(ch);
+    return !is_text(ch);
   }
 
   [[nodiscard]] constexpr bool is_eof() const noexcept {

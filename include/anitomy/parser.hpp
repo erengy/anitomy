@@ -9,6 +9,7 @@
 #include <string_view>
 #include <vector>
 
+#include "delimiter.hpp"
 #include "element.hpp"
 #include "options.hpp"
 #include "token.hpp"
@@ -492,11 +493,11 @@ private:
 
     // separated number (e.g. ` - 08`)
     {
-      static constexpr auto is_dash = [](const Token& token) {
-        return token.kind == TokenKind::Delimiter && token.delimiter_kind == DelimiterKind::Dash;
+      static constexpr auto is_dash_token = [](const Token& token) {
+        return token.kind == TokenKind::Delimiter && is_dash(token.value.front());
       };
 
-      auto tokens = tokens_ | filter(is_dash);
+      auto tokens = tokens_ | filter(is_dash_token);
 
       for (auto it = tokens.begin(); it != tokens.end(); ++it) {
         auto next_token = std::ranges::find_if(it.base(), tokens_.end(), is_not_delimiter_token);
