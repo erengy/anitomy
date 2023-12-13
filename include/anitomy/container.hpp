@@ -4,6 +4,7 @@
 #include <functional>
 #include <ranges>
 #include <set>
+#include <span>
 #include <string>
 #include <utility>
 #include <vector>
@@ -79,7 +80,6 @@ protected:
     elements_.emplace_back(kind, std::string{value});
   }
 
-// private:
   std::vector<Element> elements_;
 };
 
@@ -109,5 +109,19 @@ protected:
 
   container_t tokens_;
 };
+
+inline TokenContainer::iterator_t find_prev_token(TokenContainer::container_t& container,
+                                                  TokenContainer::iterator_t it,
+                                                  TokenContainer::predicate_t predicate) noexcept {
+  auto [token, end] = std::ranges::find_last_if(container.begin(), it, predicate);
+  return token;
+}
+
+inline TokenContainer::iterator_t find_next_token(TokenContainer::container_t& container,
+                                                  TokenContainer::iterator_t it,
+                                                  TokenContainer::predicate_t predicate) noexcept {
+  if (it == container.end()) return container.end();
+  return std::ranges::find_if(std::next(it), container.end(), predicate);
+}
 
 }  // namespace anitomy::detail

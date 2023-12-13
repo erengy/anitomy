@@ -13,6 +13,12 @@
 #include "delimiter.hpp"
 #include "element.hpp"
 #include "options.hpp"
+#include "parser/anime_season.hpp"
+#include "parser/anime_year.hpp"
+#include "parser/file_checksum.hpp"
+#include "parser/file_extension.hpp"
+#include "parser/video_resolution.hpp"
+#include "parser/volume_number.hpp"
 #include "token.hpp"
 #include "util.hpp"
 
@@ -28,32 +34,60 @@ public:
   }
 
   inline void parse(const Options& options) noexcept {
-    if (options.parse_file_extension) search_file_extension();
-    search_keywords(options);
-    if (options.parse_file_checksum) search_file_checksum();
-    if (options.parse_video_resolution) search_video_resolution();
-    if (options.parse_anime_year) search_anime_year();
-    if (options.parse_anime_season) search_anime_season();
-    if (options.parse_episode_number) search_volume_number();
-    if (options.parse_episode_number) search_episode_number();
-    if (options.parse_anime_title) search_anime_title();
-    if (options.parse_release_group) search_release_group();
-    if (options.parse_episode_title) search_episode_title();
-  }
-
-private:
-  inline void search_file_extension() noexcept {
-    if (tokens_.size() < 2) return;
-
-    auto tokens = tokens_ | reverse | take(2);
-
-    if (tokens[0].keyword && tokens[0].keyword->kind == KeywordKind::FileExtension) {
-      if (is_delimiter_token(tokens[1]) && tokens[1].value == ".") {
-        add_element_from_token(ElementKind::FileExtension, tokens[0]);
+    if (options.parse_file_extension) {
+      if (auto element = parse_file_extension(tokens_)) {
+        elements_.emplace_back(*element);
       }
+    }
+
+    search_keywords(options);
+
+    if (options.parse_file_checksum) {
+      if (auto element = parse_file_checksum(tokens_)) {
+        elements_.emplace_back(*element);
+      }
+    }
+
+    if (options.parse_video_resolution) {
+      if (auto elements = parse_video_resolution(tokens_); !elements.empty()) {
+        std::ranges::move(elements, std::back_inserter(elements_));
+      }
+    }
+
+    if (options.parse_anime_year) {
+      if (auto element = parse_anime_year(tokens_)) {
+        elements_.emplace_back(*element);
+      }
+    }
+
+    if (options.parse_anime_season) {
+      if (auto element = parse_anime_season(tokens_)) {
+        elements_.emplace_back(*element);
+      }
+    }
+
+    if (options.parse_episode_number) {
+      if (auto element = parse_volume_number(tokens_)) {
+        elements_.emplace_back(*element);
+      }
+
+      search_episode_number();
+    }
+
+    if (options.parse_anime_title) {
+      search_anime_title();
+    }
+
+    if (options.parse_release_group) {
+      search_release_group();
+    }
+
+    if (options.parse_episode_title) {
+      search_episode_title();
     }
   }
 
+private:
   inline void search_keywords(const Options& options) noexcept {
     static const std::map<KeywordKind, ElementKind> table{
         {KeywordKind::AnimeType, ElementKind::AnimeType},
@@ -102,133 +136,6 @@ private:
       if (!is_allowed(token)) continue;
       if (const auto it = table.find(token.keyword->kind); it != table.end()) {
         add_element_from_token(it->second, token, token_value(token));
-      }
-    }
-  }
-
-  inline void search_file_checksum() noexcept {
-    // A checksum has 8 hexadecimal digits (e.g. `ABCD1234`)
-    static constexpr auto is_checksum = [](const Token& token) {
-      return token.value.size() == 8 && std::ranges::all_of(token.value, is_xdigit);
-    };
-
-    // Find the last free token that is a checksum
-    auto tokens = tokens_ | reverse | filter(is_free_token) | filter(is_checksum) | take(1);
-    if (!tokens.empty()) {
-      add_element_from_token(ElementKind::FileChecksum, tokens.front());
-    }
-  }
-
-  inline void search_video_resolution() noexcept {
-    // A video resolution can be in `1080p` or `1920x1080` format
-    static constexpr auto is_video_resolution = [](const Token& token) {
-      static const std::regex pattern{R"(\d{3,4}(?:[ip]|[xX×]\d{3,4}[ip]?))"};
-      return std::regex_match(token.value, pattern);
-    };
-
-    // Find all free tokens matching the pattern
-    for (auto& token : tokens_ | filter(is_free_token) | filter(is_video_resolution)) {
-      add_element_from_token(ElementKind::VideoResolution, token);
-    }
-
-    // If not found, look for special cases
-    if (!contains(ElementKind::VideoResolution)) {
-      for (auto& token : tokens_ | filter(is_free_token) | filter(is_numeric_token)) {
-        if (token.value == "1080") {
-          add_element_from_token(ElementKind::VideoResolution, token);
-          return;
-        }
-      }
-    }
-  }
-
-  inline void search_anime_year() noexcept {
-    using window_t = std::tuple<Token&, Token&, Token&>;
-
-    static constexpr auto is_isolated = [](window_t tokens) {
-      return std::get<0>(tokens).kind == TokenKind::OpenBracket &&
-             std::get<2>(tokens).kind == TokenKind::CloseBracket;
-    };
-
-    static constexpr auto is_free_number = [](window_t tokens) {
-      auto& token = std::get<1>(tokens);
-      return is_free_token(token) && is_numeric_token(token);
-    };
-
-    static constexpr auto is_anime_year = [](window_t tokens) {
-      const int number = to_int(std::get<1>(tokens).value);
-      return 1950 < number && number < 2050;
-    };
-
-    // Find the first free isolated number within the interval
-    auto tokens = tokens_ | std::views::adjacent<3> | filter(is_isolated) | filter(is_free_number) |
-                  filter(is_anime_year) | take(1);
-    if (!tokens.empty()) {
-      add_element_from_token(ElementKind::AnimeYear, std::get<1>(tokens.front()));
-    }
-  }
-
-  inline void search_anime_season() noexcept {
-    using window_t = std::tuple<Token&, Token&, Token&>;
-
-    static constexpr auto is_anime_season_keyword = [](const Token& token) {
-      return token.keyword && token.keyword->kind == KeywordKind::AnimeSeason;
-    };
-
-    static constexpr auto starts_with_season_keyword = [](window_t tokens) {
-      return is_anime_season_keyword(std::get<0>(tokens)) &&
-             is_delimiter_token(std::get<1>(tokens)) && is_free_token(std::get<2>(tokens));
-    };
-
-    static constexpr auto ends_with_season_keyword = [](window_t tokens) {
-      return is_anime_season_keyword(std::get<2>(tokens)) &&
-             is_delimiter_token(std::get<1>(tokens)) && is_free_token(std::get<0>(tokens));
-    };
-
-    for (auto tokens : tokens_ | std::views::adjacent<3>) {
-      // Check previous token for a number (e.g. `2nd Season`)
-      if (ends_with_season_keyword(tokens)) {
-        auto [token, _, season_token] = tokens;
-        if (auto number = from_ordinal_number(token.value); !number.empty()) {
-          add_element_from_token(ElementKind::AnimeSeason, token, number);
-          season_token.element_kind = ElementKind::AnimeSeason;
-          return;
-        }
-      }
-      // Check next token for a number (e.g. `Season 2`, `Season II`)
-      if (starts_with_season_keyword(tokens)) {
-        auto [season_token, _, token] = tokens;
-        if (is_numeric_token(token)) {
-          add_element_from_token(ElementKind::AnimeSeason, token);
-          season_token.element_kind = ElementKind::AnimeSeason;
-          return;
-        } else if (auto number = from_roman_number(token.value); !number.empty()) {
-          add_element_from_token(ElementKind::AnimeSeason, token, number);
-          season_token.element_kind = ElementKind::AnimeSeason;
-          return;
-        }
-      }
-    }
-
-    // Other season patterns (e.g. `S2`, `第2期`)
-    {
-      static constexpr auto is_season = [](const Token& token, std::smatch& matches) {
-        static const std::regex pattern{"S(\\d{1,2})"};
-        return std::regex_match(token.value, matches, pattern);
-      };
-
-      static constexpr auto is_japanese_counter = [](const Token& token, std::smatch& matches) {
-        static const std::regex pattern{"(?:第)?(\\d{1,2})期"};
-        return std::regex_match(token.value, matches, pattern);
-      };
-
-      std::smatch matches;
-
-      for (auto& token : tokens_ | filter(is_free_token)) {
-        if (is_season(token, matches) || is_japanese_counter(token, matches)) {
-          add_element_from_token(ElementKind::AnimeSeason, token, matches[1].str());
-          return;
-        }
       }
     }
   }
@@ -489,23 +396,6 @@ private:
       if (!tokens.empty()) {
         add_element_from_token(ElementKind::EpisodeNumber, tokens.front());
         return;
-      }
-    }
-  }
-
-  inline void search_volume_number() noexcept {
-    static constexpr auto is_volume_keyword = [](const Token& token) {
-      return token.keyword && token.keyword->kind == KeywordKind::Volume;
-    };
-
-    auto volume_token = std::ranges::find_if(tokens_, is_volume_keyword);
-
-    // Check next token for a number
-    if (auto token = find_next_token(volume_token, is_not_delimiter_token);
-        token != tokens_.end()) {
-      if (is_free_token(*token) && is_numeric_token(*token)) {
-        add_element_from_token(ElementKind::VolumeNumber, *token);
-        volume_token->element_kind = ElementKind::VolumeNumber;
       }
     }
   }
