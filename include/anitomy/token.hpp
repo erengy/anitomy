@@ -28,33 +28,6 @@ struct Token {
   bool is_number = false;    // all characters in `value` are digits
 };
 
-class TokenContainer {
-public:
-  using container_t = std::vector<Token>;
-  using iterator_t = container_t::iterator;
-  using predicate_t = std::function<bool(const Token&)>;
-
-  explicit TokenContainer(container_t& tokens) : tokens_{std::move(tokens)} {
-  }
-
-  [[nodiscard]] constexpr auto&& tokens(this auto&& self) noexcept {
-    return std::forward<decltype(self)>(self).tokens_;
-  }
-
-protected:
-  inline iterator_t find_prev_token(iterator_t it, predicate_t predicate) noexcept {
-    auto [token, end] = std::ranges::find_last_if(tokens_.begin(), it, predicate);
-    return token;
-  }
-
-  inline iterator_t find_next_token(iterator_t it, predicate_t predicate) noexcept {
-    if (it == tokens_.end()) return tokens_.end();
-    return std::ranges::find_if(std::next(it), tokens_.end(), predicate);
-  }
-
-  container_t tokens_;
-};
-
 // A free token is an unidentified text token
 static constexpr bool is_free_token(const Token& token) noexcept {
   return token.kind == TokenKind::Text && !token.element_kind;
