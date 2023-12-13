@@ -29,27 +29,27 @@ struct Token {
 };
 
 // A free token is an unidentified text token
-static constexpr bool is_free_token(const Token& token) noexcept {
+constexpr bool is_free_token(const Token& token) noexcept {
   return token.kind == TokenKind::Text && !token.element_kind;
 }
 
-static constexpr bool is_open_bracket_token(const Token& token) noexcept {
+constexpr bool is_open_bracket_token(const Token& token) noexcept {
   return token.kind == TokenKind::OpenBracket;
 }
 
-static constexpr bool is_delimiter_token(const Token& token) noexcept {
+constexpr bool is_delimiter_token(const Token& token) noexcept {
   return token.kind == TokenKind::Delimiter;
 }
 
-static constexpr bool is_not_delimiter_token(const Token& token) noexcept {
+constexpr bool is_not_delimiter_token(const Token& token) noexcept {
   return token.kind != TokenKind::Delimiter;
 };
 
-static constexpr bool is_keyword_token(const Token& token) noexcept {
+constexpr bool is_keyword_token(const Token& token) noexcept {
   return token.kind == TokenKind::Keyword;
 }
 
-static constexpr bool is_numeric_token(const Token& token) noexcept {
+constexpr bool is_numeric_token(const Token& token) noexcept {
   return token.is_number;
 }
 
