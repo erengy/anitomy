@@ -1215,7 +1215,10 @@
             "source": "BD",
             "video_resolution": "1280x720",
             "video_term": "AVC",
-            "audio_term": "AACx2",
+            "audio_term": [
+                "AACx2",
+                "5.1"
+            ],
             "file_extension": "mp4"
         }
     },
@@ -1245,7 +1248,10 @@
             "source": "BD",
             "video_resolution": "1280x720",
             "video_term": "AVC",
-            "audio_term": "AACx3",
+            "audio_term": [
+                "AACx3",
+                "5.1"
+            ],
             "file_extension": "mp4"
         }
     },
