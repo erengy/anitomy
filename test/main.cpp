@@ -381,11 +381,37 @@ void test_data() {
   if (!data.holds(json::Value::Array)) assert(0 && "Invalid test data");
 
   const auto make_element_map = [](const std::vector<anitomy::Element>& elements) {
-    std::map<std::string, std::string> map;
+    std::map<std::string, std::vector<std::string>> map;
     for (const auto& [kind, value] : elements) {
-      map[std::string{anitomy::detail::to_string(kind)}] = value;
+      map[std::string{anitomy::detail::to_string(kind)}].push_back(value);
     };
     return map;
+  };
+
+  const auto get_value_vector = [](anitomy::detail::json::Value& arr) {
+    std::vector<std::string> values;
+    for (auto& value : arr.as_array()) {
+      values.emplace_back(value.as_string());
+    }
+    return values;
+  };
+
+  const auto vector_to_string = [](const std::vector<std::string>& v) {
+    std::string output;
+    for (const auto& s : v) {
+      if (!output.empty()) output.append(", ");
+      output.append(s);
+    }
+    return output;
+  };
+
+  const auto print_error = [](std::string_view input, std::string_view name,
+                              std::string_view expected_value, std::string_view value) {
+    std::println("Input:    `{}`", input);
+    std::println("Element:  `{}`", name);
+    std::println("Expected: `{}`", expected_value);
+    std::println("Got:      `{}`", value);
+    std::println("");
   };
 
   for (auto& item : data.as_array()) {
@@ -399,14 +425,19 @@ void test_data() {
     if (!map.contains("output")) assert(0 && "Invalid test data");
     auto& output = map["output"].as_object();
 
-    for (auto& [name, value] : output) {
-      if (!value.holds(json::Value::String)) continue;
-      if (elements[name] == value.as_string()) continue;
-      std::println("Input:    `{}`", input);
-      std::println("Element:  `{}`", name);
-      std::println("Expected: `{}`", value.as_string());
-      std::println("Got:      `{}`", elements[name]);
-      std::println("");
+    for (auto& [name, expected_value] : output) {
+      if (expected_value.holds(json::Value::String)) {
+        if (elements[name].size() == 1 && elements[name].front() == expected_value.as_string()) {
+          continue;
+        }
+        print_error(input, name, expected_value.as_string(),
+                    !elements[name].empty() ? elements[name].front() : "");
+      } else if (expected_value.holds(json::Value::Array)) {
+        const auto expected_values = get_value_vector(expected_value);
+        if (elements[name] == expected_values) continue;
+        print_error(input, name, vector_to_string(expected_values),
+                    vector_to_string(elements[name]));
+      }
     }
   }
 }
