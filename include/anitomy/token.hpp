@@ -28,9 +28,8 @@ struct Token {
   bool is_number = false;    // all characters in `value` are digits
 };
 
-// A free token is an unidentified text token
 constexpr bool is_free_token(const Token& token) noexcept {
-  return token.kind == TokenKind::Text && !token.element_kind;
+  return (token.kind == TokenKind::Text || token.kind == TokenKind::Keyword) && !token.element_kind;
 }
 
 constexpr bool is_open_bracket_token(const Token& token) noexcept {
