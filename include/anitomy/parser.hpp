@@ -432,18 +432,22 @@ private:
       return token.element_kind.has_value();
     });
 
-    auto span = std::span(token_begin, token_end);
-
-    // Trim delimiters and open brackets
-    while (span.back().kind == TokenKind::Delimiter || span.back().kind == TokenKind::OpenBracket) {
-      span = span.first(span.size() - 1);
-    }
-
-    // If the interval ends with an enclosed group (e.g. "Anime Title [Fansub]"),
-    // move the upper endpoint back to the beginning of the group. We ignore
-    // parentheses in order to keep certain groups (e.g. "(TV)") intact.
+    // If the interval ends with an enclosed group (e.g. "Anime Title [Fansub]"), move the upper
+    // endpoint back to the beginning of the group. We ignore parentheses in order to keep certain
+    // groups (e.g. "(TV)") intact.
     //
     // @TODO
+
+    // Trim delimiters and open brackets
+    static constexpr auto is_invalid_token = [](const Token& token) {
+      return token.kind == TokenKind::Delimiter || token.kind == TokenKind::OpenBracket;
+    };
+    while (token_end != tokens_.begin() && token_end != tokens_.end() &&
+           is_invalid_token(*std::prev(token_end))) {
+      token_end = std::prev(token_end);
+    }
+
+    auto span = std::span(token_begin, token_end);
 
     // Build anime title
     if (std::string value = build_element_value(span); !value.empty()) {
