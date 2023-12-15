@@ -78,7 +78,7 @@ public:
       search_anime_title();
     }
 
-    if (options.parse_release_group) {
+    if (options.parse_release_group && !contains(ElementKind::ReleaseGroup)) {
       search_release_group();
     }
 
