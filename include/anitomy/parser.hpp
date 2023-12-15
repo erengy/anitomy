@@ -82,7 +82,7 @@ public:
       search_release_group();
     }
 
-    if (options.parse_episode_title) {
+    if (options.parse_episode_title && contains(ElementKind::EpisodeNumber)) {
       search_episode_title();
     }
   }
