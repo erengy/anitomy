@@ -135,7 +135,8 @@ private:
     for (auto& token : tokens_ | filter(is_keyword_token)) {
       if (!is_allowed(token)) continue;
       if (const auto it = table.find(token.keyword->kind); it != table.end()) {
-        add_element_from_token(it->second, token, token_value(token));
+        const bool identify_token = token.keyword->is_identifiable();
+        add_element_from_token(it->second, token, token_value(token), identify_token);
       }
     }
   }
