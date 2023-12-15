@@ -2,7 +2,7 @@
 
 #include <optional>
 #include <ranges>
-#include <vector>
+#include <span>
 
 #include "../container.hpp"
 #include "../element.hpp"
@@ -10,16 +10,16 @@
 
 namespace anitomy::detail {
 
-inline std::optional<Element> parse_volume_number(std::vector<Token>& tokens_) noexcept {
+inline std::optional<Element> parse_volume_number(std::span<Token> tokens) noexcept {
   static constexpr auto is_volume_keyword = [](const Token& token) {
     return token.keyword && token.keyword->kind == KeywordKind::Volume;
   };
 
-  auto volume_token = std::ranges::find_if(tokens_, is_volume_keyword);
+  auto volume_token = std::ranges::find_if(tokens, is_volume_keyword);
 
   // Check next token for a number
-  if (auto token = find_next_token(tokens_, volume_token, is_not_delimiter_token);
-      token != tokens_.end()) {
+  if (auto token = find_next_token(tokens, volume_token, is_not_delimiter_token);
+      token != tokens.end()) {
     if (is_free_token(*token) && is_numeric_token(*token)) {
       token->element_kind = ElementKind::VolumeNumber;
       volume_token->element_kind = ElementKind::VolumeNumber;

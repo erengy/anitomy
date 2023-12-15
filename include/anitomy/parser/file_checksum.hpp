@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <optional>
 #include <ranges>
-#include <vector>
+#include <span>
 
 #include "../element.hpp"
 #include "../token.hpp"
@@ -11,7 +11,7 @@
 
 namespace anitomy::detail {
 
-inline std::optional<Element> parse_file_checksum(std::vector<Token>& tokens_) noexcept {
+inline std::optional<Element> parse_file_checksum(std::span<Token> tokens) noexcept {
   using namespace std::views;
 
   // A checksum has 8 hexadecimal digits (e.g. `ABCD1234`)
@@ -20,11 +20,11 @@ inline std::optional<Element> parse_file_checksum(std::vector<Token>& tokens_) n
   };
 
   // Find the last free token that is a checksum
-  auto tokens = tokens_ | reverse | filter(is_free_token) | filter(is_checksum) | take(1);
+  auto view = tokens | reverse | filter(is_free_token) | filter(is_checksum) | take(1);
 
-  if (tokens.empty()) return std::nullopt;
+  if (view.empty()) return std::nullopt;
 
-  auto& token = tokens.front();
+  auto& token = view.front();
 
   token.element_kind = ElementKind::FileChecksum;
 

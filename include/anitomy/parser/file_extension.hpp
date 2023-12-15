@@ -2,31 +2,35 @@
 
 #include <optional>
 #include <ranges>
-#include <vector>
+#include <span>
 
 #include "../element.hpp"
 #include "../token.hpp"
 
 namespace anitomy::detail {
 
-inline std::optional<Element> parse_file_extension(std::vector<Token>& tokens_) noexcept {
-  if (tokens_.size() < 2) return std::nullopt;
+inline std::optional<Element> parse_file_extension(std::span<Token> tokens) noexcept {
+  static constexpr auto is_file_extension = [](const Token& token) {
+    return token.keyword && token.keyword->kind == KeywordKind::FileExtension;
+  };
 
-  auto tokens = tokens_ | std::views::reverse;
-  auto& last_token = tokens[0];
-  auto& prev_token = tokens[1];
+  static constexpr auto is_dot = [](const Token& token) {
+    return is_delimiter_token(token) && token.value == ".";
+  };
 
-  if (last_token.keyword && last_token.keyword->kind == KeywordKind::FileExtension) {
-    if (is_delimiter_token(prev_token) && prev_token.value == ".") {
-      last_token.element_kind = ElementKind::FileExtension;
-      return Element{
-          .kind = ElementKind::FileExtension,
-          .value = last_token.value,
-      };
-    }
-  }
+  if (tokens.size() < 2) return std::nullopt;
 
-  return std::nullopt;
+  auto view = tokens | std::views::reverse | std::views::adjacent<2>;
+  auto [last_token, prev_token] = view.front();
+
+  if (!is_file_extension(last_token) || !is_dot(prev_token)) return std::nullopt;
+
+  last_token.element_kind = ElementKind::FileExtension;
+
+  return Element{
+      .kind = ElementKind::FileExtension,
+      .value = last_token.value,
+  };
 }
 
 }  // namespace anitomy::detail

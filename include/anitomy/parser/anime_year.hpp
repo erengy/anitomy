@@ -2,15 +2,15 @@
 
 #include <optional>
 #include <ranges>
+#include <span>
 #include <tuple>
-#include <vector>
 
 #include "../element.hpp"
 #include "../token.hpp"
 
 namespace anitomy::detail {
 
-inline std::optional<Element> parse_anime_year(std::vector<Token>& tokens_) noexcept {
+inline std::optional<Element> parse_anime_year(std::span<Token> tokens) noexcept {
   using namespace std::views;
   using window_t = std::tuple<Token&, Token&, Token&>;
 
@@ -30,18 +30,19 @@ inline std::optional<Element> parse_anime_year(std::vector<Token>& tokens_) noex
   };
 
   // Find the first free isolated number within the interval
-  auto tokens = tokens_ | std::views::adjacent<3> | filter(is_isolated) | filter(is_free_number) |
-                filter(is_anime_year) | take(1);
-  if (!tokens.empty()) {
-    auto& token = std::get<1>(tokens.front());
-    token.element_kind = ElementKind::AnimeYear;
-    return Element{
-        .kind = ElementKind::AnimeYear,
-        .value = token.value,
-    };
-  }
+  auto view = tokens | adjacent<3> | filter(is_isolated) | filter(is_free_number) |
+              filter(is_anime_year) | take(1);
 
-  return std::nullopt;
+  if (view.empty()) return std::nullopt;
+
+  auto& token = std::get<1>(view.front());
+
+  token.element_kind = ElementKind::AnimeYear;
+
+  return Element{
+      .kind = ElementKind::AnimeYear,
+      .value = token.value,
+  };
 }
 
 }  // namespace anitomy::detail

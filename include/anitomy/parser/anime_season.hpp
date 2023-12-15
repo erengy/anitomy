@@ -3,16 +3,15 @@
 #include <optional>
 #include <ranges>
 #include <regex>
+#include <span>
 #include <tuple>
-#include <vector>
 
 #include "../element.hpp"
 #include "../token.hpp"
 
 namespace anitomy::detail {
 
-inline std::optional<Element> parse_anime_season(std::vector<Token>& tokens_) noexcept {
-  using namespace std::views;
+inline std::optional<Element> parse_anime_season(std::span<Token> tokens) noexcept {
   using window_t = std::tuple<Token&, Token&, Token&>;
 
   static constexpr auto is_anime_season_keyword = [](const Token& token) {
@@ -29,10 +28,10 @@ inline std::optional<Element> parse_anime_season(std::vector<Token>& tokens_) no
            is_delimiter_token(std::get<1>(tokens)) && is_free_token(std::get<0>(tokens));
   };
 
-  for (auto tokens : tokens_ | std::views::adjacent<3>) {
+  for (auto view : tokens | std::views::adjacent<3>) {
     // Check previous token for a number (e.g. `2nd Season`)
-    if (ends_with_season_keyword(tokens)) {
-      auto [token, _, season_token] = tokens;
+    if (ends_with_season_keyword(view)) {
+      auto [token, _, season_token] = view;
       if (auto number = from_ordinal_number(token.value); !number.empty()) {
         token.element_kind = ElementKind::AnimeSeason;
         season_token.element_kind = ElementKind::AnimeSeason;
@@ -43,21 +42,20 @@ inline std::optional<Element> parse_anime_season(std::vector<Token>& tokens_) no
       }
     }
     // Check next token for a number (e.g. `Season 2`, `Season II`)
-    if (starts_with_season_keyword(tokens)) {
-      auto [season_token, _, token] = tokens;
+    if (starts_with_season_keyword(view)) {
+      auto [season_token, _, token] = view;
+      std::string value;
       if (is_numeric_token(token)) {
-        season_token.element_kind = ElementKind::AnimeSeason;
-        token.element_kind = ElementKind::AnimeSeason;
-        return Element{
-            .kind = ElementKind::AnimeSeason,
-            .value = token.value,
-        };
+        value = token.value;
       } else if (auto number = from_roman_number(token.value); !number.empty()) {
+        value = number;
+      }
+      if (!value.empty()) {
         season_token.element_kind = ElementKind::AnimeSeason;
         token.element_kind = ElementKind::AnimeSeason;
         return Element{
             .kind = ElementKind::AnimeSeason,
-            .value = std::string{number},
+            .value = value,
         };
       }
     }
@@ -77,7 +75,7 @@ inline std::optional<Element> parse_anime_season(std::vector<Token>& tokens_) no
 
     std::smatch matches;
 
-    for (auto& token : tokens_ | filter(is_free_token)) {
+    for (auto& token : tokens | std::views::filter(is_free_token)) {
       if (is_season(token, matches) || is_japanese_counter(token, matches)) {
         token.element_kind = ElementKind::AnimeSeason;
         return Element{

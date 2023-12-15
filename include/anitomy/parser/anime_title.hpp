@@ -2,7 +2,7 @@
 
 #include <optional>
 #include <ranges>
-#include <vector>
+#include <span>
 
 #include "../container.hpp"
 #include "../element.hpp"
@@ -10,22 +10,21 @@
 
 namespace anitomy::detail {
 
-inline std::optional<Element> parse_anime_title(std::vector<Token>& tokens_) noexcept {
+inline std::optional<Element> parse_anime_title(std::span<Token> tokens) noexcept {
   // Find the first free unenclosed token
   auto token_begin = std::ranges::find_if(
-      tokens_, [](const Token& token) { return is_free_token(token) && !token.is_enclosed; });
+      tokens, [](const Token& token) { return is_free_token(token) && !token.is_enclosed; });
 
   // If that doesn't work, find the first unknown token in the second enclosed group (assuming
   // that the first one is the release group)
-  if (token_begin == tokens_.end()) {
+  if (token_begin == tokens.end()) {
     // @TODO
     return std::nullopt;
   }
 
   // Continue until an identifier is found
-  auto token_end = std::ranges::find_if(token_begin, tokens_.end(), [](const Token& token) {
-    return token.element_kind.has_value();
-  });
+  auto token_end = std::ranges::find_if(
+      token_begin, tokens.end(), [](const Token& token) { return token.element_kind.has_value(); });
 
   // If the interval ends with an enclosed group (e.g. "Anime Title [Fansub]"), move the upper
   // endpoint back to the beginning of the group. We ignore parentheses in order to keep certain
@@ -37,7 +36,7 @@ inline std::optional<Element> parse_anime_title(std::vector<Token>& tokens_) noe
   static constexpr auto is_invalid_token = [](const Token& token) {
     return token.kind == TokenKind::Delimiter || token.kind == TokenKind::OpenBracket;
   };
-  while (token_end != tokens_.begin() && token_end != tokens_.end() &&
+  while (token_end != tokens.begin() && token_end != tokens.end() &&
          is_invalid_token(*std::prev(token_end))) {
     token_end = std::prev(token_end);
   }

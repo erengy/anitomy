@@ -2,7 +2,7 @@
 
 #include <algorithm>
 #include <optional>
-#include <vector>
+#include <span>
 
 #include "../container.hpp"
 #include "../element.hpp"
@@ -11,19 +11,19 @@
 namespace anitomy::detail {
 
 // @TODO: https://github.com/erengy/anitomy/issues/13
-inline std::optional<Element> parse_episode_title(std::vector<Token>& tokens_) noexcept {
-  auto token_begin = tokens_.begin();
-  auto token_end = tokens_.begin();
+inline std::optional<Element> parse_episode_title(std::span<Token> tokens) noexcept {
+  auto token_begin = tokens.begin();
+  auto token_end = tokens.begin();
 
   do {
     // Find the first free unenclosed token
-    token_begin = std::ranges::find_if(token_end, tokens_.end(), [](const Token& token) {
+    token_begin = std::ranges::find_if(token_end, tokens.end(), [](const Token& token) {
       return is_free_token(token) && !token.is_enclosed;
     });
-    if (token_begin == tokens_.end()) break;
+    if (token_begin == tokens.end()) break;
 
     // Continue until a bracket or identifier is found
-    token_end = std::ranges::find_if(token_begin, tokens_.end(), [](const Token& token) {
+    token_end = std::ranges::find_if(token_begin, tokens.end(), [](const Token& token) {
       return token.kind == TokenKind::OpenBracket || token.element_kind.has_value();
     });
 
@@ -47,7 +47,7 @@ inline std::optional<Element> parse_episode_title(std::vector<Token>& tokens_) n
       };
     }
     break;
-  } while (token_begin != tokens_.end());
+  } while (token_begin != tokens.end());
 
   return std::nullopt;
 }

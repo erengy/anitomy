@@ -1,10 +1,7 @@
 #pragma once
 
-#include <functional>
 #include <optional>
-#include <ranges>
 #include <string>
-#include <vector>
 
 #include "element.hpp"
 #include "keyword.hpp"

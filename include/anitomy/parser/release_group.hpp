@@ -2,29 +2,29 @@
 
 #include <optional>
 #include <ranges>
-#include <vector>
+#include <span>
 
 #include "../element.hpp"
 #include "../token.hpp"
 
 namespace anitomy::detail {
 
-inline std::optional<Element> parse_release_group(std::vector<Token>& tokens_) noexcept {
-  auto token_begin = tokens_.begin();
-  auto token_end = tokens_.begin();
+inline std::optional<Element> parse_release_group(std::span<Token> tokens) noexcept {
+  auto token_begin = tokens.begin();
+  auto token_end = tokens.begin();
 
   do {
     // Find the first free enclosed token
-    token_begin = std::ranges::find_if(token_end, tokens_.end(), [](const Token& token) {
+    token_begin = std::ranges::find_if(token_end, tokens.end(), [](const Token& token) {
       return is_free_token(token) && token.is_enclosed;
     });
-    if (token_begin == tokens_.end()) break;
+    if (token_begin == tokens.end()) break;
 
     // Continue until a bracket or identifier is found
-    token_end = std::ranges::find_if(token_begin, tokens_.end(), [](const Token& token) {
+    token_end = std::ranges::find_if(token_begin, tokens.end(), [](const Token& token) {
       return token.kind == TokenKind::CloseBracket || token.element_kind.has_value();
     });
-    if (token_end == tokens_.end()) break;
+    if (token_end == tokens.end()) break;
     if (token_end->kind != TokenKind::CloseBracket) continue;
 
     // @TODO: Ignore if it's not the first non-delimiter token in group
@@ -42,7 +42,7 @@ inline std::optional<Element> parse_release_group(std::vector<Token>& tokens_) n
       };
     }
     break;
-  } while (token_begin != tokens_.end());
+  } while (token_begin != tokens.end());
 
   return std::nullopt;
 }
