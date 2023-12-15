@@ -183,9 +183,20 @@ private:
 
       for (auto it = tokens.begin(); it != tokens.end(); ++it) {
         // skip if delimiter but not '&'
+        auto token = std::ranges::find_if(
+            std::next(it.base().base()), tokens_.end(),
+            [](const Token& token) { return is_not_delimiter_token(token) || token.value == "&"; });
+        if (token == tokens_.end()) continue;
         // check if '&' or "of"
+        if (token->value != "&" && token->value != "of") continue;
         // skip if delimiter
+        auto next_token = find_next_token(token, is_not_delimiter_token);
+        if (next_token == tokens_.end()) continue;
         // check if number
+        if (!is_numeric_token(*next_token)) continue;
+        add_element_from_token(ElementKind::EpisodeNumber, *it);
+        add_element_from_token(ElementKind::EpisodeNumber, *next_token);
+        return;
       }
     }
 
@@ -334,6 +345,9 @@ private:
     }
 
     // equivalent numbers (e.g. `01 (176)`, `29 (04)`)
+    {
+      // @TODO
+    }
 
     // separated number (e.g. ` - 08`)
     {
