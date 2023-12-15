@@ -26,42 +26,6 @@ public:
   }
 
 protected:
-  [[nodiscard]] static std::string build_element_value(
-      const std::span<Token> tokens, const bool transform_delimiters = true) noexcept {
-    std::string element_value;
-
-    const bool has_multiple_delimiters = [&tokens]() {
-      constexpr auto token_value = [](const Token& token) { return token.value.front(); };
-      auto delimiters_view =
-          tokens | std::views::filter(is_delimiter_token) | std::views::transform(token_value);
-      std::set<char> delimiters{delimiters_view.begin(), delimiters_view.end()};
-      return delimiters.size() > 1;
-    }();
-
-    const auto is_transformable = [&](const Token& token) {
-      if (token.kind != TokenKind::Delimiter || !transform_delimiters) return false;
-      switch (token.value.front()) {
-        case ',':
-        case '&':
-          return false;
-        case '_':
-          return true;
-        default:
-          return !has_multiple_delimiters;
-      }
-    };
-
-    for (const auto& token : tokens) {
-      if (is_transformable(token)) {
-        element_value.push_back(' ');
-      } else {
-        element_value.append(token.value);
-      }
-    }
-
-    return element_value;
-  }
-
   constexpr void add_element(ElementKind kind, std::string_view value) noexcept {
     elements_.emplace_back(kind, std::string{value});
   }
@@ -109,6 +73,42 @@ protected:
 
   container_t tokens_;
 };
+
+inline std::string build_element_value(const std::span<Token> tokens,
+                                       const bool transform_delimiters = true) noexcept {
+  std::string element_value;
+
+  const bool has_multiple_delimiters = [&tokens]() {
+    constexpr auto token_value = [](const Token& token) { return token.value.front(); };
+    auto delimiters_view =
+        tokens | std::views::filter(is_delimiter_token) | std::views::transform(token_value);
+    std::set<char> delimiters{delimiters_view.begin(), delimiters_view.end()};
+    return delimiters.size() > 1;
+  }();
+
+  const auto is_transformable = [&](const Token& token) {
+    if (token.kind != TokenKind::Delimiter || !transform_delimiters) return false;
+    switch (token.value.front()) {
+      case ',':
+      case '&':
+        return false;
+      case '_':
+        return true;
+      default:
+        return !has_multiple_delimiters;
+    }
+  };
+
+  for (const auto& token : tokens) {
+    if (is_transformable(token)) {
+      element_value.push_back(' ');
+    } else {
+      element_value.append(token.value);
+    }
+  }
+
+  return element_value;
+}
 
 inline TokenContainer::iterator_t find_prev_token(TokenContainer::container_t& container,
                                                   TokenContainer::iterator_t it,
