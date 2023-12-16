@@ -5,9 +5,9 @@
 
 #include <anitomy.hpp>
 #include <anitomy/detail/cli.hpp>
+#include <anitomy/detail/cli/print.hpp>
 #include <anitomy/detail/format.hpp>
 #include <anitomy/detail/json.hpp>
-#include <anitomy/detail/print.hpp>
 #include <anitomy/version.hpp>
 
 namespace {
