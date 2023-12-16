@@ -3,8 +3,8 @@
 #include <optional>
 #include <string>
 
-#include "element.hpp"
-#include "keyword.hpp"
+#include <anitomy/detail/keyword.hpp>
+#include <anitomy/element.hpp>
 
 namespace anitomy::detail {
 

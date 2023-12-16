@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-#include "token.hpp"
+#include <anitomy/detail/token.hpp>
 
 namespace anitomy::detail {
 

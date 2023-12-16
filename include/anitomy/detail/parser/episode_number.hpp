@@ -5,11 +5,11 @@
 #include <span>
 #include <vector>
 
-#include "../container.hpp"
-#include "../delimiter.hpp"
-#include "../element.hpp"
-#include "../token.hpp"
-#include "../util.hpp"
+#include <anitomy/detail/container.hpp>
+#include <anitomy/detail/delimiter.hpp>
+#include <anitomy/detail/token.hpp>
+#include <anitomy/detail/util.hpp>
+#include <anitomy/element.hpp>
 
 namespace anitomy::detail {
 

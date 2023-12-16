@@ -5,8 +5,8 @@
 #include <span>
 #include <vector>
 
-#include "../element.hpp"
-#include "../token.hpp"
+#include <anitomy/detail/token.hpp>
+#include <anitomy/element.hpp>
 
 namespace anitomy::detail {
 

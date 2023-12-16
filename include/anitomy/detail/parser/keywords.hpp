@@ -7,9 +7,9 @@
 #include <string_view>
 #include <vector>
 
-#include "../element.hpp"
-#include "../options.hpp"
-#include "../token.hpp"
+#include <anitomy/detail/token.hpp>
+#include <anitomy/element.hpp>
+#include <anitomy/options.hpp>
 
 namespace anitomy::detail {
 

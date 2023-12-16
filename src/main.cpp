@@ -3,12 +3,12 @@
 #include <string_view>
 #include <vector>
 
-#include "../include/anitomy.hpp"
-#include "../include/anitomy/cli.hpp"
-#include "../include/anitomy/format.hpp"
-#include "../include/anitomy/json.hpp"
-#include "../include/anitomy/print.hpp"
-#include "../include/anitomy/version.hpp"
+#include <anitomy.hpp>
+#include <anitomy/detail/cli.hpp>
+#include <anitomy/detail/format.hpp>
+#include <anitomy/detail/json.hpp>
+#include <anitomy/detail/print.hpp>
+#include <anitomy/version.hpp>
 
 namespace {
 

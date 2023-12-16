@@ -10,7 +10,7 @@
 #include <variant>
 #include <vector>
 
-#include "util.hpp"
+#include <anitomy/detail/util.hpp>
 
 // This is an incomplete implementation of the JSON format. It is only supposed to parse a single
 // handcrafted document for testing purposes. Use at your own risk.

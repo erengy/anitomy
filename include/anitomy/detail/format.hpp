@@ -3,9 +3,9 @@
 #include <string_view>
 #include <unordered_map>
 
-#include "element.hpp"
-#include "keyword.hpp"
-#include "token.hpp"
+#include <anitomy/detail/keyword.hpp>
+#include <anitomy/detail/token.hpp>
+#include <anitomy/element.hpp>
 
 namespace anitomy::detail {
 

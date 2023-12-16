@@ -8,13 +8,13 @@
 #include <utility>
 #include <vector>
 
-#include "bracket.hpp"
-#include "delimiter.hpp"
-#include "keyword.hpp"
-#include "options.hpp"
-#include "token.hpp"
-#include "unicode.hpp"
-#include "util.hpp"
+#include <anitomy/detail/bracket.hpp>
+#include <anitomy/detail/delimiter.hpp>
+#include <anitomy/detail/keyword.hpp>
+#include <anitomy/detail/token.hpp>
+#include <anitomy/detail/unicode.hpp>
+#include <anitomy/detail/util.hpp>
+#include <anitomy/options.hpp>
 
 namespace anitomy::detail {
 

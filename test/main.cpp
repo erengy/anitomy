@@ -6,11 +6,11 @@
 #include <print>
 #include <vector>
 
-#include "../include/anitomy.hpp"
-#include "../include/anitomy/cli.hpp"
-#include "../include/anitomy/format.hpp"
-#include "../include/anitomy/json.hpp"
-#include "../include/anitomy/unicode.hpp"
+#include <anitomy.hpp>
+#include <anitomy/detail/cli.hpp>
+#include <anitomy/detail/format.hpp>
+#include <anitomy/detail/json.hpp>
+#include <anitomy/detail/unicode.hpp>
 
 namespace {
 

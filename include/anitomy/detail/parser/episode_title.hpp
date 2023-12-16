@@ -4,9 +4,9 @@
 #include <optional>
 #include <span>
 
-#include "../container.hpp"
-#include "../element.hpp"
-#include "../token.hpp"
+#include <anitomy/detail/container.hpp>
+#include <anitomy/detail/token.hpp>
+#include <anitomy/element.hpp>
 
 namespace anitomy::detail {
 

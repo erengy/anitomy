@@ -4,20 +4,20 @@
 #include <utility>
 #include <vector>
 
-#include "element.hpp"
-#include "options.hpp"
-#include "parser/anime_season.hpp"
-#include "parser/anime_title.hpp"
-#include "parser/anime_year.hpp"
-#include "parser/episode_number.hpp"
-#include "parser/episode_title.hpp"
-#include "parser/file_checksum.hpp"
-#include "parser/file_extension.hpp"
-#include "parser/keywords.hpp"
-#include "parser/release_group.hpp"
-#include "parser/video_resolution.hpp"
-#include "parser/volume_number.hpp"
-#include "token.hpp"
+#include <anitomy/detail/parser/anime_season.hpp>
+#include <anitomy/detail/parser/anime_title.hpp>
+#include <anitomy/detail/parser/anime_year.hpp>
+#include <anitomy/detail/parser/episode_number.hpp>
+#include <anitomy/detail/parser/episode_title.hpp>
+#include <anitomy/detail/parser/file_checksum.hpp>
+#include <anitomy/detail/parser/file_extension.hpp>
+#include <anitomy/detail/parser/keywords.hpp>
+#include <anitomy/detail/parser/release_group.hpp>
+#include <anitomy/detail/parser/video_resolution.hpp>
+#include <anitomy/detail/parser/volume_number.hpp>
+#include <anitomy/detail/token.hpp>
+#include <anitomy/element.hpp>
+#include <anitomy/options.hpp>
 
 namespace anitomy::detail {
 

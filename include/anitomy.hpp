@@ -3,10 +3,10 @@
 #include <string_view>
 #include <vector>
 
-#include "anitomy/element.hpp"
-#include "anitomy/options.hpp"
-#include "anitomy/parser.hpp"
-#include "anitomy/tokenizer.hpp"
+#include <anitomy/detail/parser.hpp>
+#include <anitomy/detail/tokenizer.hpp>
+#include <anitomy/element.hpp>
+#include <anitomy/options.hpp>
 
 namespace anitomy {
 

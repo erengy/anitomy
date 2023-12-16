@@ -6,8 +6,9 @@
 #include <span>
 #include <tuple>
 
-#include "../element.hpp"
-#include "../token.hpp"
+#include <anitomy/detail/token.hpp>
+#include <anitomy/detail/util.hpp>
+#include <anitomy/element.hpp>
 
 namespace anitomy::detail {
 
