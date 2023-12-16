@@ -46,74 +46,74 @@ void test_json() {
 
   {
     auto value = json::parse("");
-    assert(value.holds(json::Value::Object));
+    assert(value.is_object());
     assert(value.as_object().empty());
     assert(json::serialize(value) == "{}");
   }
   {
     auto value = json::parse("invalid");
-    assert(value.holds(json::Value::Object));
+    assert(value.is_object());
     assert(json::serialize(value) == "{}");
   }
   {
     auto value = json::parse("{}");
-    assert(value.holds(json::Value::Object));
+    assert(value.is_object());
     assert(value.as_object().empty());
     assert(json::serialize(value) == "{}");
   }
   {
     auto value = json::parse("[]");
-    assert(value.holds(json::Value::Array));
+    assert(value.is_array());
     assert(value.as_array().empty());
     assert(json::serialize(value) == "[]");
   }
   {
     const auto str = R"("test")";
     auto value = json::parse(str);
-    assert(value.holds(json::Value::String));
+    assert(value.is_string());
     assert(value.as_string() == "test");
     assert(json::serialize(value) == str);
   }
   // {
   //   const auto str = R"("\"test\"")";
   //   auto value = json::parse(str);
-  //   assert(value.holds(json::Value::String));
+  //   assert(value.is_string());
   //   assert(value.as_string() == R"("test")");
   //   assert(json::serialize(value) == str);
   // }
   {
     const auto str = R"("test\\test")";
     auto value = json::parse(str);
-    assert(value.holds(json::Value::String));
+    assert(value.is_string());
     assert(value.as_string() == R"(test\test)");
     assert(json::serialize(value) == str);
   }
   {
     auto value = json::parse("123");
-    assert(value.holds(json::Value::Number));
+    assert(value.is_number());
     assert(value.as_number() == 123);
     assert(json::serialize(value) == "123");
   }
   {
     auto value = json::parse("true");
-    assert(value.holds(json::Value::Boolean));
+    assert(value.is_bool());
     assert(value.as_bool() == true);
     assert(json::serialize(value) == "true");
   }
   {
     auto value = json::parse("false");
-    assert(value.holds(json::Value::Boolean));
+    assert(value.is_bool());
     assert(value.as_bool() == false);
     assert(json::serialize(value) == "false");
   }
   {
     auto value = json::parse("null");
-    assert(value.holds(json::Value::Null));
+    assert(value.is_null());
     assert(json::serialize(value) == "null");
   }
   {
     auto value = json::parse("nullz");
-    assert(value.holds(json::Value::Null));
+    assert(value.is_null());
     assert(json::serialize(value) == "null");
   }
   {
@@ -378,7 +378,7 @@ void test_data() {
   if (!read_file("data.json", file)) assert(0 && "Cannot read test data");
 
   auto data = json::parse(file);
-  if (!data.holds(json::Value::Array)) assert(0 && "Invalid test data");
+  if (!data.is_array()) assert(0 && "Invalid test data");
 
   const auto make_element_map = [](const std::vector<anitomy::Element>& elements) {
     std::map<std::string, std::vector<std::string>> map;
@@ -415,7 +415,7 @@ void test_data() {
   };
 
   for (auto& item : data.as_array()) {
-    if (!item.holds(json::Value::Object)) assert(0 && "Invalid test data");
+    if (!item.is_object()) assert(0 && "Invalid test data");
     auto& map = item.as_object();
 
     if (!map.contains("input")) assert(0 && "Invalid test data");
@@ -426,13 +426,13 @@ void test_data() {
     auto& output = map["output"].as_object();
 
     for (auto& [name, expected_value] : output) {
-      if (expected_value.holds(json::Value::String)) {
+      if (expected_value.is_string()) {
         if (elements[name].size() == 1 && elements[name].front() == expected_value.as_string()) {
           continue;
         }
         print_error(input, name, expected_value.as_string(),
                     !elements[name].empty() ? elements[name].front() : "");
-      } else if (expected_value.holds(json::Value::Array)) {
+      } else if (expected_value.is_array()) {
         const auto expected_values = get_value_vector(expected_value);
         if (elements[name] == expected_values) continue;
         print_error(input, name, vector_to_string(expected_values),
