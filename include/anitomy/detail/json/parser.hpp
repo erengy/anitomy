@@ -144,11 +144,11 @@ private:
   }
 
   [[nodiscard]] inline expected_t<value_t> parse_number() noexcept {
-    static const std::regex pattern{R"(-?(?:0|[1-9]\d*)(\.\d+)?(?:[Ee][-+]?\d+)?)"};
+    static const std::regex pattern{R"(^-?(?:0|[1-9]\d*)(\.\d+)?(?:[Ee][-+]?\d+)?)"};
     const std::string view{view_};
     std::smatch matches;
 
-    if (!std::regex_match(view, matches, pattern)) return error();
+    if (!std::regex_search(view, matches, pattern)) return error();
     const size_t n = matches[0].length();
 
     if (matches[1].matched) {
