@@ -12,13 +12,14 @@ public:
   using string_t = std::string;
   using object_t = std::map<string_t, Value>;
   using array_t = std::vector<Value>;
-  using value_t = std::variant<object_t, array_t, string_t, int, bool, nullptr_t>;
+  using value_t = std::variant<object_t, array_t, string_t, int, float, bool, nullptr_t>;
 
   enum Kind : size_t {
     Object,
     Array,
     String,
-    Number,
+    Integer,
+    Float,
     Boolean,
     Null,
   };
@@ -42,8 +43,12 @@ public:
     return is_string() ? std::get<string_t>(value_) : string_t{};
   }
 
-  [[nodiscard]] inline int as_number() const noexcept {
-    return is_number() ? std::get<int>(value_) : 0;
+  [[nodiscard]] inline int as_integer() const noexcept {
+    return is_integer() ? std::get<int>(value_) : 0;
+  }
+
+  [[nodiscard]] inline float as_float() const noexcept {
+    return is_float() ? std::get<float>(value_) : .0f;
   }
 
   [[nodiscard]] inline bool as_bool() const noexcept {
@@ -63,7 +68,15 @@ public:
   }
 
   [[nodiscard]] inline bool is_number() const noexcept {
-    return holds(Kind::Number);
+    return holds(Kind::Integer) || holds(Kind::Float);
+  }
+
+  [[nodiscard]] inline bool is_integer() const noexcept {
+    return holds(Kind::Integer);
+  }
+
+  [[nodiscard]] inline bool is_float() const noexcept {
+    return holds(Kind::Float);
   }
 
   [[nodiscard]] inline bool is_bool() const noexcept {

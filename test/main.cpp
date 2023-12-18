@@ -1,5 +1,6 @@
 #include <array>
 #include <cassert>
+#include <cmath>
 #include <format>
 #include <limits>
 #include <map>
@@ -43,6 +44,10 @@ void test_cli() {
 
 void test_json() {
   using namespace anitomy::detail;
+
+  static constexpr auto is_equal = [](const float a, const float b) {
+    return std::fabs(a - b) <= std::numeric_limits<float>::epsilon();
+  };
 
   {
     auto value = json::parse("");
@@ -90,9 +95,41 @@ void test_json() {
   }
   {
     auto value = json::parse("123");
-    assert(value.is_number());
-    assert(value.as_number() == 123);
+    assert(value.is_integer());
+    assert(value.as_integer() == 123);
     assert(json::serialize(value) == "123");
+  }
+  {
+    auto value = json::parse("-123");
+    assert(value.is_integer());
+    assert(value.as_integer() == -123);
+    assert(json::serialize(value) == "-123");
+  }
+  {
+    auto value = json::parse("123.45");
+    assert(value.is_float());
+    assert(is_equal(value.as_float(), 123.45f));
+    assert(json::serialize(value) == "123.45");
+  }
+  {
+    auto value = json::parse("-123.45");
+    assert(value.is_float());
+    assert(is_equal(value.as_float(), -123.45f));
+    assert(json::serialize(value) == "-123.45");
+  }
+  {
+    auto value = json::parse("-123.45e-2");
+    assert(value.is_float());
+    assert(is_equal(value.as_float(), -1.2345f));
+    auto a = json::serialize(value);
+    assert(json::serialize(value) == "-1.2345");
+  }
+  {
+    auto value = json::parse("-123.45E+1");
+    assert(value.is_float());
+    assert(is_equal(value.as_float(), -1234.5f));
+    auto a = json::serialize(value);
+    assert(json::serialize(value) == "-1234.5");
   }
   {
     auto value = json::parse("true");

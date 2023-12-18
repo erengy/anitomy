@@ -50,7 +50,7 @@ private:
       if (peek() == '"') {
         return parse_string();
       }
-      if (is_digit(peek())) {
+      if (peek() == '-' || is_digit(peek())) {
         return parse_number();
       }
       if (peek() == 't' || peek() == 'f') {
@@ -122,11 +122,19 @@ private:
     return string;
   }
 
-  [[nodiscard]] inline expected_t<int> parse_number() noexcept {
-    auto text = view_ | std::views::take_while(is_digit);
-    auto n = std::ranges::distance(text);
-    if (!n) return error();
-    return to_int(take(n));
+  [[nodiscard]] inline expected_t<value_t> parse_number() noexcept {
+    static const std::regex pattern{R"(-?(?:0|[1-9]\d*)(\.\d+)?(?:[Ee][-+]?\d+)?)"};
+    const std::string view{view_};
+    std::smatch matches;
+
+    if (!std::regex_match(view, matches, pattern)) return error();
+    const size_t n = matches[0].length();
+
+    if (matches[1].matched) {
+      return to_float(take(n));
+    } else {
+      return to_int(take(n));
+    }
   }
 
   [[nodiscard]] inline expected_t<bool> parse_boolean() noexcept {

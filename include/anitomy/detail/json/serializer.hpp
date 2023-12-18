@@ -36,8 +36,11 @@ private:
       case Value::String:
         serialize_string(value.as_string(), output);
         break;
-      case Value::Number:
-        serialize_number(value.as_number(), output);
+      case Value::Integer:
+        serialize_integer(value.as_integer(), output);
+        break;
+      case Value::Float:
+        serialize_float(value.as_float(), output);
         break;
       case Value::Boolean:
         serialize_boolean(value.as_bool(), output);
@@ -96,7 +99,11 @@ private:
     output.append(std::format(R"("{}")", escape_string(value)));
   }
 
-  static inline void serialize_number(const int value, std::string& output) noexcept {
+  static inline void serialize_integer(const int value, std::string& output) noexcept {
+    output.append(std::format("{}", value));
+  }
+
+  static inline void serialize_float(const float value, std::string& output) noexcept {
     output.append(std::format("{}", value));
   }
 

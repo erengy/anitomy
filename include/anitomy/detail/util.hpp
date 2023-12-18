@@ -57,6 +57,12 @@ constexpr int to_int(const std::string_view str) noexcept {
   return value;
 }
 
+inline float to_float(const std::string_view str) noexcept {
+  float value{.0f};
+  std::from_chars(str.data(), str.data() + str.size(), value);
+  return value;
+}
+
 template <typename Char>
 constexpr Char to_lower(const Char ch) noexcept {
   return ('A' <= ch && ch <= 'Z') ? ch + ('a' - 'A') : ch;
