@@ -145,10 +145,9 @@ private:
 
   [[nodiscard]] inline expected_t<value_t> parse_number() noexcept {
     static const std::regex pattern{R"(^-?(?:0|[1-9]\d*)(\.\d+)?(?:[Ee][-+]?\d+)?)"};
-    const std::string view{view_};
-    std::smatch matches;
+    std::match_results<std::string_view::const_iterator> matches;
 
-    if (!std::regex_search(view, matches, pattern)) return error();
+    if (!std::regex_search(view_.begin(), view_.end(), matches, pattern)) return error();
     const size_t n = matches[0].length();
 
     if (matches[1].matched) {
