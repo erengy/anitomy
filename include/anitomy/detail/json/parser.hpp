@@ -138,22 +138,13 @@ private:
   }
 
   [[nodiscard]] inline expected_t<bool> parse_boolean() noexcept {
-    if (view_.starts_with("true")) {
-      view_.remove_prefix(4);
-      return true;
-    }
-    if (view_.starts_with("false")) {
-      view_.remove_prefix(5);
-      return false;
-    }
+    if (expect_literal("true")) return true;
+    if (expect_literal("false")) return false;
     return error();
   }
 
   [[nodiscard]] inline expected_t<nullptr_t> parse_null() noexcept {
-    if (view_.starts_with("null")) {
-      view_.remove_prefix(4);
-      return nullptr;
-    }
+    if (expect_literal("null")) return nullptr;
     return error();
   }
 
@@ -167,11 +158,17 @@ private:
     return std::string{view};
   }
 
-  inline expected_t<char> expect(const char ch) noexcept {
-    if (!view_.starts_with(ch)) return error();
+  constexpr bool expect(const char ch) noexcept {
+    if (!view_.starts_with(ch)) return false;
     view_.remove_prefix(1);
-    return ch;
+    return true;
   };
+
+  constexpr bool expect_literal(std::string_view literal) noexcept {
+    if (!view_.starts_with(literal)) return false;
+    view_.remove_prefix(literal.size());
+    return true;
+  }
 
   inline void skip_whitespace() noexcept {
     const auto is_whitespace = [](const char ch) {
