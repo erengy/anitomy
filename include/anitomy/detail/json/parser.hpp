@@ -41,51 +41,66 @@ private:
       if (view_.empty()) {
         return object_t{};
       }
-      if (peek() == '{') {
-        return parse_object();
+      switch (peek()) {
+        case '{':
+          return parse_object();
+        case '[':
+          return parse_array();
+        case '"':
+          return parse_string();
+        case '-':
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+          return parse_number();
+        case 't':
+        case 'f':
+          return parse_boolean();
+        case 'n':
+          return parse_null();
+        default:
+          return error();
       }
-      if (peek() == '[') {
-        return parse_array();
-      }
-      if (peek() == '"') {
-        return parse_string();
-      }
-      if (peek() == '-' || is_digit(peek())) {
-        return parse_number();
-      }
-      if (peek() == 't' || peek() == 'f') {
-        return parse_boolean();
-      }
-      if (peek() == 'n') {
-        return parse_null();
-      }
-      return error();
     };
 
     skip_whitespace();
     auto value = parse();
     skip_whitespace();
+
     return value;
   }
 
   [[nodiscard]] inline expected_t<object_t> parse_object() noexcept {
     object_t object;
 
-    if (!expect('{')) return error();
-    skip_whitespace();
+    if (!skip('{')) return error();
+
     while (!view_.empty() && peek() != '}') {
       skip_whitespace();
+
       auto name = parse_string();
       if (!name) return error();
       skip_whitespace();
-      if (!expect(':')) return error();
+
+      if (!skip(':')) return error();
+
       auto value = parse_value();
       if (!value) return error();
+
       object.emplace(*name, std::move(*value));
-      expect(',');
+
+      skip(',');
       skip_whitespace();
     }
-    if (!expect('}')) return error();
+
+    if (!skip('}')) return error();
 
     return object;
   }
@@ -93,22 +108,27 @@ private:
   [[nodiscard]] inline expected_t<array_t> parse_array() noexcept {
     array_t array;
 
-    if (!expect('[')) return error();
-    skip_whitespace();
+    if (!skip('[')) return error();
+
     while (!view_.empty() && peek() != ']') {
       skip_whitespace();
+
       auto value = parse_value();
       if (!value) return error();
+
       array.emplace_back(std::move(*value));
-      expect(',');
+
+      skip(',');
       skip_whitespace();
     }
-    if (!expect(']')) return error();
+
+    if (!skip(']')) return error();
 
     return array;
   }
 
   [[nodiscard]] inline expected_t<string_t> parse_string() noexcept {
+    // @TODO: Allow backslash escapes
     static const auto parse = [this]() -> string_t {
       const auto is_string = [](const char ch) { return ch != '"'; };
       auto text = view_ | std::views::take_while(is_string);
@@ -116,9 +136,10 @@ private:
       return unescape_string(take(n));
     };
 
-    if (!expect('"')) return error();
+    if (!skip('"')) return error();
     string_t string = parse();
-    if (!expect('"')) return error();
+    if (!skip('"')) return error();
+
     return string;
   }
 
@@ -138,13 +159,13 @@ private:
   }
 
   [[nodiscard]] inline expected_t<bool> parse_boolean() noexcept {
-    if (expect_literal("true")) return true;
-    if (expect_literal("false")) return false;
+    if (skip_literal("true")) return true;
+    if (skip_literal("false")) return false;
     return error();
   }
 
   [[nodiscard]] inline expected_t<nullptr_t> parse_null() noexcept {
-    if (expect_literal("null")) return nullptr;
+    if (skip_literal("null")) return nullptr;
     return error();
   }
 
@@ -158,20 +179,20 @@ private:
     return std::string{view};
   }
 
-  constexpr bool expect(const char ch) noexcept {
+  constexpr bool skip(const char ch) noexcept {
     if (!view_.starts_with(ch)) return false;
     view_.remove_prefix(1);
     return true;
   };
 
-  constexpr bool expect_literal(std::string_view literal) noexcept {
+  constexpr bool skip_literal(std::string_view literal) noexcept {
     if (!view_.starts_with(literal)) return false;
     view_.remove_prefix(literal.size());
     return true;
   }
 
-  inline void skip_whitespace() noexcept {
-    const auto is_whitespace = [](const char ch) {
+  constexpr void skip_whitespace() noexcept {
+    constexpr auto is_whitespace = [](const char ch) {
       return ch == ' ' || ch == '\t' || ch == '\r' || ch == '\n';
     };
     while (!view_.empty() && is_whitespace(view_.front())) {
@@ -180,7 +201,7 @@ private:
   }
 
   [[nodiscard]] static inline std::string unescape_string(std::string input) noexcept {
-    static std::regex reserved("\\\\([\"\\\\])");
+    static const std::regex reserved{"\\\\([\"\\\\])"};
     auto output = std::regex_replace(input, reserved, "$1");
     return output;
   };

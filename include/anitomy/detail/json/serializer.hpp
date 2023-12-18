@@ -53,45 +53,55 @@ private:
 
   inline void serialize_object(object_t& object, std::string& output) noexcept {
     output.push_back('{');
+
     if (!object.empty()) {
       if (pretty_) {
         output.push_back('\n');
         indentation_ += 1;
       }
+
       for (auto it = object.begin(); it != object.end(); ++it) {
         auto& [name, value] = *it;
+
         if (pretty_) serialize_indentation(output);
         serialize_string(name, output);
         output.push_back(':');
         if (pretty_) output.push_back(' ');
         serialize_value(value, output);
+
         if (std::next(it) != object.end()) output.push_back(',');
         if (pretty_) output.push_back('\n');
       }
+
       if (pretty_) {
         indentation_ -= 1;
       }
     }
+
     output.push_back('}');
   }
 
   inline void serialize_array(array_t& array, std::string& output) noexcept {
     output.push_back('[');
+
     if (!array.empty()) {
       if (pretty_) {
         output.push_back('\n');
         indentation_ += 1;
       }
+
       for (auto it = array.begin(); it != array.end(); ++it) {
         if (pretty_) serialize_indentation(output);
         serialize_value(*it, output);
         if (std::next(it) != array.end()) output.push_back(',');
         if (pretty_) output.push_back('\n');
       }
+
       if (pretty_) {
         indentation_ -= 1;
       }
     }
+
     output.push_back(']');
   }
 
@@ -120,7 +130,7 @@ private:
   }
 
   [[nodiscard]] static inline std::string escape_string(std::string input) noexcept {
-    static std::regex reserved(R"(["\\])");
+    static const std::regex reserved{R"(["\\])"};
     return std::regex_replace(input, reserved, R"(\$&)");
   };
 
