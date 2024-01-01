@@ -48,9 +48,9 @@ int main() {
 ```
 
 ```
-episode_number  01
-anime_title     Fullmetal Alchemist Brotherhood
 release_group   Ouroboros
+anime_title     Fullmetal Alchemist Brotherhood
+episode_number  01
 ```
 
 ### CLI
@@ -100,6 +100,7 @@ See [other repositories](https://github.com/search?q=anitomy&type=repositories) 
 - UTF-16 `std::wstring` → UTF-8 `std::string`
 - Options
 - Elements
+    - Order by position
 
 ## License
 

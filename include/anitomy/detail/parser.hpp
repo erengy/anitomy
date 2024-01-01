@@ -83,6 +83,8 @@ public:
     if (options.parse_episode_title && contains(ElementKind::EpisodeNumber)) {
       add_element(parse_episode_title(tokens_));
     }
+
+    std::ranges::sort(elements_, {}, &Element::position);
   }
 
 private:
