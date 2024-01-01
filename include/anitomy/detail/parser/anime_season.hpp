@@ -39,6 +39,7 @@ inline std::optional<Element> parse_anime_season(std::span<Token> tokens) noexce
         return Element{
             .kind = ElementKind::AnimeSeason,
             .value = std::string{number},
+            .position = token.position,
         };
       }
     }
@@ -57,6 +58,7 @@ inline std::optional<Element> parse_anime_season(std::span<Token> tokens) noexce
         return Element{
             .kind = ElementKind::AnimeSeason,
             .value = value,
+            .position = token.position,
         };
       }
     }
@@ -82,6 +84,7 @@ inline std::optional<Element> parse_anime_season(std::span<Token> tokens) noexce
         return Element{
             .kind = ElementKind::AnimeSeason,
             .value = matches[1].str(),
+            .position = token.position + matches.position(1),
         };
       }
     }

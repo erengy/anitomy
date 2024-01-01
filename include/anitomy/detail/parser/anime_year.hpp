@@ -42,6 +42,7 @@ inline std::optional<Element> parse_anime_year(std::span<Token> tokens) noexcept
   return Element{
       .kind = ElementKind::AnimeYear,
       .value = token.value,
+      .position = token.position,
   };
 }
 

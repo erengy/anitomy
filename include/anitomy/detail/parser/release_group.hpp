@@ -39,6 +39,7 @@ inline std::optional<Element> parse_release_group(std::span<Token> tokens) noexc
       return Element{
           .kind = ElementKind::ReleaseGroup,
           .value = value,
+          .position = span.front().position,
       };
     }
     break;

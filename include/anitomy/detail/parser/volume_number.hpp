@@ -26,6 +26,7 @@ inline std::optional<Element> parse_volume_number(std::span<Token> tokens) noexc
       return Element{
           .kind = ElementKind::VolumeNumber,
           .value = token->value,
+          .position = token->position,
       };
     }
   }

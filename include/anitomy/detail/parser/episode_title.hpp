@@ -44,6 +44,7 @@ inline std::optional<Element> parse_episode_title(std::span<Token> tokens) noexc
       return Element{
           .kind = ElementKind::EpisodeTitle,
           .value = value,
+          .position = span.front().position,
       };
     }
     break;

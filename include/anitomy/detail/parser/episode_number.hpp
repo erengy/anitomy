@@ -18,14 +18,17 @@ inline std::vector<Element> parse_episode_number(std::span<Token> tokens) noexce
 
   std::vector<Element> elements;
 
-  static const auto add_element = [&elements](ElementKind kind, std::string_view value) {
-    elements.emplace_back(kind, std::string{value});
+  static const auto add_element = [&elements](ElementKind kind, std::string_view value,
+                                              size_t position) {
+    elements.emplace_back(kind, std::string{value}, position);
   };
 
   static const auto add_element_from_token = [&elements](ElementKind kind, Token& token,
-                                                         std::string_view value = {}) {
+                                                         std::string_view value = {},
+                                                         size_t position = std::string::npos) {
     token.element_kind = kind;
-    elements.emplace_back(kind, value.empty() ? token.value : std::string{value});
+    elements.emplace_back(kind, value.empty() ? token.value : std::string{value},
+                          position != std::string::npos ? position : token.position);
   };
 
   // Episode prefix (e.g. `E1`, `EP1`, `Episode 1`)
@@ -56,8 +59,12 @@ inline std::vector<Element> parse_episode_number(std::span<Token> tokens) noexce
 
     for (auto& token : tokens | filter(is_free_token)) {
       if (is_episode_prefix(token, matches)) {
-        add_element_from_token(ElementKind::EpisodeNumber, token, matches[1].str());
-        if (matches[2].matched) add_element(ElementKind::ReleaseVersion, matches[2].str());
+        add_element_from_token(ElementKind::EpisodeNumber, token, matches[1].str(),
+                               token.position + matches.position(1));
+        if (matches[2].matched) {
+          add_element(ElementKind::ReleaseVersion, matches[2].str(),
+                      token.position + matches.position(2));
+        }
         return elements;
       }
     }
@@ -97,8 +104,10 @@ inline std::vector<Element> parse_episode_number(std::span<Token> tokens) noexce
 
     for (auto& token : tokens | filter(is_free_token)) {
       if (is_single_episode(token, matches)) {
-        add_element_from_token(ElementKind::EpisodeNumber, token, matches[1].str());
-        add_element(ElementKind::ReleaseVersion, matches[2].str());
+        add_element_from_token(ElementKind::EpisodeNumber, token, matches[1].str(),
+                               token.position + matches.position(1));
+        add_element(ElementKind::ReleaseVersion, matches[2].str(),
+                    token.position + matches.position(2));
         return elements;
       }
     }
@@ -119,10 +128,18 @@ inline std::vector<Element> parse_episode_number(std::span<Token> tokens) noexce
         auto lower = matches[1].str();
         auto upper = matches[3].str();
         if (to_int(lower) >= to_int(upper)) continue;  // avoid matching `009-1`, `5-2`, etc.
-        add_element_from_token(ElementKind::EpisodeNumber, token, lower);
-        if (matches[2].matched) add_element(ElementKind::ReleaseVersion, matches[2].str());
-        add_element_from_token(ElementKind::EpisodeNumber, token, upper);
-        if (matches[4].matched) add_element(ElementKind::ReleaseVersion, matches[4].str());
+        add_element_from_token(ElementKind::EpisodeNumber, token, lower,
+                               token.position + matches.position(1));
+        if (matches[2].matched) {
+          add_element(ElementKind::ReleaseVersion, matches[2].str(),
+                      token.position + matches.position(2));
+        }
+        add_element_from_token(ElementKind::EpisodeNumber, token, upper,
+                               token.position + matches.position(3));
+        if (matches[4].matched) {
+          add_element(ElementKind::ReleaseVersion, matches[4].str(),
+                      token.position + matches.position(4));
+        }
         return elements;
       }
     }
@@ -145,11 +162,22 @@ inline std::vector<Element> parse_episode_number(std::span<Token> tokens) noexce
     for (auto& token : tokens | filter(is_free_token)) {
       if (is_season_and_episode(token, matches)) {
         if (to_int(matches[1].str()) == 0) continue;
-        add_element(ElementKind::AnimeSeason, matches[1].str());
-        if (matches[2].matched) add_element(ElementKind::AnimeSeason, matches[2].str());
-        add_element_from_token(ElementKind::EpisodeNumber, token, matches[3].str());
-        if (matches[4].matched) add_element(ElementKind::EpisodeNumber, matches[4].str());
-        if (matches[5].matched) add_element(ElementKind::ReleaseVersion, matches[5].str());
+        add_element(ElementKind::AnimeSeason, matches[1].str(),
+                    token.position + matches.position(1));
+        if (matches[2].matched) {
+          add_element(ElementKind::AnimeSeason, matches[2].str(),
+                      token.position + matches.position(2));
+        }
+        add_element_from_token(ElementKind::EpisodeNumber, token, matches[3].str(),
+                               token.position + matches.position(3));
+        if (matches[4].matched) {
+          add_element(ElementKind::EpisodeNumber, matches[4].str(),
+                      token.position + matches.position(4));
+        }
+        if (matches[5].matched) {
+          add_element(ElementKind::ReleaseVersion, matches[5].str(),
+                      token.position + matches.position(5));
+        }
         return elements;
       }
     }
@@ -205,9 +233,16 @@ inline std::vector<Element> parse_episode_number(std::span<Token> tokens) noexce
 
     for (auto& token : tokens | filter(is_free_token)) {
       if (is_number_sign(token, matches)) {
-        add_element_from_token(ElementKind::EpisodeNumber, token, matches[1].str());
-        if (matches[2].matched) add_element(ElementKind::EpisodeNumber, matches[2].str());
-        if (matches[3].matched) add_element(ElementKind::ReleaseVersion, matches[3].str());
+        add_element_from_token(ElementKind::EpisodeNumber, token, matches[1].str(),
+                               token.position + matches.position(1));
+        if (matches[2].matched) {
+          add_element(ElementKind::EpisodeNumber, matches[2].str(),
+                      token.position + matches.position(2));
+        }
+        if (matches[3].matched) {
+          add_element(ElementKind::ReleaseVersion, matches[3].str(),
+                      token.position + matches.position(3));
+        }
         return elements;
       }
     }
@@ -224,7 +259,8 @@ inline std::vector<Element> parse_episode_number(std::span<Token> tokens) noexce
 
     for (auto& token : tokens | filter(is_free_token)) {
       if (is_japanese_counter(token, matches)) {
-        add_element_from_token(ElementKind::EpisodeNumber, token, matches[1].str());
+        add_element_from_token(ElementKind::EpisodeNumber, token, matches[1].str(),
+                               token.position + matches.position(1));
         return elements;
       }
     }

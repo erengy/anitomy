@@ -51,6 +51,7 @@ inline std::optional<Element> parse_anime_title(std::span<Token> tokens) noexcep
     return Element{
         .kind = ElementKind::AnimeTitle,
         .value = value,
+        .position = span.front().position,
     };
   }
 

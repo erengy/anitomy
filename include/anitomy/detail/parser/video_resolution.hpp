@@ -24,7 +24,7 @@ inline std::vector<Element> parse_video_resolution(std::span<Token> tokens) noex
   // Find all free tokens matching the pattern
   for (auto& token : tokens | filter(is_free_token) | filter(is_video_resolution)) {
     token.element_kind = ElementKind::VideoResolution;
-    elements.emplace_back(ElementKind::VideoResolution, token.value);
+    elements.emplace_back(ElementKind::VideoResolution, token.value, token.position);
   }
 
   // If not found, look for special cases
@@ -32,7 +32,7 @@ inline std::vector<Element> parse_video_resolution(std::span<Token> tokens) noex
     for (auto& token : tokens | filter(is_free_token) | filter(is_numeric_token)) {
       if (token.value == "1080") {
         token.element_kind = ElementKind::VideoResolution;
-        elements.emplace_back(ElementKind::VideoResolution, token.value);
+        elements.emplace_back(ElementKind::VideoResolution, token.value, token.position);
         break;
       }
     }

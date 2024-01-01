@@ -419,8 +419,8 @@ void test_data() {
 
   const auto make_element_map = [](const std::vector<anitomy::Element>& elements) {
     std::map<std::string, std::vector<std::string>> map;
-    for (const auto& [kind, value] : elements) {
-      map[std::string{anitomy::detail::to_string(kind)}].push_back(value);
+    for (const auto& element : elements) {
+      map[std::string{anitomy::detail::to_string(element.kind)}].push_back(element.value);
     };
     return map;
   };

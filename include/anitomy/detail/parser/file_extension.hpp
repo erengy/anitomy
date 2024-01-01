@@ -30,6 +30,7 @@ inline std::optional<Element> parse_file_extension(std::span<Token> tokens) noex
   return Element{
       .kind = ElementKind::FileExtension,
       .value = last_token.value,
+      .position = last_token.position,
   };
 }
 

@@ -68,7 +68,7 @@ inline std::vector<Element> parse_keywords(std::span<Token> tokens,
   for (auto& token : tokens | filter(is_keyword_token) | filter(is_allowed)) {
     if (const auto it = table.find(token.keyword->kind); it != table.end()) {
       if (token.keyword->is_identifiable()) token.element_kind = it->second;
-      elements.emplace_back(it->second, token_value(token));
+      elements.emplace_back(it->second, token_value(token), token.position);
     }
   }
 
