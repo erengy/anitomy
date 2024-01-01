@@ -43,16 +43,20 @@ private:
       return std::nullopt;
     }
 
+    const size_t position = input_.size() - view_.size();
+
     if (is_open_bracket(peek())) {
       return Token{
           .kind = TokenKind::OpenBracket,
           .value = take(),
+          .position = position,
       };
     }
     if (is_close_bracket(peek())) {
       return Token{
           .kind = TokenKind::CloseBracket,
           .value = take(),
+          .position = position,
       };
     }
 
@@ -60,6 +64,7 @@ private:
       return Token{
           .kind = TokenKind::Delimiter,
           .value = take(),
+          .position = position,
       };
     }
 
@@ -68,12 +73,14 @@ private:
           .kind = TokenKind::Keyword,
           .value = value,
           .keyword = keyword,
+          .position = position,
       };
     }
 
     return Token{
         .kind = TokenKind::Text,
         .value = take_text(),
+        .position = position,
     };
   }
 
