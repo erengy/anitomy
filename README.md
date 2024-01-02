@@ -93,14 +93,17 @@ See [other repositories](https://github.com/search?q=anitomy&type=repositories) 
 
 ## Migration
 
-*TODO: Explain the differences between v1 and v2.*
+### v2.0 *(WIP)*
 
-- C++17 → C++23
-- `anitomy::Anitomy::Parse` → `anitomy::parse`
-- UTF-16 `std::wstring` → UTF-8 `std::string`
-- Options
-- Elements
-    - Order by position
+- Building the library now requires a compiler with C++23 support.
+- The library is now located inside the `include` directory and used with `#include <anitomy.hpp>`.
+- Library internals (anything not mentioned below) are moved to `anitomy::detail` namespace.
+- The library now uses UTF-8 encoded `std::string`. You no longer need to convert from/to `std::wstring`.
+- Removed `anitomy::Anitomy` class. You can use the free `anitomy::parse` function instead.
+- Removed `allowed_delimiters` and `ignored_strings` options.
+- Removed `anitomy::Elements` class. Parser now returns `std::vector<Element>` instead.
+- `ElementCategory` enum is replaced with `ElementKind` enum class.
+- Parsed elements are now ordered according to their position in the input.
 
 ## License
 
