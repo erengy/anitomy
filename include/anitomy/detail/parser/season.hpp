@@ -20,13 +20,19 @@ inline std::optional<Element> parse_season(std::span<Token> tokens) noexcept {
   };
 
   static constexpr auto starts_with_season_keyword = [](window_t tokens) {
-    return is_season_keyword(std::get<0>(tokens)) && is_delimiter_token(std::get<1>(tokens)) &&
+    // clang-format off
+    return is_season_keyword(std::get<0>(tokens)) &&
+           is_delimiter_token(std::get<1>(tokens)) &&
            is_free_token(std::get<2>(tokens));
+    // clang-format on
   };
 
   static constexpr auto ends_with_season_keyword = [](window_t tokens) {
-    return is_season_keyword(std::get<2>(tokens)) && is_delimiter_token(std::get<1>(tokens)) &&
+    // clang-format off
+    return is_season_keyword(std::get<2>(tokens)) &&
+           is_delimiter_token(std::get<1>(tokens)) &&
            is_free_token(std::get<0>(tokens));
+    // clang-format on
   };
 
   for (auto view : tokens | std::views::adjacent<3>) {
