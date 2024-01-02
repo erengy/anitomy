@@ -154,10 +154,10 @@ void test_json() {
     assert(json::serialize(value) == "null");
   }
   {
-    const auto str = R"({"anime_title":"Title","episode_number":"01"})";
+    const auto str = R"({"episode_number":"01","title":"Title"})";
     auto value = json::parse(str);
-    assert(value.as_object()["anime_title"].as_string() == "Title");
     assert(value.as_object()["episode_number"].as_string() == "01");
+    assert(value.as_object()["title"].as_string() == "Title");
     assert(json::serialize(value) == str);
   }
   {

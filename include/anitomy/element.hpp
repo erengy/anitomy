@@ -5,10 +5,6 @@
 namespace anitomy {
 
 enum class ElementKind {
-  AnimeSeason,
-  AnimeTitle,
-  AnimeType,
-  AnimeYear,
   AudioTerm,
   DeviceCompatibility,
   EpisodeNumber,
@@ -20,11 +16,15 @@ enum class ElementKind {
   ReleaseGroup,
   ReleaseInformation,
   ReleaseVersion,
+  Season,
   Source,
   Subtitles,
+  Title,
+  Type,
   VideoResolution,
   VideoTerm,
   VolumeNumber,
+  Year,
 };
 
 struct Element {

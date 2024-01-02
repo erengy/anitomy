@@ -15,8 +15,8 @@ Anitomy is a C++ library and a command-line tool for parsing anime video filenam
 Element|Value
 :------|:----
 Release group|`TaigaSubs`
-Anime title|`Toradora!`
-Anime year|`2008`
+Title|`Toradora!`
+Year|`2008`
 Episode number|`01`
 Release version|`2`
 Episode title|`Tiger and Dragon`
@@ -40,7 +40,7 @@ int main() {
   auto elements = anitomy::parse("[Ouroboros] Fullmetal Alchemist Brotherhood - 01");
 
   for (auto [kind, value] : elements) {
-    std::println("{}\t{}", anitomy::to_string(kind), value);
+    std::println("{:<16}{}", anitomy::to_string(kind), value);
   }
 
   return 0;
@@ -49,7 +49,7 @@ int main() {
 
 ```
 release_group   Ouroboros
-anime_title     Fullmetal Alchemist Brotherhood
+title           Fullmetal Alchemist Brotherhood
 episode_number  01
 ```
 
@@ -63,7 +63,7 @@ anitomy --format=json --pretty "[Ouroboros] Fullmetal Alchemist Brotherhood - 01
 
 ```json
 {
-  "anime_title": "Fullmetal Alchemist Brotherhood",
+  "title": "Fullmetal Alchemist Brotherhood",
   "episode_number": "01",
   "release_group": "Ouroboros"
 }

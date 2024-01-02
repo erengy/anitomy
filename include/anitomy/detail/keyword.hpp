@@ -11,8 +11,6 @@
 namespace anitomy::detail {
 
 enum class KeywordKind {
-  AnimeSeason,
-  AnimeType,
   AudioChannels,
   AudioCodec,
   AudioLanguage,
@@ -25,8 +23,10 @@ enum class KeywordKind {
   ReleaseGroup,
   ReleaseInformation,
   ReleaseVersion,
+  Season,
   Source,
   Subtitles,
+  Type,
   VideoCodec,
   VideoColorDepth,
   VideoFormat,
@@ -69,30 +69,14 @@ struct KeywordEqual {
   }
 };
 
-inline auto keywords =
-    []() -> const std::unordered_map<std::string_view, Keyword, KeywordHash, KeywordEqual> {
+using keyword_map_t = std::unordered_map<std::string_view, Keyword, KeywordHash, KeywordEqual>;
+
+inline auto keywords = []() -> keyword_map_t {
   using enum KeywordKind;
   using enum Keyword::Flags;
 
   // clang-format off
   return {
-      // Anime season
-      // Usually preceded or followed by a number (e.g. `2nd Season` or `Season 2`).
-      {"Season",               {AnimeSeason, Unidentifiable}},
-      {"Saison",               {AnimeSeason, Unidentifiable}},
-
-      // Anime type
-      {"TV",                   {AnimeType, Unidentifiable}},
-      {"Movie",                {AnimeType, Unidentifiable}},
-      {"Gekijouban",           {AnimeType, Unidentifiable}},
-      {"OAD",                  {AnimeType, Unidentifiable}},
-      {"OAV",                  {AnimeType, Unidentifiable}},
-      {"ONA",                  {AnimeType, Unidentifiable}},
-      {"OVA",                  {AnimeType, Unidentifiable}},
-      {"SP",                   {AnimeType, Unidentifiable}},  // e.g. "Yumeiro Patissiere SP Professional"
-      {"Special",              {AnimeType, Unidentifiable}},
-      {"Specials",             {AnimeType, Unidentifiable}},
-
       // Audio
       //
       // Channels
@@ -218,6 +202,11 @@ inline auto keywords =
       {"v3",                   {ReleaseVersion, 0}},
       {"v4",                   {ReleaseVersion, 0}},
 
+      // Season
+      // Usually preceded or followed by a number (e.g. `2nd Season` or `Season 2`).
+      {"Season",               {Season, Unidentifiable}},
+      {"Saison",               {Season, Unidentifiable}},
+
       // Source
       //
       // Blu-ray
@@ -276,6 +265,18 @@ inline auto keywords =
       {"Subtitled",            {Subtitles, 0}},
       {"Multisub",             {Subtitles, 0}},
       {"Multi Sub",            {Subtitles, 0}},
+
+      // Type
+      {"TV",                   {Type, Unidentifiable}},
+      {"Movie",                {Type, Unidentifiable}},
+      {"Gekijouban",           {Type, Unidentifiable}},
+      {"OAD",                  {Type, Unidentifiable}},
+      {"OAV",                  {Type, Unidentifiable}},
+      {"ONA",                  {Type, Unidentifiable}},
+      {"OVA",                  {Type, Unidentifiable}},
+      {"SP",                   {Type, Unidentifiable}},  // e.g. "Yumeiro Patissiere SP Professional"
+      {"Special",              {Type, Unidentifiable}},
+      {"Specials",             {Type, Unidentifiable}},
 
       // Video
       //

@@ -162,11 +162,9 @@ inline std::vector<Element> parse_episode_number(std::span<Token> tokens) noexce
     for (auto& token : tokens | filter(is_free_token)) {
       if (is_season_and_episode(token, matches)) {
         if (to_int(matches[1].str()) == 0) continue;
-        add_element(ElementKind::AnimeSeason, matches[1].str(),
-                    token.position + matches.position(1));
+        add_element(ElementKind::Season, matches[1].str(), token.position + matches.position(1));
         if (matches[2].matched) {
-          add_element(ElementKind::AnimeSeason, matches[2].str(),
-                      token.position + matches.position(2));
+          add_element(ElementKind::Season, matches[2].str(), token.position + matches.position(2));
         }
         add_element_from_token(ElementKind::EpisodeNumber, token, matches[3].str(),
                                token.position + matches.position(3));
@@ -186,7 +184,7 @@ inline std::vector<Element> parse_episode_number(std::span<Token> tokens) noexce
   // Type and episode (e.g. `ED1`, `OP4a`, `OVA2`)
   {
     static constexpr auto is_type_keyword = [](const Token& token) {
-      return token.keyword && token.keyword->kind == KeywordKind::AnimeType;
+      return token.keyword && token.keyword->kind == KeywordKind::Type;
     };
 
     auto type_token = std::ranges::find_if(tokens, is_type_keyword);
@@ -207,7 +205,7 @@ inline std::vector<Element> parse_episode_number(std::span<Token> tokens) noexce
       if (is_free_token(number) && is_numeric_token(number)) {
         if (is_delimiter_token(delimiter) && delimiter.value == ".") {
           // We don't allow any fractional part other than `.5`, because there are cases
-          // where such a number is a part of the anime title (e.g. `Evangelion: 1.11`,
+          // where such a number is a part of the title (e.g. `Evangelion: 1.11`,
           // `Tokyo Magnitude 8.0`) or a keyword (e.g. `5.1`).
           if (is_free_token(fraction) && fraction.value == "5") {
             add_element_from_token(

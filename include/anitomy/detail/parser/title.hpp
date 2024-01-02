@@ -10,7 +10,7 @@
 
 namespace anitomy::detail {
 
-inline std::optional<Element> parse_anime_title(std::span<Token> tokens) noexcept {
+inline std::optional<Element> parse_title(std::span<Token> tokens) noexcept {
   // Find the first free unenclosed token
   auto token_begin = std::ranges::find_if(
       tokens, [](const Token& token) { return is_free_token(token) && !token.is_enclosed; });
@@ -26,7 +26,7 @@ inline std::optional<Element> parse_anime_title(std::span<Token> tokens) noexcep
   auto token_end = std::ranges::find_if(
       token_begin, tokens.end(), [](const Token& token) { return token.element_kind.has_value(); });
 
-  // If the interval ends with an enclosed group (e.g. "Anime Title [Fansub]"), move the upper
+  // If the interval ends with an enclosed group (e.g. "Title [Fansub]"), move the upper
   // endpoint back to the beginning of the group. We ignore parentheses in order to keep certain
   // groups (e.g. "(TV)") intact.
   //
@@ -43,13 +43,13 @@ inline std::optional<Element> parse_anime_title(std::span<Token> tokens) noexcep
 
   auto span = std::span(token_begin, token_end);
 
-  // Build anime title
+  // Build the title
   if (std::string value = build_element_value(span); !value.empty()) {
     for (auto& token : span) {
-      token.element_kind = ElementKind::AnimeTitle;
+      token.element_kind = ElementKind::Title;
     }
     return Element{
-        .kind = ElementKind::AnimeTitle,
+        .kind = ElementKind::Title,
         .value = value,
         .position = span.front().position,
     };

@@ -4,17 +4,17 @@
 #include <utility>
 #include <vector>
 
-#include <anitomy/detail/parser/anime_season.hpp>
-#include <anitomy/detail/parser/anime_title.hpp>
-#include <anitomy/detail/parser/anime_year.hpp>
 #include <anitomy/detail/parser/episode_number.hpp>
 #include <anitomy/detail/parser/episode_title.hpp>
 #include <anitomy/detail/parser/file_checksum.hpp>
 #include <anitomy/detail/parser/file_extension.hpp>
 #include <anitomy/detail/parser/keywords.hpp>
 #include <anitomy/detail/parser/release_group.hpp>
+#include <anitomy/detail/parser/season.hpp>
+#include <anitomy/detail/parser/title.hpp>
 #include <anitomy/detail/parser/video_resolution.hpp>
 #include <anitomy/detail/parser/volume_number.hpp>
+#include <anitomy/detail/parser/year.hpp>
 #include <anitomy/detail/token.hpp>
 #include <anitomy/element.hpp>
 #include <anitomy/options.hpp>
@@ -53,14 +53,14 @@ public:
       add_elements(parse_video_resolution(tokens_));
     }
 
-    // Anime year
-    if (options.parse_anime_year) {
-      add_element(parse_anime_year(tokens_));
+    // Year
+    if (options.parse_year) {
+      add_element(parse_year(tokens_));
     }
 
-    // Anime season
-    if (options.parse_anime_season) {
-      add_element(parse_anime_season(tokens_));
+    // Season
+    if (options.parse_season) {
+      add_element(parse_season(tokens_));
     }
 
     // Episode number
@@ -69,9 +69,9 @@ public:
       add_elements(parse_episode_number(tokens_));
     }
 
-    // Anime title
-    if (options.parse_anime_title) {
-      add_element(parse_anime_title(tokens_));
+    // Title
+    if (options.parse_title) {
+      add_element(parse_title(tokens_));
     }
 
     // Release group

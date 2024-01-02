@@ -4,8 +4,8 @@
         "mal_id": 4224,
         "output": {
             "release_group": "TaigaSubs",
-            "anime_title": "Toradora!",
-            "anime_year": "2008",
+            "title": "Toradora!",
+            "year": "2008",
             "episode_number": "01",
             "release_version": "2",
             "episode_title": "Tiger and Dragon",
@@ -21,7 +21,7 @@
         "mal_id": 6201,
         "output": {
             "release_group": "ANBU",
-            "anime_title": "Princess Lover!",
+            "title": "Princess Lover!",
             "episode_number": "01",
             "file_checksum": "2048A39A",
             "file_extension": "mkv"
@@ -32,7 +32,7 @@
         "mal_id": 5356,
         "output": {
             "release_group": "ANBU-Menclave",
-            "anime_title": "Canaan",
+            "title": "Canaan",
             "episode_number": "01",
             "video_resolution": "1024x576",
             "video_term": "H.264",
@@ -46,7 +46,7 @@
         "mal_id": 7596,
         "output": {
             "release_group": "ANBU-umai",
-            "anime_title": "Haiyoru! Nyaru-Ani",
+            "title": "Haiyoru! Nyaru-Ani",
             "file_checksum": "596DD8E6",
             "file_extension": "mkv"
         }
@@ -56,7 +56,7 @@
         "mal_id": 3470,
         "output": {
             "release_group": "BakaWolf-m.3.3.w",
-            "anime_title": "Special A",
+            "title": "Special A",
             "episode_number": "01",
             "video_term": "H.264",
             "file_checksum": "C83164B9",
@@ -68,7 +68,7 @@
         "mal_id": 6500,
         "output": {
             "release_group": "chibi-Doki",
-            "anime_title": "Seikon no Qwaser",
+            "title": "Seikon no Qwaser",
             "episode_number": "13",
             "release_version": "0",
             "other": "Uncensored",
@@ -81,7 +81,7 @@
         "mal_id": 2155,
         "output": {
             "release_group": "Chihiro",
-            "anime_title": "Kono Aozora ni Yakusoku Wo",
+            "title": "Kono Aozora ni Yakusoku Wo",
             "episode_number": "10",
             "release_version": "2",
             "source": "DVD",
@@ -95,8 +95,8 @@
         "mal_id": 4224,
         "output": {
             "release_group": "Coalgirls",
-            "anime_title": "Toradora ED",
-            "anime_type": "ED",
+            "title": "Toradora ED",
+            "type": "ED",
             "episode_number": "2",
             "video_resolution": "704x480",
             "source": "DVD",
@@ -110,8 +110,8 @@
         "mal_id": 3927,
         "output": {
             "release_group": "Conclave-Mendoi",
-            "anime_title": "Mobile Suit Gundam 00",
-            "anime_season": "2",
+            "title": "Mobile Suit Gundam 00",
+            "season": "2",
             "episode_number": "01",
             "release_version": "2",
             "video_resolution": "1280x720",
@@ -126,7 +126,7 @@
         "mal_id": 269,
         "output": {
             "release_group": "DB",
-            "anime_title": "Bleach",
+            "title": "Bleach",
             "episode_number": "225",
             "file_checksum": "C63D149C",
             "file_extension": "avi"
@@ -137,7 +137,7 @@
         "mal_id": 5690,
         "output": {
             "release_group": "Frostii",
-            "anime_title": "Nodame Cantabile Finale",
+            "title": "Nodame Cantabile Finale",
             "episode_number": "00",
             "file_checksum": "73AD0735",
             "file_extension": "mkv"
@@ -148,7 +148,7 @@
         "mal_id": 121,
         "output": {
             "release_group": "Hard-Boiled FS",
-            "anime_title": "FullMetalAlchemist",
+            "title": "FullMetalAlchemist",
             "episode_number": "09",
             "file_extension": "rmvb"
         }
@@ -158,7 +158,7 @@
         "mal_id": 4726,
         "output": {
             "release_group": "HorribleSubs",
-            "anime_title": "Tower of Druaga - Sword of Uruk",
+            "title": "Tower of Druaga - Sword of Uruk",
             "episode_number": "04",
             "video_resolution": "480p",
             "file_extension": "mkv"
@@ -168,7 +168,7 @@
         "input": "[Juuni.Kokki]-(Les.12.Royaumes)-[Ep.24]-[x264+OGG]-[JAP+FR+Sub.FR]-[Chap]-[AzF].mkv",
         "mal_id": 153,
         "output": {
-            "anime_title": "Juuni Kokki",
+            "title": "Juuni Kokki",
             "episode_number": "24",
             "video_term": "x264",
             "audio_term": "OGG",
@@ -182,8 +182,8 @@
         "mal_id": 3848,
         "output": {
             "release_group": "KAF-TEAM",
-            "anime_title": "One Piece Movie 9",
-            "anime_type": "Movie",
+            "title": "One Piece Movie 9",
+            "type": "Movie",
             "language": "vostfr",
             "video_term": "HD",
             "file_extension": "avi"
@@ -194,7 +194,7 @@
         "mal_id": 1775,
         "output": {
             "release_group": "kito",
-            "anime_title": "Nazca",
+            "title": "Nazca",
             "episode_number": "01",
             "source": "DVDRip",
             "video_term": "x264",
@@ -208,7 +208,7 @@
         "mal_id": 4896,
         "output": {
             "release_group": "Lambda-Delta",
-            "anime_title": "Umineko no Naku Koro ni",
+            "title": "Umineko no Naku Koro ni",
             "episode_number": "11",
             "video_resolution": "848x480",
             "video_term": "H.264",
@@ -222,7 +222,7 @@
         "mal_id": 5420,
         "output": {
             "release_group": "SS",
-            "anime_title": "Kemono no Souja Erin",
+            "title": "Kemono no Souja Erin",
             "episode_number": "12",
             "video_resolution": "1280x720",
             "video_term": "h264",
@@ -235,8 +235,8 @@
         "mal_id": 5114,
         "output": {
             "release_group": "Taka",
-            "anime_title": "Fullmetal Alchemist",
-            "anime_year": "2009",
+            "title": "Fullmetal Alchemist",
+            "year": "2009",
             "episode_number": "04",
             "video_resolution": "720p",
             "file_checksum": "40F2A957",
@@ -248,7 +248,7 @@
         "mal_id": 5681,
         "output": {
             "release_group": "UTW-TMD",
-            "anime_title": "Summer Wars",
+            "title": "Summer Wars",
             "source": "BD",
             "video_term": "h264",
             "video_resolution": "720p",
@@ -262,7 +262,7 @@
         "mal_id": 5178,
         "output": {
             "release_group": "ValdikSS",
-            "anime_title": "First Squad The Morment Of Truth",
+            "title": "First Squad The Morment Of Truth",
             "video_resolution": "720x576",
             "video_term": "h264",
             "language": "eng",
@@ -274,8 +274,8 @@
         "input": "Code_Geass_R2_TV_[20_of_25]_[ru_jp]_[HDTV]_[Varies_&_Cuba77_&_AnimeReactor_RU].mkv",
         "mal_id": 2904,
         "output": {
-            "anime_title": "Code Geass R2 TV",
-            "anime_type": "TV",
+            "title": "Code Geass R2 TV",
+            "type": "TV",
             "episode_number": "20",
             "source": "HDTV",
             "release_group": "Varies & Cuba77 & AnimeReactor RU",
@@ -286,8 +286,8 @@
         "input": "Evangelion_1.11_You_Are_(Not)_Alone_(2009)_[1080p,BluRay,x264,DTS-ES]_-_THORA.mkv",
         "mal_id": 2759,
         "output": {
-            "anime_title": "Evangelion 1.11 You Are (Not) Alone",
-            "anime_year": "2009",
+            "title": "Evangelion 1.11 You Are (Not) Alone",
+            "year": "2009",
             "video_resolution": "1080p",
             "source": "BluRay",
             "video_term": "x264",
@@ -300,7 +300,7 @@
         "input": "Evangelion_1.11_You_Are_(Not)_Alone_[1080p,BluRay,x264,DTS-ES]_-_THORA.mkv",
         "mal_id": 2759,
         "output": {
-            "anime_title": "Evangelion 1.11 You Are (Not) Alone",
+            "title": "Evangelion 1.11 You Are (Not) Alone",
             "video_resolution": "1080p",
             "source": "BluRay",
             "video_term": "x264",
@@ -313,7 +313,7 @@
         "input": "Eve no Jikan 2 [88F4F7F0].mkv",
         "mal_id": 3167,
         "output": {
-            "anime_title": "Eve no Jikan",
+            "title": "Eve no Jikan",
             "episode_number": "2",
             "file_checksum": "88F4F7F0",
             "file_extension": "mkv"
@@ -323,8 +323,8 @@
         "input": "Gin'iro_no_Kami_no_Agito_(2006)_[1080p,BluRay,x264,DTS]_-_THORA.mkv",
         "mal_id": 1140,
         "output": {
-            "anime_title": "Gin'iro no Kami no Agito",
-            "anime_year": "2006",
+            "title": "Gin'iro no Kami no Agito",
+            "year": "2006",
             "video_resolution": "1080p",
             "source": "BluRay",
             "video_term": "x264",
@@ -337,7 +337,7 @@
         "input": "Magical Girl Lyrical Nanoha A's - 01.DVD[H264.AAC][DGz][7A8A7769].mkv",
         "mal_id": 77,
         "output": {
-            "anime_title": "Magical Girl Lyrical Nanoha A's",
+            "title": "Magical Girl Lyrical Nanoha A's",
             "episode_number": "01",
             "source": "DVD",
             "video_term": "H264",
@@ -351,8 +351,8 @@
         "input": "Mobile_Suit_Gundam_00_Season_2_Ep07_A_Reunion_and_a_Parting_[1080p,BluRay,x264]_-_THORA.mkv",
         "mal_id": 3927,
         "output": {
-            "anime_title": "Mobile Suit Gundam 00",
-            "anime_season": "2",
+            "title": "Mobile Suit Gundam 00",
+            "season": "2",
             "episode_number": "07",
             "episode_title": "A Reunion and a Parting",
             "video_resolution": "1080p",
@@ -366,7 +366,7 @@
         "input": "Noein_[01_of_24]_[ru_jp]_[bodlerov_&_torrents_ru].mkv",
         "mal_id": 584,
         "output": {
-            "anime_title": "Noein",
+            "title": "Noein",
             "episode_number": "01",
             "release_group": "bodlerov & torrents ru",
             "file_extension": "mkv"
@@ -376,7 +376,7 @@
         "input": "ponyo_on_the_cliff_by_the_sea[h264.dts][niizk].mkv",
         "mal_id": 2890,
         "output": {
-            "anime_title": "ponyo on the cliff by the sea",
+            "title": "ponyo on the cliff by the sea",
             "video_term": "h264",
             "audio_term": "dts",
             "release_group": "niizk",
@@ -388,8 +388,8 @@
         "mal_id": 6443,
         "output": {
             "release_group": "Seto_Otaku",
-            "anime_title": "AIKa ZERO OVA",
-            "anime_type": "OVA",
+            "title": "AIKa ZERO OVA",
+            "type": "OVA",
             "episode_number": "01",
             "source": "BD",
             "video_resolution": "1920x1080",
@@ -404,8 +404,8 @@
         "mal_id": 209,
         "output": {
             "release_group": "a4e",
-            "anime_title": "R.O.D the TV",
-            "anime_type": "TV",
+            "title": "R.O.D the TV",
+            "type": "TV",
             "episode_number": "01",
             "file_extension": "mkv"
         }
@@ -414,7 +414,7 @@
         "input": "Ghost_in_the_Shell_Stand_Alone_Complex_2nd_GIG_Ep05v2_EXCAVATION_[720p,HDTV,x264,AAC_5.1]_-_THORA.mkv",
         "mal_id": 801,
         "output": {
-            "anime_title": "Ghost in the Shell Stand Alone Complex 2nd GIG",
+            "title": "Ghost in the Shell Stand Alone Complex 2nd GIG",
             "episode_number": "05",
             "release_version": "2",
             "episode_title": "EXCAVATION",
@@ -433,7 +433,7 @@
         "input": "Ghost_in_the_Shell_Stand_Alone_Complex_2nd_GIG_Ep06_Pu239_[720p,HDTV,x264,AAC_5.1]_-_THORA.mkv",
         "mal_id": 801,
         "output": {
-            "anime_title": "Ghost in the Shell Stand Alone Complex 2nd GIG",
+            "title": "Ghost in the Shell Stand Alone Complex 2nd GIG",
             "episode_number": "06",
             "episode_title": "Pu239",
             "video_resolution": "720p",
@@ -451,7 +451,7 @@
         "input": "Fate_Stay_Night_Ep05_The_Two_Magi_Part1_[720p,BluRay,x264]_-_THORA.mkv",
         "mal_id": 356,
         "output": {
-            "anime_title": "Fate Stay Night",
+            "title": "Fate Stay Night",
             "episode_number": "05",
             "episode_title": "The Two Magi Part1",
             "video_resolution": "720p",
@@ -466,7 +466,7 @@
         "mal_id": 222,
         "output": {
             "release_group": "RaX",
-            "anime_title": "Mezzo(DSA)",
+            "title": "Mezzo(DSA)",
             "episode_number": "05",
             "video_term": "x264",
             "audio_term": "ogg",
@@ -479,8 +479,8 @@
         "mal_id": 5114,
         "output": {
             "release_group": "AKH-SWE",
-            "anime_title": "Fullmetal Alchemist",
-            "anime_year": "2009",
+            "title": "Fullmetal Alchemist",
+            "year": "2009",
             "episode_number": "02",
             "release_version": "2",
             "video_term": "H.264",
@@ -494,7 +494,7 @@
         "mal_id": 2605,
         "output": {
             "release_group": "FuktLogik",
-            "anime_title": "Sayonara Zetsubou Sensei",
+            "title": "Sayonara Zetsubou Sensei",
             "episode_number": "01",
             "source": "DVDRip",
             "video_term": "x264",
@@ -507,7 +507,7 @@
         "mal_id": 5859,
         "output": {
             "release_group": "Ayu",
-            "anime_title": "Kiddy Grade 2 - Pilot",
+            "title": "Kiddy Grade 2 - Pilot",
             "video_term": "H264",
             "audio_term": "AC3",
             "file_checksum": "650B731B",
@@ -519,7 +519,7 @@
         "mal_id": 6758,
         "output": {
             "release_group": "Darksoul-Subs",
-            "anime_title": "Tatakau Shisho - The Book of Bantorra",
+            "title": "Tatakau Shisho - The Book of Bantorra",
             "video_resolution": "848x480",
             "video_term": "XVID",
             "audio_term": "MP3",
@@ -531,7 +531,7 @@
         "mal_id": 30,
         "output": {
             "release_group": "ACX",
-            "anime_title": "Neon Genesis Evangelion - Platinum",
+            "title": "Neon Genesis Evangelion - Platinum",
             "episode_number": "06",
             "episode_title": "Showdown in Tokyo 3",
             "file_checksum": "CBDB8577",
@@ -543,7 +543,7 @@
         "mal_id": 6802,
         "output": {
             "release_group": "Himatsubushi",
-            "anime_title": "Sora no Woto",
+            "title": "Sora no Woto",
             "episode_number": "01",
             "video_term": "H264",
             "video_resolution": "720p",
@@ -556,7 +556,7 @@
         "mal_id": 920,
         "output": {
             "release_group": "EroGaKi-Team",
-            "anime_title": "Nurse Witch Komugi-chan Magikarte",
+            "title": "Nurse Witch Komugi-chan Magikarte",
             "episode_number": "02.5",
             "file_checksum": "902BB314",
             "file_extension": "mkv"
@@ -566,8 +566,8 @@
         "input": "Ookiku Furikabutte S2 - 09 (Central Anime) [BD841253].mkv",
         "mal_id": 7720,
         "output": {
-            "anime_title": "Ookiku Furikabutte",
-            "anime_season": "2",
+            "title": "Ookiku Furikabutte",
+            "season": "2",
             "episode_number": "09",
             "release_group": "Central Anime",
             "file_checksum": "BD841253",
@@ -579,7 +579,7 @@
         "mal_id": 4334,
         "output": {
             "release_group": "HorribleSubs",
-            "anime_title": "HEROMAN",
+            "title": "HEROMAN",
             "episode_number": "10",
             "video_term": "XviD",
             "file_extension": "mkv"
@@ -589,7 +589,7 @@
         "input": "Detective Conan - 316-317 [DCTP][2411959B].mkv",
         "mal_id": 235,
         "output": {
-            "anime_title": "Detective Conan",
+            "title": "Detective Conan",
             "episode_number": [
                 "316",
                 "317"
@@ -604,7 +604,7 @@
         "mal_id": 6547,
         "output": {
             "release_group": "N LogN Fansubs",
-            "anime_title": "Angel Beats",
+            "title": "Angel Beats",
             "episode_number": "9",
             "file_extension": "mkv"
         }
@@ -613,7 +613,7 @@
         "input": "To_Aru_Kagaku_no_Railgun_13-15_[BD_1080p][AtsA]",
         "mal_id": 6213,
         "output": {
-            "anime_title": "To Aru Kagaku no Railgun",
+            "title": "To Aru Kagaku no Railgun",
             "episode_number": [
                 "13",
                 "15"
@@ -627,7 +627,7 @@
         "input": "Juuousei_-_01_[Black_Sheep][HDTV_H264_AAC][803DA487].mkv",
         "mal_id": 953,
         "output": {
-            "anime_title": "Juuousei",
+            "title": "Juuousei",
             "episode_number": "01",
             "release_group": "Black_Sheep",
             "source": "HDTV",
@@ -642,7 +642,7 @@
         "mal_id": 2168,
         "output": {
             "release_group": "RNA",
-            "anime_title": "Sakura Taisen New York NY",
+            "title": "Sakura Taisen New York NY",
             "episode_number": "2",
             "file_checksum": "1590D378",
             "file_extension": "avi"
@@ -652,8 +652,8 @@
         "input": "Hayate no Gotoku 2nd Season 24 (Blu-Ray 1080p) [Chihiro]",
         "mal_id": 4192,
         "output": {
-            "anime_title": "Hayate no Gotoku",
-            "anime_season": "2",
+            "title": "Hayate no Gotoku",
+            "season": "2",
             "episode_number": "24",
             "source": "Blu-Ray",
             "video_resolution": "1080p",
@@ -665,7 +665,7 @@
         "mal_id": 1051,
         "output": {
             "release_group": "BluDragon",
-            "anime_title": "Blue Submarine No.6",
+            "title": "Blue Submarine No.6",
             "source": "DVD",
             "audio_term": "Dual Audio",
             "release_version": "3"
@@ -675,7 +675,7 @@
         "input": "Chrono Crusade ep. 1-5",
         "mal_id": 60,
         "output": {
-            "anime_title": "Chrono Crusade",
+            "title": "Chrono Crusade",
             "episode_number": [
                 "1",
                 "5"
@@ -687,8 +687,8 @@
         "mal_id": 9656,
         "output": {
             "release_group": "gg",
-            "anime_title": "Kimi ni Todoke",
-            "anime_season": "2",
+            "title": "Kimi ni Todoke",
+            "season": "2",
             "episode_number": "00",
             "file_checksum": "BF735BC4",
             "file_extension": "mkv"
@@ -698,7 +698,7 @@
         "input": "K-ON!_Ep03_Training!_[1080p,BluRay,x264]_-_THORA.mkv",
         "mal_id": 5680,
         "output": {
-            "anime_title": "K-ON!",
+            "title": "K-ON!",
             "episode_number": "03",
             "episode_title": "Training!",
             "video_resolution": "1080p",
@@ -712,7 +712,7 @@
         "input": "K-ON!!_Ep08_Career_Plan!_[1080p,BluRay,x264]_-_THORA.mkv",
         "mal_id": 7791,
         "output": {
-            "anime_title": "K-ON!!",
+            "title": "K-ON!!",
             "episode_number": "08",
             "episode_title": "Career Plan!",
             "video_resolution": "1080p",
@@ -727,15 +727,15 @@
         "mal_id": 6633,
         "output": {
             "release_group": "SFW",
-            "anime_title": "Queen's Blade",
-            "anime_season": "2"
+            "title": "Queen's Blade",
+            "season": "2"
         }
     },
     {
         "input": "Evangelion_1.0_You_Are_[Not]_Alone_(1080p)_[@Home]",
         "mal_id": 2759,
         "output": {
-            "anime_title": "Evangelion 1.0 You Are [Not] Alone",
+            "title": "Evangelion 1.0 You Are [Not] Alone",
             "video_resolution": "1080p",
             "release_group": "@Home"
         }
@@ -745,7 +745,7 @@
         "mal_id": 9041,
         "output": {
             "release_group": "Ayako",
-            "anime_title": "Infinite Stratos - IS",
+            "title": "Infinite Stratos - IS",
             "episode_number": "01",
             "release_version": "2",
             "video_term": "XVID",
@@ -759,9 +759,9 @@
         "mal_id": 8841,
         "output": {
             "release_group": "E-HARO Raws",
-            "anime_title": "Kore wa Zombie desu ka",
+            "title": "Kore wa Zombie desu ka",
             "episode_number": "03",
-            "anime_type": "TV",
+            "type": "TV",
             "video_resolution": "1280x720",
             "video_term": "h264",
             "audio_term": "AAC",
@@ -774,7 +774,7 @@
         "mal_id": 8841,
         "output": {
             "release_group": "Edomae Subs",
-            "anime_title": "Kore wa Zombie desu ka",
+            "title": "Kore wa Zombie desu ka",
             "episode_number": "2",
             "file_extension": "mkv"
         }
@@ -783,7 +783,7 @@
         "input": "Juuni.Kokki.Ep.5.avi",
         "mal_id": 153,
         "output": {
-            "anime_title": "Juuni Kokki",
+            "title": "Juuni Kokki",
             "episode_number": "5",
             "file_extension": "avi"
         }
@@ -792,7 +792,7 @@
         "input": "Juuni Kokki Ep.5.avi",
         "mal_id": 153,
         "output": {
-            "anime_title": "Juuni Kokki",
+            "title": "Juuni Kokki",
             "episode_number": "5",
             "file_extension": "avi"
         }
@@ -801,7 +801,7 @@
         "input": "[Keroro].148.[Xvid.mp3].[FE68D5F1].avi",
         "mal_id": 516,
         "output": {
-            "anime_title": "Keroro",
+            "title": "Keroro",
             "episode_number": "148",
             "video_term": "Xvid",
             "audio_term": "mp3",
@@ -813,7 +813,7 @@
         "input": "5_centimeters_per_second[1904x1072.h264.flac][niizk].mkv",
         "mal_id": 1689,
         "output": {
-            "anime_title": "5 centimeters per second",
+            "title": "5 centimeters per second",
             "video_resolution": "1904x1072",
             "video_term": "h264",
             "audio_term": "flac",
@@ -826,7 +826,7 @@
         "mal_id": 1583,
         "output": {
             "release_group": "Yoroshiku",
-            "anime_title": "009-1",
+            "title": "009-1",
             "episode_number": "02",
             "video_term": "H264",
             "file_checksum": "36D2444D",
@@ -837,8 +837,8 @@
         "input": "After War Gundam X - 1x03 - My Mount is Fierce!.mkv",
         "mal_id": 92,
         "output": {
-            "anime_title": "After War Gundam X",
-            "anime_season": "1",
+            "title": "After War Gundam X",
+            "season": "1",
             "episode_number": "03",
             "episode_title": "My Mount is Fierce!",
             "file_extension": "mkv"
@@ -849,7 +849,7 @@
         "mal_id": 10080,
         "output": {
             "release_group": "HorribleSubs",
-            "anime_title": "The World God Only Knows 2",
+            "title": "The World God Only Knows 2",
             "episode_number": "03",
             "video_resolution": "720p",
             "file_extension": "mkv"
@@ -859,7 +859,7 @@
         "input": "Macross Frontier - Sayonara no Tsubasa (Central Anime, 720p) [46B35E25].mkv",
         "mal_id": 7222,
         "output": {
-            "anime_title": "Macross Frontier - Sayonara no Tsubasa",
+            "title": "Macross Frontier - Sayonara no Tsubasa",
             "release_group": "Central Anime",
             "video_resolution": "720p",
             "file_checksum": "46B35E25",
@@ -871,8 +871,8 @@
         "mal_id": 12029,
         "output": {
             "release_group": "Nubles",
-            "anime_title": "Space Battleship Yamato 2199",
-            "anime_year": "2012",
+            "title": "Space Battleship Yamato 2199",
+            "year": "2012",
             "episode_number": "18",
             "video_resolution": "720p",
             "video_term": "8 bit",
@@ -885,8 +885,8 @@
         "mal_id": 12029,
         "output": {
             "release_group": "Nubles",
-            "anime_title": "Space Battleship Yamato 2199",
-            "anime_year": "2012",
+            "title": "Space Battleship Yamato 2199",
+            "year": "2012",
             "episode_number": "18",
             "video_resolution": "720p",
             "video_term": "10 bit",
@@ -899,7 +899,7 @@
         "mal_id": 14921,
         "output": {
             "release_group": "FFF",
-            "anime_title": "Red Data Girl",
+            "title": "Red Data Girl",
             "episode_number": "10",
             "release_version": "0",
             "file_checksum": "29EA865B",
@@ -911,8 +911,8 @@
         "mal_id": 17725,
         "output": {
             "release_group": "CMS",
-            "anime_title": "Magical☆Star Kanon 100% OVA",
-            "anime_type": "OVA",
+            "title": "Magical☆Star Kanon 100% OVA",
+            "type": "OVA",
             "source": "DVD",
             "file_checksum": "E9F43685",
             "file_extension": "mkv"
@@ -923,7 +923,7 @@
         "mal_id": 16051,
         "output": {
             "release_group": "Doremi",
-            "anime_title": "Ro-Kyu-Bu! SS",
+            "title": "Ro-Kyu-Bu! SS",
             "episode_number": "01",
             "file_checksum": "C1B5CE5D",
             "file_extension": "mkv"
@@ -934,7 +934,7 @@
         "mal_id": 10588,
         "output": {
             "release_group": "Raizel",
-            "anime_title": "Persona 4 The Animation",
+            "title": "Persona 4 The Animation",
             "episode_number": "13",
             "episode_title": "A Stormy Summer Vacation Part 1",
             "source": "BD",
@@ -953,7 +953,7 @@
         "mal_id": 16636,
         "output": {
             "release_group": "Hien",
-            "anime_title": "Kotoura-san - Special Short Anime 'Haruka's Room'",
+            "title": "Kotoura-san - Special Short Anime 'Haruka's Room'",
             "episode_number": "01",
             "source": "BD",
             "video_resolution": "1080p",
@@ -971,7 +971,7 @@
         "mal_id": 1002,
         "output": {
             "release_group": "R-R",
-            "anime_title": "Diebuster",
+            "title": "Diebuster",
             "episode_number": "1",
             "video_resolution": "720p",
             "video_term": "Hi10p",
@@ -984,7 +984,7 @@
         "input": "Aim_For_The_Top!_Gunbuster-ep1.BD(H264.FLAC.10bit)[KAA][69ECCDCF].mkv",
         "mal_id": 949,
         "output": {
-            "anime_title": "Aim For The Top! Gunbuster",
+            "title": "Aim For The Top! Gunbuster",
             "episode_number": "1",
             "source": "BD",
             "video_term": [
@@ -1002,7 +1002,7 @@
         "mal_id": 1581,
         "output": {
             "release_group": "Rakuda",
-            "anime_title": "Gift ~eternal rainbow~",
+            "title": "Gift ~eternal rainbow~",
             "episode_number": "01",
             "source": "dvd",
             "video_term": "h.264",
@@ -1015,7 +1015,7 @@
         "mal_id": 2595,
         "output": {
             "release_group": "Jumonji-Giri",
-            "anime_title": "D.C.II Da Capo II",
+            "title": "D.C.II Da Capo II",
             "episode_number": "01",
             "file_checksum": "a1fc58a7",
             "file_extension": "mkv"
@@ -1025,7 +1025,7 @@
         "input": "[Mobile Suit Gundam Seed Destiny HD REMASTER][07][Big5][720p][AVC_AAC][encoded by SEED].mp4",
         "mal_id": 94,
         "output": {
-            "anime_title": "Mobile Suit Gundam Seed Destiny",
+            "title": "Mobile Suit Gundam Seed Destiny",
             "video_term": [
                 "HD",
                 "AVC"
@@ -1043,7 +1043,7 @@
         "input": "「K」 Image Blu-ray WHITE & BLACK - Main (BD 1280x720 AVC AAC).mp4",
         "mal_id": 14467,
         "output": {
-            "anime_title": "「K」",
+            "title": "「K」",
             "source": [
                 "Blu-ray",
                 "BD"
@@ -1059,7 +1059,7 @@
         "mal_id": 16498,
         "output": {
             "release_group": "Zero-Raws",
-            "anime_title": "Shingeki no Kyojin",
+            "title": "Shingeki no Kyojin",
             "episode_number": "05",
             "video_resolution": "1280x720",
             "video_term": "x264",
@@ -1072,7 +1072,7 @@
         "mal_id": 170,
         "output": {
             "release_group": "52wy",
-            "anime_title": "SlamDunk",
+            "title": "SlamDunk",
             "episode_number": "001",
             "language": "Jpn",
             "video_term": "x264",
@@ -1087,7 +1087,7 @@
         "mal_id": 10336,
         "output": {
             "release_group": "Commie",
-            "anime_title": "Last Exile ~Fam, The Silver Wing~",
+            "title": "Last Exile ~Fam, The Silver Wing~",
             "episode_number": "13",
             "file_checksum": "AFF9E530",
             "file_extension": "mkv"
@@ -1098,7 +1098,7 @@
         "mal_id": 14837,
         "output": {
             "release_group": "Hakugetsu&Speed&MGRT",
-            "anime_title": "Dragon Ball Z Battle of Gods",
+            "title": "Dragon Ball Z Battle of Gods",
             "source": "BDRIP",
             "subtitles": "BIG5",
             "video_resolution": "1280x720",
@@ -1110,7 +1110,7 @@
         "mal_id": 3785,
         "output": {
             "release_group": "Hakugetsu&MGRT",
-            "anime_title": "Evangelion 3.0 You Can (Not) Redo",
+            "title": "Evangelion 3.0 You Can (Not) Redo",
             "video_resolution": "480P",
             "release_version": "0",
             "file_extension": "mp4"
@@ -1121,7 +1121,7 @@
         "mal_id": 6336,
         "output": {
             "release_group": "TV-J",
-            "anime_title": "Kidou Senshi Gundam UC Unicorn",
+            "title": "Kidou Senshi Gundam UC Unicorn",
             "episode_number": "02",
             "source": "BD",
             "video_resolution": "1920x1080",
@@ -1138,7 +1138,7 @@
         "mal_id": 10087,
         "output": {
             "release_group": "UTW",
-            "anime_title": "Fate Zero",
+            "title": "Fate Zero",
             "episode_number": "01",
             "source": "BD",
             "video_term": "h264",
@@ -1153,7 +1153,7 @@
         "mal_id": 3785,
         "output": {
             "release_group": "UTW-THORA",
-            "anime_title": "Evangelion 3.33 You Can (Not) Redo",
+            "title": "Evangelion 3.33 You Can (Not) Redo",
             "source": "BD",
             "video_resolution": "1080p",
             "video_term": "x264",
@@ -1167,7 +1167,7 @@
         "mal_id": 16498,
         "output": {
             "release_group": "Zero-Raws",
-            "anime_title": "Shingeki no Kyojin",
+            "title": "Shingeki no Kyojin",
             "episode_number": "25",
             "release_information": "END",
             "video_resolution": "1280x720",
@@ -1180,7 +1180,7 @@
         "input": "Bakemonogatari - 01 (BD 1280x720 AVC AACx2).mp4",
         "mal_id": 5081,
         "output": {
-            "anime_title": "Bakemonogatari",
+            "title": "Bakemonogatari",
             "episode_number": "01",
             "source": "BD",
             "video_resolution": "1280x720",
@@ -1193,8 +1193,8 @@
         "input": "Evangelion Shin Gekijouban Q (BDrip 1920x1080 x264 FLACx2 5.1ch)-ank.mkv",
         "mal_id": 3785,
         "output": {
-            "anime_title": "Evangelion Shin Gekijouban Q",
-            "anime_type": "Gekijouban",
+            "title": "Evangelion Shin Gekijouban Q",
+            "type": "Gekijouban",
             "source": "BDrip",
             "video_resolution": "1920x1080",
             "video_term": "x264",
@@ -1210,8 +1210,8 @@
         "input": "Evangelion The New Movie Q (BD 1280x720 AVC AACx2 [5.1+2.0]).mp4",
         "mal_id": 3785,
         "output": {
-            "anime_title": "Evangelion The New Movie Q",
-            "anime_type": "Movie",
+            "title": "Evangelion The New Movie Q",
+            "type": "Movie",
             "source": "BD",
             "video_resolution": "1280x720",
             "video_term": "AVC",
@@ -1226,8 +1226,8 @@
         "input": "Howl's_Moving_Castle_(2004)_[1080p,BluRay,flac,dts,x264]_-_THORA v2.mkv",
         "mal_id": 431,
         "output": {
-            "anime_title": "Howl's Moving Castle",
-            "anime_year": "2004",
+            "title": "Howl's Moving Castle",
+            "year": "2004",
             "video_resolution": "1080p",
             "source": "BluRay",
             "audio_term": [
@@ -1244,7 +1244,7 @@
         "input": "Kotonoha no Niwa (BD 1280x720 AVC AACx3 [5.1+2.0+2.0] Subx3).mp4",
         "mal_id": 16782,
         "output": {
-            "anime_title": "Kotonoha no Niwa",
+            "title": "Kotonoha no Niwa",
             "source": "BD",
             "video_resolution": "1280x720",
             "video_term": "AVC",
@@ -1259,8 +1259,8 @@
         "input": "Queen's Blade Utsukushiki Toushi-tachi - OVA_01 (BD 1280x720 AVC AAC).mp4",
         "mal_id": 8456,
         "output": {
-            "anime_title": "Queen's Blade Utsukushiki Toushi-tachi - OVA",
-            "anime_type": "OVA",
+            "title": "Queen's Blade Utsukushiki Toushi-tachi - OVA",
+            "type": "OVA",
             "episode_number": "01",
             "source": "BD",
             "video_resolution": "1280x720",
@@ -1274,7 +1274,7 @@
         "mal_id": 17895,
         "output": {
             "release_group": "MMZYSUB",
-            "anime_title": "Golden Time",
+            "title": "Golden Time",
             "episode_number": "24",
             "release_information": "END",
             "video_resolution": "720P",
@@ -1286,7 +1286,7 @@
         "mal_id": 22189,
         "output": {
             "release_group": "FFF",
-            "anime_title": "Futsuu no Joshikousei ga [Locodol] Yatte Mita.",
+            "title": "Futsuu no Joshikousei ga [Locodol] Yatte Mita.",
             "episode_number": "01",
             "file_checksum": "BAD09C76",
             "file_extension": "mkv"
@@ -1297,7 +1297,7 @@
         "mal_id": 20787,
         "output": {
             "release_group": "異域字幕組",
-            "anime_title": "Black Bullet",
+            "title": "Black Bullet",
             "episode_number": "11",
             "video_resolution": "1280x720",
             "file_extension": "mp4"
@@ -1308,7 +1308,7 @@
         "mal_id": 21863,
         "output": {
             "release_group": "AoJiaoZero",
-            "anime_title": "Mangaka-san to Assistant-san to the Animation",
+            "title": "Mangaka-san to Assistant-san to the Animation",
             "episode_number": "02",
             "video_term": "X264",
             "audio_term": "AAC",
@@ -1328,8 +1328,8 @@
         "mal_id": 18041,
         "output": {
             "release_group": "Asenshi",
-            "anime_title": "Rozen Maiden 3",
-            "anime_type": "PV",
+            "title": "Rozen Maiden 3",
+            "type": "PV",
             "file_checksum": "CA57F300",
             "file_extension": "mkv"
         }
@@ -1338,7 +1338,7 @@
         "input": "Mary Bell (DVD) - 01v2 [h-b].mkv",
         "mal_id": 2804,
         "output": {
-            "anime_title": "Mary Bell",
+            "title": "Mary Bell",
             "source": "DVD",
             "episode_number": "01",
             "release_version": "2",
@@ -1350,7 +1350,7 @@
         "input": "Mary Bell (DVD) - 02 [h-b].mkv",
         "mal_id": 2804,
         "output": {
-            "anime_title": "Mary Bell",
+            "title": "Mary Bell",
             "source": "DVD",
             "episode_number": "02",
             "release_group": "h-b",
@@ -1361,7 +1361,7 @@
         "input": "Attack on Titan - Episode 3 - A Dim Light Amid Despair / Humanity's Comeback, Part 1",
         "mal_id": 16498,
         "output": {
-            "anime_title": "Attack on Titan",
+            "title": "Attack on Titan",
             "episode_number": "3",
             "episode_title": "A Dim Light Amid Despair / Humanity's Comeback, Part 1"
         }
@@ -1370,8 +1370,8 @@
         "input": "The Irregular at Magic High School - S01E01- Enrollment Part I.mkv",
         "mal_id": 20785,
         "output": {
-            "anime_title": "The Irregular at Magic High School",
-            "anime_season": "01",
+            "title": "The Irregular at Magic High School",
+            "season": "01",
             "episode_number": "01",
             "episode_title": "Enrollment Part I",
             "file_extension": "mkv"
@@ -1382,7 +1382,7 @@
         "mal_id": 15061,
         "output": {
             "release_group": "Mezashite",
-            "anime_title": "Aikatsu!",
+            "title": "Aikatsu!",
             "episode_number": "100",
             "file_checksum": "D035A39F",
             "file_extension": "mkv"
@@ -1392,7 +1392,7 @@
         "input": "DRAMAtical Murder Episode 1 - Data_01_Login",
         "mal_id": 23333,
         "output": {
-            "anime_title": "DRAMAtical Murder",
+            "title": "DRAMAtical Murder",
             "episode_number": "1",
             "episode_title": "Data_01_Login"
         }
@@ -1402,7 +1402,7 @@
         "mal_id": 837,
         "output": {
             "release_group": "Triad",
-            "anime_title": "Today in Class 5-2",
+            "title": "Today in Class 5-2",
             "episode_number": "04",
             "file_extension": "avi"
         }
@@ -1411,7 +1411,7 @@
         "input": "__BLUE DROP 10 (1).avi",
         "mal_id": 2964,
         "output": {
-            "anime_title": "BLUE DROP",
+            "title": "BLUE DROP",
             "episode_number": "10",
             "file_extension": "avi"
         }
@@ -1421,7 +1421,7 @@
         "mal_id": 1535,
         "output": {
             "release_group": "Ruberia",
-            "anime_title": "Death Note",
+            "title": "Death Note",
             "episode_number": "37",
             "release_version": "2",
             "release_information": "FINAL",
@@ -1435,7 +1435,7 @@
         "mal_id": 13939,
         "output": {
             "release_group": "UTW",
-            "anime_title": "Accel World - EX",
+            "title": "Accel World - EX",
             "episode_number": "01",
             "source": "BD",
             "video_term": "h264",
@@ -1450,7 +1450,7 @@
         "mal_id": 28025,
         "output": {
             "release_group": "HorribleSubs",
-            "anime_title": "Tsukimonogatari",
+            "title": "Tsukimonogatari",
             "episode_number": [
                 "01",
                 "04"
@@ -1464,7 +1464,7 @@
         "mal_id": 1222,
         "output": {
             "release_group": "Urusai",
-            "anime_title": "Bokura Ga Ita",
+            "title": "Bokura Ga Ita",
             "episode_number": "01",
             "source": "DVD",
             "video_term": "h264",
@@ -1478,7 +1478,7 @@
         "mal_id": 4720,
         "output": {
             "release_group": "Coalgirls",
-            "anime_title": "White Album",
+            "title": "White Album",
             "episode_number": [
                 "1",
                 "13"
@@ -1493,8 +1493,8 @@
         "mal_id": 5081,
         "output": {
             "release_group": "Coalgirls",
-            "anime_title": "Bakemonogatari OP",
-            "anime_type": "OP",
+            "title": "Bakemonogatari OP",
+            "type": "OP",
             "episode_number": "4a",
             "video_resolution": "1280x720",
             "source": "Blu-Ray",
@@ -1508,7 +1508,7 @@
         "mal_id": 10161,
         "output": {
             "release_group": "Ruri",
-            "anime_title": "No.6",
+            "title": "No.6",
             "episode_number": "01",
             "video_resolution": "720p",
             "video_term": "H264",
@@ -1521,7 +1521,7 @@
         "mal_id": 20021,
         "output": {
             "release_group": "CH",
-            "anime_title": "Sword Art Online Extra Edition",
+            "title": "Sword Art Online Extra Edition",
             "audio_term": [
                 "Dual Audio",
                 "Vorbis"
@@ -1539,7 +1539,7 @@
         "mal_id": 19429,
         "output": {
             "release_group": "Watakushi",
-            "anime_title": "Akuma no Riddle",
+            "title": "Akuma no Riddle",
             "episode_number": "01",
             "release_version": "2",
             "video_resolution": "720p",
@@ -1561,8 +1561,8 @@
         "mal_id": 13659,
         "output": {
             "episode_number": "14",
-            "anime_title": "Ore no Imouto ga Konnani Kawaii Wake ga Nai.",
-            "anime_season": "2",
+            "title": "Ore no Imouto ga Konnani Kawaii Wake ga Nai.",
+            "season": "2",
             "language": "VOSTFR"
         }
     },
@@ -1571,7 +1571,7 @@
         "mal_id": 17247,
         "output": {
             "release_group": "Zom-B",
-            "anime_title": "Machine-Doll wa Kizutsukanai",
+            "title": "Machine-Doll wa Kizutsukanai",
             "episode_number": "01",
             "episode_title": "Facing ''Cannibal Candy'' I",
             "release_information": "remux",
@@ -1583,7 +1583,7 @@
         "input": "The iDOLM@STER 765 Pro to Iu Monogatari.mkv",
         "mal_id": 11889,
         "output": {
-            "anime_title": "The iDOLM@STER 765 Pro to Iu Monogatari",
+            "title": "The iDOLM@STER 765 Pro to Iu Monogatari",
             "file_extension": "mkv"
         }
     },
@@ -1592,7 +1592,7 @@
         "mal_id": 6573,
         "output": {
             "release_group": "Yuurisan-Subs",
-            "anime_title": "Darker than Black - Gemini of the Meteor",
+            "title": "Darker than Black - Gemini of the Meteor",
             "episode_number": "01",
             "release_version": "2",
             "file_checksum": "65274FDE",
@@ -1605,8 +1605,8 @@
         "mal_id": 10087,
         "output": {
             "release_group": "Coalgirls",
-            "anime_title": "Fate Zero OVA",
-            "anime_type": "OVA",
+            "title": "Fate Zero OVA",
+            "type": "OVA",
             "episode_number": "3.5",
             "video_resolution": "1280x720",
             "source": "Blu-ray",
@@ -1620,7 +1620,7 @@
         "mal_id": 634,
         "output": {
             "release_group": "GrimRipper",
-            "anime_title": "Koi Kaze",
+            "title": "Koi Kaze",
             "audio_term": "Dual Audio",
             "episode_number": "01",
             "file_checksum": "c13cefe0",
@@ -1632,7 +1632,7 @@
         "mal_id": 918,
         "output": {
             "release_group": "HorribleSubs",
-            "anime_title": "Gintama",
+            "title": "Gintama",
             "episode_number": "111C",
             "video_resolution": "1080p",
             "file_extension": "mkv"
@@ -1643,7 +1643,7 @@
         "mal_id": 3604,
         "output": {
             "release_group": "SpoonSubs",
-            "anime_title": "Hidamari Sketch x365",
+            "title": "Hidamari Sketch x365",
             "episode_number": "04.1",
             "source": "DVD",
             "file_checksum": "B6CE8458",
@@ -1663,8 +1663,8 @@
         "mal_id": 24415,
         "output": {
             "release_group": "Hatsuyuki",
-            "anime_title": "Kuroko no Basuke",
-            "anime_season": "3",
+            "title": "Kuroko no Basuke",
+            "season": "3",
             "episode_number": "01",
             "episode_number_alt": "51",
             "video_resolution": "720p",
@@ -1678,7 +1678,7 @@
         "mal_id": 6802,
         "output": {
             "release_group": "Elysium",
-            "anime_title": "Sora no Woto",
+            "title": "Sora no Woto",
             "audio_term": "AAC",
             "episode_number": "07.5",
             "source": "BD",
@@ -1692,7 +1692,7 @@
         "mal_id": 6802,
         "output": {
             "release_group": "Zurako",
-            "anime_title": "Sora no Woto",
+            "title": "Sora no Woto",
             "episode_number": "07.5",
             "episode_title": "Drinking Party - Fortress Battle",
             "source": "BD",
@@ -1707,7 +1707,7 @@
         "mal_id": 10213,
         "output": {
             "release_group": "Hiryuu",
-            "anime_title": "Maji de Watashi ni Koi Shinasai!!",
+            "title": "Maji de Watashi ni Koi Shinasai!!",
             "episode_number": "02",
             "video_resolution": "720",
             "file_extension": "mkv"
@@ -1718,7 +1718,7 @@
         "mal_id": 113,
         "output": {
             "release_group": "Kira-Fansub",
-            "anime_title": "Uchuu no Stellvia",
+            "title": "Uchuu no Stellvia",
             "episode_number": "14",
             "source": "BD",
             "video_term": [
@@ -1736,9 +1736,9 @@
         "mal_id": 8861,
         "output": {
             "release_group": "ANE",
-            "anime_title": "Yosuga no Sora",
+            "title": "Yosuga no Sora",
             "episode_number": "01",
-            "anime_type": "Preview",
+            "type": "Preview",
             "source": "BDRip",
             "video_resolution": "1080p",
             "video_term": "x264",
@@ -1751,7 +1751,7 @@
         "mal_id": 2926,
         "output": {
             "release_group": "B-G & m.3.3.w",
-            "anime_title": "Myself Yourself",
+            "title": "Myself Yourself",
             "episode_number": "12",
             "source": "DVD",
             "video_term": "H.264",
@@ -1764,7 +1764,7 @@
         "input": "The.Animatrix.08.A.Detective.Story.720p.BluRay.DTS.x264-ESiR.mkv",
         "mal_id": 1303,
         "output": {
-            "anime_title": "The Animatrix",
+            "title": "The Animatrix",
             "episode_number": "08",
             "episode_title": "A Detective Story",
             "video_resolution": "720p",
@@ -1780,7 +1780,7 @@
         "mal_id": 14749,
         "output": {
             "release_group": "DmonHiro",
-            "anime_title": "Oreshura",
+            "title": "Oreshura",
             "episode_number": "01",
             "release_version": "2",
             "episode_title": "The Start Of High School Life Is A War Zone",
@@ -1795,7 +1795,7 @@
         "mal_id": 22831,
         "output": {
             "release_group": "모에-Raws",
-            "anime_title": "Abarenbou Rikishi!! Matsutarou",
+            "title": "Abarenbou Rikishi!! Matsutarou",
             "episode_number": "04",
             "video_resolution": "1280x720",
             "video_term": "x264",
@@ -1808,7 +1808,7 @@
         "mal_id": 15689,
         "output": {
             "release_group": "바카-Raws",
-            "anime_title": "Nekomonogatari (Black)",
+            "title": "Nekomonogatari (Black)",
             "episode_number": [
                 "1",
                 "4"
@@ -1824,7 +1824,7 @@
         "mal_id": 9941,
         "output": {
             "release_group": "NinjaPanda",
-            "anime_title": "Tiger & Bunny",
+            "title": "Tiger & Bunny",
             "episode_number": "01",
             "episode_title": "All's well that ends well.",
             "release_version": "3",
@@ -1839,7 +1839,7 @@
         "input": "Neko no Ongaeshi - [HQR.remux-DualAudio][NTV.1280x692.h264](0CDC2145).mkv",
         "mal_id": 597,
         "output": {
-            "anime_title": "Neko no Ongaeshi",
+            "title": "Neko no Ongaeshi",
             "release_information": "remux",
             "audio_term": "DualAudio",
             "video_resolution": "1280x692",
@@ -1853,7 +1853,7 @@
         "mal_id": 363,
         "output": {
             "release_group": "ReDone",
-            "anime_title": "Memories Off 3.5",
+            "title": "Memories Off 3.5",
             "episode_number": "04",
             "source": "DVD",
             "video_term": "10-bit",
@@ -1865,8 +1865,8 @@
         "mal_id": 25285,
         "output": {
             "release_group": "FFF",
-            "anime_title": "Seirei Tsukai no Blade Dance - SP",
-            "anime_type": "SP",
+            "title": "Seirei Tsukai no Blade Dance - SP",
+            "type": "SP",
             "episode_number": "01",
             "source": "BD",
             "video_resolution": "720p",
@@ -1879,7 +1879,7 @@
         "input": "Byousoku 5 Centimeter [Blu-Ray][1920x1080 H.264][2.0ch AAC][SOFTSUBS]",
         "mal_id": 1689,
         "output": {
-            "anime_title": "Byousoku 5 Centimeter",
+            "title": "Byousoku 5 Centimeter",
             "source": "Blu-Ray",
             "video_resolution": "1920x1080",
             "video_term": "H.264",
@@ -1895,7 +1895,7 @@
         "mal_id": 12143,
         "output": {
             "release_group": "SubDESU-H",
-            "anime_title": "Swing out Sisters",
+            "title": "Swing out Sisters",
             "release_information": "Complete",
             "video_resolution": "720p",
             "video_term": [
@@ -1911,8 +1911,8 @@
         "input": "Cyborg 009 (1968) [TSHS] episode 06 [30C15D62].mp4",
         "mal_id": 8394,
         "output": {
-            "anime_title": "Cyborg 009",
-            "anime_year": "1968",
+            "title": "Cyborg 009",
+            "year": "1968",
             "release_group": "TSHS",
             "episode_number": "06",
             "file_checksum": "30C15D62",
@@ -1924,8 +1924,8 @@
         "mal_id": 22777,
         "output": {
             "release_group": "Hatsuyuki",
-            "anime_title": "Dragon Ball Kai",
-            "anime_year": "2014",
+            "title": "Dragon Ball Kai",
+            "year": "2014",
             "episode_number": "002",
             "episode_number_alt": "100",
             "video_resolution": "1280x720",
@@ -1938,7 +1938,7 @@
         "mal_id": 8311,
         "output": {
             "release_group": "Deep",
-            "anime_title": "Tegami Bachi (REVERSE) - Letter Bee",
+            "title": "Tegami Bachi (REVERSE) - Letter Bee",
             "episode_number_alt": "29",
             "episode_number": "04",
             "file_checksum": "5203142B",
@@ -1950,8 +1950,8 @@
         "mal_id": 24997,
         "output": {
             "release_group": "FFF",
-            "anime_title": "Love Live! The School Idol Movie - PV",
-            "anime_type": [
+            "title": "Love Live! The School Idol Movie - PV",
+            "type": [
                 "Movie",
                 "PV"
             ],
@@ -1964,8 +1964,8 @@
         "mal_id": 25729,
         "output": {
             "release_group": "Nishi-Taku",
-            "anime_title": "Tamayura ~graduation photo~ Movie Part 1",
-            "anime_type": "Movie",
+            "title": "Tamayura ~graduation photo~ Movie Part 1",
+            "type": "Movie",
             "source": "BD",
             "video_resolution": "720p",
             "file_checksum": "98965607",
@@ -1977,8 +1977,8 @@
         "mal_id": 3914,
         "output": {
             "release_group": "LRL",
-            "anime_title": "1001 Nights",
-            "anime_year": "1998",
+            "title": "1001 Nights",
+            "year": "1998",
             "source": "DVD"
         }
     },
@@ -1987,7 +1987,7 @@
         "mal_id": 20707,
         "output": {
             "release_group": "TardRaws",
-            "anime_title": "0",
+            "title": "0",
             "video_resolution": "640x360",
             "file_extension": "mkv"
         }
@@ -1997,11 +1997,11 @@
         "mal_id": 3745,
         "output": {
             "release_group": "FB",
-            "anime_title": "Crayon Shin-Chan Movie 2 The Secret of Buri Buri Kingdom",
-            "anime_type": "Movie",
+            "title": "Crayon Shin-Chan Movie 2 The Secret of Buri Buri Kingdom",
+            "type": "Movie",
             "video_term": "DivX5",
             "audio_term": "AC3",
-            "anime_year": "1994",
+            "year": "1994",
             "video_resolution": "852X480",
             "release_version": "2",
             "file_extension": "avi"
@@ -2012,7 +2012,7 @@
         "mal_id": 22043,
         "output": {
             "release_group": "Hatsuyuki-Kaitou",
-            "anime_title": "Fairy Tail 2",
+            "title": "Fairy Tail 2",
             "episode_number": "52",
             "episode_number_alt": "227",
             "video_resolution": "720p",
@@ -2026,7 +2026,7 @@
         "mal_id": 10196,
         "output": {
             "release_group": "FBI",
-            "anime_title": "Baby Princess 3D Paradise Love",
+            "title": "Baby Princess 3D Paradise Love",
             "episode_number": "01",
             "release_version": "0",
             "source": "BD",
@@ -2041,7 +2041,7 @@
         "mal_id": 3572,
         "output": {
             "release_group": "Shinsen-Subs",
-            "anime_title": "Macross Frontier",
+            "title": "Macross Frontier",
             "episode_number": "01b",
             "file_checksum": "4D5EC315",
             "file_extension": "avi"
@@ -2052,7 +2052,7 @@
         "mal_id": 3604,
         "output": {
             "release_group": "NamaeNai",
-            "anime_title": "Hidamari Sketch x365",
+            "title": "Hidamari Sketch x365",
             "episode_number": "09a",
             "source": "DVD",
             "file_checksum": "49874745",
@@ -2064,7 +2064,7 @@
         "mal_id": 1482,
         "output": {
             "release_group": "KLF",
-            "anime_title": "D.Gray-man",
+            "title": "D.Gray-man",
             "episode_number": "04",
             "release_version": "2",
             "file_extension": "avi"
@@ -2075,7 +2075,7 @@
         "mal_id": 7674,
         "output": {
             "release_group": "FaggotryRaws",
-            "anime_title": "Bakuman",
+            "title": "Bakuman",
             "episode_number": "01",
             "video_resolution": "848x480",
             "file_extension": "mkv"
@@ -2086,7 +2086,7 @@
         "mal_id": 0,
         "output": {
             "release_group": "5F",
-            "anime_title": "RWBY",
+            "title": "RWBY",
             "episode_number": "14",
             "episode_title": "Forever Fall Part 2",
             "language": "pt-BR",
@@ -2097,7 +2097,7 @@
         "input": "Dragon.Ball.KAI.-.01.-.1080p.BluRay.x264.DHD.mkv",
         "mal_id": 6033,
         "output": {
-            "anime_title": "Dragon Ball KAI",
+            "title": "Dragon Ball KAI",
             "episode_number": "01",
             "video_resolution": "1080p",
             "source": "BluRay",
@@ -2110,8 +2110,8 @@
         "mal_id": 29854,
         "output": {
             "release_group": "AnimeRG",
-            "anime_title": "Ushio to Tora (TV)",
-            "anime_type": "TV",
+            "title": "Ushio to Tora (TV)",
+            "type": "TV",
             "episode_number": "02",
             "video_resolution": "720p",
             "file_extension": "mkv"
@@ -2126,7 +2126,7 @@
         "input": "Gekkan Shoujo Nozaki-kun [HorribleSubs] (1080p)",
         "mal_id": 23289,
         "output": {
-            "anime_title": "Gekkan Shoujo Nozaki-kun",
+            "title": "Gekkan Shoujo Nozaki-kun",
             "release_group": "HorribleSubs",
             "video_resolution": "1080p"
         }
@@ -2136,7 +2136,7 @@
         "mal_id": 23289,
         "output": {
             "release_group": "BM&T",
-            "anime_title": "Toradora!",
+            "title": "Toradora!",
             "episode_number": "07",
             "release_version": "2",
             "episode_title": "Pool Opening",
@@ -2151,7 +2151,7 @@
         "mal_id": 12149,
         "output": {
             "release_group": "EveTaku",
-            "anime_title": "AKB0048",
+            "title": "AKB0048",
             "volume_number": "03",
             "source": "BDRip",
             "video_resolution": "1080i",
@@ -2168,7 +2168,7 @@
         "mal_id": 14513,
         "output": {
             "release_group": "DmonHiro",
-            "anime_title": "Magi - The Labyrinth Of Magic",
+            "title": "Magi - The Labyrinth Of Magic",
             "volume_number": "1",
             "release_version": "2",
             "source": "BD",
@@ -2180,7 +2180,7 @@
         "mal_id": 11665,
         "output": {
             "release_group": "tlacatlc6",
-            "anime_title": "Natsume Yuujinchou Shi",
+            "title": "Natsume Yuujinchou Shi",
             "volume_number": [
                 "1",
                 "2"
@@ -2197,7 +2197,7 @@
         "mal_id": 12189,
         "output": {
             "release_group": "Tsundere",
-            "anime_title": "Hyouka",
+            "title": "Hyouka",
             "episode_number": [
                 "01",
                 "04"
@@ -2217,7 +2217,7 @@
         "mal_id": 6023,
         "output": {
             "release_group": "Doki",
-            "anime_title": "Nogizaka Haruka no Himitsu - Purezza",
+            "title": "Nogizaka Haruka no Himitsu - Purezza",
             "episode_number": [
                 "01",
                 "03"
@@ -2235,8 +2235,8 @@
         "input": "Fairy Tail - S06E32 - Tartaros Arc Iron Fist of the Fire Dragon [Episode 83]",
         "mal_id": 6702,
         "output": {
-            "anime_title": "Fairy Tail",
-            "anime_season": "06",
+            "title": "Fairy Tail",
+            "season": "06",
             "episode_number": "32",
             "episode_title": "Tartaros Arc Iron Fist of the Fire Dragon",
             "episode_number_alt": "83"
@@ -2246,8 +2246,8 @@
         "input": "Noragami - S02E06 - What Must Be Done [Episode 6]",
         "mal_id": 30503,
         "output": {
-            "anime_title": "Noragami",
-            "anime_season": "02",
+            "title": "Noragami",
+            "season": "02",
             "episode_number": "6",
             "episode_title": "What Must Be Done"
         }
@@ -2257,7 +2257,7 @@
         "mal_id": 30383,
         "output": {
             "release_group": "Harunatsu",
-            "anime_title": "Classroom Crisis",
+            "title": "Classroom Crisis",
             "volume_number": "1",
             "source": "BD",
             "video_resolution": "720p",
@@ -2269,7 +2269,7 @@
         "mal_id": 30383,
         "output": {
             "release_group": "GS",
-            "anime_title": "Classroom Crisis",
+            "title": "Classroom Crisis",
             "volume_number": [
                 "1",
                 "2"
@@ -2285,7 +2285,7 @@
         "mal_id": 31452,
         "output": {
             "release_group": "Infantjedi",
-            "anime_title": "Norn9 - Norn + Nonetto",
+            "title": "Norn9 - Norn + Nonetto",
             "episode_number": "12"
         }
     },
@@ -2296,7 +2296,7 @@
             903
         ],
         "output": {
-            "anime_title": "Dragon Ball Z Movies",
+            "title": "Dragon Ball Z Movies",
             "episode_number": [
                 "8",
                 "10"
@@ -2313,7 +2313,7 @@
         "mal_id": 30014,
         "output": {
             "release_group": "HorribleSubs",
-            "anime_title": "Momokuri",
+            "title": "Momokuri",
             "episode_number": [
                 "01",
                 "02"
@@ -2326,8 +2326,8 @@
         "mal_id": 1199,
         "output": {
             "release_group": "(´• ω •`)",
-            "anime_title": "Nintama Rantarou",
-            "anime_season": "23",
+            "title": "Nintama Rantarou",
+            "season": "23",
             "episode_number": "1821",
             "episode_title": "Buddhist Priest-sama is a Ninja"
         }
@@ -2337,8 +2337,8 @@
         "mal_id": 49520,
         "output": {
             "release_group": "Judas",
-            "anime_title": "Aharen-san wa Hakarenai",
-            "anime_season": "01",
+            "title": "Aharen-san wa Hakarenai",
+            "season": "01",
             "episode_number": "06",
             "release_version": "2"
         }
@@ -2347,8 +2347,8 @@
         "input": "[0x539] Somali and the Forest Spirit - S01E01 (WEB 1080p Hi10P AAC) [BB7C6531].mkv",
         "mal_id": 39575,
         "output": {
-            "anime_season": "01",
-            "anime_title": "Somali and the Forest Spirit",
+            "season": "01",
+            "title": "Somali and the Forest Spirit",
             "audio_term": "AAC",
             "episode_number": "01",
             "file_checksum": "BB7C6531",
@@ -2362,9 +2362,9 @@
         "input": "Piano no Mori (TV) 2nd Season - 01",
         "mal_id": 37975,
         "output": {
-            "anime_title": "Piano no Mori",
-            "anime_type": "TV",
-            "anime_season": "2",
+            "title": "Piano no Mori",
+            "type": "TV",
+            "season": "2",
             "episode_number": "01"
         }
     },
@@ -2372,9 +2372,9 @@
         "input": "Piano no Mori 2 (TV)",
         "mal_id": 37975,
         "output": {
-            "anime_title": "Piano no Mori",
-            "anime_season": "2",
-            "anime_type": "TV"
+            "title": "Piano no Mori",
+            "season": "2",
+            "type": "TV"
         }
     },
     {
@@ -2382,7 +2382,7 @@
         "mal_id": 10165,
         "output": {
             "release_group": "DESS",
-            "anime_title": "Nichijou",
+            "title": "Nichijou",
             "episode_number": "05",
             "video_resolution": "1080",
             "source": "BD",
@@ -2395,9 +2395,9 @@
         "input": "Diamond no Ace Second Season OVA - 01",
         "mal_id": 34349,
         "output": {
-            "anime_title": "Diamond no Ace",
-            "anime_season": "2",
-            "anime_type": "OVA",
+            "title": "Diamond no Ace",
+            "season": "2",
+            "type": "OVA",
             "episode_number": "01"
         }
     },
@@ -2406,7 +2406,7 @@
         "mal_id": 67,
         "output": {
             "release_group": "bonkai77",
-            "anime_title": "Basilisk",
+            "title": "Basilisk",
             "episode_number": "18",
             "episode_title": "A Dawn Without Light",
             "source": "BD",
@@ -2420,7 +2420,7 @@
         "input": "Citrus+Episode+3.mp4",
         "mal_id": 34382,
         "output": {
-            "anime_title": "Citrus",
+            "title": "Citrus",
             "episode_number": "3",
             "file_extension": "mp4"
         }
@@ -2429,7 +2429,7 @@
         "input": "kimetsu-no-yaiba-episode-25-1080p.mp4",
         "mal_id": 38000,
         "output": {
-            "anime_title": "kimetsu no yaiba",
+            "title": "kimetsu no yaiba",
             "episode_number": "25",
             "video_resolution": "1080p",
             "file_extension": "mp4"
@@ -2439,7 +2439,7 @@
         "input": "1p-episode-122-sub",
         "mal_id": 21,
         "output": {
-            "anime_title": "1p",
+            "title": "1p",
             "episode_number": "122",
             "subtitles": "sub"
         }
@@ -2448,8 +2448,8 @@
         "input": "呪術廻戦 第2期 01話",
         "mal_id": 51009,
         "output": {
-            "anime_title": "呪術廻戦",
-            "anime_season": "2",
+            "title": "呪術廻戦",
+            "season": "2",
             "episode_number": "01"
         }
     },
@@ -2457,7 +2457,7 @@
         "input": "NieR:Automata Ver1.1a - 01",
         "mal_id": 51105,
         "output": {
-            "anime_title": "NieR:Automata Ver1.1a",
+            "title": "NieR:Automata Ver1.1a",
             "episode_number": "01"
         }
     },
@@ -2466,8 +2466,8 @@
         "mal_id": 51105,
         "output": {
             "release_group": "Yameii",
-            "anime_title": "NieR Automata Ver1.1a",
-            "anime_season": "01",
+            "title": "NieR Automata Ver1.1a",
+            "season": "01",
             "episode_number": "10",
             "language": "English",
             "subtitles": "Dub",
@@ -2483,8 +2483,8 @@
         "input": "The.Eminence.in.Shadow.S01E05.I.Am....1080p.BluRay.DD2.0.x265-ExCaLiBuR.mkv",
         "mal_id": 48316,
         "output": {
-            "anime_title": "The Eminence in Shadow",
-            "anime_season": "01",
+            "title": "The Eminence in Shadow",
+            "season": "01",
             "episode_number": "05",
             "episode_title": "I Am...",
             "video_resolution": "1080p",
@@ -2499,7 +2499,7 @@
         "input": "Bubblegum Crisis (BDRip 1440x1080p x265 HEVC TrueHD, AAC 2.0x)(Dual Audio)[sxales](v2)",
         "mal_id": 1347,
         "output": {
-            "anime_title": "Bubblegum Crisis",
+            "title": "Bubblegum Crisis",
             "source": "BDRip",
             "video_resolution": "1440x1080p",
             "video_term": [
@@ -2513,6 +2513,29 @@
             ],
             "release_group": "sxales",
             "release_version": "2"
+        }
+    },
+    {
+        "input": "[DeadFish] Boku no Imouto wa \"Osaka Okan\": Uchi no Onii-chan wa Tokyo Rule - Special [BD][720p][AAC].mp4",
+        "mal_id": 18419,
+        "output": {
+            "release_group": "DeadFish",
+            "title": "Boku no Imouto wa \"Osaka Okan\": Uchi no Onii-chan wa Tokyo Rule - Special",
+            "source": "BD",
+            "video_resolution": "720p",
+            "file_extension": "mp4"
+        }
+    },
+    {
+        "input": "[&] Shomin Sample - 10 [720p][55555555].mkv",
+        "mal_id": 25099,
+        "output": {
+            "release_group": "&",
+            "title": "Shomin Sample",
+            "episode_number": "10",
+            "video_resolution": "720p",
+            "file_checksum": "55555555",
+            "file_extension": "mkv"
         }
     }
 ]

@@ -12,21 +12,21 @@
 
 namespace anitomy::detail {
 
-inline std::optional<Element> parse_anime_season(std::span<Token> tokens) noexcept {
+inline std::optional<Element> parse_season(std::span<Token> tokens) noexcept {
   using window_t = std::tuple<Token&, Token&, Token&>;
 
-  static constexpr auto is_anime_season_keyword = [](const Token& token) {
-    return token.keyword && token.keyword->kind == KeywordKind::AnimeSeason;
+  static constexpr auto is_season_keyword = [](const Token& token) {
+    return token.keyword && token.keyword->kind == KeywordKind::Season;
   };
 
   static constexpr auto starts_with_season_keyword = [](window_t tokens) {
-    return is_anime_season_keyword(std::get<0>(tokens)) &&
-           is_delimiter_token(std::get<1>(tokens)) && is_free_token(std::get<2>(tokens));
+    return is_season_keyword(std::get<0>(tokens)) && is_delimiter_token(std::get<1>(tokens)) &&
+           is_free_token(std::get<2>(tokens));
   };
 
   static constexpr auto ends_with_season_keyword = [](window_t tokens) {
-    return is_anime_season_keyword(std::get<2>(tokens)) &&
-           is_delimiter_token(std::get<1>(tokens)) && is_free_token(std::get<0>(tokens));
+    return is_season_keyword(std::get<2>(tokens)) && is_delimiter_token(std::get<1>(tokens)) &&
+           is_free_token(std::get<0>(tokens));
   };
 
   for (auto view : tokens | std::views::adjacent<3>) {
@@ -34,10 +34,10 @@ inline std::optional<Element> parse_anime_season(std::span<Token> tokens) noexce
     if (ends_with_season_keyword(view)) {
       auto [token, _, season_token] = view;
       if (auto number = from_ordinal_number(token.value); !number.empty()) {
-        token.element_kind = ElementKind::AnimeSeason;
-        season_token.element_kind = ElementKind::AnimeSeason;
+        token.element_kind = ElementKind::Season;
+        season_token.element_kind = ElementKind::Season;
         return Element{
-            .kind = ElementKind::AnimeSeason,
+            .kind = ElementKind::Season,
             .value = std::string{number},
             .position = token.position,
         };
@@ -53,10 +53,10 @@ inline std::optional<Element> parse_anime_season(std::span<Token> tokens) noexce
         value = number;
       }
       if (!value.empty()) {
-        season_token.element_kind = ElementKind::AnimeSeason;
-        token.element_kind = ElementKind::AnimeSeason;
+        season_token.element_kind = ElementKind::Season;
+        token.element_kind = ElementKind::Season;
         return Element{
-            .kind = ElementKind::AnimeSeason,
+            .kind = ElementKind::Season,
             .value = value,
             .position = token.position,
         };
@@ -80,9 +80,9 @@ inline std::optional<Element> parse_anime_season(std::span<Token> tokens) noexce
 
     for (auto& token : tokens | std::views::filter(is_free_token)) {
       if (is_season(token, matches) || is_japanese_counter(token, matches)) {
-        token.element_kind = ElementKind::AnimeSeason;
+        token.element_kind = ElementKind::Season;
         return Element{
-            .kind = ElementKind::AnimeSeason,
+            .kind = ElementKind::Season,
             .value = matches[1].str(),
             .position = token.position + matches.position(1),
         };
