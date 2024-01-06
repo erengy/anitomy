@@ -1,49 +1,47 @@
 #pragma once
 
+#include <algorithm>
 #include <optional>
-#include <ranges>
 #include <span>
 
+#include <anitomy/detail/container.hpp>
 #include <anitomy/detail/token.hpp>
 #include <anitomy/element.hpp>
 
 namespace anitomy::detail {
 
 inline std::optional<Element> parse_release_group(std::span<Token> tokens) noexcept {
-  auto token_begin = tokens.begin();
-  auto token_end = tokens.begin();
+  // Find the first free enclosed range
+  // e.g. `[Group] Title - Episode [Info]`
+  //        ^----^
+  auto token_begin = std::ranges::find_if(
+      tokens, [](const Token& token) { return is_free_token(token) && token.is_enclosed; });
+  auto token_end = std::find_if(token_begin, tokens.end(), [](const Token& token) {
+    return is_close_bracket_token(token) || token.element_kind.has_value();
+  });
 
-  do {
-    // Find the first free enclosed token
-    token_begin = std::ranges::find_if(token_end, tokens.end(), [](const Token& token) {
-      return is_free_token(token) && token.is_enclosed;
-    });
-    if (token_begin == tokens.end()) break;
+  // Skip if the range contains other tokens
+  if (auto token = find_prev_token(tokens, token_begin, is_not_delimiter_token);
+      token != tokens.end() && !is_open_bracket_token(*token)) {
+    return parse_release_group({token_end, tokens.end()});
+  }
+  if (token_end != tokens.end() && !is_close_bracket_token(*token_end)) {
+    return parse_release_group({token_end, tokens.end()});
+  }
 
-    // Continue until a bracket or identifier is found
-    token_end = std::ranges::find_if(token_begin, tokens.end(), [](const Token& token) {
-      return token.kind == TokenKind::CloseBracket || token.element_kind.has_value();
-    });
-    if (token_end == tokens.end()) break;
-    if (token_end->kind != TokenKind::CloseBracket) continue;
+  auto span = std::span{token_begin, token_end};
 
-    // @TODO: Ignore if it's not the first non-delimiter token in group
-
-    auto span = std::span(token_begin, token_end);
-
-    // Build release group
-    if (std::string value = build_element_value(span, false); !value.empty()) {
-      for (auto& token : span) {
-        token.element_kind = ElementKind::ReleaseGroup;
-      }
-      return Element{
-          .kind = ElementKind::ReleaseGroup,
-          .value = value,
-          .position = span.front().position,
-      };
+  // Build release group
+  if (std::string value = build_element_value(span, false); !value.empty()) {
+    for (auto& token : span) {
+      token.element_kind = ElementKind::ReleaseGroup;
     }
-    break;
-  } while (token_begin != tokens.end());
+    return Element{
+        .kind = ElementKind::ReleaseGroup,
+        .value = value,
+        .position = span.front().position,
+    };
+  }
 
   return std::nullopt;
 }
