@@ -30,7 +30,7 @@ inline std::optional<Element> parse_title(std::span<Token> tokens) noexcept {
   }
 
   // Allow filenames without a title
-  if (token_begin == tokens.end()) std::nullopt;
+  if (token_begin == tokens.end()) return std::nullopt;
 
   // Prevent titles with mismatched brackets
   // e.g. `Title (`      -> `Title `
