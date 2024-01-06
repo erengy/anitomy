@@ -154,9 +154,9 @@ void test_json() {
     assert(json::serialize(value) == "null");
   }
   {
-    const auto str = R"({"episode_number":"01","title":"Title"})";
+    const auto str = R"({"episode":"01","title":"Title"})";
     auto value = json::parse(str);
-    assert(value.as_object()["episode_number"].as_string() == "01");
+    assert(value.as_object()["episode"].as_string() == "01");
     assert(value.as_object()["title"].as_string() == "Title");
     assert(json::serialize(value) == str);
   }

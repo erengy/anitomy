@@ -13,7 +13,7 @@
 
 namespace anitomy::detail {
 
-inline std::vector<Element> parse_episode_number(std::span<Token> tokens) noexcept {
+inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
   using namespace std::views;
 
   std::vector<Element> elements;
@@ -43,8 +43,8 @@ inline std::vector<Element> parse_episode_number(std::span<Token> tokens) noexce
     if (auto token = find_next_token(tokens, episode_token, is_not_delimiter_token);
         token != tokens.end()) {
       if (is_free_token(*token) && is_numeric_token(*token)) {
-        add_element_from_token(ElementKind::EpisodeNumber, *token);
-        episode_token->element_kind = ElementKind::EpisodeNumber;
+        add_element_from_token(ElementKind::Episode, *token);
+        episode_token->element_kind = ElementKind::Episode;
         return elements;
       }
     }
@@ -59,7 +59,7 @@ inline std::vector<Element> parse_episode_number(std::span<Token> tokens) noexce
 
     for (auto& token : tokens | filter(is_free_token)) {
       if (is_episode_prefix(token, matches)) {
-        add_element_from_token(ElementKind::EpisodeNumber, token, matches[1].str(),
+        add_element_from_token(ElementKind::Episode, token, matches[1].str(),
                                token.position + matches.position(1));
         if (matches[2].matched) {
           add_element(ElementKind::ReleaseVersion, matches[2].str(),
@@ -87,8 +87,8 @@ inline std::vector<Element> parse_episode_number(std::span<Token> tokens) noexce
       if (next_token == tokens.end()) continue;
       // check if number
       if (!is_numeric_token(*next_token)) continue;
-      add_element_from_token(ElementKind::EpisodeNumber, *it);
-      add_element_from_token(ElementKind::EpisodeNumber, *next_token);
+      add_element_from_token(ElementKind::Episode, *it);
+      add_element_from_token(ElementKind::Episode, *next_token);
       return elements;
     }
   }
@@ -104,7 +104,7 @@ inline std::vector<Element> parse_episode_number(std::span<Token> tokens) noexce
 
     for (auto& token : tokens | filter(is_free_token)) {
       if (is_single_episode(token, matches)) {
-        add_element_from_token(ElementKind::EpisodeNumber, token, matches[1].str(),
+        add_element_from_token(ElementKind::Episode, token, matches[1].str(),
                                token.position + matches.position(1));
         add_element(ElementKind::ReleaseVersion, matches[2].str(),
                     token.position + matches.position(2));
@@ -128,13 +128,13 @@ inline std::vector<Element> parse_episode_number(std::span<Token> tokens) noexce
         auto lower = matches[1].str();
         auto upper = matches[3].str();
         if (to_int(lower) >= to_int(upper)) continue;  // avoid matching `009-1`, `5-2`, etc.
-        add_element_from_token(ElementKind::EpisodeNumber, token, lower,
+        add_element_from_token(ElementKind::Episode, token, lower,
                                token.position + matches.position(1));
         if (matches[2].matched) {
           add_element(ElementKind::ReleaseVersion, matches[2].str(),
                       token.position + matches.position(2));
         }
-        add_element_from_token(ElementKind::EpisodeNumber, token, upper,
+        add_element_from_token(ElementKind::Episode, token, upper,
                                token.position + matches.position(3));
         if (matches[4].matched) {
           add_element(ElementKind::ReleaseVersion, matches[4].str(),
@@ -166,11 +166,10 @@ inline std::vector<Element> parse_episode_number(std::span<Token> tokens) noexce
         if (matches[2].matched) {
           add_element(ElementKind::Season, matches[2].str(), token.position + matches.position(2));
         }
-        add_element_from_token(ElementKind::EpisodeNumber, token, matches[3].str(),
+        add_element_from_token(ElementKind::Episode, token, matches[3].str(),
                                token.position + matches.position(3));
         if (matches[4].matched) {
-          add_element(ElementKind::EpisodeNumber, matches[4].str(),
-                      token.position + matches.position(4));
+          add_element(ElementKind::Episode, matches[4].str(), token.position + matches.position(4));
         }
         if (matches[5].matched) {
           add_element(ElementKind::ReleaseVersion, matches[5].str(),
@@ -193,7 +192,7 @@ inline std::vector<Element> parse_episode_number(std::span<Token> tokens) noexce
     if (auto token = find_next_token(tokens, type_token, is_not_delimiter_token);
         token != tokens.end()) {
       if (is_free_token(*token) && is_numeric_token(*token)) {
-        add_element_from_token(ElementKind::EpisodeNumber, *token);
+        add_element_from_token(ElementKind::Episode, *token);
         return elements;
       }
     }
@@ -209,10 +208,10 @@ inline std::vector<Element> parse_episode_number(std::span<Token> tokens) noexce
           // `Tokyo Magnitude 8.0`) or a keyword (e.g. `5.1`).
           if (is_free_token(fraction) && fraction.value == "5") {
             add_element_from_token(
-                ElementKind::EpisodeNumber, number,
+                ElementKind::Episode, number,
                 std::format("{}{}{}", number.value, delimiter.value, fraction.value));
-            delimiter.element_kind = ElementKind::EpisodeNumber;
-            fraction.element_kind = ElementKind::EpisodeNumber;
+            delimiter.element_kind = ElementKind::Episode;
+            fraction.element_kind = ElementKind::Episode;
             return elements;
           }
         }
@@ -231,11 +230,10 @@ inline std::vector<Element> parse_episode_number(std::span<Token> tokens) noexce
 
     for (auto& token : tokens | filter(is_free_token)) {
       if (is_number_sign(token, matches)) {
-        add_element_from_token(ElementKind::EpisodeNumber, token, matches[1].str(),
+        add_element_from_token(ElementKind::Episode, token, matches[1].str(),
                                token.position + matches.position(1));
         if (matches[2].matched) {
-          add_element(ElementKind::EpisodeNumber, matches[2].str(),
-                      token.position + matches.position(2));
+          add_element(ElementKind::Episode, matches[2].str(), token.position + matches.position(2));
         }
         if (matches[3].matched) {
           add_element(ElementKind::ReleaseVersion, matches[3].str(),
@@ -257,7 +255,7 @@ inline std::vector<Element> parse_episode_number(std::span<Token> tokens) noexce
 
     for (auto& token : tokens | filter(is_free_token)) {
       if (is_japanese_counter(token, matches)) {
-        add_element_from_token(ElementKind::EpisodeNumber, token, matches[1].str(),
+        add_element_from_token(ElementKind::Episode, token, matches[1].str(),
                                token.position + matches.position(1));
         return elements;
       }
@@ -280,7 +278,7 @@ inline std::vector<Element> parse_episode_number(std::span<Token> tokens) noexce
     for (auto it = view.begin(); it != view.end(); ++it) {
       auto next_token = std::ranges::find_if(it.base(), tokens.end(), is_not_delimiter_token);
       if (next_token != tokens.end() && is_numeric_token(*next_token)) {
-        add_element_from_token(ElementKind::EpisodeNumber, *next_token);
+        add_element_from_token(ElementKind::Episode, *next_token);
         return elements;
       }
     }
@@ -303,7 +301,7 @@ inline std::vector<Element> parse_episode_number(std::span<Token> tokens) noexce
     auto view = tokens | adjacent<3> | filter(is_isolated) | filter(is_free_number) | take(1);
 
     if (!view.empty()) {
-      add_element_from_token(ElementKind::EpisodeNumber, std::get<1>(view.front()));
+      add_element_from_token(ElementKind::Episode, std::get<1>(view.front()));
       return elements;
     }
   }
@@ -317,7 +315,7 @@ inline std::vector<Element> parse_episode_number(std::span<Token> tokens) noexce
 
     auto view = tokens | filter(is_free_token) | filter(is_partial_episode) | take(1);
     if (!view.empty()) {
-      add_element_from_token(ElementKind::EpisodeNumber, view.front());
+      add_element_from_token(ElementKind::Episode, view.front());
       return elements;
     }
   }
@@ -328,7 +326,7 @@ inline std::vector<Element> parse_episode_number(std::span<Token> tokens) noexce
     auto view = tokens | reverse | filter(is_free_token) | filter(is_numeric_token) | take(1);
 
     if (!view.empty()) {
-      add_element_from_token(ElementKind::EpisodeNumber, view.front());
+      add_element_from_token(ElementKind::Episode, view.front());
       return elements;
     }
   }

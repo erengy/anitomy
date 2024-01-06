@@ -4,7 +4,7 @@
 #include <utility>
 #include <vector>
 
-#include <anitomy/detail/parser/episode_number.hpp>
+#include <anitomy/detail/parser/episode.hpp>
 #include <anitomy/detail/parser/episode_title.hpp>
 #include <anitomy/detail/parser/file_checksum.hpp>
 #include <anitomy/detail/parser/file_extension.hpp>
@@ -13,7 +13,7 @@
 #include <anitomy/detail/parser/season.hpp>
 #include <anitomy/detail/parser/title.hpp>
 #include <anitomy/detail/parser/video_resolution.hpp>
-#include <anitomy/detail/parser/volume_number.hpp>
+#include <anitomy/detail/parser/volume.hpp>
 #include <anitomy/detail/parser/year.hpp>
 #include <anitomy/detail/token.hpp>
 #include <anitomy/element.hpp>
@@ -63,10 +63,10 @@ public:
       add_element(parse_season(tokens_));
     }
 
-    // Episode number
-    if (options.parse_episode_number) {
-      add_element(parse_volume_number(tokens_));
-      add_elements(parse_episode_number(tokens_));
+    // Episode
+    if (options.parse_episode) {
+      add_element(parse_volume(tokens_));
+      add_elements(parse_episode(tokens_));
     }
 
     // Title
@@ -80,7 +80,7 @@ public:
     }
 
     // Episode title
-    if (options.parse_episode_title && contains(ElementKind::EpisodeNumber)) {
+    if (options.parse_episode_title && contains(ElementKind::Episode)) {
       add_element(parse_episode_title(tokens_));
     }
 

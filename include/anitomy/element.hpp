@@ -7,7 +7,7 @@ namespace anitomy {
 enum class ElementKind {
   AudioTerm,
   DeviceCompatibility,
-  EpisodeNumber,
+  Episode,
   EpisodeTitle,
   FileChecksum,
   FileExtension,
@@ -23,7 +23,7 @@ enum class ElementKind {
   Type,
   VideoResolution,
   VideoTerm,
-  VolumeNumber,
+  Volume,
   Year,
 };
 

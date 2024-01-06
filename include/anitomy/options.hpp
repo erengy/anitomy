@@ -3,7 +3,7 @@
 namespace anitomy {
 
 struct Options {
-  bool parse_episode_number = true;
+  bool parse_episode = true;
   bool parse_episode_title = true;
   bool parse_file_checksum = true;
   bool parse_file_extension = true;

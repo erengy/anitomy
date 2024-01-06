@@ -17,7 +17,7 @@ Element|Value
 Release group|`TaigaSubs`
 Title|`Toradora!`
 Year|`2008`
-Episode number|`01`
+Episode|`01`
 Release version|`2`
 Episode title|`Tiger and Dragon`
 Video resolution|`1080p`
@@ -50,7 +50,7 @@ int main() {
 ```
 release_group   Ouroboros
 title           Fullmetal Alchemist Brotherhood
-episode_number  01
+episode         01
 ```
 
 ### CLI
@@ -63,9 +63,9 @@ anitomy --format=json --pretty "[Ouroboros] Fullmetal Alchemist Brotherhood - 01
 
 ```json
 {
-  "title": "Fullmetal Alchemist Brotherhood",
-  "episode_number": "01",
-  "release_group": "Ouroboros"
+  "episode": "01",
+  "release_group": "Ouroboros",
+  "title": "Fullmetal Alchemist Brotherhood"
 }
 ```
 
