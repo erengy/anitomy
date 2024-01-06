@@ -84,4 +84,13 @@ inline bool read_file(const std::string& path, std::string& output) {
   return file.good();
 }
 
+template <typename It, typename Predicate>
+constexpr std::vector<It> find_all_if(It first, It last, Predicate p) {
+  std::vector<It> found;
+  for (; first != last; ++first) {
+    if (p(*first)) found.push_back(first);
+  }
+  return found;
+}
+
 }  // namespace anitomy::detail

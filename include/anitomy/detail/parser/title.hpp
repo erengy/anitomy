@@ -1,47 +1,66 @@
 #pragma once
 
+#include <algorithm>
 #include <optional>
-#include <ranges>
 #include <span>
 
 #include <anitomy/detail/container.hpp>
 #include <anitomy/detail/token.hpp>
+#include <anitomy/detail/util.hpp>
 #include <anitomy/element.hpp>
 
 namespace anitomy::detail {
 
 inline std::optional<Element> parse_title(std::span<Token> tokens) noexcept {
-  // Find the first free unenclosed token
+  // Find the first free unenclosed range
+  // e.g. `[Group] Title - Episode [Info]`
+  //               ^-------^
   auto token_begin = std::ranges::find_if(
       tokens, [](const Token& token) { return is_free_token(token) && !token.is_enclosed; });
+  auto token_end = std::find_if(token_begin, tokens.end(),
+                                [](const Token& token) { return token.element_kind.has_value(); });
 
-  // If that doesn't work, find the first unknown token in the second enclosed group (assuming
-  // that the first one is the release group)
+  // Fall back to the second enclosed range (assuming the first one is for release group)
+  // e.g. `[Group][Title][Info]`
+  //               ^----^
   if (token_begin == tokens.end()) {
-    // @TODO
-    return std::nullopt;
+    token_begin = std::ranges::find_if(tokens, is_close_bracket_token);
+    token_begin = std::find_if(token_begin, tokens.end(), is_free_token);
+    token_end = std::find_if(token_begin, tokens.end(), is_bracket_token);
   }
 
-  // Continue until an identifier is found
-  auto token_end = std::ranges::find_if(
-      token_begin, tokens.end(), [](const Token& token) { return token.element_kind.has_value(); });
+  // Allow filenames without a title
+  if (token_begin == tokens.end()) std::nullopt;
 
-  // If the interval ends with an enclosed group (e.g. "Title [Fansub]"), move the upper
-  // endpoint back to the beginning of the group. We ignore parentheses in order to keep certain
-  // groups (e.g. "(TV)") intact.
-  //
-  // @TODO
-
-  // Trim delimiters and open brackets
-  static constexpr auto is_invalid_token = [](const Token& token) {
-    return token.kind == TokenKind::Delimiter || token.kind == TokenKind::OpenBracket;
-  };
-  while (token_end != tokens.begin() && token_end != tokens.end() &&
-         is_invalid_token(*std::prev(token_end))) {
-    token_end = std::prev(token_end);
+  // Prevent titles with mismatched brackets
+  // e.g. `Title (`      -> `Title `
+  // e.g. `Title [Info ` -> `Title `
+  if (const auto open_brackets = find_all_if(token_begin, token_end, is_open_bracket_token);
+      !open_brackets.empty()) {
+    if (std::ranges::count_if(token_begin, token_end, is_close_bracket_token) !=
+        open_brackets.size()) {
+      token_end = open_brackets.back();
+    }
   }
 
-  auto span = std::span(token_begin, token_end);
+  // Prevent titles ending with an enclosed range
+  // e.g. `Title [Group]` -> `Title `
+  {
+    auto token = find_prev_token(tokens, token_end, is_not_delimiter_token);
+    // Ignore parentheses to keep certain ranges (e.g. `Title (TV)`)
+    if (is_close_bracket_token(*token) && token->value != ")") {
+      if (token = find_prev_token(tokens, token, is_open_bracket_token); token != tokens.end()) {
+        token_end = token;
+      }
+    }
+  }
+
+  auto span = std::span{token_begin, token_end};
+
+  // Trim delimiters
+  while (!span.empty() && is_delimiter_token(span.back())) {
+    span = span.first(span.size() - 1);
+  }
 
   // Build the title
   if (std::string value = build_element_value(span); !value.empty()) {

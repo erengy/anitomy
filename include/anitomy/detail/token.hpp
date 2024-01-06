@@ -34,6 +34,14 @@ constexpr bool is_open_bracket_token(const Token& token) noexcept {
   return token.kind == TokenKind::OpenBracket;
 }
 
+constexpr bool is_close_bracket_token(const Token& token) noexcept {
+  return token.kind == TokenKind::CloseBracket;
+}
+
+constexpr bool is_bracket_token(const Token& token) noexcept {
+  return is_open_bracket_token(token) || is_close_bracket_token(token);
+}
+
 constexpr bool is_delimiter_token(const Token& token) noexcept {
   return token.kind == TokenKind::Delimiter;
 }
