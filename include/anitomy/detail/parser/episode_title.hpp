@@ -14,8 +14,9 @@ inline std::optional<Element> parse_episode_title(std::span<Token> tokens) noexc
   // Find the first free unenclosed range
   // e.g. `[Group] Title - Episode - Episode Title [Info]`
   //                                 ^-------------^
-  auto token_begin = std::ranges::find_if(
-      tokens, [](const Token& token) { return is_free_token(token) && !token.is_enclosed; });
+  auto token_begin = std::ranges::find_if(tokens, [](const Token& token) {
+    return is_free_token(token) && !token.is_enclosed;  //
+  });
   auto token_end = std::find_if(token_begin, tokens.end(), [](const Token& token) {
     return is_open_bracket_token(token) || token.element_kind.has_value();
   });
