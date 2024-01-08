@@ -11,18 +11,17 @@ namespace anitomy::detail {
 
 inline std::string build_element_value(const std::span<Token> tokens,
                                        const bool transform_delimiters = true) noexcept {
-  std::string element_value;
+  const std::set<char> delimiters =
+      tokens | std::views::filter(is_delimiter_token) |
+      std::views::transform([](const Token& token) { return token.value.front(); }) |
+      std::ranges::to<std::set<char>>();
 
-  const bool has_multiple_delimiters = [&tokens]() {
-    constexpr auto token_value = [](const Token& token) { return token.value.front(); };
-    auto delimiters_view =
-        tokens | std::views::filter(is_delimiter_token) | std::views::transform(token_value);
-    std::set<char> delimiters{delimiters_view.begin(), delimiters_view.end()};
-    return delimiters.size() > 1;
-  }();
+  const bool has_multiple_delimiters = delimiters.size() > 1;
 
   const auto is_transformable = [&](const Token& token) {
-    if (token.kind != TokenKind::Delimiter || !transform_delimiters) return false;
+    if (is_not_delimiter_token(token) || !transform_delimiters) {
+      return false;
+    }
     switch (token.value.front()) {
       case ',':
       case '&':
@@ -33,6 +32,8 @@ inline std::string build_element_value(const std::span<Token> tokens,
         return !has_multiple_delimiters;
     }
   };
+
+  std::string element_value;
 
   for (const auto& token : tokens) {
     if (is_transformable(token)) {
