@@ -5,6 +5,7 @@
 #include <span>
 
 #include <anitomy/detail/container.hpp>
+#include <anitomy/detail/element.hpp>
 #include <anitomy/detail/token.hpp>
 #include <anitomy/detail/util.hpp>
 #include <anitomy/element.hpp>
