@@ -2359,6 +2359,18 @@
         }
     },
     {
+        "input": "05 - Hidan no Aria - Butei Charter Article 1 - [UTW](E7724B68).mkv",
+        "mal_id": 8630,
+        "output": {
+            "episode": "05",
+            "title": "Hidan no Aria",
+            "episode_title": "Butei Charter Article 1",
+            "release_group": "UTW",
+            "file_checksum": "E7724B68",
+            "file_extension": "mkv"
+        }
+    },
+    {
         "input": "Piano no Mori (TV) 2nd Season - 01",
         "mal_id": 37975,
         "output": {
@@ -2388,6 +2400,43 @@
             "source": "BD",
             "audio_term": "FLAC",
             "file_checksum": "D7F8E39D",
+            "file_extension": "mkv"
+        }
+    },
+    {
+        "input": "[SubsPlease] One Piece - 1080 (720p) [05B85B5E].mkv",
+        "mal_id": 21,
+        "output": {
+            "release_group": "SubsPlease",
+            "title": "One Piece",
+            "episode": "1080",
+            "video_resolution": "720p",
+            "file_checksum": "05B85B5E",
+            "file_extension": "mkv"
+        }
+    },
+    {
+        "input": "One Piece - 1080",
+        "mal_id": 21,
+        "output": {
+            "title": "One Piece",
+            "episode": "1080"
+        }
+    },
+    {
+        "input": "[Over-Time] Yu Yu Hakusho Special OVA (2018) [BD-1080] [574F88D9].mkv",
+        "mal_id": 36951,
+        "output": {
+            "release_group": "Over-Time",
+            "title": "Yu Yu Hakusho Special OVA",
+            "type": [
+                "Special",
+                "OVA"
+            ],
+            "year": "2018",
+            "source": "BD",
+            "video_resolution": "1080",
+            "file_checksum": "574F88D9",
             "file_extension": "mkv"
         }
     },
@@ -2426,6 +2475,15 @@
         }
     },
     {
+        "input": "Detective-Conan-656 Professor's Video Site (Part 1)",
+        "mal_id": 235,
+        "output": {
+            "title": "Detective Conan",
+            "episode": "656",
+            "episode_title": "Professor's Video Site (Part 1)"
+        }
+    },
+    {
         "input": "kimetsu-no-yaiba-episode-25-1080p.mp4",
         "mal_id": 38000,
         "output": {
@@ -2433,6 +2491,17 @@
             "episode": "25",
             "video_resolution": "1080p",
             "file_extension": "mp4"
+        }
+    },
+    {
+        "input": "S01E01-Senpai is a bit ..., Senpai, don't you ever get angry [72FF1098].mkv",
+        "mal_id": 0,
+        "output": {
+            "season": "01",
+            "episode": "01",
+            "episode_title": "Senpai is a bit ..., Senpai, don't you ever get angry",
+            "file_checksum": "72FF1098",
+            "file_extension": "mkv"
         }
     },
     {
@@ -2462,6 +2531,23 @@
         }
     },
     {
+        "input": "[Valenciano] NieR-Automata Ver1.1a - 03 [1080p][AV1 10bit][AAC][Multi-Sub] (Weekly).mkv",
+        "mal_id": 51105,
+        "output": {
+            "release_group": "Valenciano",
+            "title": "NieR-Automata Ver1.1a",
+            "episode": "03",
+            "video_resolution": "1080p",
+            "video_term": [
+                "AV1",
+                "10bit"
+            ],
+            "audio_term": "AAC",
+            "subtitles": "Multi-Sub",
+            "file_extension": "mkv"
+        }
+    },
+    {
         "input": "[Yameii] NieR Automata Ver1.1a - S01E10 [English Dub] [CR WEB-DL 1080p] [3703AD3A]",
         "mal_id": 51105,
         "output": {
@@ -2487,6 +2573,22 @@
             "season": "01",
             "episode": "05",
             "episode_title": "I Am...",
+            "video_resolution": "1080p",
+            "source": "BluRay",
+            "audio_term": "DD2.0",
+            "video_term": "x265",
+            "release_group": "ExCaLiBuR",
+            "file_extension": "mkv"
+        }
+    },
+    {
+        "input": "The.Eminence.in.Shadow.S01E07.A.Fencing.Tournament.of.Intrigue.&.Bloodshed.1080p.BluRay.DD2.0.x265-ExCaLiBuR.mkv",
+        "mal_id": 48316,
+        "output": {
+            "title": "The Eminence in Shadow",
+            "season": "01",
+            "episode": "07",
+            "episode_title": "A Fencing Tournament of Intrigue & Bloodshed",
             "video_resolution": "1080p",
             "source": "BluRay",
             "audio_term": "DD2.0",
@@ -2536,6 +2638,39 @@
             "video_resolution": "720p",
             "file_checksum": "55555555",
             "file_extension": "mkv"
+        }
+    },
+    {
+        "input": "[Anime Time] Sword Art Online (S01+S02+S03+S04+Alternative+Movies+Specials+OVAs) [BD] [Dual Audio][1080p][HEVC 10bit x265][AAC][Eng Sub] [Batch] (SAO) (Aria of a Starless Night+Gun Gale Online+Ordinal Scale+Alicization+War of Underworld+EX+Offline)",
+        "mal_id": [
+            11757,
+            21881,
+            36474,
+            39597
+        ],
+        "output": {
+            "release_group": "Anime Time",
+            "title": "Sword Art Online",
+            "season": [
+                "01",
+                "02",
+                "03",
+                "04"
+            ],
+            "source": "BD",
+            "audio_term": [
+                "Dual Audio",
+                "AAC"
+            ],
+            "video_resolution": "1080p",
+            "video_term": [
+                "HEVC",
+                "10bit",
+                "x265"
+            ],
+            "language": "Eng",
+            "subtitles": "Sub",
+            "release_information": "Batch"
         }
     }
 ]
