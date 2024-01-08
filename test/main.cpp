@@ -79,13 +79,13 @@ void test_json() {
     assert(value.as_string() == "test");
     assert(json::serialize(value) == str);
   }
-  // {
-  //   const auto str = R"("\"test\"")";
-  //   auto value = json::parse(str);
-  //   assert(value.is_string());
-  //   assert(value.as_string() == R"("test")");
-  //   assert(json::serialize(value) == str);
-  // }
+  {
+    const auto str = R"("\"test\"")";
+    auto value = json::parse(str);
+    assert(value.is_string());
+    assert(value.as_string() == R"("test")");
+    assert(json::serialize(value) == str);
+  }
   {
     const auto str = R"("test\\test")";
     auto value = json::parse(str);

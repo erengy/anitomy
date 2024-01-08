@@ -1,6 +1,7 @@
 #pragma once
 
 #include <expected>
+#include <functional>
 #include <ranges>
 #include <regex>
 #include <string>
@@ -128,16 +129,19 @@ private:
   }
 
   [[nodiscard]] inline expected_t<string_t> parse_string() noexcept {
-    // @TODO: Allow backslash escapes
-    static const auto parse = [this]() -> string_t {
-      const auto is_string = [](const char ch) { return ch != '"'; };
-      auto text = view_ | std::views::take_while(is_string);
-      auto n = std::ranges::distance(text);
-      return unescape_string(take(n));
+    static const std::function<string_t()> parse = [this]() {
+      constexpr auto is_string = [](const char ch) { return ch != '"'; };
+      auto view = view_ | std::views::take_while(is_string);
+      auto string = take(std::ranges::distance(view));
+      if (string.ends_with('\\')) {
+        string += take();
+        string += parse();
+      }
+      return string;
     };
 
     if (!skip('"')) return error();
-    string_t string = parse();
+    string_t string = unescape_string(parse());
     if (!skip('"')) return error();
 
     return string;
