@@ -6,6 +6,7 @@
 #include <anitomy/detail/parser.hpp>
 #include <anitomy/detail/tokenizer.hpp>
 #include <anitomy/element.hpp>
+#include <anitomy/format.hpp>
 #include <anitomy/options.hpp>
 
 namespace anitomy {

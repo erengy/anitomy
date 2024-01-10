@@ -39,8 +39,8 @@ Requires a compiler that supports [C++23](https://en.cppreference.com/w/cpp/comp
 int main() {
   auto elements = anitomy::parse("[Ouroboros] Fullmetal Alchemist Brotherhood - 01");
 
-  for (auto [kind, value] : elements) {
-    std::println("{:<16}{}", anitomy::to_string(kind), value);
+  for (auto [kind, value, _] : elements) {
+    std::println("{:<16}{}", kind, value);
   }
 
   return 0;
