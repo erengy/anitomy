@@ -443,11 +443,11 @@ void test_data() {
   };
 
   const auto print_error = [](std::string_view input, std::string_view name,
-                              std::string_view expected_value, std::string_view value) {
+                              std::string_view expected_value, std::string_view parsed_value) {
     std::println("Input:    `{}`", input);
     std::println("Element:  `{}`", name);
     std::println("Expected: `{}`", expected_value);
-    std::println("Got:      `{}`", value);
+    std::println("Got:      `{}`", parsed_value);
     std::println("");
   };
 
@@ -462,19 +462,13 @@ void test_data() {
     if (!map.contains("output")) assert(0 && "Invalid test data");
     auto& output = map["output"].as_object();
 
-    for (auto& [name, expected_value] : output) {
-      if (expected_value.is_string()) {
-        if (elements[name].size() == 1 && elements[name].front() == expected_value.as_string()) {
-          continue;
-        }
-        print_error(input, name, expected_value.as_string(),
-                    !elements[name].empty() ? elements[name].front() : "");
-      } else if (expected_value.is_array()) {
-        const auto expected_values = get_value_vector(expected_value);
-        if (elements[name] == expected_values) continue;
-        print_error(input, name, vector_to_string(expected_values),
-                    vector_to_string(elements[name]));
-      }
+    for (auto& [name, value] : output) {
+      if (!value.is_string() && !value.is_array()) assert(0 && "Invalid test data");
+      const auto expected_value =
+          value.is_array() ? vector_to_string(get_value_vector(value)) : value.as_string();
+      const auto parsed_value = vector_to_string(elements[name]);
+      if (expected_value == parsed_value) continue;
+      print_error(input, name, expected_value, parsed_value);
     }
   }
 }
