@@ -23,13 +23,8 @@ inline std::optional<Element> parse_episode_title(std::span<Token> tokens) noexc
 
   auto span = std::span{token_begin, token_end};
 
-  // Trim delimiters
-  while (!span.empty() && is_delimiter_token(span.back())) {
-    span = span.first(span.size() - 1);
-  }
-
   // Build episode title
-  if (std::string value = build_element_value(span); !value.empty()) {
+  if (std::string value = build_element_value(span, KeepDelimiters::No); !value.empty()) {
     for (auto& token : span) {
       token.element_kind = ElementKind::EpisodeTitle;
     }

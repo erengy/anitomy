@@ -9,8 +9,10 @@
 
 namespace anitomy::detail {
 
-inline std::string build_element_value(const std::span<Token> tokens,
-                                       const bool transform_delimiters = true) noexcept {
+enum class KeepDelimiters { No, Yes };
+
+inline std::string build_element_value(std::span<Token> tokens,
+                                       const KeepDelimiters keep_delimiters) noexcept {
   const std::set<char> delimiters =
       tokens | std::views::filter(is_delimiter_token) |
       std::views::transform([](const Token& token) { return token.value.front(); }) |
@@ -19,7 +21,7 @@ inline std::string build_element_value(const std::span<Token> tokens,
   const bool has_multiple_delimiters = delimiters.size() > 1;
 
   const auto is_transformable = [&](const Token& token) {
-    if (is_not_delimiter_token(token) || !transform_delimiters) {
+    if (is_not_delimiter_token(token) || keep_delimiters == KeepDelimiters::Yes) {
       return false;
     }
     switch (token.value.front()) {
@@ -32,6 +34,12 @@ inline std::string build_element_value(const std::span<Token> tokens,
         return !has_multiple_delimiters;
     }
   };
+
+  if (keep_delimiters == KeepDelimiters::No) {
+    while (!tokens.empty() && is_delimiter_token(tokens.back())) {
+      tokens = tokens.first(tokens.size() - 1);  // trim
+    }
+  }
 
   std::string element_value;
 

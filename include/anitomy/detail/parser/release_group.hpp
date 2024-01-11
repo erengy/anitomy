@@ -34,7 +34,7 @@ inline std::optional<Element> parse_release_group(std::span<Token> tokens) noexc
   auto span = std::span{token_begin, token_end};
 
   // Build release group
-  if (std::string value = build_element_value(span, false); !value.empty()) {
+  if (std::string value = build_element_value(span, KeepDelimiters::Yes); !value.empty()) {
     for (auto& token : span) {
       token.element_kind = ElementKind::ReleaseGroup;
     }
