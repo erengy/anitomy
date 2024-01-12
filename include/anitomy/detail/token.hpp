@@ -26,6 +26,10 @@ struct Token {
   bool is_number = false;    // all characters in `value` are digits
 };
 
+constexpr bool is_identified_token(const Token& token) noexcept {
+  return token.element_kind.has_value();
+};
+
 constexpr bool is_free_token(const Token& token) noexcept {
   return (token.kind == TokenKind::Text || token.kind == TokenKind::Keyword) && !token.element_kind;
 }

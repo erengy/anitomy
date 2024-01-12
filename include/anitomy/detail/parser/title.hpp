@@ -19,9 +19,7 @@ inline std::optional<Element> parse_title(std::span<Token> tokens) noexcept {
   auto token_begin = std::ranges::find_if(tokens, [](const Token& token) {
     return is_free_token(token) && !token.is_enclosed;  //
   });
-  auto token_end = std::find_if(token_begin, tokens.end(), [](const Token& token) {
-    return token.element_kind.has_value();  //
-  });
+  auto token_end = std::find_if(token_begin, tokens.end(), is_identified_token);
 
   // Fall back to the second enclosed range (assuming the first one is for release group)
   // e.g. `[Group][Title][Info]`

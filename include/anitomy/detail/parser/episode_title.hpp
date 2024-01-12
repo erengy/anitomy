@@ -18,7 +18,7 @@ inline std::optional<Element> parse_episode_title(std::span<Token> tokens) noexc
     return is_free_token(token) && !token.is_enclosed;  //
   });
   auto token_end = std::find_if(token_begin, tokens.end(), [](const Token& token) {
-    return is_open_bracket_token(token) || token.element_kind.has_value();
+    return is_open_bracket_token(token) || is_identified_token(token);
   });
 
   auto span = std::span{token_begin, token_end};

@@ -19,7 +19,7 @@ inline std::optional<Element> parse_release_group(std::span<Token> tokens) noexc
     return is_free_token(token) && token.is_enclosed;  //
   });
   auto token_end = std::find_if(token_begin, tokens.end(), [](const Token& token) {
-    return is_close_bracket_token(token) || token.element_kind.has_value();
+    return is_close_bracket_token(token) || is_identified_token(token);
   });
 
   // Skip if the range contains other tokens
