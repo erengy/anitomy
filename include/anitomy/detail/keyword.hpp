@@ -39,15 +39,15 @@ enum class KeywordKind {
 
 struct Keyword {
   enum Flags : uint8_t {
-    Unidentifiable = 0x01,
+    Ambiguous = 0x01,
     Unbounded = 0x02,
   };
 
   KeywordKind kind;
   uint8_t flags = 0;
 
-  constexpr bool is_identifiable() const noexcept {
-    return (flags & Unidentifiable) != Unidentifiable;
+  constexpr bool is_ambiguous() const noexcept {
+    return (flags & Ambiguous) == Ambiguous;
   }
 
   constexpr bool is_bounded() const noexcept {
@@ -109,14 +109,14 @@ inline auto keywords = []() -> keyword_map_t {
       {"Vorbis",               {AudioCodec, 0}},
       {"Atmos",                {AudioCodec, 0}},
       {"Dolby Atmos",          {AudioCodec, 0}},
-      {"Opus",                 {AudioCodec, Unidentifiable}},  // e.g. "Opus.COLORs"
+      {"Opus",                 {AudioCodec, Ambiguous}},  // e.g. "Opus.COLORs"
       // Language
       {"DualAudio",            {AudioLanguage, 0}},
       {"Dual Audio",           {AudioLanguage, 0}},
       {"Dual-Audio",           {AudioLanguage, 0}},
 
       // Device compatibility
-      {"Android",              {DeviceCompatibility, Unidentifiable}},  // e.g. "Dragon Ball Z: Super Android 13"
+      {"Android",              {DeviceCompatibility, Ambiguous}},  // e.g. "Dragon Ball Z: Super Android 13"
       {"iPad3",                {DeviceCompatibility, 0}},
       {"iPhone5",              {DeviceCompatibility, 0}},
       {"iPod",                 {DeviceCompatibility, 0}},
@@ -135,14 +135,14 @@ inline auto keywords = []() -> keyword_map_t {
       {"Folge",                {Episode, 0}},
 
       // Episode type
-      {"OP",                   {EpisodeType, Unidentifiable}},
-      {"Opening",              {EpisodeType, Unidentifiable}},
-      {"ED",                   {EpisodeType, Unidentifiable}},
-      {"Ending",               {EpisodeType, Unidentifiable}},
+      {"OP",                   {EpisodeType, Ambiguous}},
+      {"Opening",              {EpisodeType, Ambiguous}},
+      {"ED",                   {EpisodeType, Ambiguous}},
+      {"Ending",               {EpisodeType, Ambiguous}},
       {"NCED",                 {EpisodeType, 0}},
       {"NCOP",                 {EpisodeType, 0}},
-      {"Preview",              {EpisodeType, Unidentifiable}},
-      {"PV",                   {EpisodeType, Unidentifiable}},
+      {"Preview",              {EpisodeType, Ambiguous}},
+      {"PV",                   {EpisodeType, Ambiguous}},
 
       // File extension
       {"3gp",                  {FileExtension, 0}},
@@ -164,10 +164,10 @@ inline auto keywords = []() -> keyword_map_t {
       // Language
       {"ENG",                  {Language, 0}},
       {"English",              {Language, 0}},
-      {"ESP",                  {Language, Unidentifiable}},  // e.g. "Tokyo ESP"
+      {"ESP",                  {Language, Ambiguous}},  // e.g. "Tokyo ESP"
       {"Espanol",              {Language, 0}},
       {"Spanish",              {Language, 0}},
-      {"ITA",                  {Language, Unidentifiable}},  // e.g. "Bokura ga Ita"
+      {"ITA",                  {Language, Ambiguous}},  // e.g. "Bokura ga Ita"
       {"JAP",                  {Language, 0}},
       {"JPN",                  {Language, 0}},
       {"PT-BR",                {Language, 0}},
@@ -189,8 +189,8 @@ inline auto keywords = []() -> keyword_map_t {
       // Release information
       {"Batch",                {ReleaseInformation, 0}},
       {"Complete",             {ReleaseInformation, 0}},
-      {"End",                  {ReleaseInformation, Unidentifiable}},  // e.g. "The End of Evangelion"
-      {"Final",                {ReleaseInformation, Unidentifiable}},  // e.g. "Final Approach"
+      {"End",                  {ReleaseInformation, Ambiguous}},  // e.g. "The End of Evangelion"
+      {"Final",                {ReleaseInformation, Ambiguous}},  // e.g. "Final Approach"
       {"Patch",                {ReleaseInformation, 0}},
       {"Remux",                {ReleaseInformation, 0}},
 
@@ -203,8 +203,8 @@ inline auto keywords = []() -> keyword_map_t {
 
       // Season
       // Usually preceded or followed by a number (e.g. `2nd Season` or `Season 2`).
-      {"Season",               {Season, Unidentifiable}},
-      {"Saison",               {Season, Unidentifiable}},
+      {"Season",               {Season, Ambiguous}},
+      {"Saison",               {Season, Ambiguous}},
 
       // Source
       //
@@ -230,7 +230,7 @@ inline auto keywords = []() -> keyword_map_t {
       {"TVRip",                {Source, 0}},
       {"TV-Rip",               {Source, 0}},
       // Web
-      {"Web",                  {Source, Unidentifiable}},
+      {"Web",                  {Source, Ambiguous}},
       {"Webcast",              {Source, 0}},
       {"WebDL",                {Source, 0}},
       {"Web-DL",               {Source, 0}},
@@ -266,16 +266,16 @@ inline auto keywords = []() -> keyword_map_t {
       {"Multi Sub",            {Subtitles, 0}},
 
       // Type
-      {"TV",                   {Type, Unidentifiable}},
-      {"Movie",                {Type, Unidentifiable}},
-      {"Gekijouban",           {Type, Unidentifiable}},
-      {"OAD",                  {Type, Unidentifiable}},
-      {"OAV",                  {Type, Unidentifiable}},
-      {"ONA",                  {Type, Unidentifiable}},
-      {"OVA",                  {Type, Unidentifiable}},
-      {"SP",                   {Type, Unidentifiable}},  // e.g. "Yumeiro Patissiere SP Professional"
-      {"Special",              {Type, Unidentifiable}},
-      {"Specials",             {Type, Unidentifiable}},
+      {"TV",                   {Type, Ambiguous}},
+      {"Movie",                {Type, Ambiguous}},
+      {"Gekijouban",           {Type, Ambiguous}},
+      {"OAD",                  {Type, Ambiguous}},
+      {"OAV",                  {Type, Ambiguous}},
+      {"ONA",                  {Type, Ambiguous}},
+      {"OVA",                  {Type, Ambiguous}},
+      {"SP",                   {Type, Ambiguous}},  // e.g. "Yumeiro Patissiere SP Professional"
+      {"Special",              {Type, Ambiguous}},
+      {"Specials",             {Type, Ambiguous}},
 
       // Video
       //
