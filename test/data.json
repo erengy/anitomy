@@ -2672,5 +2672,18 @@
             "subtitles": "Sub",
             "release_information": "Batch"
         }
+    },
+    {
+        "input": "[POPGO] Mobile Suit Gundam The Witch from Mercury 機動戦士ガンダム 水星の魔女 第01話 「魔女と花嫁」 Webrip 1080p HEVC",
+        "mal_id": 49828,
+        "output": {
+            "release_group": "POPGO",
+            "title": "Mobile Suit Gundam The Witch from Mercury 機動戦士ガンダム 水星の魔女",
+            "episode": "01",
+            "episode_title": "魔女と花嫁",
+            "source": "Webrip",
+            "video_resolution": "1080p",
+            "video_term": "HEVC"
+        }
     }
 ]

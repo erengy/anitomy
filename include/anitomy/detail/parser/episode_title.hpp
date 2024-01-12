@@ -21,6 +21,21 @@ inline std::optional<Element> parse_episode_title(std::span<Token> tokens) noexc
     return is_open_bracket_token(token) || is_identified_token(token);
   });
 
+  // Find the first free range enclosed in corner brackets
+  // e.g. `[Group] Title - Episode 「Episode Title」`
+  //                                ^------------^
+  if (token_begin == tokens.end()) {
+    token_begin = std::ranges::find_if(tokens, [](const Token& token) {
+      return is_open_bracket_token(token) && token.value == "「";
+    });
+    if (token_begin != tokens.end()) ++token_begin;
+    token_end = std::find_if(token_begin, tokens.end(), [](const Token& token) {
+      return is_close_bracket_token(token) && token.value == "」";
+    });
+    if (token_end == tokens.end()) return std::nullopt;
+    if (std::ranges::any_of(token_begin, token_end, is_identified_token)) return std::nullopt;
+  }
+
   auto span = std::span{token_begin, token_end};
 
   // Build episode title
