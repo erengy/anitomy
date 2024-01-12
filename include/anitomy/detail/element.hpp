@@ -8,6 +8,7 @@
 
 #include <anitomy/detail/delimiter.hpp>
 #include <anitomy/detail/token.hpp>
+#include <anitomy/detail/unicode.hpp>
 
 namespace anitomy::detail {
 
@@ -15,20 +16,23 @@ enum class KeepDelimiters { No, Yes };
 
 inline std::string build_element_value(std::span<Token> tokens,
                                        const KeepDelimiters keep_delimiters) noexcept {
-  const std::set<char> delimiters =
-      tokens | std::views::filter(is_delimiter_token) |
-      std::views::transform([](const Token& token) { return token.value.front(); }) |
-      std::ranges::to<std::set<char>>();
+  static constexpr auto first_code_point = [](const Token& token) {
+    return unicode::utf8::decode(token.value).code_point;
+  };
+
+  const auto delimiters = tokens | std::views::filter(is_delimiter_token) |
+                          std::views::transform(first_code_point) |
+                          std::ranges::to<std::set<char32_t>>();
 
   const bool has_single_delimiter = delimiters.size() == 1;
   const bool has_spaces = std::ranges::any_of(delimiters, is_space);
-  const bool has_underscores = delimiters.contains('_');
+  const bool has_underscores = delimiters.contains(U'_');
 
   const auto is_transformable_delimiter = [&](const Token& token) {
     if (keep_delimiters == KeepDelimiters::Yes) return false;
     if (is_not_delimiter_token(token)) return false;
 
-    const char ch = token.value.front();
+    const char32_t ch = first_code_point(token);
 
     if (ch == ',' || ch == '&') return false;         // keep
     if (is_space(ch) || ch == '_') return true;       // transform

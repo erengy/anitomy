@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <ranges>
 #include <string>
 
 #include <anitomy/detail/unicode/base.hpp>
@@ -139,6 +140,11 @@ constexpr DecodeResult<It> decode(It it, It last) noexcept {
       .code_point = decoded,
       .next = it,
   };
+}
+
+template <std::ranges::input_range Range>
+constexpr auto decode(Range&& r) noexcept {
+  return decode(std::ranges::begin(r), std::ranges::end(r));
 }
 
 }  // namespace anitomy::detail::unicode::utf8
