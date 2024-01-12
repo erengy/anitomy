@@ -57,15 +57,14 @@ struct Keyword {
 
 struct KeywordHash {
   [[nodiscard]] size_t operator()(std::string_view view) const noexcept {
-    std::string str = view | std::views::transform([](char ch) { return to_lower(ch); }) |
-                      std::ranges::to<std::string>();
+    auto str = view | std::views::transform(to_lower<char>) | std::ranges::to<std::string>();
     return std::hash<std::string>()(str);
   }
 };
 
 struct KeywordEqual {
   [[nodiscard]] bool operator()(std::string_view a, std::string_view b) const noexcept {
-    return std::ranges::equal(a, b, [](char a, char b) { return to_lower(a) == to_lower(b); });
+    return std::ranges::equal(a, b, equal_to);
   }
 };
 
