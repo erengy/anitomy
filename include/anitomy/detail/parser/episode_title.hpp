@@ -10,47 +10,51 @@
 
 namespace anitomy::detail {
 
-inline std::optional<Element> parse_episode_title(std::span<Token> tokens) noexcept {
+inline std::span<Token> find_episode_title(std::span<Token> tokens) noexcept {
   // Find the first free unenclosed range
   // e.g. `[Group] Title - Episode - Episode Title [Info]`
   //                                 ^-------------^
-  auto token_begin = std::ranges::find_if(tokens, [](const Token& token) {
+  auto first = std::ranges::find_if(tokens, [](const Token& token) {
     return is_free_token(token) && !token.is_enclosed;  //
   });
-  auto token_end = std::find_if(token_begin, tokens.end(), [](const Token& token) {
+  auto last = std::find_if(first, tokens.end(), [](const Token& token) {
     return is_open_bracket_token(token) || is_identified_token(token);
   });
 
-  // Find the first free range enclosed in corner brackets
+  // Fall back to the first free range in corner brackets
   // e.g. `[Group] Title - Episode 「Episode Title」`
   //                                ^------------^
-  if (token_begin == tokens.end()) {
-    token_begin = std::ranges::find_if(tokens, [](const Token& token) {
+  if (first == tokens.end()) {
+    first = std::ranges::find_if(tokens, [](const Token& token) {
       return is_open_bracket_token(token) && token.value == "「";
     });
-    if (token_begin != tokens.end()) ++token_begin;
-    token_end = std::find_if(token_begin, tokens.end(), [](const Token& token) {
+    if (first != tokens.end()) ++first;
+    last = std::find_if(first, tokens.end(), [](const Token& token) {
       return is_close_bracket_token(token) && token.value == "」";
     });
-    if (token_end == tokens.end()) return std::nullopt;
-    if (std::ranges::any_of(token_begin, token_end, is_identified_token)) return std::nullopt;
+    if (last == tokens.end()) return {};
+    if (std::ranges::any_of(first, last, is_identified_token)) return {};
   }
 
-  auto span = std::span{token_begin, token_end};
+  return {first, last};
+}
 
-  // Build episode title
-  if (std::string value = build_element_value(span, KeepDelimiters::No); !value.empty()) {
-    for (auto& token : span) {
-      token.element_kind = ElementKind::EpisodeTitle;
-    }
-    return Element{
-        .kind = ElementKind::EpisodeTitle,
-        .value = value,
-        .position = span.front().position,
-    };
+inline std::optional<Element> parse_episode_title(std::span<Token> tokens) noexcept {
+  const auto span = find_episode_title(tokens);
+  if (span.empty()) return {};
+
+  std::string value = build_element_value(span, KeepDelimiters::No);
+  if (value.empty()) return {};
+
+  for (auto& token : span) {
+    token.element_kind = ElementKind::EpisodeTitle;
   }
 
-  return std::nullopt;
+  return Element{
+      .kind = ElementKind::EpisodeTitle,
+      .value = std::move(value),
+      .position = span.front().position,
+  };
 }
 
 }  // namespace anitomy::detail

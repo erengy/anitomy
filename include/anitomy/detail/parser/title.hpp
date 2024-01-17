@@ -12,63 +12,66 @@
 
 namespace anitomy::detail {
 
-inline std::optional<Element> parse_title(std::span<Token> tokens) noexcept {
+inline std::span<Token> find_title(std::span<Token> tokens) noexcept {
   // Find the first free unenclosed range
   // e.g. `[Group] Title - Episode [Info]`
   //               ^-------^
-  auto token_begin = std::ranges::find_if(tokens, [](const Token& token) {
+  auto first = std::ranges::find_if(tokens, [](const Token& token) {
     return is_free_token(token) && !token.is_enclosed;  //
   });
-  auto token_end = std::find_if(token_begin, tokens.end(), is_identified_token);
+  auto last = std::find_if(first, tokens.end(), is_identified_token);
 
   // Fall back to the second enclosed range (assuming the first one is for release group)
   // e.g. `[Group][Title][Info]`
   //               ^----^
-  if (token_begin == tokens.end()) {
-    token_begin = std::ranges::find_if(tokens, is_close_bracket_token);
-    token_begin = std::find_if(token_begin, tokens.end(), is_free_token);
-    token_end = std::find_if(token_begin, tokens.end(), is_bracket_token);
+  if (first == tokens.end()) {
+    first = std::ranges::find_if(tokens, is_close_bracket_token);
+    first = std::find_if(first, tokens.end(), is_free_token);
+    last = std::find_if(first, tokens.end(), is_bracket_token);
   }
 
   // Allow filenames without a title
-  if (token_begin == tokens.end()) return std::nullopt;
+  if (first == tokens.end()) return {};
 
   // Prevent titles with mismatched brackets
   // e.g. `Title (`      -> `Title `
   // e.g. `Title [Info ` -> `Title `
-  if (const auto open_brackets = find_all_if(token_begin, token_end, is_open_bracket_token);
+  if (const auto open_brackets = find_all_if(first, last, is_open_bracket_token);
       !open_brackets.empty()) {
-    if (std::ranges::count_if(token_begin, token_end, is_close_bracket_token) !=
-        open_brackets.size()) {
-      token_end = open_brackets.back();
+    if (std::ranges::count_if(first, last, is_close_bracket_token) != open_brackets.size()) {
+      last = open_brackets.back();
     }
   }
 
   // Prevent titles ending with brackets (except parentheses)
   // e.g. `Title [Group]` -> `Title `
   // e.g. `Title (TV)`    -> *no change*
-  if (auto token = find_prev_token(tokens, token_end, is_not_delimiter_token);
+  if (auto token = find_prev_token(tokens, last, is_not_delimiter_token);
       is_close_bracket_token(*token) && token->value != ")") {
     if (token = find_prev_token(tokens, token, is_open_bracket_token); token != tokens.end()) {
-      token_end = token;
+      last = token;
     }
   }
 
-  auto span = std::span{token_begin, token_end};
+  return {first, last};
+}
 
-  // Build the title
-  if (std::string value = build_element_value(span, KeepDelimiters::No); !value.empty()) {
-    for (auto& token : span) {
-      token.element_kind = ElementKind::Title;
-    }
-    return Element{
-        .kind = ElementKind::Title,
-        .value = value,
-        .position = span.front().position,
-    };
+inline std::optional<Element> parse_title(std::span<Token> tokens) noexcept {
+  const auto span = find_title(tokens);
+  if (span.empty()) return {};
+
+  std::string value = build_element_value(span, KeepDelimiters::No);
+  if (value.empty()) return {};
+
+  for (auto& token : span) {
+    token.element_kind = ElementKind::Title;
   }
 
-  return std::nullopt;
+  return Element{
+      .kind = ElementKind::Title,
+      .value = std::move(value),
+      .position = span.front().position,
+  };
 }
 
 }  // namespace anitomy::detail
