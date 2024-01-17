@@ -12,11 +12,11 @@
 namespace anitomy::detail {
 
 inline std::span<Token> find_release_group(std::span<Token> tokens) noexcept {
-  // Find the first free enclosed range
+  // Find the first enclosed unidentified range
   // e.g. `[Group] Title - Episode [Info]`
   //        ^----^
   auto first = std::ranges::find_if(tokens, [](const Token& token) {
-    return is_free_token(token) && token.is_enclosed;  //
+    return token.is_enclosed && !is_identified_token(token);  //
   });
   auto last = std::find_if(first, tokens.end(), [](const Token& token) {
     return is_close_bracket_token(token) || is_identified_token(token);
