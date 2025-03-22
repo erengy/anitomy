@@ -295,10 +295,11 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
       return token.kind == TokenKind::Delimiter && is_dash(token.value.front());
     };
 
-    auto view = tokens | filter(is_dash_token);
+    auto view = tokens | reverse | filter(is_dash_token);
 
     for (auto it = view.begin(); it != view.end(); ++it) {
-      auto next_token = std::ranges::find_if(it.base(), tokens.end(), is_not_delimiter_token);
+      auto next_token =
+          std::ranges::find_if(it.base().base(), tokens.end(), is_not_delimiter_token);
       if (next_token != tokens.end() && is_numeric_token(*next_token)) {
         add_element_from_token(ElementKind::Episode, *next_token);
         return elements;
