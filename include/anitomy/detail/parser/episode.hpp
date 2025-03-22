@@ -2,7 +2,10 @@
 
 #include <ranges>
 #include <regex>
+#include <set>
 #include <span>
+#include <string>
+#include <string_view>
 #include <vector>
 
 #include <anitomy/detail/container.hpp>
@@ -115,31 +118,50 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
 
   // Multi episode (e.g. `01-02`, `03-05v2`)
   {
-    static constexpr auto is_multi_episode = [](const Token& token, std::smatch& matches) {
-      static const std::regex pattern{R"((\d{1,4})(?:[vV](\d))?[-~&+])"
-                                      R"((\d{1,4})(?:[vV](\d))?)"};
-      return std::regex_match(token.value, matches, pattern);
+    using window_t = std::tuple<Token&, Token&, Token&>;
+
+    static constexpr auto is_free_range = [](window_t window) {
+      static const std::set<char> delimiters{'-', '~', '&', '+'};
+      return is_free_token(std::get<0>(window)) && is_free_token(std::get<2>(window)) &&
+             is_delimiter_token(std::get<1>(window)) &&
+             delimiters.contains(std::get<1>(window).value.front());
     };
 
-    std::smatch matches;
+    static constexpr auto is_multi_episode = [](window_t window,
+                                                std::pair<std::smatch, std::smatch>& matches) {
+      static const std::regex pattern{R"((\d{1,4})(?:[vV](\d))?)"};
+      auto [lower, _, upper] = window;
+      return std::regex_match(lower.value, matches.first, pattern) &&
+             std::regex_match(upper.value, matches.second, pattern);
+    };
 
-    for (auto& token : tokens | filter(is_free_token)) {
-      if (is_multi_episode(token, matches)) {
-        auto lower = matches[1].str();
-        auto upper = matches[3].str();
-        if (to_int(lower) >= to_int(upper)) continue;  // avoid matching `009-1`, `5-2`, etc.
-        add_element_from_token(ElementKind::Episode, token, lower,
-                               token.position + matches.position(1));
-        if (matches[2].matched) {
-          add_element(ElementKind::ReleaseVersion, matches[2].str(),
-                      token.position + matches.position(2));
+    std::pair<std::smatch, std::smatch> matches;
+
+    for (auto window : tokens | adjacent<3> | filter(is_free_range)) {
+      if (is_multi_episode(window, matches)) {
+        auto lower_value = matches.first[1].str();
+        auto upper_value = matches.second[1].str();
+
+        if (to_int(lower_value) >= to_int(upper_value)) {
+          continue;  // avoid matching `009-1`, `5-2`, etc.
         }
-        add_element_from_token(ElementKind::Episode, token, upper,
-                               token.position + matches.position(3));
-        if (matches[4].matched) {
-          add_element(ElementKind::ReleaseVersion, matches[4].str(),
-                      token.position + matches.position(4));
+
+        auto [lower, _, upper] = window;
+
+        add_element_from_token(ElementKind::Episode, lower, lower_value,
+                               lower.position + matches.first.position(1));
+        if (matches.first[2].matched) {
+          add_element(ElementKind::ReleaseVersion, matches.first[2].str(),
+                      lower.position + matches.first.position(2));
         }
+
+        add_element_from_token(ElementKind::Episode, upper, upper_value,
+                               upper.position + matches.second.position(1));
+        if (matches.second[2].matched) {
+          add_element(ElementKind::ReleaseVersion, matches.second[2].str(),
+                      upper.position + matches.second.position(2));
+        }
+
         return elements;
       }
     }
