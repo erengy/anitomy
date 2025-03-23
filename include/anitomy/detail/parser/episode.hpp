@@ -344,12 +344,16 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
   }
 
   // Last number
-  // @TODO: should not parse `1.11`, `Part 2`
+  // @TODO: should not parse `1.11`
   {
-    auto view = tokens | reverse | filter(is_free_token) | filter(is_numeric_token) | take(1);
+    auto view = tokens | reverse | filter(is_free_token) | filter(is_numeric_token);
 
-    if (!view.empty()) {
-      add_element_from_token(ElementKind::Episode, view.front());
+    for (auto token = view.begin(); token != view.end(); ++token) {
+      auto prev_token = find_next_token(token.base().base(), tokens.rend(), is_not_delimiter_token);
+      if (prev_token != tokens.rend()) {
+        if (prev_token->value == "Part") continue;
+      }
+      add_element_from_token(ElementKind::Episode, *token);
       return elements;
     }
   }
