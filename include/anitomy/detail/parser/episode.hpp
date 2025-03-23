@@ -344,15 +344,29 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
   }
 
   // Last number
-  // @TODO: should not parse `1.11`
   {
+    static constexpr auto is_version_number = [](auto token) {
+      if (!is_numeric_token(*token)) return false;
+      const auto it = std::prev(token);
+      return is_delimiter_token(*it) && it->value == ".";  // e.g. `1.1`, `3.33`
+    };
+
     auto view = tokens | reverse | filter(is_free_token) | filter(is_numeric_token);
 
     for (auto token = view.begin(); token != view.end(); ++token) {
-      auto prev_token = find_next_token(token.base().base(), tokens.rend(), is_not_delimiter_token);
+      const auto prev_token =
+          find_next_token(token.base().base(), tokens.rend(), is_not_delimiter_token);
+      const auto next_token =
+          find_next_token(token.base().base().base(), tokens.end(), is_not_delimiter_token);
+
       if (prev_token != tokens.rend()) {
-        if (prev_token->value == "Part") continue;
+        if (prev_token->value == "Part") continue;  // e.g. `Part 2`
+        if (is_version_number(prev_token)) continue;
       }
+      if (next_token != tokens.end()) {
+        if (is_version_number(next_token)) continue;
+      }
+
       add_element_from_token(ElementKind::Episode, *token);
       return elements;
     }
