@@ -135,8 +135,8 @@ inline auto keywords = []() -> keyword_map_t {
       {"Folge",                {Episode, 0}},
 
       // Episode type
-      {"OP",                   {EpisodeType, Ambiguous}},
-      {"Opening",              {EpisodeType, Ambiguous}},
+      {"OP",                   {EpisodeType, Ambiguous}},  // e.g. "takt op.Destiny", "My Unique Skill Makes Me OP even at Level 1"
+      {"Opening",              {EpisodeType, Ambiguous}},  // e.g. "Pool Opening"
       {"ED",                   {EpisodeType, Ambiguous}},
       {"Ending",               {EpisodeType, Ambiguous}},
       {"NCED",                 {EpisodeType, 0}},
@@ -274,7 +274,7 @@ inline auto keywords = []() -> keyword_map_t {
       {"ONA",                  {Type, Ambiguous}},
       {"OVA",                  {Type, Ambiguous}},
       {"SP",                   {Type, Ambiguous}},  // e.g. "Yumeiro Patissiere SP Professional"
-      {"Special",              {Type, Ambiguous}},
+      {"Special",              {Type, Ambiguous}},  // e.g. "Special A"
       {"Specials",             {Type, Ambiguous}},
 
       // Video
