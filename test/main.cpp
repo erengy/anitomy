@@ -469,6 +469,12 @@ void test_data() {
       if (expected_value == parsed_value) continue;
       print_error(input, name, expected_value, parsed_value);
     }
+
+    for (auto& [name, value] : elements) {
+      if (!output.contains(name)) {
+        print_error(input, name, {}, vector_to_string(value));
+      }
+    }
   }
 }
 

@@ -2329,7 +2329,8 @@
             "title": "Nintama Rantarou",
             "season": "23",
             "episode": "1821",
-            "episode_title": "Buddhist Priest-sama is a Ninja"
+            "episode_title": "Buddhist Priest-sama is a Ninja",
+            "file_extension": "mkv"
         }
     },
     {
@@ -2340,7 +2341,8 @@
             "title": "Aharen-san wa Hakarenai",
             "season": "01",
             "episode": "06",
-            "release_version": "2"
+            "release_version": "2",
+            "file_extension": "mkv"
         }
     },
     {
@@ -2353,6 +2355,7 @@
             "episode": "01",
             "file_checksum": "BB7C6531",
             "release_group": "0x539",
+            "source": "WEB",
             "video_resolution": "1080p",
             "video_term": "Hi10P",
             "file_extension": "mkv"
