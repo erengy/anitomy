@@ -114,6 +114,9 @@ inline auto keywords = []() -> keyword_map_t {
       {"DualAudio",            {AudioLanguage, 0}},
       {"Dual Audio",           {AudioLanguage, 0}},
       {"Dual-Audio",           {AudioLanguage, 0}},
+      {"MultiAudio",           {AudioLanguage, 0}},
+      {"Multi Audio",          {AudioLanguage, 0}},
+      {"Multi-Audio",          {AudioLanguage, 0}},
 
       // Device compatibility
       {"Android",              {DeviceCompatibility, Ambiguous}},  // e.g. "Dragon Ball Z: Super Android 13"
@@ -264,6 +267,9 @@ inline auto keywords = []() -> keyword_map_t {
       {"Subtitled",            {Subtitles, 0}},
       {"Multisub",             {Subtitles, 0}},
       {"Multi Sub",            {Subtitles, 0}},
+      {"Multi Subs",           {Subtitles, 0}},
+      {"Multi-Subs",           {Subtitles, 0}},
+      {"Multiple Subtitle",    {Subtitles, 0}},
 
       // Type
       {"TV",                   {Type, Ambiguous}},
