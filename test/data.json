@@ -2371,13 +2371,32 @@
         }
     },
     {
-        "input": "Piano no Mori (TV) 2nd Season - 01",
+        "input": "[Erai-raws] Piano no Mori (TV) - 01 ~ 12 [720p][Multiple Subtitle]",
+        "mal_id": 36652,
+        "output": {
+            "release_group": "Erai-raws",
+            "title": "Piano no Mori",
+            "type": "TV",
+            "episode": [
+                "01",
+                "12"
+            ],
+            "video_resolution": "720p",
+            "subtitles": "Multiple Subtitle"
+        }
+    },
+    {
+        "input": "[Erai-raws] Piano no Mori (TV) 2nd Season - 01 [720p][Multiple Subtitle].mkv",
         "mal_id": 37975,
         "output": {
+            "release_group": "Erai-raws",
             "title": "Piano no Mori",
             "type": "TV",
             "season": "2",
-            "episode": "01"
+            "episode": "01",
+            "video_resolution": "720p",
+            "subtitles": "Multiple Subtitle",
+            "file_extension": "mkv"
         }
     },
     {
@@ -2684,6 +2703,110 @@
             "source": "Webrip",
             "video_resolution": "1080p",
             "video_term": "HEVC"
+        }
+    },
+    {
+        "input": "[xPearse] Great Mazinger - Episode 55 Preview [English Sub] [480p].mkv",
+        "mal_id": 5658,
+        "output": {
+            "release_group": "xPearse",
+            "title": "Great Mazinger",
+            "episode": "55",
+            "type": "Preview",
+            "language": "English",
+            "subtitles": "Sub",
+            "video_resolution": "480p",
+            "file_extension": "mkv"
+        }
+    },
+    {
+        "input": "Dororo to Hyakkimaru ep 1-6 [480p Hi10p DVD][kuchikirukia] RAW",
+        "mal_id": 5760,
+        "output": {
+            "title": "Dororo to Hyakkimaru",
+            "episode": [
+                "1",
+                "6"
+            ],
+            "video_resolution": "480p",
+            "video_term": "Hi10p",
+            "source": "DVD",
+            "release_group": "kuchikirukia",
+            "subtitles": "RAW"
+        }
+    },
+    {
+        "input": "[SubsPlease] Fairy Tail - 100 Years Quest - 01 (1080p) [1107F3A9].mkv",
+        "mal_id": 49785,
+        "output": {
+            "release_group": "SubsPlease",
+            "title": "Fairy Tail - 100 Years Quest",
+            "episode": "01",
+            "video_resolution": "1080p",
+            "file_checksum": "1107F3A9",
+            "file_extension": "mkv"
+        }
+    },
+    {
+        "input": "[SubsPlus+] 2.5 Dimensional Seduction - S01E01 (CR WEB 1080p AVC EAC3) [388F142A].mkv",
+        "mal_id": 53802,
+        "output": {
+            "release_group": "SubsPlus+",
+            "title": "2.5 Dimensional Seduction",
+            "season": "01",
+            "episode": "01",
+            "source": [
+                "CR",
+                "WEB"
+            ],
+            "video_resolution": "1080p",
+            "video_term": "AVC",
+            "audio_term": "EAC3",
+            "file_checksum": "388F142A",
+            "file_extension": "mkv"
+        }
+    },
+    {
+        "input": "I.Have.a.Crush.at.Work.S01E01.Dont.Let.Anyone.Find.Out.1080p.B-Global.WEB-DL.JPN.AAC2.0.H.265.MSubs-ToonsHub.mkv",
+        "mal_id": 59361,
+        "output": {
+            "title": "I Have a Crush at Work",
+            "season": "01",
+            "episode": "01",
+            "episode_title": "Dont Let Anyone Find Out",
+            "video_resolution": "1080p",
+            "source": "WEB-DL",
+            "language": "JPN",
+            "audio_term": "AAC2.0",
+            "video_term": "H.265",
+            "release_group": "ToonsHub",
+            "file_extension": "mkv"
+        }
+    },
+    {
+        "input": "[Erai-raws] NieR-Automata Ver1_1a - 02 [1080p][Multiple Subtitle][5BCD4615].mkv",
+        "mal_id": 51105,
+        "output": {
+            "release_group": "Erai-raws",
+            "title": "NieR-Automata Ver1_1a",
+            "episode": "02",
+            "video_resolution": "1080p",
+            "subtitles": "Multiple Subtitle",
+            "file_checksum": "5BCD4615",
+            "file_extension": "mkv"
+        }
+    },
+    {
+        "input": "[Erai-raws] NieR-Automata Ver1_1a Part 2 - 03 [1080p][Multiple Subtitle][AAF0612D].mkv",
+        "mal_id": 56063,
+        "output": {
+            "release_group": "Erai-raws",
+            "title": "NieR-Automata Ver1_1a Part 2",
+            "episode": "03",
+            "video_resolution": "1080p",
+            "subtitles": "Multiple Subtitle",
+            "file_checksum": "AAF0612D",
+            "file_extension": "mkv"
         }
     }
 ]
