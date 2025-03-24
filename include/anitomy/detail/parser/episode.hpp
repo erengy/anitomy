@@ -183,7 +183,9 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
 
     for (auto& token : tokens | filter(is_free_token)) {
       if (is_season_and_episode(token, matches)) {
-        if (to_int(matches[1].str()) == 0) continue;
+        if (to_int(matches[1].str()) == 0 && !token.value.starts_with('S')) {
+          continue;  // avoid `0x539`, but parse `S00E01`
+        }
         add_element(ElementKind::Season, matches[1].str(), token.position + matches.position(1));
         if (matches[2].matched) {
           add_element(ElementKind::Season, matches[2].str(), token.position + matches.position(2));

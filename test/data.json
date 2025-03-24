@@ -2811,5 +2811,25 @@
             "file_checksum": "AAF0612D",
             "file_extension": "mkv"
         }
+    },
+    {
+        "input": "Highschool.of.the.Dead.S00E01.v2.Drifters.of.the.Dead.1080p-Hi10p.BluRay.FLAC5.1.x264-CTR.[32FD04E5].mkv",
+        "mal_id": 8074,
+        "output": {
+            "title": "Highschool of the Dead",
+            "season": "00",
+            "episode": "01",
+            "release_version": "2",
+            "episode_title": "Drifters of the Dead",
+            "video_resolution": "1080p",
+            "video_term": [
+                "Hi10p",
+                "x264"
+            ],
+            "source": "BluRay",
+            "release_group": "CTR",
+            "file_checksum": "32FD04E5",
+            "file_extension": "mkv"
+        }
     }
 ]
