@@ -13,6 +13,11 @@
 namespace anitomy::detail {
 
 inline std::span<Token> find_title(std::span<Token> tokens) noexcept {
+  // Ignore filenames starting with episode number
+  if (!tokens.empty() && tokens.front().element_kind == ElementKind::Episode) {
+    return {};
+  }
+
   // Find the first free unenclosed range
   // e.g. `[Group] Title - Episode [Info]`
   //               ^-------^
