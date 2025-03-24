@@ -65,7 +65,7 @@ public:
 
     // Episode
     if (options.parse_episode) {
-      add_element(parse_volume(tokens_));
+      add_elements(parse_volume(tokens_));
       add_elements(parse_episode(tokens_));
     }
 

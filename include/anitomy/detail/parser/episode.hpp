@@ -10,6 +10,7 @@
 
 #include <anitomy/detail/container.hpp>
 #include <anitomy/detail/delimiter.hpp>
+#include <anitomy/detail/element.hpp>
 #include <anitomy/detail/token.hpp>
 #include <anitomy/detail/util.hpp>
 #include <anitomy/element.hpp>
@@ -30,8 +31,7 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
                                                          std::string_view value = {},
                                                          size_t position = std::string::npos) {
     token.element_kind = kind;
-    elements.emplace_back(kind, value.empty() ? token.value : std::string{value},
-                          position != std::string::npos ? position : token.position);
+    elements.emplace_back(element_from_token(kind, token, value, position));
   };
 
   // Episode prefix (e.g. `E1`, `EP1`, `Episode 1`)
