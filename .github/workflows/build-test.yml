@@ -1,0 +1,31 @@
+name: Build and Test
+on: [push, pull_request]
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        build_type: [debug, release]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Setup CMake
+        uses: lukka/get-cmake@latest
+
+      - name: Configure CMake
+        run: cmake --preset=ninja-multi
+
+      - name: Build
+        run: cmake --build --preset=ninja-${{ matrix.build_type }}
+
+      - name: Run Tests
+        run: ctest --preset=test-${{ matrix.build_type }}
