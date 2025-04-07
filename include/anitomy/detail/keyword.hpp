@@ -99,6 +99,7 @@ inline auto keywords = []() -> keyword_map_t {
       {"AC3",                  {AudioCodec, 0}},
       {"EAC3",                 {AudioCodec, 0}},
       {"E-AC-3",               {AudioCodec, 0}},
+      {"E-AC3",                {AudioCodec, 0}},
       {"FLAC",                 {AudioCodec, 0}},
       {"FLACX2",               {AudioCodec, 0}},
       {"FLACX3",               {AudioCodec, 0}},
