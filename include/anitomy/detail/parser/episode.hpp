@@ -1,5 +1,6 @@
 #pragma once
 
+#include <format>
 #include <ranges>
 #include <regex>
 #include <set>
