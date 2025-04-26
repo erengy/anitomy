@@ -42,7 +42,7 @@ inline std::vector<Element> parse_keywords(std::span<Token> tokens,
       // clang-format on
   };
 
-  static const auto is_allowed = [&options](const Token& token) {
+  const auto is_allowed = [&options](const Token& token) {
     if (!token.keyword) {
       return false;
     }

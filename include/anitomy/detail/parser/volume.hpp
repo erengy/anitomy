@@ -15,14 +15,13 @@ namespace anitomy::detail {
 inline std::vector<Element> parse_volume(std::span<Token> tokens) noexcept {
   std::vector<Element> elements;
 
-  static const auto add_element = [&elements](ElementKind kind, std::string_view value,
-                                              size_t position) {
+  const auto add_element = [&elements](ElementKind kind, std::string_view value, size_t position) {
     elements.emplace_back(kind, std::string{value}, position);
   };
 
-  static const auto add_element_from_token = [&elements](ElementKind kind, Token& token,
-                                                         std::string_view value = {},
-                                                         size_t position = std::string::npos) {
+  const auto add_element_from_token = [&elements](ElementKind kind, Token& token,
+                                                  std::string_view value = {},
+                                                  size_t position = std::string::npos) {
     token.element_kind = kind;
     elements.emplace_back(element_from_token(kind, token, value, position));
   };

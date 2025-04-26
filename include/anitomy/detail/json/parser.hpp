@@ -38,7 +38,7 @@ private:
   }
 
   [[nodiscard]] inline expected_t<value_t> parse_value() noexcept {
-    static const auto parse = [this]() -> expected_t<value_t> {
+    const auto parse = [this]() -> expected_t<value_t> {
       if (view_.empty()) {
         return object_t{};
       }
