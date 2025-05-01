@@ -14,7 +14,7 @@ if (MSVC)
 		/MP
 		/permissive-
 		/utf-8
-		/W3
+		/W4
 		/Zc:__cplusplus
 	)
 else()

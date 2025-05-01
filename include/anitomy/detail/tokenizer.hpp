@@ -26,7 +26,7 @@ public:
       : input_{unicode::utf8_to_utf32(input)}, view_{input_} {
   }
 
-  constexpr void tokenize(const Options& options) noexcept {
+  constexpr void tokenize(const Options&) noexcept {
     while (auto token = next_token()) {
       tokens_.emplace_back(*token);
     }

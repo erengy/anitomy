@@ -43,22 +43,15 @@ inline std::vector<Element> parse_keywords(std::span<Token> tokens,
   };
 
   const auto is_allowed = [&options](const Token& token) {
-    if (!token.keyword) {
-      return false;
-    }
-    switch (token.keyword->kind) {
-      case KeywordKind::ReleaseGroup:
-        return options.parse_release_group;
-      case KeywordKind::VideoResolution:
-        return options.parse_video_resolution;
-    }
+    if (!token.keyword) return false;
+    if (token.keyword->kind == KeywordKind::ReleaseGroup) return options.parse_release_group;
+    if (token.keyword->kind == KeywordKind::VideoResolution) return options.parse_video_resolution;
     return true;
   };
 
   static constexpr auto token_value = [](const Token& token) -> std::string {
-    switch (token.keyword->kind) {
-      case KeywordKind::ReleaseVersion:
-        return token.value.substr(1);  // `v2` -> `2`
+    if (token.keyword->kind == KeywordKind::ReleaseVersion) {
+      return token.value.substr(1);  // `v2` -> `2`
     }
     return token.value;
   };

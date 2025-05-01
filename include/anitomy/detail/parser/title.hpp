@@ -43,7 +43,9 @@ inline std::span<Token> find_title(std::span<Token> tokens) noexcept {
   // e.g. `Title [Info ` -> `Title `
   if (const auto open_brackets = find_all_if(first, last, is_open_bracket_token);
       !open_brackets.empty()) {
-    if (std::ranges::count_if(first, last, is_close_bracket_token) != open_brackets.size()) {
+    const auto close_brackets_size =
+        static_cast<size_t>(std::ranges::count_if(first, last, is_close_bracket_token));
+    if (close_brackets_size != open_brackets.size()) {
       last = open_brackets.back();
     }
   }
