@@ -26,7 +26,7 @@ public:
   template <typename... Args>
   void emplace(Args&&... args) {
     data_.emplace(std::forward<Args>(args)...);
-    order_.emplace_back(std::get<0>(std::tie(args...)));
+    order_.emplace_back(std::get<0>(std::forward_as_tuple(std::forward<Args>(args)...)));
   }
 
   auto begin() {
