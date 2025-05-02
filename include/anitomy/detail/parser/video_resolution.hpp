@@ -15,7 +15,7 @@ inline std::vector<Element> parse_video_resolution(std::span<Token> tokens) noex
 
   // A video resolution can be in `1080p` or `1920x1080` format
   static constexpr auto is_video_resolution = [](const Token& token) {
-    static const std::regex pattern{R"(\d{3,4}(?:[ip]|[xX×]\d{3,4}[ip]?))"};
+    static const std::regex pattern{R"(\d{3,4}(?:[ip]|(?:x|X|×)\d{3,4}[ip]?))"};
     return std::regex_match(token.value, pattern);
   };
 
