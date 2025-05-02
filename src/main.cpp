@@ -1,12 +1,12 @@
 #include <print>
-#include <ranges>
 #include <string>
 #include <string_view>
 #include <vector>
 
 #include <anitomy.hpp>
 #include <anitomy/detail/cli.hpp>
-#include <anitomy/detail/cli/print.hpp>
+#include <anitomy/detail/cli/table.hpp>
+#include <anitomy/detail/cli/util.hpp>
 #include <anitomy/detail/json.hpp>
 #include <anitomy/version.hpp>
 
@@ -35,79 +35,20 @@ void print_error(std::string_view message) {
   std::println(std::cerr, "Error: {}", message);
 }
 
-void print_elements_table(const std::vector<Element>& elements) {
-  using row_t = std::vector<std::string>;
-
-  std::vector<row_t> rows;
-  for (const auto& element : elements) {
-    std::string kind{to_string(element.kind)};
-    rows.emplace_back(row_t{kind, element.value});
-  }
-
-  print_table({"Element", "Value"}, rows);
+void print_json(const std::vector<Element>& elements, bool pretty) {
+  std::print("{}", json::serialize(to_json(elements), pretty));
 }
 
-void print_elements_json(const std::vector<Element>& elements, bool pretty) {
-  json::Value items{json::Value::object_t{}};
-
-  for (const auto& element : elements) {
-    const auto kind = std::string{to_string(element.kind)};
-
-    if (items.as_object().contains(kind)) continue;
-
-    const auto values =
-        elements |
-        std::views::filter([&element](const auto& e) { return e.kind == element.kind; }) |
-        std::views::transform([](const auto& e) { return e.value; }) |
-        std::ranges::to<json::Value::array_t>();
-
-    if (values.size() == 1) {
-      items.as_object().emplace(kind, values.front());
-    } else {
-      items.as_object().emplace(kind, values);
-    }
-  }
-
-  std::print("{}", json::serialize(items, pretty));
+void print_json(const std::vector<Token>& tokens, bool pretty, bool verbose) {
+  std::print("{}", json::serialize(to_json(tokens, verbose), pretty));
 }
 
-bool is_trivial_token(const Token& token) noexcept {
-  using enum TokenKind;
-  switch (token.kind) {
-    case OpenBracket:
-    case CloseBracket:
-    case Delimiter:
-      return true;
-    default:
-      return false;
-  };
+void print_table(const std::vector<Element>& elements) {
+  detail::print_table({"Element", "Value"}, to_rows(elements));
 }
 
-void print_tokens_table(const std::vector<Token>& tokens, bool verbose) {
-  using row_t = std::vector<std::string>;
-
-  std::vector<row_t> rows;
-  for (const auto& token : tokens) {
-    if (!verbose && is_trivial_token(token)) continue;
-    rows.emplace_back(row_t{
-        std::string{to_string(token.kind)},
-        std::string{token.keyword ? to_string(token.keyword->kind) : ""},
-        std::string{token.element_kind ? to_string(*token.element_kind) : ""},
-        token.value,
-    });
-  }
-
-  print_table({"Token", "Keyword", "Element", "Value"}, rows);
-}
-
-void print_tokens_json(const std::vector<Token>& tokens, bool pretty, bool verbose) {
-  json::Value items{json::Value::array_t{}};
-  for (const auto& token : tokens) {
-    if (!verbose && is_trivial_token(token)) continue;
-    items.as_array().emplace_back(token.value);
-  }
-
-  std::print("{}", json::serialize(items, pretty));
+void print_table(const std::vector<Token>& tokens, bool verbose) {
+  detail::print_table({"Token", "Keyword", "Element", "Value"}, to_rows(tokens, verbose));
 }
 
 }  // namespace
@@ -142,15 +83,15 @@ int main(int argc, char* argv[]) {
 
   if (format == "json") {
     if (debug) {
-      print_tokens_json(parser.tokens(), pretty, verbose);
+      print_json(parser.tokens(), pretty, verbose);
     } else {
-      print_elements_json(parser.elements(), pretty);
+      print_json(parser.elements(), pretty);
     }
   } else if (format == "table") {
     if (debug) {
-      print_tokens_table(parser.tokens(), verbose);
+      print_table(parser.tokens(), verbose);
     } else {
-      print_elements_table(parser.elements());
+      print_table(parser.elements());
     }
   }
 
