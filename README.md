@@ -63,9 +63,9 @@ anitomy --format=json --pretty "[Ouroboros] Fullmetal Alchemist Brotherhood - 01
 
 ```json
 {
-  "episode": "01",
   "release_group": "Ouroboros",
-  "title": "Fullmetal Alchemist Brotherhood"
+  "title": "Fullmetal Alchemist Brotherhood",
+  "episode": "01"
 }
 ```
 

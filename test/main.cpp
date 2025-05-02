@@ -461,7 +461,8 @@ void test_data() {
     if (!map.contains("output")) assert(0 && "Invalid test data");
     auto& output = map["output"].as_object();
 
-    for (auto& [name, value] : output) {
+    for (auto& name : output) {
+      auto& value = output[name];
       if (!value.is_string() && !value.is_array()) assert(0 && "Invalid test data");
       const auto expected_value =
           value.is_array() ? vector_to_string(get_value_vector(value)) : value.as_string();

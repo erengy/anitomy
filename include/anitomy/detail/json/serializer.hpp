@@ -61,7 +61,8 @@ private:
       }
 
       for (auto it = object.begin(); it != object.end(); ++it) {
-        auto& [name, value] = *it;
+        auto& name = *it;
+        auto& value = object[name];
 
         if (pretty_) serialize_indentation(output);
         serialize_string(name, output);

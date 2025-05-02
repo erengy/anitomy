@@ -1,4 +1,5 @@
 #include <print>
+#include <ranges>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -48,8 +49,23 @@ void print_elements_table(const std::vector<Element>& elements) {
 
 void print_elements_json(const std::vector<Element>& elements, bool pretty) {
   json::Value items{json::Value::object_t{}};
+
   for (const auto& element : elements) {
-    items.as_object().emplace(to_string(element.kind), element.value);
+    const auto kind = std::string{to_string(element.kind)};
+
+    if (items.as_object().contains(kind)) continue;
+
+    const auto values =
+        elements |
+        std::views::filter([&element](const auto& e) { return e.kind == element.kind; }) |
+        std::views::transform([](const auto& e) { return e.value; }) |
+        std::ranges::to<json::Value::array_t>();
+
+    if (values.size() == 1) {
+      items.as_object().emplace(kind, values.front());
+    } else {
+      items.as_object().emplace(kind, values);
+    }
   }
 
   std::print("{}", json::serialize(items, pretty));

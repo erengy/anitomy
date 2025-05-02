@@ -1,16 +1,17 @@
 #pragma once
 
-#include <map>
 #include <string>
 #include <variant>
 #include <vector>
+
+#include <anitomy/detail/json/object.hpp>
 
 namespace anitomy::detail::json {
 
 class Value final {
 public:
   using string_t = std::string;
-  using object_t = std::map<string_t, Value>;
+  using object_t = Object<string_t, Value>;
   using array_t = std::vector<Value>;
   using value_t = std::variant<object_t, array_t, string_t, int, float, bool, nullptr_t>;
 
