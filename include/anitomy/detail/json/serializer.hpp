@@ -78,6 +78,7 @@ private:
       }
     }
 
+    if (pretty_) serialize_indentation(output);
     output.push_back('}');
   }
 
@@ -102,6 +103,7 @@ private:
       }
     }
 
+    if (pretty_) serialize_indentation(output);
     output.push_back(']');
   }
 
