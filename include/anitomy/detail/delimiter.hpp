@@ -37,6 +37,7 @@ namespace anitomy::detail {
     case U'.':  // used instead of space, problematic (e.g. `AAC2.0.H.264`)
     case U',':  // used to separate keywords
     case U'&':  // used for episode ranges
+    case U'~':  // used for episode ranges
     case U'+':  // used in torrent titles
     case U'|':  // used in torrent titles, reserved in Windows
       return true;

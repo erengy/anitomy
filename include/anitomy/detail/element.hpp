@@ -44,15 +44,16 @@ inline std::string build_element_value(std::span<Token> tokens,
 
     const char32_t ch = first_code_point(token);
 
-    if (ch == ',' || ch == '&') return false;         // keep
-    if (is_space(ch) || ch == '_') return true;       // transform
-    if (has_spaces || has_underscores) return false;  // keep
-    if (ch == '.') return true;                       // transform
-    return has_single_delimiter;                      // transform
+    if (ch == ',' || ch == '&' || ch == '~') return false;  // keep
+    if (is_space(ch) || ch == '_') return true;             // transform
+    if (has_spaces || has_underscores) return false;        // keep
+    if (ch == '.') return true;                             // transform
+    return has_single_delimiter;                            // transform
   };
 
   if (keep_delimiters == KeepDelimiters::No) {
     while (!tokens.empty() && is_delimiter_token(tokens.back())) {
+      if (first_code_point(tokens.back()) == '~') break;
       tokens = tokens.first(tokens.size() - 1);  // trim
     }
   }

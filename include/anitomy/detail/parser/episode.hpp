@@ -73,23 +73,22 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
     }
   }
 
-  // Number comes before another number (e.g. `8 & 10`, `01 of 24`)
+  // Number comes before another number (e.g. `8 & 10`, `1 ~ 12`, `01 of 24`)
   {
     auto view = tokens | filter(is_free_token) | filter(is_numeric_token);
 
     for (auto it = view.begin(); it != view.end(); ++it) {
-      // skip if delimiter but not '&'
-      auto token = std::ranges::find_if(
-          std::next(it.base().base()), tokens.end(),
-          [](const Token& token) { return is_not_delimiter_token(token) || token.value == "&"; });
+      auto token =
+          std::ranges::find_if(std::next(it.base().base()), tokens.end(), [](const Token& token) {
+            return is_not_delimiter_token(token) || token.value == "&" || token.value == "~";
+          });
       if (token == tokens.end()) continue;
-      // check if '&' or "of"
-      if (token->value != "&" && token->value != "of") continue;
-      // skip if delimiter
+      if (token->value != "&" && token->value != "~" && token->value != "of") continue;
+
       auto next_token = find_next_token(tokens, token, is_not_delimiter_token);
       if (next_token == tokens.end()) continue;
-      // check if number
       if (!is_numeric_token(*next_token)) continue;
+
       add_element_from_token(ElementKind::Episode, *it);
       add_element_from_token(ElementKind::Episode, *next_token);
       return elements;
