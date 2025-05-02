@@ -6,7 +6,7 @@
 Anitomy is a C++ library and a command-line tool for parsing anime video filenames.
 
 > [!IMPORTANT]
-> The library is currently being rewritten in the `develop` branch. The documentation below may be out of date.
+> The library is currently being rewritten in the `develop` branch.
 
 ## Example
 
@@ -30,7 +30,7 @@ File extension|`mkv`
 
 ### Library
 
-Requires a compiler that supports [C++23](https://en.cppreference.com/w/cpp/compiler_support). Currently only tested with the latest version of MSVC.
+Header-only, has no dependencies other than the standard library. Requires a compiler that supports [C++23](https://en.cppreference.com/w/cpp/compiler_support/23) (currently only tested with MSVC).
 
 ```cpp
 #include <print>
