@@ -2840,6 +2840,7 @@
             "title": "Blue Archive the Animation",
             "season": "01",
             "episode": "07",
+            "source": "WEB",
             "video_resolution": "1080p",
             "video_term": [
                 "HEVC",
@@ -2847,8 +2848,122 @@
                 "10-bit"
             ],
             "audio_term": "E-AC3",
-            "source": "WEB",
             "file_checksum": "3B0015AF",
+            "file_extension": "mkv"
+        }
+    },
+    {
+        "input": "[Erai-raws] Hi no Tori: Eden no Sora - 01 ~ 04 [1080p DSNP WEBRip HEVC EAC3][MultiSub] [BATCH]",
+        "mal_id": 53720,
+        "output": {
+            "release_group": "Erai-raws",
+            "title": "Hi no Tori: Eden no Sora",
+            "episode": [
+                "01",
+                "04"
+            ],
+            "video_resolution": "1080p",
+            "source": [
+                "DSNP",
+                "WEBRip"
+            ],
+            "video_term": "HEVC",
+            "audio_term": "EAC3",
+            "subtitles": "MultiSub",
+            "release_information": "BATCH"
+        }
+    },
+    {
+        "input": "[CBM]_Monster_-_11_-_511_Kinderheim_[6C70C4E4].mkv",
+        "mal_id": 19,
+        "output": {
+            "release_group": "CBM",
+            "title": "Monster",
+            "episode": "11",
+            "episode_title": "511 Kinderheim",
+            "file_checksum": "6C70C4E4",
+            "file_extension": "mkv"
+        }
+    },
+    {
+        "input": "[SubsPlease] Cardfight!! Vanguard will+Dress S2 - 08 (1080p) [D01C5C45].mkv",
+        "mal_id": 49819,
+        "output": {
+            "release_group": "SubsPlease",
+            "title": "Cardfight!! Vanguard will+Dress",
+            "season": "2",
+            "episode": "08",
+            "video_resolution": "1080p",
+            "file_checksum": "D01C5C45",
+            "file_extension": "mkv"
+        }
+    },
+    {
+        "input": "Mahoutsukai Reimeiki E06v1.5 [1080p][AAC][JapDub][GerEngSub][Web-DL].mkv",
+        "mal_id": 48842,
+        "output": {
+            "title": "Mahoutsukai Reimeiki",
+            "episode": "06",
+            "release_version": "1.5",
+            "video_resolution": "1080p",
+            "audio_term": "AAC",
+            "source": "Web-DL",
+            "file_extension": "mkv"
+        }
+    },
+    {
+        "input": "[Some-Stuffs]_Jojo's_Bizarre_Adventure_Diamond_is_Unbreakable_NCOP1a_(1920x1080_Blu-Ray_FLAC)_[343E8357].mkv",
+        "mal_id": 31933,
+        "output": {
+            "release_group": "Some-Stuffs",
+            "title": "Jojo's Bizarre Adventure Diamond is Unbreakable",
+            "type": "NCOP",
+            "episode": "1a",
+            "video_resolution": "1920x1080",
+            "source": "Blu-Ray",
+            "audio_term": "FLAC",
+            "file_checksum": "343E8357",
+            "file_extension": "mkv"
+        }
+    },
+    {
+        "input": "Tokyo Mew Mew New S01E12-[1080p][BDRIP][x265.FLAC].mkv",
+        "mal_id": 41589,
+        "output": {
+            "title": "Tokyo Mew Mew New",
+            "season": "01",
+            "episode": "12",
+            "video_resolution": "1080p",
+            "source": "BDRIP",
+            "video_term": "x265",
+            "audio_term": "FLAC",
+            "file_extension": "mkv"
+        }
+    },
+    {
+        "input": "2.5 Jigen no Ririsa E01 [1080p][E-AC-3][JapDub][GerSub][Web-DL].mkv",
+        "mal_id": 53802,
+        "output": {
+            "title": "2.5 Jigen no Ririsa",
+            "episode": "01",
+            "video_resolution": "1080p",
+            "audio_term": "E-AC-3",
+            "source": "Web-DL",
+            "file_extension": "mkv"
+        }
+    },
+    {
+        "input": "NEET Kunoichi to Naze ka Dousei Hajimemashita E01-E02 [1080p][AAC][JapDub][GerSub][Web-DL].mkv",
+        "mal_id": 58082,
+        "output": {
+            "title": "NEET Kunoichi to Naze ka Dousei Hajimemashita",
+            "episode": [
+                "01",
+                "02"
+            ],
+            "video_resolution": "1080p",
+            "audio_term": "AAC",
+            "source": "Web-DL",
             "file_extension": "mkv"
         }
     }
