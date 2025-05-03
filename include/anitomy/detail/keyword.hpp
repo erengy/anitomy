@@ -118,6 +118,8 @@ inline auto keywords = []() -> keyword_map_t {
       {"MultiAudio",           {AudioLanguage, 0}},
       {"Multi Audio",          {AudioLanguage, 0}},
       {"Multi-Audio",          {AudioLanguage, 0}},
+      {"EngDub",               {AudioLanguage, 0}},
+      {"JapDub",               {AudioLanguage, 0}},
 
       // Device compatibility
       {"Android",              {DeviceCompatibility, Ambiguous}},  // e.g. "Dragon Ball Z: Super Android 13"
@@ -166,6 +168,8 @@ inline auto keywords = []() -> keyword_map_t {
       {"wmv",                  {FileExtension, 0}},
 
       // Language
+      {"CHS",                  {Language, 0}},  // Chinese Simplified
+      {"CHT",                  {Language, 0}},  // Chinese Traditional
       {"ENG",                  {Language, 0}},
       {"English",              {Language, 0}},
       {"ESP",                  {Language, Ambiguous}},  // e.g. "Tokyo ESP"
@@ -271,6 +275,9 @@ inline auto keywords = []() -> keyword_map_t {
       {"Multi Subs",           {Subtitles, 0}},
       {"Multi-Subs",           {Subtitles, 0}},
       {"Multiple Subtitle",    {Subtitles, 0}},
+      {"EngSub",               {Subtitles, 0}},
+      {"EngSubs",              {Subtitles, 0}},
+      {"GerSub",               {Subtitles, 0}},
 
       // Type
       {"TV",                   {Type, Ambiguous}},

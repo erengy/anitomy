@@ -1074,7 +1074,11 @@
             "release_group": "52wy",
             "title": "SlamDunk",
             "episode": "001",
-            "language": "Jpn",
+            "language": [
+                "Jpn",
+                "Chs",
+                "Cht"
+            ],
             "video_term": "x264",
             "audio_term": "aac",
             "source": "DVDRip",
@@ -2906,7 +2910,10 @@
             "episode": "06",
             "release_version": "1.5",
             "video_resolution": "1080p",
-            "audio_term": "AAC",
+            "audio_term": [
+                "AAC",
+                "JapDub"
+            ],
             "source": "Web-DL",
             "file_extension": "mkv"
         }
@@ -2947,7 +2954,11 @@
             "title": "2.5 Jigen no Ririsa",
             "episode": "01",
             "video_resolution": "1080p",
-            "audio_term": "E-AC-3",
+            "audio_term": [
+                "E-AC-3",
+                "JapDub"
+            ],
+            "subtitles": "GerSub",
             "source": "Web-DL",
             "file_extension": "mkv"
         }
@@ -2962,7 +2973,11 @@
                 "02"
             ],
             "video_resolution": "1080p",
-            "audio_term": "AAC",
+            "audio_term": [
+                "AAC",
+                "JapDub"
+            ],
+            "subtitles": "GerSub",
             "source": "Web-DL",
             "file_extension": "mkv"
         }
