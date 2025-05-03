@@ -243,6 +243,7 @@ inline auto keywords = []() -> keyword_map_t {
       {"WebDL",                {Source, 0}},
       {"Web-DL",               {Source, 0}},
       {"WebRip",               {Source, 0}},
+      {"ADN",                  {Source, 0}},  // Animation Digital Network
       {"AMZN",                 {Source, 0}},  // Amazon Prime
       {"CR",                   {Source, 0}},  // Crunchyroll
       {"Crunchyroll",          {Source, 0}},

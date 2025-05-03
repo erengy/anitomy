@@ -2981,5 +2981,25 @@
             "source": "Web-DL",
             "file_extension": "mkv"
         }
+    },
+    {
+        "input": "[Erai-raws] aiomodarkelf - 02v2 [1080p ADN WEB-DL AVC AAC][MultiSub][94D7760F].mkv",
+        "mal_id": 59745,
+        "output": {
+            "release_group": "Erai-raws",
+            "title": "aiomodarkelf",
+            "episode": "02",
+            "release_version": "2",
+            "video_resolution": "1080p",
+            "source": [
+                "ADN",
+                "WEB-DL"
+            ],
+            "video_term": "AVC",
+            "audio_term": "AAC",
+            "subtitles": "MultiSub",
+            "file_checksum": "94D7760F",
+            "file_extension": "mkv"
+        }
     }
 ]
