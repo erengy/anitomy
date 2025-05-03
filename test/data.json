@@ -1487,8 +1487,8 @@
                 "1",
                 "13"
             ],
-            "source": "Blu-Ray",
             "video_resolution": "1280×720",
+            "source": "Blu-Ray",
             "audio_term": "FLAC"
         }
     },
@@ -2353,15 +2353,15 @@
         "input": "[0x539] Somali and the Forest Spirit - S01E01 (WEB 1080p Hi10P AAC) [BB7C6531].mkv",
         "mal_id": 39575,
         "output": {
-            "season": "01",
-            "title": "Somali and the Forest Spirit",
-            "audio_term": "AAC",
-            "episode": "01",
-            "file_checksum": "BB7C6531",
             "release_group": "0x539",
+            "title": "Somali and the Forest Spirit",
+            "season": "01",
+            "episode": "01",
             "source": "WEB",
             "video_resolution": "1080p",
             "video_term": "Hi10P",
+            "audio_term": "AAC",
+            "file_checksum": "BB7C6531",
             "file_extension": "mkv"
         }
     },
