@@ -30,7 +30,7 @@ File extension|`mkv`
 
 ### Library
 
-Header-only, has no dependencies other than the standard library. Requires a compiler that supports [C++23](https://en.cppreference.com/w/cpp/compiler_support/23) (currently only tested with MSVC).
+Header-only, has no dependencies other than the standard library. Requires a compiler that supports [C++23](https://en.cppreference.com/w/cpp/compiler_support/23) (currently only tested with MSVC). See the [docs](docs/library.md "Library documentation") for details.
 
 ```cpp
 #include <print>
@@ -55,7 +55,7 @@ episode         01
 
 ### CLI
 
-Use `--help` to see available options.
+Use `--help` or visit the [docs](docs/cli.md "CLI documentation") for available options.
 
 ```bash
 anitomy --format=json --pretty "[Ouroboros] Fullmetal Alchemist Brotherhood - 01"
@@ -89,7 +89,7 @@ Yes, just make sure your input is UTF-8 encoded and preferably in composed form.
 
 > **Can I use it in another programming language?**
 
-See [other repositories](https://github.com/search?q=anitomy&type=repositories) for related projects.
+Try the CLI, or see [other repositories](https://github.com/search?q=anitomy&type=repositories) for related projects.
 
 ## Migration
 
