@@ -132,11 +132,12 @@ private:
   }
 
   [[nodiscard]] inline std::pair<std::string, Keyword> take_keyword() noexcept {
-    static constexpr auto count_candidates = [](std::string_view prefix) {
-      static const auto keys = keywords | std::views::keys;
-      return std::ranges::count_if(keys, [&prefix](std::string_view keyword) {
+    static constexpr auto has_candidates = [](std::string_view prefix) {
+      static constexpr auto keys = keywords | std::views::keys;
+      const auto starts_with = [&prefix](std::string_view keyword) {
         return std::ranges::starts_with(keyword, prefix, equal_to);
-      });
+      };
+      return std::ranges::find_if(keys, starts_with) != keys.end();
     };
 
     static constexpr auto is_keyword_boundary = [](std::u32string_view view) {
@@ -146,10 +147,9 @@ private:
     std::string key;
 
     for (size_t n = 1; n <= view_.size(); ++n) {
-      auto prefix = unicode::utf32_to_utf8(peek(n));
+      const auto prefix = unicode::utf32_to_utf8(peek(n));
       if (keywords.contains(prefix)) key = prefix;
-      if (count_candidates(prefix) > 0) continue;
-      if (key.empty()) break;
+      if (!has_candidates(prefix)) break;
     }
 
     if (key.empty()) return {};
