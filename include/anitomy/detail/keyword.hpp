@@ -56,26 +56,26 @@ struct Keyword {
 };
 
 struct KeywordHash {
-  [[nodiscard]] size_t operator()(std::string_view view) const noexcept {
+  [[nodiscard]] size_t operator()(const std::string& view) const noexcept {
     auto str = view | std::views::transform(to_lower<char>) | std::ranges::to<std::string>();
     return std::hash<std::string>()(str);
   }
 };
 
 struct KeywordEqual {
-  [[nodiscard]] bool operator()(std::string_view a, std::string_view b) const noexcept {
+  [[nodiscard]] bool operator()(const std::string& a, const std::string& b) const noexcept {
     return std::ranges::equal(a, b, equal_to);
   }
 };
 
-using keyword_map_t = std::unordered_map<std::string_view, Keyword, KeywordHash, KeywordEqual>;
+using keyword_map_t = std::unordered_map<std::string, Keyword, KeywordHash, KeywordEqual>;
 
-inline auto keywords = []() -> keyword_map_t {
+inline keyword_map_t make_keywords() noexcept {
   using enum KeywordKind;
   using enum Keyword::Flags;
 
   // clang-format off
-  return {
+  keyword_map_t keywords{
       // Audio
       //
       // Channels
@@ -114,10 +114,8 @@ inline auto keywords = []() -> keyword_map_t {
       // Language
       {"DualAudio",            {AudioLanguage}},
       {"Dual Audio",           {AudioLanguage}},
-      {"Dual-Audio",           {AudioLanguage}},
       {"MultiAudio",           {AudioLanguage}},
       {"Multi Audio",          {AudioLanguage}},
-      {"Multi-Audio",          {AudioLanguage}},
       {"EngDub",               {AudioLanguage}},
       {"JapDub",               {AudioLanguage}},
 
@@ -274,7 +272,6 @@ inline auto keywords = []() -> keyword_map_t {
       {"Multisub",             {Subtitles}},
       {"Multi Sub",            {Subtitles}},
       {"Multi Subs",           {Subtitles}},
-      {"Multi-Subs",           {Subtitles}},
       {"Multiple Subtitle",    {Subtitles}},
       {"EngSub",               {Subtitles}},
       {"EngSubs",              {Subtitles}},
@@ -355,6 +352,23 @@ inline auto keywords = []() -> keyword_map_t {
       {"Volume",               {Volume}},
   };
   // clang-format on
-}();
+
+  constexpr auto variant = [](std::string key, const char delimiter) {
+    std::ranges::replace(key, ' ', delimiter);
+    return key;
+  };
+
+  for (const auto& [key, keyword] : keywords) {
+    if (key.contains(' ')) {
+      keywords.emplace(variant(key, '_'), keyword);
+      keywords.emplace(variant(key, '.'), keyword);
+      keywords.emplace(variant(key, '-'), keyword);
+    }
+  }
+
+  return keywords;
+};
+
+inline auto keywords = make_keywords();
 
 }  // namespace anitomy::detail

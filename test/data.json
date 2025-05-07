@@ -940,7 +940,7 @@
             "source": "BD",
             "video_resolution": "1080p",
             "audio_term": [
-                "Dual Audio",
+                "Dual_Audio",
                 "FLAC"
             ],
             "video_term": "Hi10p",
@@ -2486,7 +2486,7 @@
             "episode_title": "A Dawn Without Light",
             "source": "BD",
             "video_resolution": "1080p",
-            "audio_term": "Dual Audio",
+            "audio_term": "Dual.Audio",
             "video_term": "x265",
             "file_extension": "mkv"
         }
