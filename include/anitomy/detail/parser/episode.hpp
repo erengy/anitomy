@@ -54,7 +54,7 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
   }
   {
     static constexpr auto is_episode_prefix = [](const Token& token, std::smatch& matches) {
-      static const std::regex pattern{R"((?:E|E[Pp]|Eps)(\d{1,4})(?:[vV](\d))?)"};
+      static const std::regex pattern{R"([Ee](?:[Pp][Ss]?)?(\d{1,4})(?:[vV](\d))?)"};
       return std::regex_match(token.value, matches, pattern);
     };
 
