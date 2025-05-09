@@ -29,6 +29,7 @@ enum class KeywordKind {
   Type,
   VideoCodec,
   VideoColorDepth,
+  VideoDynamicRange,
   VideoFormat,
   VideoFrameRate,
   VideoProfile,
@@ -314,9 +315,11 @@ inline keyword_map_t make_keywords() noexcept {
       {"HEVC",                 {VideoCodec}},
       {"HEVC2",                {VideoCodec}},
       {"Xvid",                 {VideoCodec}},
-      {"HDR",                  {VideoCodec}},
-      {"DV",                   {VideoCodec}},
-      {"Dolby Vision",         {VideoCodec}},
+      // Dynamic range
+      {"HDR",                  {VideoDynamicRange}},
+      {"HDR10",                {VideoDynamicRange}},
+      {"DV",                   {VideoDynamicRange}},
+      {"Dolby Vision",         {VideoDynamicRange}},
       // Format
       {"AVI",                  {VideoFormat}},  // @Warning: Duplicate
       {"RMVB",                 {VideoFormat}},  // @Warning: Duplicate
