@@ -90,7 +90,9 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
       if (!is_numeric_token(*next_token)) continue;
 
       add_element_from_token(ElementKind::Episode, *it);
-      add_element_from_token(ElementKind::Episode, *next_token);
+      if (token->value != "of") {
+        add_element_from_token(ElementKind::Episode, *next_token);
+      }
       return elements;
     }
   }
