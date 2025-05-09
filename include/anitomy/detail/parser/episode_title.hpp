@@ -46,6 +46,9 @@ inline std::optional<Element> parse_episode_title(std::span<Token> tokens) noexc
   std::string value = build_element_value(span, KeepDelimiters::No);
   if (value.empty()) return {};
 
+  // Avoid single-character episode titles
+  if (value.size() == 1) return {};
+
   for (auto& token : span) {
     token.element_kind = ElementKind::EpisodeTitle;
   }
