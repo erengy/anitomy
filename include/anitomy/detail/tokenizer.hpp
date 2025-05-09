@@ -94,7 +94,7 @@ private:
       position += token.value.size();
 
       if (token.kind == TokenKind::Text) {
-        token.is_number = std::ranges::all_of(token.value, is_digit);
+        token.is_number = std::ranges::all_of(token.value, is_digit<char>);
       }
     }
   }
@@ -140,8 +140,14 @@ private:
       return std::ranges::find_if(keys, starts_with) != keys.end();
     };
 
-    static constexpr auto is_keyword_boundary = [](std::u32string_view view) {
-      return view.empty() || is_word_boundary(view.front());
+    static constexpr auto is_keyword_boundary = [](const Keyword& keyword,
+                                                   const std::u32string_view view) {
+      if (keyword.is_subword()) return true;
+      if (view.empty()) return true;
+      const auto next = view.front();
+      if (is_word_boundary(next)) return true;
+      if (keyword.is_prefix_for_number()) return is_digit(next);
+      return false;
     };
 
     std::string key;
@@ -157,7 +163,7 @@ private:
     const size_t n = key.size();
     const auto keyword = keywords[key];
 
-    if (keyword.is_bounded() && !is_keyword_boundary(view_.substr(n))) return {};
+    if (!is_keyword_boundary(keyword, view_.substr(n))) return {};
 
     return std::make_pair(take(n), keyword);
   }

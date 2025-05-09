@@ -206,7 +206,8 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
   // Type and episode (e.g. `ED1`, `OP4a`, `OVA2`)
   {
     static constexpr auto is_type_keyword = [](const Token& token) {
-      return token.keyword && token.keyword->kind == KeywordKind::Type;
+      return token.keyword && (token.keyword->kind == KeywordKind::Type ||
+                               token.keyword->kind == KeywordKind::EpisodeType);
     };
 
     auto type_token = std::ranges::find_if(tokens, is_type_keyword);

@@ -43,7 +43,8 @@ constexpr bool is_alpha(const char ch) noexcept {
   return ('A' <= ch && ch <= 'Z') || ('a' <= ch && ch <= 'z');
 }
 
-constexpr bool is_digit(const char ch) noexcept {
+template <typename Char>
+constexpr bool is_digit(const Char ch) noexcept {
   return '0' <= ch && ch <= '9';
 }
 

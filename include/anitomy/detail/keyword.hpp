@@ -39,20 +39,30 @@ enum class KeywordKind {
 };
 
 struct Keyword {
-  enum Flags : uint8_t {
-    Ambiguous = 0x01,
-    Unbounded = 0x02,
-  };
+enum Flags : uint8_t {
+  Ambiguous = 1 << 0,
+  Subword = 1 << 1,
+  PrefixForNumber = 1 << 2,
+};
 
   KeywordKind kind;
   uint8_t flags = 0;
 
   constexpr bool is_ambiguous() const noexcept {
-    return (flags & Ambiguous) == Ambiguous;
+    return has_flag(Ambiguous);
   }
 
-  constexpr bool is_bounded() const noexcept {
-    return (flags & Unbounded) != Unbounded;
+  constexpr bool is_subword() const noexcept {
+    return has_flag(Subword);
+  }
+
+  constexpr bool is_prefix_for_number() const noexcept {
+    return has_flag(PrefixForNumber);
+  }
+
+private:
+  constexpr bool has_flag(const Flags flag) const noexcept {
+    return (flags & flag) == flag;
   }
 };
 
@@ -130,24 +140,24 @@ inline keyword_map_t make_keywords() noexcept {
       {"Xbox360",              {DeviceCompatibility}},
 
       // Episode prefix
-      {"Ep",                   {Episode}},
-      {"Eps",                  {Episode}},
-      {"Episode",              {Episode}},
-      {"Episodes",             {Episode}},
-      {"Episodio",             {Episode}},
-      {"Episódio",             {Episode}},
-      {"Capitulo",             {Episode}},
-      {"Folge",                {Episode}},
+      {"Ep",                   {Episode, PrefixForNumber}},
+      {"Eps",                  {Episode, PrefixForNumber}},
+      {"Episode",              {Episode, PrefixForNumber}},
+      {"Episodes",             {Episode, PrefixForNumber}},
+      {"Episodio",             {Episode, PrefixForNumber}},
+      {"Episódio",             {Episode, PrefixForNumber}},
+      {"Capitulo",             {Episode, PrefixForNumber}},
+      {"Folge",                {Episode, PrefixForNumber}},
 
       // Episode type
-      {"OP",                   {EpisodeType, Ambiguous}},  // e.g. "takt op.Destiny", "My Unique Skill Makes Me OP even at Level 1"
-      {"Opening",              {EpisodeType, Ambiguous}},  // e.g. "Pool Opening"
-      {"ED",                   {EpisodeType, Ambiguous}},
-      {"Ending",               {EpisodeType, Ambiguous}},
-      {"NCED",                 {EpisodeType}},
-      {"NCOP",                 {EpisodeType}},
+      {"OP",                   {EpisodeType, Ambiguous | PrefixForNumber}},  // e.g. "takt op.Destiny", "My Unique Skill Makes Me OP even at Level 1"
+      {"Opening",              {EpisodeType, Ambiguous}},                    // e.g. "Pool Opening"
+      {"ED",                   {EpisodeType, Ambiguous | PrefixForNumber}},  // e.g. "s.CRY.ed"
+      {"Ending",               {EpisodeType, Ambiguous}},                    // e.g. "Happy Ending", "True Ending"
+      {"NCED",                 {EpisodeType, PrefixForNumber}},
+      {"NCOP",                 {EpisodeType, PrefixForNumber}},
       {"Preview",              {EpisodeType, Ambiguous}},
-      {"PV",                   {EpisodeType, Ambiguous}},
+      {"PV",                   {EpisodeType, Ambiguous | PrefixForNumber}},
 
       // File extension
       {"3gp",                  {FileExtension}},
@@ -282,12 +292,12 @@ inline keyword_map_t make_keywords() noexcept {
       {"TV",                   {Type, Ambiguous}},
       {"Movie",                {Type, Ambiguous}},
       {"Gekijouban",           {Type, Ambiguous}},
-      {"OAD",                  {Type, Ambiguous}},
-      {"OAV",                  {Type, Ambiguous}},
-      {"ONA",                  {Type, Ambiguous}},
-      {"OVA",                  {Type, Ambiguous}},
-      {"SP",                   {Type, Ambiguous}},  // e.g. "Yumeiro Patissiere SP Professional"
-      {"Special",              {Type, Ambiguous}},  // e.g. "Special A"
+      {"OAD",                  {Type, Ambiguous | PrefixForNumber}},
+      {"OAV",                  {Type, Ambiguous | PrefixForNumber}},
+      {"ONA",                  {Type, Ambiguous | PrefixForNumber}},
+      {"OVA",                  {Type, Ambiguous | PrefixForNumber}},
+      {"SP",                   {Type, Ambiguous | PrefixForNumber}},  // e.g. "Yumeiro Patissiere SP Professional"
+      {"Special",              {Type, Ambiguous}},                    // e.g. "Special A"
       {"Specials",             {Type, Ambiguous}},
 
       // Video
@@ -345,14 +355,14 @@ inline keyword_map_t make_keywords() noexcept {
       {"HQ",                   {VideoQuality}},
       {"LQ",                   {VideoQuality}},
       // Resolution
-      {"1080p",                {VideoResolution, Unbounded}},
-      {"1440p",                {VideoResolution, Unbounded}},
-      {"2160p",                {VideoResolution, Unbounded}},
+      {"1080p",                {VideoResolution, Subword}},
+      {"1440p",                {VideoResolution, Subword}},
+      {"2160p",                {VideoResolution, Subword}},
       {"4K",                   {VideoResolution}},
 
-      // Volume
-      {"Vol",                  {Volume}},
-      {"Volume",               {Volume}},
+      // Volume prefix
+      {"Vol",                  {Volume, PrefixForNumber}},
+      {"Volume",               {Volume, PrefixForNumber}},
   };
   // clang-format on
 
