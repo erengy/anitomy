@@ -6,7 +6,7 @@ namespace anitomy {
 
 enum class ElementKind {
   AudioTerm,
-  DeviceCompatibility,
+  Device,
   Episode,
   EpisodeTitle,
   FileChecksum,

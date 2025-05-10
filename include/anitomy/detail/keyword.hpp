@@ -14,7 +14,7 @@ enum class KeywordKind {
   AudioChannels,
   AudioCodec,
   AudioLanguage,
-  DeviceCompatibility,
+  Device,
   Episode,
   EpisodeType,
   FileExtension,
@@ -130,14 +130,14 @@ inline keyword_map_t make_keywords() noexcept {
       {"EngDub",               {AudioLanguage}},
       {"JapDub",               {AudioLanguage}},
 
-      // Device compatibility
-      {"Android",              {DeviceCompatibility, Ambiguous}},  // e.g. "Dragon Ball Z: Super Android 13"
-      {"iPad3",                {DeviceCompatibility}},
-      {"iPhone5",              {DeviceCompatibility}},
-      {"iPod",                 {DeviceCompatibility}},
-      {"PS3",                  {DeviceCompatibility}},
-      {"Xbox",                 {DeviceCompatibility}},
-      {"Xbox360",              {DeviceCompatibility}},
+      // Device
+      {"Android",              {Device, Ambiguous}},  // e.g. "Dragon Ball Z: Super Android 13"
+      {"iPad3",                {Device}},
+      {"iPhone5",              {Device}},
+      {"iPod",                 {Device}},
+      {"PS3",                  {Device}},
+      {"Xbox",                 {Device}},
+      {"Xbox360",              {Device}},
 
       // Episode prefix
       {"Ep",                   {Episode, PrefixForNumber}},

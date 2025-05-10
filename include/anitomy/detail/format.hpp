@@ -30,7 +30,7 @@ constexpr std::string_view to_string(const KeywordKind kind) noexcept {
     case AudioChannels: return "audio_channels";
     case AudioCodec: return "audio_codec";
     case AudioLanguage: return "audio_language";
-    case DeviceCompatibility: return "device_compatibility";
+    case Device: return "device";
     case Episode: return "episode";
     case EpisodeType: return "episode_type";
     case FileExtension: return "file_extension";
@@ -61,7 +61,7 @@ constexpr std::string_view to_string(const ElementKind kind) noexcept {
   // clang-format off
   switch (kind) {
     case AudioTerm: return "audio_term";
-    case DeviceCompatibility: return "device_compatibility";
+    case Device: return "device";
     case Episode: return "episode";
     case EpisodeTitle: return "episode_title";
     case FileChecksum: return "file_checksum";
@@ -90,7 +90,7 @@ inline const std::optional<ElementKind> to_element_kind(std::string_view str) no
 
   static const std::unordered_map<std::string_view, ElementKind> elements{
       {"audio_term", AudioTerm},
-      {"device_compatibility", DeviceCompatibility},
+      {"device", Device},
       {"episode", Episode},
       {"episode_title", EpisodeTitle},
       {"file_checksum", FileChecksum},
