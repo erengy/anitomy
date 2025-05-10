@@ -239,14 +239,14 @@ inline keyword_map_t make_keywords() noexcept {
       {"BD",                   {Source}},
       {"BDRip",                {Source}},
       {"BluRay",               {Source}},
-      {"Blu-ray",              {Source}},
+      {"Blu ray",              {Source}},
       // DVD
       {"DVD",                  {Source}},
       {"DVD5",                 {Source}},
       {"DVD9",                 {Source}},
       {"DVDISO",               {Source}},
       {"DVDRip",               {Source}},
-      {"DVD-Rip",              {Source}},
+      {"DVD Rip",              {Source}},
       {"R2DVD",                {Source}},
       {"R2J",                  {Source}},
       {"R2JDVD",               {Source}},
@@ -255,12 +255,12 @@ inline keyword_map_t make_keywords() noexcept {
       {"HDTV",                 {Source}},
       {"HDTVRip",              {Source}},
       {"TVRip",                {Source}},
-      {"TV-Rip",               {Source}},
+      {"TV Rip",               {Source}},
       // Web
       {"Web",                  {Source, Ambiguous}},
       {"Webcast",              {Source}},
       {"WebDL",                {Source}},
-      {"Web-DL",               {Source}},
+      {"Web DL",               {Source}},
       {"WebRip",               {Source}},
       {"ADN",                  {Source}},  // Animation Digital Network
       {"AMZN",                 {Source}},  // Amazon Prime
@@ -312,11 +312,13 @@ inline keyword_map_t make_keywords() noexcept {
       //
       // Color depth
       {"8bit",                 {VideoColorDepth}},
-      {"8-bit",                {VideoColorDepth}},
+      {"8bits",                {VideoColorDepth}},
+      {"8 bit",                {VideoColorDepth}},
+      {"8 bits",               {VideoColorDepth}},
       {"10bit",                {VideoColorDepth}},
       {"10bits",               {VideoColorDepth}},
-      {"10-bit",               {VideoColorDepth}},
-      {"10-bits",              {VideoColorDepth}},
+      {"10 bit",               {VideoColorDepth}},
+      {"10 bits",              {VideoColorDepth}},
       // Codec
       {"AV1",                  {VideoCodec}},
       {"AVC",                  {VideoCodec}},
