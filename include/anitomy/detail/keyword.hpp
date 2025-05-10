@@ -127,8 +127,18 @@ inline keyword_map_t make_keywords() noexcept {
       {"Dual Audio",           {AudioLanguage}},
       {"MultiAudio",           {AudioLanguage}},
       {"Multi Audio",          {AudioLanguage}},
+      {"Dub",                  {AudioLanguage}},
+      {"Dubbed",               {AudioLanguage}},
+      {"Dubs",                 {AudioLanguage}},
+      {"ChiDub",               {AudioLanguage}},
       {"EngDub",               {AudioLanguage}},
+      {"GerDub",               {AudioLanguage}},
       {"JapDub",               {AudioLanguage}},
+      {"Chinese Dub",          {AudioLanguage}},
+      {"English Dub",          {AudioLanguage}},
+      {"German Dub",           {AudioLanguage}},
+      {"Japanese Dub",         {AudioLanguage}},
+      {"Korean Dub",           {AudioLanguage}},
 
       // Device
       {"Android",              {Device, Ambiguous}},  // e.g. "Dragon Ball Z: Super Android 13"
@@ -270,8 +280,6 @@ inline keyword_map_t make_keywords() noexcept {
       // Subtitles
       {"ASS",                  {Subtitles}},
       {"BIG5",                 {Subtitles}},
-      {"Dub",                  {Subtitles}},
-      {"Dubbed",               {Subtitles}},
       {"Hardsub",              {Subtitles}},
       {"Hardsubs",             {Subtitles}},
       {"RAW",                  {Subtitles}},
