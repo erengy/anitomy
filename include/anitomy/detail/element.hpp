@@ -52,8 +52,12 @@ inline std::string build_element_value(std::span<Token> tokens,
   };
 
   if (keep_delimiters == KeepDelimiters::No) {
+    unicode::code_point_t prev_delimiter{};
     while (!tokens.empty() && is_delimiter_token(tokens.back())) {
-      if (first_code_point(tokens.back()) == '~') break;
+      const auto delimiter = first_code_point(tokens.back());
+      if (delimiter == '~') break;
+      if (delimiter == '.' && is_space(prev_delimiter)) break;
+      prev_delimiter = delimiter;
       tokens = tokens.first(tokens.size() - 1);  // trim
     }
   }
