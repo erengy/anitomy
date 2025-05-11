@@ -165,7 +165,7 @@ private:
 
     if (!is_keyword_boundary(keyword, view_.substr(n))) return {};
 
-    return std::make_pair(take(n), keyword);
+    return {take(n), keyword};
   }
 
   std::u32string input_;
