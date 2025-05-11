@@ -62,4 +62,8 @@ constexpr bool is_numeric_token(const Token& token) noexcept {
   return token.is_number;
 }
 
+constexpr bool is_text_token(const Token& token) noexcept {
+  return token.kind == TokenKind::Text;
+}
+
 }  // namespace anitomy::detail

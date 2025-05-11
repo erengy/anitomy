@@ -17,7 +17,6 @@ enum class KeywordKind {
   Device,
   Episode,
   EpisodeType,
-  FileExtension,
   Language,
   Other,
   ReleaseGroup,
@@ -169,23 +168,6 @@ inline keyword_map_t make_keywords() noexcept {
       {"Preview",              {EpisodeType, Ambiguous}},
       {"PV",                   {EpisodeType, Ambiguous | PrefixForNumber}},
 
-      // File extension
-      {"3gp",                  {FileExtension}},
-      {"avi",                  {FileExtension}},
-      {"divx",                 {FileExtension}},
-      {"flv",                  {FileExtension}},
-      {"m2ts",                 {FileExtension}},
-      {"mkv",                  {FileExtension}},
-      {"mov",                  {FileExtension}},
-      {"mp4",                  {FileExtension}},
-      {"mpg",                  {FileExtension}},
-      {"ogm",                  {FileExtension}},
-      {"rm",                   {FileExtension}},
-      {"rmvb",                 {FileExtension}},
-      {"ts",                   {FileExtension}},
-      {"webm",                 {FileExtension}},
-      {"wmv",                  {FileExtension}},
-
       // Language
       {"CHS",                  {Language}},  // Chinese Simplified
       {"CHT",                  {Language}},  // Chinese Traditional
@@ -322,7 +304,7 @@ inline keyword_map_t make_keywords() noexcept {
       // Codec
       {"AV1",                  {VideoCodec}},
       {"AVC",                  {VideoCodec}},
-      {"DivX",                 {VideoCodec}},  // @Warning: Duplicate
+      {"DivX",                 {VideoCodec}},
       {"DivX5",                {VideoCodec}},
       {"DivX6",                {VideoCodec}},
       {"H.264",                {VideoCodec}},
@@ -341,9 +323,9 @@ inline keyword_map_t make_keywords() noexcept {
       {"DV",                   {VideoDynamicRange}},
       {"Dolby Vision",         {VideoDynamicRange}},
       // Format
-      {"AVI",                  {VideoFormat}},  // @Warning: Duplicate
-      {"RMVB",                 {VideoFormat}},  // @Warning: Duplicate
-      {"WMV",                  {VideoFormat}},  // @Warning: Duplicate
+      {"AVI",                  {VideoFormat}},
+      {"RMVB",                 {VideoFormat}},
+      {"WMV",                  {VideoFormat}},
       {"WMV3",                 {VideoFormat}},
       {"WMV9",                 {VideoFormat}},
       // Frame rate

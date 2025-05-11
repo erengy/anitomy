@@ -33,7 +33,6 @@ constexpr std::string_view to_string(const KeywordKind kind) noexcept {
     case Device: return "device";
     case Episode: return "episode";
     case EpisodeType: return "episode_type";
-    case FileExtension: return "file_extension";
     case Language: return "language";
     case Other: return "other";
     case ReleaseGroup: return "release_group";
