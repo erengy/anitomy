@@ -39,11 +39,11 @@ enum class KeywordKind {
 };
 
 struct Keyword {
-enum Flags : uint8_t {
-  Ambiguous = 1 << 0,
-  Subword = 1 << 1,
-  PrefixForNumber = 1 << 2,
-};
+  enum Flags : uint8_t {
+    Ambiguous = 1 << 0,
+    Subword = 1 << 1,
+    PrefixForNumber = 1 << 2,
+  };
 
   KeywordKind kind;
   uint8_t flags = 0;
