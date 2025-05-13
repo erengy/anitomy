@@ -46,7 +46,7 @@ struct Keyword {
   };
 
   KeywordKind kind;
-  uint8_t flags = 0;
+  uint8_t flags{};
 
   constexpr bool is_ambiguous() const noexcept {
     return has_flag(Ambiguous);
@@ -89,278 +89,363 @@ inline keyword_map_t make_keywords() noexcept {
   using enum KeywordKind;
   using enum Keyword::Flags;
 
+  struct Entry {
+    std::string_view value;
+    uint8_t flags{};
+  };
+
+  using keywords_t = std::vector<std::pair<KeywordKind, std::vector<Entry>>>;
+
   // clang-format off
-  keyword_map_t keywords{
+  const keywords_t keywords{
       // Audio
-      //
-      // Channels
-      {"2.0",                  {AudioChannels, Ambiguous}},  // e.g. "Evangelion 2.0"
-      {"2.0ch",                {AudioChannels}},
-      {"2ch",                  {AudioChannels}},
-      {"5.1",                  {AudioChannels}},
-      {"5.1ch",                {AudioChannels}},
-      {"7.1",                  {AudioChannels}},
-      {"7.1ch",                {AudioChannels}},
-      {"DTS",                  {AudioChannels, PrefixForNumber}},
-      {"DTS-ES",               {AudioChannels}},
-      {"Dolby TrueHD",         {AudioChannels}},
-      {"TrueHD",               {AudioChannels, PrefixForNumber}},
-      // Codec
-      {"AAC",                  {AudioCodec, PrefixForOther}},
-      {"AACX2",                {AudioCodec}},
-      {"AACX3",                {AudioCodec}},
-      {"AACX4",                {AudioCodec}},
-      {"AC3",                  {AudioCodec}},
-      {"EAC3",                 {AudioCodec}},
-      {"E-AC-3",               {AudioCodec}},
-      {"E-AC3",                {AudioCodec}},
-      {"FLAC",                 {AudioCodec, PrefixForNumber}},
-      {"FLACX2",               {AudioCodec}},
-      {"FLACX3",               {AudioCodec}},
-      {"FLACX4",               {AudioCodec}},
-      {"Lossless",             {AudioCodec}},
-      {"MP3",                  {AudioCodec}},
-      {"OGG",                  {AudioCodec}},
-      {"Vorbis",               {AudioCodec}},
-      {"Atmos",                {AudioCodec}},
-      {"DD",                   {AudioCodec, PrefixForOther}},
-      {"DDP",                  {AudioCodec, PrefixForNumber}},
-      {"Dolby Atmos",          {AudioCodec}},
-      {"Opus",                 {AudioCodec, Ambiguous}},  // e.g. "Opus.COLORs"
-      // Language
-      {"DualAudio",            {AudioLanguage}},
-      {"Dual Audio",           {AudioLanguage}},
-      {"MultiAudio",           {AudioLanguage}},
-      {"Multi Audio",          {AudioLanguage}},
-      {"Dub",                  {AudioLanguage}},
-      {"Dubbed",               {AudioLanguage}},
-      {"Dubs",                 {AudioLanguage}},
-      {"ChiDub",               {AudioLanguage}},
-      {"EngDub",               {AudioLanguage}},
-      {"GerDub",               {AudioLanguage}},
-      {"JapDub",               {AudioLanguage}},
-      {"Chinese Dub",          {AudioLanguage}},
-      {"English Dub",          {AudioLanguage}},
-      {"German Dub",           {AudioLanguage}},
-      {"Japanese Dub",         {AudioLanguage}},
-      {"Korean Dub",           {AudioLanguage}},
+      {
+        AudioChannels, {
+          {"2.0", Ambiguous},  // e.g. "Evangelion 2.0"
+          {"2.0ch"},
+          {"2ch"},
+          {"5.1"},
+          {"5.1ch"},
+          {"7.1"},
+          {"7.1ch"},
+        }
+      },
+      {
+        AudioCodec, {
+          {"AAC", PrefixForOther},
+          {"AACX2"},
+          {"AACX3"},
+          {"AACX4"},
+          {"AC3"},
+          {"EAC3"},
+          {"E-AC-3"},
+          {"E-AC3"},
+          {"Atmos"},
+          {"Dolby Atmos"},
+          {"DD", PrefixForOther},
+          {"DDP", PrefixForNumber},
+          {"Dolby TrueHD"},
+          {"TrueHD", PrefixForNumber},
+          {"DTS", PrefixForNumber},
+          {"DTS-ES"},
+          {"FLAC", PrefixForNumber},
+          {"FLACX2"},
+          {"FLACX3"},
+          {"FLACX4"},
+          {"Lossless"},
+          {"MP3"},
+          {"Opus", Ambiguous},  // e.g. "Opus.COLORs"
+          {"OGG"},
+          {"Vorbis"},
+        }
+      },
+      {
+        AudioLanguage, {
+          {"DualAudio"},
+          {"Dual Audio"},
+          {"MultiAudio"},
+          {"Multi Audio"},
+          {"Dub"},
+          {"Dubbed"},
+          {"Dubs"},
+          {"ChiDub"},
+          {"Chinese Dub"},
+          {"EngDub"},
+          {"English Dub"},
+          {"GerDub"},
+          {"German Dub"},
+          {"JapDub"},
+          {"Japanese Dub"},
+          {"Korean Dub"},
+        }
+      },
 
       // Device
-      {"Android",              {Device, Ambiguous}},  // e.g. "Dragon Ball Z: Super Android 13"
-      {"iPad3",                {Device}},
-      {"iPhone5",              {Device}},
-      {"iPod",                 {Device}},
-      {"PS3",                  {Device}},
-      {"Xbox",                 {Device}},
-      {"Xbox360",              {Device}},
+      {
+        Device, {
+          {"Android", Ambiguous},  // e.g. "Dragon Ball Z: Super Android 13"
+          {"iPad3"},
+          {"iPhone5"},
+          {"iPod"},
+          {"PS3"},
+          {"Xbox"},
+          {"Xbox360"},
+        }
+      },
 
-      // Episode prefix
-      {"Ep",                   {Episode, PrefixForNumber}},
-      {"Eps",                  {Episode, PrefixForNumber}},
-      {"Episode",              {Episode, PrefixForNumber}},
-      {"Episodes",             {Episode, PrefixForNumber}},
-      {"Episodio",             {Episode, PrefixForNumber}},
-      {"Episódio",             {Episode, PrefixForNumber}},
-      {"Capitulo",             {Episode, PrefixForNumber}},
-      {"Folge",                {Episode, PrefixForNumber}},
+      // Episode
+      {
+        Episode, {
+          {"Ep", PrefixForNumber},
+          {"Eps", PrefixForNumber},
+          {"Episode", PrefixForNumber},
+          {"Episodes", PrefixForNumber},
+          {"Episodio", PrefixForNumber},
+          {"Episódio", PrefixForNumber},
+          {"Capitulo", PrefixForNumber},
+          {"Folge", PrefixForNumber},
+        }
+      },
 
       // Episode type
-      {"OP",                   {EpisodeType, Ambiguous | PrefixForNumber}},  // e.g. "takt op.Destiny", "My Unique Skill Makes Me OP even at Level 1"
-      {"Opening",              {EpisodeType, Ambiguous}},                    // e.g. "Pool Opening"
-      {"ED",                   {EpisodeType, Ambiguous | PrefixForNumber}},  // e.g. "s.CRY.ed"
-      {"Ending",               {EpisodeType, Ambiguous}},                    // e.g. "Happy Ending", "True Ending"
-      {"NCED",                 {EpisodeType, PrefixForNumber}},
-      {"NCOP",                 {EpisodeType, PrefixForNumber}},
-      {"Preview",              {EpisodeType, Ambiguous}},
-      {"PV",                   {EpisodeType, Ambiguous | PrefixForNumber}},
+      {
+        EpisodeType, {
+          {"OP", Ambiguous | PrefixForNumber},  // e.g. "takt op.Destiny", "My Unique Skill Makes Me OP even at Level 1"
+          {"Opening", Ambiguous},               // e.g. "Pool Opening"
+          {"NCOP", PrefixForNumber},
+          {"ED", Ambiguous | PrefixForNumber},  // e.g. "s.CRY.ed"
+          {"Ending", Ambiguous},                // e.g. "Happy Ending", "True Ending"
+          {"NCED", PrefixForNumber},
+          {"Preview", Ambiguous},
+          {"PV", Ambiguous | PrefixForNumber},
+        }
+      },
 
       // Language
-      {"CHS",                  {Language}},  // Chinese Simplified
-      {"CHT",                  {Language}},  // Chinese Traditional
-      {"ENG",                  {Language}},
-      {"English",              {Language}},
-      {"ESP",                  {Language, Ambiguous}},  // e.g. "Tokyo ESP"
-      {"Espanol",              {Language}},
-      {"Spanish",              {Language}},
-      {"ITA",                  {Language, Ambiguous}},  // e.g. "Bokura ga Ita"
-      {"JAP",                  {Language}},
-      {"JPN",                  {Language}},
-      {"PT-BR",                {Language}},
-      {"VOSTFR",               {Language}},
+      {
+        Language, {
+          {"CHS"},  // Chinese Simplified
+          {"CHT"},  // Chinese Traditional
+          {"ENG"},
+          {"English"},
+          {"ESP", Ambiguous},  // e.g. "Tokyo ESP"
+          {"Espanol"},
+          {"Spanish"},
+          {"ITA", Ambiguous},  // e.g. "Bokura ga Ita"
+          {"JAP"},
+          {"JPN"},
+          {"PT-BR"},
+          {"VOSTFR"},
+        }
+      },
 
       // Other
-      {"Remaster",             {Other}},
-      {"Remastered",           {Other}},
-      {"Uncensored",           {Other}},
-      {"Uncut",                {Other}},
-      {"TS",                   {Other}},
-      {"VFR",                  {Other}},
-      {"Widescreen",           {Other}},
-      {"WS",                   {Other}},
+      {
+        Other, {
+          {"Remaster"},
+          {"Remastered"},
+          {"Uncensored"},
+          {"Uncut"},
+          {"TS"},
+          {"VFR"},
+          {"Widescreen"},
+          {"WS"},
+        }
+      },
 
       // Release group
-      {"THORA",                {ReleaseGroup}},  // special case because usually placed at the end
+      {
+        ReleaseGroup, {
+          {"THORA"},  // special case because usually placed at the end
+        }
+      },
 
       // Release information
-      {"Batch",                {ReleaseInformation}},
-      {"Complete",             {ReleaseInformation}},
-      {"End",                  {ReleaseInformation, Ambiguous}},  // e.g. "The End of Evangelion"
-      {"Final",                {ReleaseInformation, Ambiguous}},  // e.g. "Final Approach"
-      {"Patch",                {ReleaseInformation}},
-      {"Remux",                {ReleaseInformation}},
+      {
+        ReleaseInformation, {
+          {"Batch"},
+          {"Complete"},
+          {"End", Ambiguous},    // e.g. "The End of Evangelion"
+          {"Final", Ambiguous},  // e.g. "Final Approach"
+          {"Patch"},
+          {"Remux"},
+        }
+      },
 
       // Release version
-      {"v0",                   {ReleaseVersion}},
-      {"v1",                   {ReleaseVersion}},
-      {"v2",                   {ReleaseVersion}},
-      {"v3",                   {ReleaseVersion}},
-      {"v4",                   {ReleaseVersion}},
+      {
+        ReleaseVersion, {
+          {"v0"},
+          {"v1"},
+          {"v2"},
+          {"v3"},
+          {"v4"},
+        }
+      },
 
       // Season
       // Usually preceded or followed by a number (e.g. `2nd Season` or `Season 2`).
-      {"Season",               {Season, Ambiguous}},
-      {"Saison",               {Season, Ambiguous}},
+      {
+        Season, {
+          {"Season", Ambiguous},
+          {"Saison", Ambiguous},
+        }
+      },
 
       // Source
-      //
-      // Blu-ray
-      {"BD",                   {Source, PrefixForOther}},
-      {"BDRip",                {Source}},
-      {"BluRay",               {Source}},
-      {"Blu ray",              {Source}},
-      // DVD
-      {"DVD",                  {Source}},
-      {"DVD5",                 {Source}},
-      {"DVD9",                 {Source}},
-      {"DVDISO",               {Source}},
-      {"DVDRip",               {Source}},
-      {"DVD Rip",              {Source}},
-      {"R2DVD",                {Source}},
-      {"R2J",                  {Source}},
-      {"R2JDVD",               {Source}},
-      {"R2JDVDRip",            {Source}},
-      // TV
-      {"HDTV",                 {Source}},
-      {"HDTVRip",              {Source}},
-      {"TVRip",                {Source}},
-      {"TV Rip",               {Source}},
-      // Web
-      {"Web",                  {Source, Ambiguous}},
-      {"Webcast",              {Source}},
-      {"WebDL",                {Source}},
-      {"Web DL",               {Source}},
-      {"WebRip",               {Source}},
-      {"ADN",                  {Source}},  // Animation Digital Network
-      {"AMZN",                 {Source}},  // Amazon Prime
-      {"CR",                   {Source}},  // Crunchyroll
-      {"Crunchyroll",          {Source}},
-      {"DSNP",                 {Source}},  // Disney+
-      {"Funi",                 {Source}},  // Funimation
-      {"Funimation",           {Source}},
-      {"HIDI",                 {Source}},  // Hidive
-      {"Hidive",               {Source}},
-      {"Hulu",                 {Source}},
-      {"Netflix",              {Source}},
-      {"NF",                   {Source}},  // Netflix
-      {"VRV",                  {Source}},
-      {"YouTube",              {Source}},
+      {
+        Source, {
+          {"BD", PrefixForOther},
+          {"BDRip"},
+          {"BluRay"},
+          {"Blu ray"},
+          {"DVD"},
+          {"DVD5"},
+          {"DVD9"},
+          {"DVDISO"},
+          {"DVDRip"},
+          {"DVD Rip"},
+          {"R2DVD"},
+          {"R2J"},
+          {"R2JDVD"},
+          {"R2JDVDRip"},
+          {"HDTV"},
+          {"HDTVRip"},
+          {"TVRip"},
+          {"TV Rip"},
+          {"Web", Ambiguous},
+          {"Webcast"},
+          {"WebDL"},
+          {"Web DL"},
+          {"WebRip"},
+          {"ADN"},          // Animation Digital Network
+          {"AMZN"},         // Amazon Prime
+          {"CR"},           // Crunchyroll
+          {"Crunchyroll"},
+          {"DSNP"},         // Disney+
+          {"Funi"},         // Funimation
+          {"Funimation"},
+          {"HIDI"},         // Hidive
+          {"Hidive"},
+          {"Hulu"},
+          {"Netflix"},
+          {"NF"},           // Netflix
+          {"VRV"},
+          {"YouTube"},
+        }
+      },
 
       // Subtitles
-      {"ASS",                  {Subtitles}},
-      {"BIG5",                 {Subtitles}},
-      {"Hardsub",              {Subtitles}},
-      {"Hardsubs",             {Subtitles}},
-      {"RAW",                  {Subtitles}},
-      {"Softsub",              {Subtitles}},
-      {"Softsubs",             {Subtitles}},
-      {"Sub",                  {Subtitles}},
-      {"Subbed",               {Subtitles}},
-      {"Subtitled",            {Subtitles}},
-      {"Multisub",             {Subtitles}},
-      {"Multi Sub",            {Subtitles}},
-      {"Multi Subs",           {Subtitles}},
-      {"Multiple Subtitle",    {Subtitles}},
-      {"EngSub",               {Subtitles}},
-      {"EngSubs",              {Subtitles}},
-      {"GerSub",               {Subtitles}},
+      {
+        Subtitles, {
+          {"ASS"},
+          {"BIG5"},
+          {"Hardsub"},
+          {"Hardsubs"},
+          {"RAW"},
+          {"Softsub"},
+          {"Softsubs"},
+          {"Sub"},
+          {"Subbed"},
+          {"Subtitled"},
+          {"Multisub"},
+          {"Multi Sub"},
+          {"Multi Subs"},
+          {"Multiple Subtitle"},
+          {"EngSub"},
+          {"EngSubs"},
+          {"GerSub"},
+        }
+      },
 
       // Type
-      {"TV",                   {Type, Ambiguous}},
-      {"Movie",                {Type, Ambiguous}},
-      {"Gekijouban",           {Type, Ambiguous}},
-      {"OAD",                  {Type, Ambiguous | PrefixForNumber}},
-      {"OAV",                  {Type, Ambiguous | PrefixForNumber}},
-      {"ONA",                  {Type, Ambiguous | PrefixForNumber}},
-      {"OVA",                  {Type, Ambiguous | PrefixForNumber}},
-      {"SP",                   {Type, Ambiguous | PrefixForNumber}},  // e.g. "Yumeiro Patissiere SP Professional"
-      {"Special",              {Type, Ambiguous}},                    // e.g. "Special A"
-      {"Specials",             {Type, Ambiguous}},
+      {
+        Type, {
+          {"TV", Ambiguous},
+          {"Movie", Ambiguous},
+          {"Gekijouban", Ambiguous},
+          {"OAD", Ambiguous | PrefixForNumber},
+          {"OAV", Ambiguous | PrefixForNumber},
+          {"OVA", Ambiguous | PrefixForNumber},
+          {"ONA", Ambiguous | PrefixForNumber},
+          {"SP", Ambiguous | PrefixForNumber},   // e.g. "Yumeiro Patissiere SP Professional"
+          {"Special", Ambiguous},                // e.g. "Special A"
+          {"Specials", Ambiguous},
+        }
+      },
 
       // Video
-      //
-      // Color depth
-      {"8bit",                 {VideoColorDepth}},
-      {"8bits",                {VideoColorDepth}},
-      {"8 bit",                {VideoColorDepth}},
-      {"8 bits",               {VideoColorDepth}},
-      {"10bit",                {VideoColorDepth}},
-      {"10bits",               {VideoColorDepth}},
-      {"10 bit",               {VideoColorDepth}},
-      {"10 bits",              {VideoColorDepth}},
-      // Codec
-      {"AV1",                  {VideoCodec}},
-      {"AVC",                  {VideoCodec}},
-      {"DivX",                 {VideoCodec}},
-      {"DivX5",                {VideoCodec}},
-      {"DivX6",                {VideoCodec}},
-      {"H.264",                {VideoCodec}},
-      {"H.265",                {VideoCodec}},
-      {"X.264",                {VideoCodec}},
-      {"H264",                 {VideoCodec}},
-      {"H265",                 {VideoCodec}},
-      {"X264",                 {VideoCodec}},
-      {"X265",                 {VideoCodec}},
-      {"HEVC",                 {VideoCodec}},
-      {"HEVC2",                {VideoCodec}},
-      {"Xvid",                 {VideoCodec}},
-      // Dynamic range
-      {"HDR",                  {VideoDynamicRange}},
-      {"HDR10",                {VideoDynamicRange}},
-      {"DV",                   {VideoDynamicRange}},
-      {"Dolby Vision",         {VideoDynamicRange}},
-      // Format
-      {"AVI",                  {VideoFormat}},
-      {"RMVB",                 {VideoFormat}},
-      {"WMV",                  {VideoFormat}},
-      {"WMV3",                 {VideoFormat}},
-      {"WMV9",                 {VideoFormat}},
-      // Frame rate
-      {"23.976FPS",            {VideoFrameRate}},
-      {"24FPS",                {VideoFrameRate}},
-      {"29.97FPS",             {VideoFrameRate}},
-      {"30FPS",                {VideoFrameRate}},
-      {"60FPS",                {VideoFrameRate}},
-      {"120FPS",               {VideoFrameRate}},
-      // Profile
-      {"Hi10",                 {VideoProfile}},
-      {"Hi10p",                {VideoProfile}},
-      {"Hi444",                {VideoProfile}},
-      {"Hi444P",               {VideoProfile}},
-      {"Hi444PP",              {VideoProfile}},
-      // Quality
-      {"HD",                   {VideoQuality}},
-      {"SD",                   {VideoQuality}},
-      {"HQ",                   {VideoQuality}},
-      {"LQ",                   {VideoQuality}},
-      // Resolution
-      {"1080p",                {VideoResolution, Subword}},
-      {"1440p",                {VideoResolution, Subword}},
-      {"2160p",                {VideoResolution, Subword}},
-      {"4K",                   {VideoResolution}},
+      {
+        VideoColorDepth, {
+          {"8bit"},
+          {"8bits"},
+          {"8 bit"},
+          {"8 bits"},
+          {"10bit"},
+          {"10bits"},
+          {"10 bit"},
+          {"10 bits"},
+        }
+      },
+      {
+        VideoCodec, {
+          {"AV1"},
+          {"DivX"},
+          {"DivX5"},
+          {"DivX6"},
+          {"AVC"},
+          {"H.264"},
+          {"H264"},
+          {"X.264"},
+          {"X264"},
+          {"H.265"},
+          {"H265"},
+          {"HEVC"},
+          {"HEVC2"},
+          {"X265"},
+          {"Xvid"},
+        }
+      },
+      {
+        VideoDynamicRange, {
+          {"HDR"},
+          {"HDR10"},
+          {"Dolby Vision"},
+          {"DV"},
+        }
+      },
+      {
+        VideoFormat, {
+          {"AVI"},
+          {"RMVB"},
+          {"WMV"},
+          {"WMV3"},
+          {"WMV9"},
+        }
+      },
+      {
+        VideoFrameRate, {
+          {"23.976FPS"},
+          {"24FPS"},
+          {"29.97FPS"},
+          {"30FPS"},
+          {"60FPS"},
+          {"120FPS"},
+        }
+      },
+      {
+        VideoProfile, {
+          {"Hi10"},
+          {"Hi10p"},
+          {"Hi444"},
+          {"Hi444P"},
+          {"Hi444PP"},
+        }
+      },
+      {
+        VideoQuality, {
+          {"HD"},
+          {"SD"},
+          {"HQ"},
+          {"LQ"},
+        }
+      },
+      {
+        VideoResolution, {
+          {"1080p", Subword},
+          {"1440p", Subword},
+          {"2160p", Subword},
+          {"4K"},
+        }
+      },
 
-      // Volume prefix
-      {"Vol",                  {Volume, PrefixForNumber}},
-      {"Volume",               {Volume, PrefixForNumber}},
+      // Volume
+      {
+        Volume, {
+          {"Vol", PrefixForNumber},
+          {"Volume", PrefixForNumber},
+        }
+      },
   };
   // clang-format on
 
@@ -369,15 +454,21 @@ inline keyword_map_t make_keywords() noexcept {
     return key;
   };
 
-  for (const auto& [key, keyword] : keywords) {
-    if (key.contains(' ')) {
-      keywords.emplace(variant(key, '_'), keyword);
-      keywords.emplace(variant(key, '.'), keyword);
-      keywords.emplace(variant(key, '-'), keyword);
+  keyword_map_t keyword_map;
+
+  for (const auto& [kind, entries] : keywords) {
+    for (const auto& [value, flags] : entries) {
+      Keyword keyword{kind, flags};
+      keyword_map.emplace(std::string{value}, keyword);
+      if (value.contains(' ')) {
+        for (const auto delimiter : {'_', '.', '-'}) {
+          keyword_map.emplace(variant(std::string{value}, delimiter), keyword);
+        }
+      }
     }
   }
 
-  return keywords;
+  return keyword_map;
 };
 
 inline auto keywords = make_keywords();
