@@ -252,7 +252,10 @@
             "source": "BD",
             "video_term": "h264",
             "video_resolution": "720p",
-            "audio_term": "TrueHD5.1",
+            "audio_term": [
+                "TrueHD",
+                "5.1"
+            ],
             "file_checksum": "9F311DAB",
             "file_extension": "mkv"
         }
@@ -1221,7 +1224,8 @@
             "video_term": "AVC",
             "audio_term": [
                 "AACx2",
-                "5.1"
+                "5.1",
+                "2.0"
             ],
             "file_extension": "mp4"
         }
@@ -1254,7 +1258,9 @@
             "video_term": "AVC",
             "audio_term": [
                 "AACx3",
-                "5.1"
+                "5.1",
+                "2.0",
+                "2.0"
             ],
             "file_extension": "mp4"
         }
@@ -1759,7 +1765,10 @@
             "episode": "12",
             "source": "DVD",
             "video_term": "H.264",
-            "audio_term": "DD2.0",
+            "audio_term": [
+                "DD",
+                "2.0"
+            ],
             "file_checksum": "CB2B37F1",
             "file_extension": "mkv"
         }
@@ -2600,7 +2609,10 @@
             "episode_title": "I Am...",
             "video_resolution": "1080p",
             "source": "BluRay",
-            "audio_term": "DD2.0",
+            "audio_term": [
+                "DD",
+                "2.0"
+            ],
             "video_term": "x265",
             "release_group": "ExCaLiBuR",
             "file_extension": "mkv"
@@ -2616,7 +2628,10 @@
             "episode_title": "A Fencing Tournament of Intrigue & Bloodshed",
             "video_resolution": "1080p",
             "source": "BluRay",
-            "audio_term": "DD2.0",
+            "audio_term": [
+                "DD",
+                "2.0"
+            ],
             "video_term": "x265",
             "release_group": "ExCaLiBuR",
             "file_extension": "mkv"
@@ -2783,7 +2798,10 @@
             "video_resolution": "1080p",
             "source": "WEB-DL",
             "language": "JPN",
-            "audio_term": "AAC2.0",
+            "audio_term": [
+                "AAC",
+                "2.0"
+            ],
             "video_term": "H.265",
             "release_group": "ToonsHub",
             "file_extension": "mkv"
@@ -2830,6 +2848,10 @@
                 "x264"
             ],
             "source": "BluRay",
+            "audio_term": [
+                "FLAC",
+                "5.1"
+            ],
             "release_group": "CTR",
             "file_checksum": "32FD04E5",
             "file_extension": "mkv"
@@ -2850,7 +2872,10 @@
                 "x265",
                 "10-bit"
             ],
-            "audio_term": "E-AC3",
+            "audio_term": [
+                "E-AC3",
+                "2.0"
+            ],
             "file_checksum": "3B0015AF",
             "file_extension": "mkv"
         }

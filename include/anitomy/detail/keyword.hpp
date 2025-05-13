@@ -89,20 +89,19 @@ inline keyword_map_t make_keywords() noexcept {
       // Audio
       //
       // Channels
+      {"2.0",                  {AudioChannels, Ambiguous}},  // e.g. "Evangelion 2.0"
       {"2.0ch",                {AudioChannels}},
       {"2ch",                  {AudioChannels}},
       {"5.1",                  {AudioChannels}},
       {"5.1ch",                {AudioChannels}},
       {"7.1",                  {AudioChannels}},
       {"7.1ch",                {AudioChannels}},
-      {"DTS",                  {AudioChannels}},
+      {"DTS",                  {AudioChannels, PrefixForNumber}},
       {"DTS-ES",               {AudioChannels}},
-      {"DTS5.1",               {AudioChannels}},
       {"Dolby TrueHD",         {AudioChannels}},
-      {"TrueHD",               {AudioChannels}},
-      {"TrueHD5.1",            {AudioChannels}},
+      {"TrueHD",               {AudioChannels, PrefixForNumber}},
       // Codec
-      {"AAC",                  {AudioCodec}},
+      {"AAC",                  {AudioCodec, PrefixForNumber}},
       {"AACX2",                {AudioCodec}},
       {"AACX3",                {AudioCodec}},
       {"AACX4",                {AudioCodec}},
@@ -110,7 +109,7 @@ inline keyword_map_t make_keywords() noexcept {
       {"EAC3",                 {AudioCodec}},
       {"E-AC-3",               {AudioCodec}},
       {"E-AC3",                {AudioCodec}},
-      {"FLAC",                 {AudioCodec}},
+      {"FLAC",                 {AudioCodec, PrefixForNumber}},
       {"FLACX2",               {AudioCodec}},
       {"FLACX3",               {AudioCodec}},
       {"FLACX4",               {AudioCodec}},
@@ -119,6 +118,8 @@ inline keyword_map_t make_keywords() noexcept {
       {"OGG",                  {AudioCodec}},
       {"Vorbis",               {AudioCodec}},
       {"Atmos",                {AudioCodec}},
+      {"DD",                   {AudioCodec, PrefixForNumber}},
+      {"DDP",                  {AudioCodec, PrefixForNumber}},
       {"Dolby Atmos",          {AudioCodec}},
       {"Opus",                 {AudioCodec, Ambiguous}},  // e.g. "Opus.COLORs"
       // Language
