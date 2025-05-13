@@ -115,8 +115,9 @@ private:
     return view_.front();
   }
 
-  [[nodiscard]] constexpr std::u32string_view peek(const size_t n) const noexcept {
-    return view_.substr(0, n);
+  [[nodiscard]] constexpr std::u32string_view peek(
+      const size_t offset, const size_t n = std::u32string_view::npos) const noexcept {
+    return view_.substr(offset, n);
   }
 
   [[nodiscard]] constexpr std::string take(const size_t n = 1) noexcept {
@@ -140,6 +141,16 @@ private:
       return std::ranges::find_if(keys, starts_with) != keys.end();
     };
 
+    static constexpr auto find_key = [](const std::u32string_view view) {
+      std::string key;
+      for (size_t n = 1; n <= view.size(); ++n) {
+        const auto prefix = unicode::utf32_to_utf8(view.substr(0, n));
+        if (keywords.contains(prefix)) key = prefix;
+        if (!has_candidates(prefix)) break;
+      }
+      return key;
+    };
+
     static constexpr auto is_keyword_boundary = [](const Keyword& keyword,
                                                    const std::u32string_view view) {
       if (keyword.is_subword()) return true;
@@ -147,23 +158,18 @@ private:
       const auto next = view.front();
       if (is_word_boundary(next)) return true;
       if (keyword.is_prefix_for_number()) return is_digit(next);
+      if (keyword.is_prefix_for_other()) return !find_key(view).empty();
       return false;
     };
 
-    std::string key;
-
-    for (size_t n = 1; n <= view_.size(); ++n) {
-      const auto prefix = unicode::utf32_to_utf8(peek(n));
-      if (keywords.contains(prefix)) key = prefix;
-      if (!has_candidates(prefix)) break;
-    }
+    const std::string key = find_key(view_);
 
     if (key.empty()) return {};
 
     const size_t n = key.size();
     const auto keyword = keywords[key];
 
-    if (!is_keyword_boundary(keyword, view_.substr(n))) return {};
+    if (!is_keyword_boundary(keyword, peek(n))) return {};
 
     return {take(n), keyword};
   }

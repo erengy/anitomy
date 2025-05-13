@@ -3025,5 +3025,21 @@
             "file_checksum": "94D7760F",
             "file_extension": "mkv"
         }
+    },
+    {
+        "input": "[DB] Made in Abyss [Dual Audio 10bit BD1080p][HEVC-x265]",
+        "mal_id": 34599,
+        "output": {
+            "release_group": "DB",
+            "title": "Made in Abyss",
+            "audio_term": "Dual Audio",
+            "video_term": [
+                "10bit",
+                "HEVC",
+                "x265"
+            ],
+            "source": "BD",
+            "video_resolution": "1080p"
+        }
     }
 ]

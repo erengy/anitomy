@@ -42,6 +42,7 @@ struct Keyword {
     Ambiguous = 1 << 0,
     Subword = 1 << 1,
     PrefixForNumber = 1 << 2,
+    PrefixForOther = 1 << 3,
   };
 
   KeywordKind kind;
@@ -57,6 +58,10 @@ struct Keyword {
 
   constexpr bool is_prefix_for_number() const noexcept {
     return has_flag(PrefixForNumber);
+  }
+
+  constexpr bool is_prefix_for_other() const noexcept {
+    return has_flag(PrefixForOther);
   }
 
 private:
@@ -101,7 +106,7 @@ inline keyword_map_t make_keywords() noexcept {
       {"Dolby TrueHD",         {AudioChannels}},
       {"TrueHD",               {AudioChannels, PrefixForNumber}},
       // Codec
-      {"AAC",                  {AudioCodec, PrefixForNumber}},
+      {"AAC",                  {AudioCodec, PrefixForOther}},
       {"AACX2",                {AudioCodec}},
       {"AACX3",                {AudioCodec}},
       {"AACX4",                {AudioCodec}},
@@ -118,7 +123,7 @@ inline keyword_map_t make_keywords() noexcept {
       {"OGG",                  {AudioCodec}},
       {"Vorbis",               {AudioCodec}},
       {"Atmos",                {AudioCodec}},
-      {"DD",                   {AudioCodec, PrefixForNumber}},
+      {"DD",                   {AudioCodec, PrefixForOther}},
       {"DDP",                  {AudioCodec, PrefixForNumber}},
       {"Dolby Atmos",          {AudioCodec}},
       {"Opus",                 {AudioCodec, Ambiguous}},  // e.g. "Opus.COLORs"
@@ -219,7 +224,7 @@ inline keyword_map_t make_keywords() noexcept {
       // Source
       //
       // Blu-ray
-      {"BD",                   {Source}},
+      {"BD",                   {Source, PrefixForOther}},
       {"BDRip",                {Source}},
       {"BluRay",               {Source}},
       {"Blu ray",              {Source}},
