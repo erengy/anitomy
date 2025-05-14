@@ -113,9 +113,9 @@ constexpr auto make_base_keywords() noexcept {
       {
         AudioCodec, {
           {"AAC", PrefixForOther},
-          {"AACX2"},
-          {"AACX3"},
-          {"AACX4"},
+          {"AACx2"},
+          {"AACx3"},
+          {"AACx4"},
           {"AC3"},
           {"EAC3"},
           {"E-AC-3"},
@@ -129,9 +129,9 @@ constexpr auto make_base_keywords() noexcept {
           {"DTS", PrefixForNumber},
           {"DTS-ES"},
           {"FLAC", PrefixForNumber},
-          {"FLACX2"},
-          {"FLACX3"},
-          {"FLACX4"},
+          {"FLACx2"},
+          {"FLACx3"},
+          {"FLACx4"},
           {"Lossless"},
           {"MP3"},
           {"Opus", Ambiguous},  // e.g. "Opus.COLORs"
