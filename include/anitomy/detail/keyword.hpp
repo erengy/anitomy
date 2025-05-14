@@ -164,12 +164,11 @@ constexpr auto make_base_keywords() noexcept {
       {
         Device, {
           {"Android", Ambiguous},  // e.g. "Dragon Ball Z: Super Android 13"
-          {"iPad3"},
-          {"iPhone5"},
+          {"iPad", PrefixForNumber},
+          {"iPhone", PrefixForNumber},
           {"iPod"},
-          {"PS3"},
-          {"Xbox"},
-          {"Xbox360"},
+          {"PS", PrefixForNumber},
+          {"Xbox", PrefixForNumber},
         }
       },
 
@@ -279,7 +278,7 @@ constexpr auto make_base_keywords() noexcept {
           {"BDRip"},
           {"BluRay"},
           {"Blu ray"},
-          {"DVD"},
+          {"DVD", PrefixForNumber},
           {"DVD5"},
           {"DVD9"},
           {"DVDISO"},
@@ -370,9 +369,7 @@ constexpr auto make_base_keywords() noexcept {
       {
         VideoCodec, {
           {"AV1"},
-          {"DivX"},
-          {"DivX5"},
-          {"DivX6"},
+          {"DivX", PrefixForNumber},
           {"AVC"},
           {"H.264"},
           {"H264"},
@@ -380,8 +377,7 @@ constexpr auto make_base_keywords() noexcept {
           {"X264"},
           {"H.265"},
           {"H265"},
-          {"HEVC"},
-          {"HEVC2"},
+          {"HEVC", PrefixForNumber},
           {"X265"},
           {"Xvid"},
         }

@@ -410,6 +410,7 @@
             "title": "R.O.D the TV",
             "type": "TV",
             "episode": "01",
+            "video_term": "divx",
             "file_extension": "mkv"
         }
     },
@@ -2012,7 +2013,7 @@
             "release_group": "FB",
             "title": "Crayon Shin-Chan Movie 2 The Secret of Buri Buri Kingdom",
             "type": "Movie",
-            "video_term": "DivX5",
+            "video_term": "DivX",
             "audio_term": "AC3",
             "year": "1994",
             "video_resolution": "852X480",
@@ -3040,6 +3041,22 @@
             ],
             "source": "BD",
             "video_resolution": "1080p"
+        }
+    },
+    {
+        "input": "[Cleo] Jigoku Shoujo | Hell Girl [Dual Audio 10bit DVD480p][HEVC-x265]",
+        "mal_id": 0,
+        "output": {
+            "release_group": "Cleo",
+            "title": "Jigoku Shoujo | Hell Girl",
+            "audio_term": "Dual Audio",
+            "video_term": [
+                "10bit",
+                "HEVC",
+                "x265"
+            ],
+            "source": "DVD",
+            "video_resolution": "480p"
         }
     }
 ]
