@@ -261,11 +261,11 @@
         }
     },
     {
-        "input": "[ValdikSS]_First_Squad_The_Morment_Of_Truth_[720x576_h264_dvdscr_eng_hardsub].mkv",
+        "input": "[ValdikSS]_First_Squad_The_Moment_Of_Truth_[720x576_h264_dvdscr_eng_hardsub].mkv",
         "mal_id": 5178,
         "output": {
             "release_group": "ValdikSS",
-            "title": "First Squad The Morment Of Truth",
+            "title": "First Squad The Moment Of Truth",
             "video_resolution": "720x576",
             "video_term": "h264",
             "language": "eng",
