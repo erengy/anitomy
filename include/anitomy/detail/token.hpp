@@ -3,6 +3,7 @@
 #include <optional>
 #include <string>
 
+#include <anitomy/detail/delimiter.hpp>
 #include <anitomy/detail/keyword.hpp>
 #include <anitomy/element.hpp>
 
@@ -46,13 +47,17 @@ constexpr bool is_bracket_token(const Token& token) noexcept {
   return is_open_bracket_token(token) || is_close_bracket_token(token);
 }
 
+constexpr bool is_dash_token(const Token& token) noexcept {
+  return token.kind == TokenKind::Delimiter && is_dash(token.value.front());
+}
+
 constexpr bool is_delimiter_token(const Token& token) noexcept {
   return token.kind == TokenKind::Delimiter;
 }
 
 constexpr bool is_not_delimiter_token(const Token& token) noexcept {
   return token.kind != TokenKind::Delimiter;
-};
+}
 
 constexpr bool is_keyword_token(const Token& token) noexcept {
   return token.kind == TokenKind::Keyword;

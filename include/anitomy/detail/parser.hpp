@@ -60,7 +60,7 @@ public:
 
     // Season
     if (options.parse_season) {
-      add_element(parse_season(tokens_));
+      add_elements(parse_season(tokens_));
     }
 
     // Episode

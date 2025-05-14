@@ -306,7 +306,8 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
     for (auto it = view.begin(); it != view.end(); ++it) {
       auto next_token =
           std::ranges::find_if(it.base().base(), tokens.end(), is_not_delimiter_token);
-      if (next_token != tokens.end() && is_numeric_token(*next_token)) {
+      if (next_token != tokens.end() && is_free_token(*next_token) &&
+          is_numeric_token(*next_token)) {
         add_element_from_token(ElementKind::Episode, *next_token);
         return elements;
       }

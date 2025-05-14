@@ -2698,6 +2698,7 @@
                 "03",
                 "04"
             ],
+            "type": "Specials",
             "source": "BD",
             "audio_term": [
                 "Dual Audio",
@@ -3057,6 +3058,79 @@
             ],
             "source": "DVD",
             "video_resolution": "480p"
+        }
+    },
+    {
+        "input": "[Sokudo] Mashle - S01-S02 v4 [1080p BD AV1][Dual Audio]",
+        "mal_id": 0,
+        "output": {
+            "release_group": "Sokudo",
+            "title": "Mashle",
+            "season": [
+                "01",
+                "02"
+            ],
+            "release_version": "4",
+            "video_resolution": "1080p",
+            "source": "BD",
+            "video_term": "AV1",
+            "audio_term": "Dual Audio"
+        }
+    },
+    {
+        "input": "[Sokudo] Dragon Ball S01-S03 001-068 [1080p BD AV1][dual audio]",
+        "mal_id": 0,
+        "output": {
+            "release_group": "Sokudo",
+            "title": "Dragon Ball",
+            "season": [
+                "01",
+                "03"
+            ],
+            "episode": [
+                "001",
+                "068"
+            ],
+            "video_resolution": "1080p",
+            "source": "BD",
+            "video_term": "AV1",
+            "audio_term": "dual audio"
+        }
+    },
+    {
+        "input": "[Trix] Kimetsu no Yaiba S01-05 [Dual Audio] [Multi Subs] (BD 720p AV1) - Demon Slayer VOSTFR (Batch)",
+        "mal_id": 0,
+        "output": {
+            "release_group": "Trix",
+            "title": "Kimetsu no Yaiba",
+            "season": [
+                "01",
+                "05"
+            ],
+            "audio_term": "Dual Audio",
+            "subtitles": "Multi Subs",
+            "source": "BD",
+            "video_resolution": "720p",
+            "video_term": "AV1",
+            "language": "VOSTFR",
+            "release_information": "Batch"
+        }
+    },
+    {
+        "input": "School Rumble Complete S01-S02 + OVA [576p] [x264] [Dual-Audio] [Eng-Subs]",
+        "mal_id": 0,
+        "output": {
+            "title": "School Rumble",
+            "release_information": "Complete",
+            "season": [
+                "01",
+                "02"
+            ],
+            "type": "OVA",
+            "video_resolution": "576p",
+            "video_term": "x264",
+            "audio_term": "Dual-Audio",
+            "language": "Eng"
         }
     }
 ]
