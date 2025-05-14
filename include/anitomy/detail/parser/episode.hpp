@@ -372,6 +372,9 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
       if (next_token != tokens.end()) {
         if (is_version_number(next_token)) continue;
       }
+      if (prev_token != tokens.rend() && next_token != tokens.end()) {
+        if (is_free_token(*prev_token) && is_free_token(*next_token)) continue;
+      }
 
       add_element_from_token(ElementKind::Episode, *token);
       return elements;
