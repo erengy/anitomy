@@ -360,6 +360,8 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
     auto view = tokens | reverse | filter(is_free_token) | filter(is_numeric_token);
 
     for (auto token = view.begin(); token != view.end(); ++token) {
+      if (token->is_enclosed) continue;
+
       const auto prev_token =
           find_next_token(token.base().base(), tokens.rend(), is_not_delimiter_token);
       const auto next_token =
