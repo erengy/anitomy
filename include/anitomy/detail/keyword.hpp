@@ -85,7 +85,7 @@ struct KeywordEqual {
 
 using keyword_map_t = std::unordered_map<std::string, Keyword, KeywordHash, KeywordEqual>;
 
-inline keyword_map_t make_keywords() noexcept {
+constexpr auto make_base_keywords() noexcept {
   using enum KeywordKind;
   using enum Keyword::Flags;
 
@@ -97,7 +97,7 @@ inline keyword_map_t make_keywords() noexcept {
   using keywords_t = std::vector<std::pair<KeywordKind, std::vector<Entry>>>;
 
   // clang-format off
-  const keywords_t keywords{
+  return keywords_t{
       // Audio
       {
         AudioChannels, {
@@ -448,27 +448,31 @@ inline keyword_map_t make_keywords() noexcept {
       },
   };
   // clang-format on
+}
+
+inline keyword_map_t make_keywords() noexcept {
+  const auto base_keywords = make_base_keywords();
 
   constexpr auto variant = [](std::string key, const char delimiter) {
     std::ranges::replace(key, ' ', delimiter);
     return key;
   };
 
-  keyword_map_t keyword_map;
+  keyword_map_t keywords;
 
-  for (const auto& [kind, entries] : keywords) {
+  for (const auto& [kind, entries] : base_keywords) {
     for (const auto& [value, flags] : entries) {
       Keyword keyword{kind, flags};
-      keyword_map.emplace(std::string{value}, keyword);
+      keywords.emplace(std::string{value}, keyword);
       if (value.contains(' ')) {
         for (const auto delimiter : {'_', '.', '-'}) {
-          keyword_map.emplace(variant(std::string{value}, delimiter), keyword);
+          keywords.emplace(variant(std::string{value}, delimiter), keyword);
         }
       }
     }
   }
 
-  return keyword_map;
+  return keywords;
 };
 
 inline auto keywords = make_keywords();
