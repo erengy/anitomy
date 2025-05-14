@@ -214,12 +214,14 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
 
     auto type_token = std::ranges::find_if(tokens, is_type_keyword);
 
-    // Check next token for a number
-    if (auto token = find_next_token(tokens, type_token, is_not_delimiter_token);
-        token != tokens.end()) {
-      if (is_free_token(*token) && is_numeric_token(*token)) {
-        add_element_from_token(ElementKind::Episode, *token);
-        return elements;
+    if (type_token != tokens.end() && type_token->value != "Movie") {
+      // Check next token for a number
+      if (auto token = find_next_token(tokens, type_token, is_not_delimiter_token);
+          token != tokens.end()) {
+        if (is_free_token(*token) && is_numeric_token(*token)) {
+          add_element_from_token(ElementKind::Episode, *token);
+          return elements;
+        }
       }
     }
   }
