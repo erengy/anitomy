@@ -15,17 +15,6 @@ namespace anitomy::detail {
 inline std::vector<Element> parse_volume(std::span<Token> tokens) noexcept {
   std::vector<Element> elements;
 
-  const auto add_element = [&elements](ElementKind kind, std::string_view value, size_t position) {
-    elements.emplace_back(kind, std::string{value}, position);
-  };
-
-  const auto add_element_from_token = [&elements](ElementKind kind, Token& token,
-                                                  std::string_view value = {},
-                                                  size_t position = std::string::npos) {
-    token.element_kind = kind;
-    elements.emplace_back(element_from_token(kind, token, value, position));
-  };
-
   static constexpr auto is_volume_keyword = [](const Token& token) {
     return token.keyword && token.keyword->kind == KeywordKind::Volume;
   };
@@ -48,10 +37,11 @@ inline std::vector<Element> parse_volume(std::span<Token> tokens) noexcept {
 
       if (is_single_volume(*token, matches)) {
         volume_token->element_kind = ElementKind::Volume;
-        add_element_from_token(ElementKind::Volume, *token, matches[1].str());
+        token->element_kind = ElementKind::Volume;
+        elements.emplace_back(element_from_token(ElementKind::Volume, *token, matches[1].str()));
         if (matches[2].matched) {
-          add_element(ElementKind::ReleaseVersion, matches[2].str(),
-                      token->position + matches.position(2));
+          elements.emplace_back(ElementKind::ReleaseVersion, matches[2].str(),
+                                token->position + matches.position(2));
         }
       }
     }
