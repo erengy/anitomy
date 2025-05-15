@@ -3046,7 +3046,7 @@
     },
     {
         "input": "[Cleo] Jigoku Shoujo | Hell Girl [Dual Audio 10bit DVD480p][HEVC-x265]",
-        "mal_id": 0,
+        "mal_id": 228,
         "output": {
             "release_group": "Cleo",
             "title": "Jigoku Shoujo | Hell Girl",
@@ -3062,7 +3062,10 @@
     },
     {
         "input": "[Sokudo] Mashle - S01-S02 v4 [1080p BD AV1][Dual Audio]",
-        "mal_id": 0,
+        "mal_id": [
+            52211,
+            55813
+        ],
         "output": {
             "release_group": "Sokudo",
             "title": "Mashle",
@@ -3079,7 +3082,7 @@
     },
     {
         "input": "[Sokudo] Dragon Ball S01-S03 001-068 [1080p BD AV1][dual audio]",
-        "mal_id": 0,
+        "mal_id": 223,
         "output": {
             "release_group": "Sokudo",
             "title": "Dragon Ball",
@@ -3099,7 +3102,13 @@
     },
     {
         "input": "[Trix] Kimetsu no Yaiba S01-05 [Dual Audio] [Multi Subs] (BD 720p AV1) - Demon Slayer VOSTFR (Batch)",
-        "mal_id": 0,
+        "mal_id": [
+            38000,
+            49926,
+            47778,
+            51019,
+            55701
+        ],
         "output": {
             "release_group": "Trix",
             "title": "Kimetsu no Yaiba",
@@ -3118,7 +3127,11 @@
     },
     {
         "input": "School Rumble Complete S01-S02 + OVA [576p] [x264] [Dual-Audio] [Eng-Subs]",
-        "mal_id": 0,
+        "mal_id": [
+            24,
+            846,
+            4015
+        ],
         "output": {
             "title": "School Rumble",
             "release_information": "Complete",
