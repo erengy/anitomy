@@ -7,10 +7,10 @@
 #include <span>
 #include <string>
 #include <string_view>
+#include <tuple>
 #include <vector>
 
 #include <anitomy/detail/container.hpp>
-#include <anitomy/detail/delimiter.hpp>
 #include <anitomy/detail/element.hpp>
 #include <anitomy/detail/token.hpp>
 #include <anitomy/detail/util.hpp>
@@ -23,10 +23,6 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
 
   std::vector<Element> elements;
 
-  const auto add_element = [&elements](ElementKind kind, std::string_view value, size_t position) {
-    elements.emplace_back(kind, std::string{value}, position);
-  };
-
   const auto add_element_from_token = [&elements](ElementKind kind, Token& token,
                                                   std::string_view value = {},
                                                   size_t position = std::string::npos) {
@@ -34,56 +30,108 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
     elements.emplace_back(element_from_token(kind, token, value, position));
   };
 
-  // Episode prefix (e.g. `E1`, `EP1`, `Episode 1`)
   {
+    static constexpr auto is_episode_token = [](const Token& token, std::smatch& matches) {
+      static const std::regex pattern{
+          "(?:S(\\d{1,2})|(\\d{1,2})x)?"  // season
+          "[E#]?(\\d{1,4})"               // episode
+          "(?:[vV](\\d))?"                // version
+      };
+      return std::regex_match(token.value, matches, pattern);
+    };
+
+    static constexpr auto parse_matches = [](const std::smatch& matches, Token& token,
+                                             std::vector<Element>& elements) {
+      if (matches[1].matched) {
+        elements.emplace_back(ElementKind::Season, matches.str(1),
+                              token.position + matches.position(1));
+      } else if (matches[2].matched) {
+        elements.emplace_back(ElementKind::Season, matches.str(2),
+                              token.position + matches.position(2));
+      }
+
+      token.element_kind = ElementKind::Episode;
+      elements.emplace_back(element_from_token(ElementKind::Episode, token, matches.str(3),
+                                               token.position + matches.position(3)));
+
+      if (matches[4].matched) {
+        elements.emplace_back(ElementKind::ReleaseVersion, matches.str(4),
+                              token.position + matches.position(4));
+      }
+    };
+
     static constexpr auto is_episode_keyword = [](const Token& token) {
       return token.keyword && token.keyword->kind == KeywordKind::Episode;
     };
 
-    auto episode_token = std::ranges::find_if(tokens, is_episode_keyword);
-
-    // Check next token for a number
-    if (auto token = find_next_token(tokens, episode_token, is_not_delimiter_token);
-        token != tokens.end()) {
-      if (is_free_token(*token) && is_numeric_token(*token)) {
-        add_element_from_token(ElementKind::Episode, *token);
-        episode_token->element_kind = ElementKind::Episode;
-        return elements;
-      }
-    }
-  }
-  {
-    static constexpr auto is_episode_prefix = [](const Token& token, std::smatch& matches) {
-      static const std::regex pattern{R"([Ee](?:[Pp][Ss]?)?(\d{1,4})(?:[vV](\d))?)"};
-      return std::regex_match(token.value, matches, pattern);
+    static constexpr auto is_type_keyword = [](const Token& token) {
+      return token.keyword && (token.keyword->kind == KeywordKind::Type ||
+                               token.keyword->kind == KeywordKind::EpisodeType);
     };
 
-    std::smatch matches;
+    static constexpr auto is_episode_delimiter = [](const Token& token) {
+      static const std::set<char> delimiters{'-', '~', '&', '+'};
+      return is_delimiter_token(token) && delimiters.contains(token.value.front());
+    };
 
-    for (auto& token : tokens | filter(is_free_token)) {
-      if (is_episode_prefix(token, matches)) {
-        add_element_from_token(ElementKind::Episode, token, matches[1].str(),
-                               token.position + matches.position(1));
-        if (matches[2].matched) {
-          add_element(ElementKind::ReleaseVersion, matches[2].str(),
-                      token.position + matches.position(2));
-        }
-        return elements;
+    static constexpr auto starts_with_episode_or_type_keyword = [](std::span<Token>& tokens,
+                                                                   std::span<Token>::iterator& it) {
+      if (it == tokens.end()) return false;
+      if (is_episode_keyword(*it)) return true;
+      if (is_type_keyword(*it)) return it->value != "Movie";
+      return false;
+    };
+
+    static constexpr auto is_episode_range = [](std::span<Token>& tokens,
+                                                std::span<Token>::iterator& it,
+                                                std::pair<std::smatch, std::smatch>& matches) {
+      if (it == tokens.end()) return false;
+      if (!is_episode_delimiter(*it)) return false;
+      if (++it == tokens.end()) return false;
+      if (!is_episode_token(*it, matches.second)) return false;
+      if (to_int(matches.first.str(3)) >= to_int(matches.second.str(3))) {
+        return false;  // avoid matching `009-1`, `5-2`, etc.
+      }
+      return true;
+    };
+
+    auto view = tokens | filter(is_free_token);
+
+    for (auto token = view.begin(); token != view.end(); ++token) {
+      std::pair<std::smatch, std::smatch> matches;
+
+      if (!is_episode_token(*token, matches.first)) continue;
+
+      auto prev_token = find_prev_token(tokens, token.base(), is_not_delimiter_token);
+      auto next_token = std::next(token.base());
+
+      // A numeric token (e.g. `1`) is valid only if preceded by a keyword
+      // (e.g. `Episode 1`, `OVA1`) or is part of a range (e.g. `1-12`).
+      bool valid = !is_numeric_token(*token);
+      valid = starts_with_episode_or_type_keyword(tokens, prev_token) || valid;
+      valid = is_episode_range(tokens, next_token, matches) || valid;
+      if (!valid) continue;
+
+      parse_matches(matches.first, *token, elements);
+      if (!matches.second.empty()) {
+        parse_matches(matches.second, *next_token, elements);
       }
     }
+
+    if (!elements.empty()) return elements;
   }
 
-  // Number comes before another number (e.g. `8 & 10`, `1 ~ 12`, `01 of 24`)
+  // Separated episodes (e.g. `8 & 10`, `1 ~ 12`, `01 of 24`)
   {
+    static constexpr auto is_separator = [](const Token& token) {
+      return token.value == "&" || token.value == "~" || token.value == "of";
+    };
+
     auto view = tokens | filter(is_free_token) | filter(is_numeric_token);
 
     for (auto it = view.begin(); it != view.end(); ++it) {
-      auto token =
-          std::ranges::find_if(std::next(it.base().base()), tokens.end(), [](const Token& token) {
-            return is_not_delimiter_token(token) || token.value == "&" || token.value == "~";
-          });
+      auto token = std::ranges::find_if(std::next(it.base().base()), tokens.end(), is_separator);
       if (token == tokens.end()) continue;
-      if (token->value != "&" && token->value != "~" && token->value != "of") continue;
 
       auto next_token = find_next_token(tokens, token, is_not_delimiter_token);
       if (next_token == tokens.end()) continue;
@@ -94,135 +142,6 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
         add_element_from_token(ElementKind::Episode, *next_token);
       }
       return elements;
-    }
-  }
-
-  // Single episode (e.g. `01v2`)
-  {
-    static constexpr auto is_single_episode = [](const Token& token, std::smatch& matches) {
-      static const std::regex pattern{R"((\d{1,4})[vV](\d))"};
-      return std::regex_match(token.value, matches, pattern);
-    };
-
-    std::smatch matches;
-
-    for (auto& token : tokens | filter(is_free_token)) {
-      if (is_single_episode(token, matches)) {
-        add_element_from_token(ElementKind::Episode, token, matches[1].str(),
-                               token.position + matches.position(1));
-        add_element(ElementKind::ReleaseVersion, matches[2].str(),
-                    token.position + matches.position(2));
-        return elements;
-      }
-    }
-  }
-
-  // Multi episode (e.g. `01-02`, `03-05v2`)
-  {
-    using window_t = std::tuple<Token&, Token&, Token&>;
-
-    static constexpr auto is_free_range = [](window_t window) {
-      static const std::set<char> delimiters{'-', '~', '&', '+'};
-      return is_free_token(std::get<0>(window)) && is_free_token(std::get<2>(window)) &&
-             is_delimiter_token(std::get<1>(window)) &&
-             delimiters.contains(std::get<1>(window).value.front());
-    };
-
-    static constexpr auto is_multi_episode = [](window_t window,
-                                                std::pair<std::smatch, std::smatch>& matches) {
-      static const std::regex pattern{R"((\d{1,4})(?:[vV](\d))?)"};
-      auto [lower, _, upper] = window;
-      return std::regex_match(lower.value, matches.first, pattern) &&
-             std::regex_match(upper.value, matches.second, pattern);
-    };
-
-    std::pair<std::smatch, std::smatch> matches;
-
-    for (auto window : tokens | adjacent<3> | filter(is_free_range)) {
-      if (is_multi_episode(window, matches)) {
-        auto lower_value = matches.first[1].str();
-        auto upper_value = matches.second[1].str();
-
-        if (to_int(lower_value) >= to_int(upper_value)) {
-          continue;  // avoid matching `009-1`, `5-2`, etc.
-        }
-
-        auto [lower, _, upper] = window;
-
-        add_element_from_token(ElementKind::Episode, lower, lower_value,
-                               lower.position + matches.first.position(1));
-        if (matches.first[2].matched) {
-          add_element(ElementKind::ReleaseVersion, matches.first[2].str(),
-                      lower.position + matches.first.position(2));
-        }
-
-        add_element_from_token(ElementKind::Episode, upper, upper_value,
-                               upper.position + matches.second.position(1));
-        if (matches.second[2].matched) {
-          add_element(ElementKind::ReleaseVersion, matches.second[2].str(),
-                      upper.position + matches.second.position(2));
-        }
-
-        return elements;
-      }
-    }
-  }
-
-  // Season and episode (e.g. `2x01`, `S01E03`, `S01-02xE001-150`)
-  {
-    static constexpr auto is_season_and_episode = [](const Token& token, std::smatch& matches) {
-      static const std::regex pattern{
-          "S?"
-          "(\\d{1,2})(?:-S?(\\d{1,2}))?"
-          "(?:x|[ ._-x]?E)"
-          "(\\d{1,4})(?:-E?(\\d{1,4}))?"
-          "(?:[vV](\\d))?"};
-      return std::regex_match(token.value, matches, pattern);
-    };
-
-    std::smatch matches;
-
-    for (auto& token : tokens | filter(is_free_token)) {
-      if (is_season_and_episode(token, matches)) {
-        if (to_int(matches[1].str()) == 0 && !token.value.starts_with('S')) {
-          continue;  // avoid `0x539`, but parse `S00E01`
-        }
-        add_element(ElementKind::Season, matches[1].str(), token.position + matches.position(1));
-        if (matches[2].matched) {
-          add_element(ElementKind::Season, matches[2].str(), token.position + matches.position(2));
-        }
-        add_element_from_token(ElementKind::Episode, token, matches[3].str(),
-                               token.position + matches.position(3));
-        if (matches[4].matched) {
-          add_element(ElementKind::Episode, matches[4].str(), token.position + matches.position(4));
-        }
-        if (matches[5].matched) {
-          add_element(ElementKind::ReleaseVersion, matches[5].str(),
-                      token.position + matches.position(5));
-        }
-        return elements;
-      }
-    }
-  }
-
-  // Type and episode (e.g. `ED1`, `OP4a`, `OVA2`)
-  {
-    static constexpr auto is_type_keyword = [](const Token& token) {
-      return token.keyword && (token.keyword->kind == KeywordKind::Type ||
-                               token.keyword->kind == KeywordKind::EpisodeType);
-    };
-
-    auto type_token = std::ranges::find_if(tokens, is_type_keyword);
-
-    if (type_token != tokens.end() && type_token->value != "Movie") {
-      // Check next token for a number
-      if (auto token = find_next_token(tokens, type_token, is_not_delimiter_token);
-          token != tokens.end()) {
-        if (is_free_token(*token) && is_numeric_token(*token)) {
-          add_element_from_token(ElementKind::Episode, *token);
-          return elements;
-        }
-      }
     }
   }
 
@@ -247,31 +166,6 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
     }
   }
 
-  // Number sign (e.g. `#01`, `#02-03v2`)
-  {
-    static constexpr auto is_number_sign = [](const Token& token, std::smatch& matches) {
-      static const std::regex pattern{"#(\\d{1,4})(?:[-~&+](\\d{1,4}))?(?:[vV](\\d))?"};
-      return token.value.starts_with('#') && std::regex_match(token.value, matches, pattern);
-    };
-
-    std::smatch matches;
-
-    for (auto& token : tokens | filter(is_free_token)) {
-      if (is_number_sign(token, matches)) {
-        add_element_from_token(ElementKind::Episode, token, matches[1].str(),
-                               token.position + matches.position(1));
-        if (matches[2].matched) {
-          add_element(ElementKind::Episode, matches[2].str(), token.position + matches.position(2));
-        }
-        if (matches[3].matched) {
-          add_element(ElementKind::ReleaseVersion, matches[3].str(),
-                      token.position + matches.position(3));
-        }
-        return elements;
-      }
-    }
-  }
-
   // Japanese counter (e.g. `第01話`)
   {
     static constexpr auto is_japanese_counter = [](const Token& token, std::smatch& matches) {
@@ -283,7 +177,7 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
 
     for (auto& token : tokens | filter(is_free_token)) {
       if (is_japanese_counter(token, matches)) {
-        add_element_from_token(ElementKind::Episode, token, matches[1].str(),
+        add_element_from_token(ElementKind::Episode, token, matches.str(1),
                                token.position + matches.position(1));
         return elements;
       }
@@ -297,10 +191,6 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
 
   // Separated number (e.g. ` - 08`)
   {
-    static constexpr auto is_dash_token = [](const Token& token) {
-      return token.kind == TokenKind::Delimiter && is_dash(token.value.front());
-    };
-
     auto view = tokens | reverse | filter(is_dash_token);
 
     for (auto it = view.begin(); it != view.end(); ++it) {

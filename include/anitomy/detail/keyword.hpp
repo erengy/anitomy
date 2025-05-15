@@ -235,7 +235,8 @@ constexpr auto make_base_keywords() noexcept {
       // Release group
       {
         ReleaseGroup, {
-          {"THORA"},  // special case because usually placed at the end
+          {"0x539"},  // to avoid parsing as season 0 episode 539
+          {"THORA"},  // usually placed at the end
         }
       },
 
