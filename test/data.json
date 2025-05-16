@@ -3159,5 +3159,14 @@
             "video_resolution": "1080p",
             "subtitles": "Multiple Subtitle"
         }
+    },
+    {
+        "input": "[NanakoRaws] NieR Automata Ver1.1a (cour 2) (1080p)",
+        "mal_id": 51105,
+        "output": {
+            "release_group": "NanakoRaws",
+            "title": "NieR Automata Ver1.1a (cour 2)",
+            "video_resolution": "1080p"
+        }
     }
 ]

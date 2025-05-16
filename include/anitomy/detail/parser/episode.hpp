@@ -235,9 +235,18 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
       return std::regex_match(token.value, pattern);
     };
 
-    auto view = tokens | filter(is_free_token) | filter(is_partial_episode) | take(1);
-    if (!view.empty()) {
-      add_element_from_token(ElementKind::Episode, view.front());
+    static constexpr auto _ = [](auto pred) {
+      return [pred](const auto& tuple) { return pred(std::get<1>(tuple)); };
+    };
+
+    auto view = tokens | enumerate | filter(_(is_free_token)) | filter(_(is_partial_episode));
+
+    for (auto [i, token] : view) {
+      if (i > 1 && tokens[i - 2].value == "Ver1" && token.value == "1a") {
+        continue;  // `NieR:Automata Ver1.1a`
+      }
+
+      add_element_from_token(ElementKind::Episode, token);
       return elements;
     }
   }
