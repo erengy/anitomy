@@ -28,19 +28,19 @@ inline std::vector<Element> parse_volume(std::span<Token> tokens) noexcept {
 
     // Single volume (e.g. `01`, `01v2`)
     {
-      static constexpr auto is_single_volume = [](const Token& token, std::smatch& matches) {
+      static constexpr auto match_single_volume = [](const Token& token, std::smatch& matches) {
         static const std::regex pattern{R"((\d{1,4})(?:[vV](\d))?)"};
         return std::regex_match(token.value, matches, pattern);
       };
 
       std::smatch matches;
 
-      if (is_single_volume(*token, matches)) {
+      if (match_single_volume(*token, matches)) {
         volume_token->element_kind = ElementKind::Volume;
         token->element_kind = ElementKind::Volume;
-        elements.emplace_back(element_from_token(ElementKind::Volume, *token, matches[1].str()));
+        elements.emplace_back(element_from_token(ElementKind::Volume, *token, matches.str(1)));
         if (matches[2].matched) {
-          elements.emplace_back(ElementKind::ReleaseVersion, matches[2].str(),
+          elements.emplace_back(ElementKind::ReleaseVersion, matches.str(2),
                                 token->position + matches.position(2));
         }
       }

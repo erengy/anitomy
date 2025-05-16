@@ -63,12 +63,16 @@ constexpr bool is_keyword_token(const Token& token) noexcept {
   return token.kind == TokenKind::Keyword;
 }
 
-constexpr bool is_numeric_token(const Token& token) noexcept {
-  return token.is_number;
-}
-
 constexpr bool is_text_token(const Token& token) noexcept {
   return token.kind == TokenKind::Text;
+}
+
+constexpr bool is_enclosed_token(const Token& token) noexcept {
+  return token.is_enclosed;
+}
+
+constexpr bool is_numeric_token(const Token& token) noexcept {
+  return token.is_number;
 }
 
 }  // namespace anitomy::detail

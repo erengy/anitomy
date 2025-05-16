@@ -66,7 +66,7 @@ inline std::vector<Element> parse_season(std::span<Token> tokens) noexcept {
 
   // Season pattern (e.g. `S2`, `S01-02`)
   if (elements.empty()) {
-    static constexpr auto is_season = [](const Token& token, std::smatch& matches) {
+    static constexpr auto match_season = [](const Token& token, std::smatch& matches) {
       static const std::regex pattern{"S(\\d{1,2})"};
       return std::regex_match(token.value, matches, pattern);
     };
@@ -76,10 +76,10 @@ inline std::vector<Element> parse_season(std::span<Token> tokens) noexcept {
     auto view = tokens | std::views::filter(is_free_token);
 
     for (auto token = view.begin(); token != view.end(); ++token) {
-      if (!is_season(*token, matches)) continue;
+      if (!match_season(*token, matches)) continue;
 
       token->element_kind = ElementKind::Season;
-      elements.emplace_back(ElementKind::Season, matches[1].str(),
+      elements.emplace_back(ElementKind::Season, matches.str(1),
                             token->position + matches.position(1));
 
       auto next_token = std::next(token.base());
@@ -96,7 +96,7 @@ inline std::vector<Element> parse_season(std::span<Token> tokens) noexcept {
 
   // Japanese counter pattern (e.g. `第2期`)
   if (elements.empty()) {
-    static constexpr auto is_japanese_counter = [](const Token& token, std::smatch& matches) {
+    static constexpr auto match_japanese_counter = [](const Token& token, std::smatch& matches) {
       static const std::regex pattern{"(?:第)?(\\d{1,2})期"};
       return std::regex_match(token.value, matches, pattern);
     };
@@ -104,9 +104,9 @@ inline std::vector<Element> parse_season(std::span<Token> tokens) noexcept {
     std::smatch matches;
 
     for (auto& token : tokens | std::views::filter(is_free_token)) {
-      if (is_japanese_counter(token, matches)) {
+      if (match_japanese_counter(token, matches)) {
         token.element_kind = ElementKind::Season;
-        elements.emplace_back(ElementKind::Season, matches[1].str(),
+        elements.emplace_back(ElementKind::Season, matches.str(1),
                               token.position + matches.position(1));
         break;
       }

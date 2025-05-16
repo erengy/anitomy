@@ -40,7 +40,7 @@ public:
 private:
   [[nodiscard]] constexpr std::optional<Token> next_token() noexcept {
     if (is_eof()) {
-      return std::nullopt;
+      return {};
     }
 
     if (is_open_bracket(peek())) {

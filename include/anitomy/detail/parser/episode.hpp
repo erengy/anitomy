@@ -31,7 +31,7 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
   };
 
   {
-    static constexpr auto is_episode_token = [](const Token& token, std::smatch& matches) {
+    static constexpr auto match_episode_token = [](const Token& token, std::smatch& matches) {
       static const std::regex pattern{
           "(?:S(\\d{1,2})|(\\d{1,2})x)?"  // season
           "[E#]?(\\d{1,4})"               // episode
@@ -88,7 +88,7 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
       if (it == tokens.end()) return false;
       if (!is_episode_delimiter(*it)) return false;
       if (++it == tokens.end()) return false;
-      if (!is_episode_token(*it, matches.second)) return false;
+      if (!match_episode_token(*it, matches.second)) return false;
       if (to_int(matches.first.str(3)) >= to_int(matches.second.str(3))) {
         return false;  // avoid matching `009-1`, `5-2`, etc.
       }
@@ -100,7 +100,7 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
     for (auto token = view.begin(); token != view.end(); ++token) {
       std::pair<std::smatch, std::smatch> matches;
 
-      if (!is_episode_token(*token, matches.first)) continue;
+      if (!match_episode_token(*token, matches.first)) continue;
 
       auto prev_token = find_prev_token(tokens, token.base(), is_not_delimiter_token);
       auto next_token = std::next(token.base());
@@ -168,7 +168,7 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
 
   // Japanese counter (e.g. `第01話`)
   {
-    static constexpr auto is_japanese_counter = [](const Token& token, std::smatch& matches) {
+    static constexpr auto match_japanese_counter = [](const Token& token, std::smatch& matches) {
       static const std::regex pattern{"(?:第)?(\\d{1,4})話"};
       return std::regex_match(token.value, matches, pattern);
     };
@@ -176,7 +176,7 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
     std::smatch matches;
 
     for (auto& token : tokens | filter(is_free_token)) {
-      if (is_japanese_counter(token, matches)) {
+      if (match_japanese_counter(token, matches)) {
         add_element_from_token(ElementKind::Episode, token, matches.str(1),
                                token.position + matches.position(1));
         return elements;

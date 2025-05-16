@@ -68,7 +68,7 @@ private:
     static const std::regex pattern{"--([a-z-]+)(?:=([^ ]*))?"};
     std::smatch matches;
     if (!std::regex_match(arg, matches, pattern)) return {};
-    return {matches[1].str(), matches[2].str()};
+    return {matches.str(1), matches.str(2)};
   }
 
   [[nodiscard]] static constexpr std::string_view unquote(std::string_view view) noexcept {

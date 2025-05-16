@@ -33,7 +33,7 @@ inline std::optional<Element> parse_year(std::span<Token> tokens) noexcept {
   auto view = tokens | adjacent<3> | filter(is_isolated) | filter(is_free_number) |
               filter(is_year) | take(1);
 
-  if (view.empty()) return std::nullopt;
+  if (view.empty()) return {};
 
   auto& token = std::get<1>(view.front());
 

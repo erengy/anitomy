@@ -16,7 +16,7 @@ inline std::span<Token> find_release_group(std::span<Token> tokens) noexcept {
   // e.g. `[Group] Title - Episode [Info]`
   //        ^----^
   auto first = std::ranges::find_if(tokens, [](const Token& token) {
-    return token.is_enclosed && !is_identified_token(token);  //
+    return is_enclosed_token(token) && !is_identified_token(token);
   });
   auto last = std::find_if(first, tokens.end(), [](const Token& token) {
     return is_close_bracket_token(token) || is_identified_token(token);
@@ -41,9 +41,9 @@ inline std::span<Token> find_release_group(std::span<Token> tokens) noexcept {
       return token.element_kind != ElementKind::FileExtension && is_not_delimiter_token(token);
     });
     if (token != tokens.end() && is_free_token(*token)) {
-      auto prev_token = find_prev_token(tokens, token, [](const Token&) { return true; });
+      auto prev_token = std::prev(token);
       if (prev_token != tokens.end() && is_delimiter_token(*prev_token) &&
-          prev_token->value == "-") {
+          is_dash_token(*prev_token)) {
         first = token;
         last = std::next(token);
       }

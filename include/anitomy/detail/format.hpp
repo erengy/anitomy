@@ -111,7 +111,7 @@ inline const std::optional<ElementKind> to_element_kind(std::string_view str) no
   };
 
   auto it = elements.find(str);
-  return it != elements.end() ? it->second : std::optional<ElementKind>{std::nullopt};
+  return it != elements.end() ? it->second : std::optional<ElementKind>{};
 };
 
 }  // namespace anitomy::detail

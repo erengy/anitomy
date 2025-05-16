@@ -22,7 +22,7 @@ inline std::span<Token> find_title(std::span<Token> tokens) noexcept {
   // e.g. `[Group] Title - Episode [Info]`
   //               ^-------^
   auto first = std::ranges::find_if(tokens, [](const Token& token) {
-    return is_free_token(token) && !token.is_enclosed;  //
+    return is_free_token(token) && !is_enclosed_token(token);  //
   });
   auto last = std::find_if(first, tokens.end(), is_identified_token);
 
