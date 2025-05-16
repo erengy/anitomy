@@ -130,10 +130,12 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
     auto view = tokens | filter(is_free_token) | filter(is_numeric_token);
 
     for (auto it = view.begin(); it != view.end(); ++it) {
-      auto token = std::ranges::find_if(std::next(it.base().base()), tokens.end(), is_separator);
+      auto next_token = std::next(it.base().base());
+      auto token = std::ranges::find_if(next_token, tokens.end(), is_separator);
       if (token == tokens.end()) continue;
+      if (std::ranges::any_of(next_token, token, is_not_delimiter_token)) continue;
 
-      auto next_token = find_next_token(tokens, token, is_not_delimiter_token);
+      next_token = find_next_token(tokens, token, is_not_delimiter_token);
       if (next_token == tokens.end()) continue;
       if (!is_numeric_token(*next_token)) continue;
 

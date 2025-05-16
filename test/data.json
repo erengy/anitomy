@@ -3145,5 +3145,19 @@
             "audio_term": "Dual-Audio",
             "language": "Eng"
         }
+    },
+    {
+        "input": "[Erai-raws] Spy x Family Cour 2 - 01 ~ 13 [1080p][Multiple Subtitle]",
+        "mal_id": 50602,
+        "output": {
+            "release_group": "Erai-raws",
+            "title": "Spy x Family Cour 2",
+            "episode": [
+                "01",
+                "13"
+            ],
+            "video_resolution": "1080p",
+            "subtitles": "Multiple Subtitle"
+        }
     }
 ]
