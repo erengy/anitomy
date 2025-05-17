@@ -270,7 +270,10 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
           find_next_token(token.base().base().base(), tokens.end(), is_not_delimiter_token);
 
       if (prev_token != tokens.rend()) {
-        if (prev_token->value == "Part") continue;  // e.g. `Part 2`
+        auto& value = prev_token->value;
+        if (equal(value, "Cour") || equal(value, "Part")) continue;  // e.g. `Cour 2`, `Part 2`
+        if (equal(value, "Movie")) continue;                         // e.g. `Movie 9`
+        if (equal(value, "No")) continue;                            // e.g. `No.6`
         if (is_version_number(prev_token)) continue;
       }
       if (next_token != tokens.end()) {

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <charconv>
 #include <fstream>
 #include <string_view>
@@ -72,6 +73,10 @@ constexpr Char to_lower(const Char ch) noexcept {
 constexpr bool equal_to(char a, char b) noexcept {
   return to_lower(a) == to_lower(b);
 };
+
+constexpr bool equal(const std::string_view a, const std::string_view b) noexcept {
+  return std::ranges::equal(a, b, equal_to);
+}
 
 inline bool read_file(const std::string& path, std::string& output) {
   std::ifstream file{path, std::ios::in | std::ios::binary | std::ios::ate};

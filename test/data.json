@@ -3168,5 +3168,47 @@
             "title": "NieR Automata Ver1.1a (cour 2)",
             "video_resolution": "1080p"
         }
+    },
+    {
+        "input": "[9volt] Sousou no Frieren - 17-28 (Cour 2) (WEB 1080p)",
+        "mal_id": 52991,
+        "output": {
+            "release_group": "9volt",
+            "title": "Sousou no Frieren",
+            "episode": [
+                "17",
+                "28"
+            ],
+            "source": "WEB",
+            "video_resolution": "1080p"
+        }
+    },
+    {
+        "input": "[NanakoRaws] Bleach - Sennen Kessen-hen cour 2 (1080p)",
+        "mal_id": 53998,
+        "output": {
+            "release_group": "NanakoRaws",
+            "title": "Bleach - Sennen Kessen-hen cour 2",
+            "video_resolution": "1080p"
+        }
+    },
+    {
+        "input": "[Anime Time] Bleach: Thousand-Year Blood War (Cour 3) (2024) [1080p][HEVC 10bit x265][AAC][Multi Sub] (Bleach Season 17 - Bleach Sennen Kessen hen) [Batch]",
+        "mal_id": 56784,
+        "output": {
+            "release_group": "Anime Time",
+            "title": "Bleach: Thousand-Year Blood War (Cour 3)",
+            "year": "2024",
+            "video_resolution": "1080p",
+            "video_term": [
+                "HEVC",
+                "10bit",
+                "x265"
+            ],
+            "audio_term": "AAC",
+            "subtitles": "Multi Sub",
+            "season": "17",
+            "release_information": "Batch"
+        }
     }
 ]
