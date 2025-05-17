@@ -394,6 +394,7 @@ constexpr auto make_base_keywords() noexcept {
       {
         VideoFormat, {
           {"AVI"},
+          {"MP4"},
           {"RMVB"},
           {"WMV"},
           {"WMV3"},

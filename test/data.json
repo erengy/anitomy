@@ -200,6 +200,7 @@
             "video_term": "x264",
             "audio_term": "aac",
             "language": "Jpn",
+            "subtitles": "Sub",
             "file_extension": "mkv"
         }
     },
@@ -958,6 +959,7 @@
         "output": {
             "release_group": "Hien",
             "title": "Kotoura-san - Special Short Anime 'Haruka's Room'",
+            "type": "Special",
             "episode": "01",
             "source": "BD",
             "video_resolution": "1080p",
@@ -1138,6 +1140,7 @@
                 "AAC",
                 "5.1ch"
             ],
+            "subtitles": "Sub",
             "file_extension": "mp4"
         }
     },
@@ -1339,7 +1342,7 @@
         "mal_id": 18041,
         "output": {
             "release_group": "Asenshi",
-            "title": "Rozen Maiden 3",
+            "title": "Rozen Maiden 3 - PV",
             "type": "PV",
             "file_checksum": "CA57F300",
             "file_extension": "mkv"
@@ -2664,8 +2667,10 @@
         "output": {
             "release_group": "DeadFish",
             "title": "Boku no Imouto wa \"Osaka Okan\": Uchi no Onii-chan wa Tokyo Rule - Special",
+            "type": "Special",
             "source": "BD",
             "video_resolution": "720p",
+            "audio_term": "AAC",
             "file_extension": "mp4"
         }
     },
