@@ -275,6 +275,7 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
         if (equal(value, "Movie")) continue;                         // e.g. `Movie 9`
         if (equal(value, "No")) continue;                            // e.g. `No.6`
         if (is_version_number(prev_token)) continue;
+        if (is_close_bracket_token(*prev_token) && value == "]") continue;
       }
       if (next_token != tokens.end()) {
         if (is_version_number(next_token)) continue;
