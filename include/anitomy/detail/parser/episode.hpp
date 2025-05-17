@@ -251,6 +251,30 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
     }
   }
 
+  // First number
+  {
+    static constexpr auto starts_with_episode_number = [](std::span<Token>& tokens) {
+      if (tokens.empty()) return false;
+
+      const auto& token = tokens.front();
+      if (!is_free_token(token) || !is_numeric_token(token)) return false;
+
+      if (tokens.size() <= 2) return true;
+      if (is_dash_token(tokens[1]) || is_dash_token(tokens[2])) return true;
+      if (tokens[1].value == ".") {
+        if (is_space(tokens[2].value.front())) return true;
+        if (tokens[2].element_kind == ElementKind::FileExtension) return true;
+      }
+
+      return false;
+    };
+
+    if (starts_with_episode_number(tokens)) {
+      add_element_from_token(ElementKind::Episode, tokens.front());
+      return elements;
+    }
+  }
+
   // Last number
   {
     static constexpr auto is_version_number = [](auto token) {
@@ -263,6 +287,7 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
 
     for (auto token = view.begin(); token != view.end(); ++token) {
       if (token->is_enclosed) continue;
+      if (token->position == 0) continue;
 
       const auto prev_token =
           find_next_token(token.base().base(), tokens.rend(), is_not_delimiter_token);
