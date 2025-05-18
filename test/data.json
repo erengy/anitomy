@@ -3215,5 +3215,80 @@
             "season": "17",
             "release_information": "Batch"
         }
+    },
+    {
+        "input": "[Erai-raws] Ranma 1-2 (2024) - 03 [1080p][Multiple Subtitle]",
+        "mal_id": 59145,
+        "output": {
+            "release_group": "Erai-raws",
+            "title": "Ranma 1-2",
+            "year": "2024",
+            "episode": "03",
+            "video_resolution": "1080p",
+            "subtitles": "Multiple Subtitle"
+        }
+    },
+    {
+        "input": "[Erai-raws] Ranma 1_2 (2024) - 03 [1080p][Multiple Subtitle][EA841252].mkv",
+        "mal_id": 59145,
+        "output": {
+            "release_group": "Erai-raws",
+            "title": "Ranma 1 2",
+            "year": "2024",
+            "episode": "03",
+            "video_resolution": "1080p",
+            "subtitles": "Multiple Subtitle",
+            "file_checksum": "EA841252",
+            "file_extension": "mkv"
+        }
+    },
+    {
+        "input": "[Genderbender] Ranma 1+2 (2024) - 01 [HEVC 1080p] [Dual Audio].mkv",
+        "mal_id": 59145,
+        "output": {
+            "release_group": "Genderbender",
+            "title": "Ranma 1+2",
+            "year": "2024",
+            "episode": "01",
+            "video_term": "HEVC",
+            "video_resolution": "1080p",
+            "audio_term": "Dual Audio",
+            "file_extension": "mkv"
+        }
+    },
+    {
+        "input": "Ranma.1-2.2024.S01E11.You.I.Love.1080p.NF.WEB-DL.AAC2.0.H.264.MULTi-VARYG.mkv",
+        "mal_id": 59145,
+        "output": {
+            "title": "Ranma 1-2",
+            "year": "2024",
+            "season": "01",
+            "episode": "11",
+            "episode_title": "You I Love",
+            "video_resolution": "1080p",
+            "source": [
+                "NF",
+                "WEB-DL"
+            ],
+            "audio_term": [
+                "AAC",
+                "2.0"
+            ],
+            "video_term": "H.264",
+            "release_group": "VARYG",
+            "file_extension": "mkv"
+        }
+    },
+    {
+        "input": "[Exiled-Destiny]_Ranma_½_TV_Ep001_(E5B63FCA).mkv",
+        "mal_id": 210,
+        "output": {
+            "release_group": "Exiled-Destiny",
+            "title": "Ranma ½ TV",
+            "type": "TV",
+            "episode": "001",
+            "file_checksum": "E5B63FCA",
+            "file_extension": "mkv"
+        }
     }
 ]
