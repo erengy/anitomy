@@ -11,21 +11,37 @@
 namespace anitomy::detail {
 
 inline std::span<Token> find_episode_title(std::span<Token> tokens) noexcept {
-  // Find the first free unenclosed range
+  static constexpr auto is_invalid_token = [](const Token& token) {
+    if (!is_identified_token(token)) return false;
+    return token.element_kind != ElementKind::Episode &&
+           token.element_kind != ElementKind::ReleaseVersion &&
+           token.element_kind != ElementKind::Season;
+  };
+
+  const auto episode = std::ranges::find_if(tokens, [](const Token& token) {
+    return token.element_kind == ElementKind::Episode;  //
+  });
+
+  if (episode == tokens.end()) return {};
+
+  // Find the first free unenclosed range after episode
   // e.g. `[Group] Title - Episode - Episode Title [Info]`
   //                                 ^-------------^
-  auto first = std::ranges::find_if(tokens, [](const Token& token) {
+  auto first = std::ranges::find_if(episode, tokens.end(), [](const Token& token) {
     return is_free_token(token) && !is_enclosed_token(token);  //
   });
+  if (std::ranges::any_of(episode, first, is_invalid_token)) {
+    first = tokens.end();
+  }
   auto last = std::find_if(first, tokens.end(), [](const Token& token) {
     return is_open_bracket_token(token) || is_identified_token(token);
   });
 
-  // Fall back to the first free range in corner brackets
+  // Fall back to the first free range in corner brackets after episode
   // e.g. `[Group] Title - Episode 「Episode Title」`
   //                                ^------------^
   if (first == tokens.end()) {
-    first = std::ranges::find_if(tokens, [](const Token& token) {
+    first = std::ranges::find_if(episode, tokens.end(), [](const Token& token) {
       return is_open_bracket_token(token) && token.value == "「";
     });
     if (first != tokens.end()) ++first;
