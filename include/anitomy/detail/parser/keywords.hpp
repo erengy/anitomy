@@ -28,6 +28,7 @@ inline std::vector<Element> parse_keywords(std::span<Token> tokens,
       case EpisodeType:        return E::Type;
       case Language:           return E::Language;
       case Other:              return E::Other;
+      case Part:               return E::Part;
       case ReleaseGroup:       return E::ReleaseGroup;
       case ReleaseInformation: return E::ReleaseInformation;
       case ReleaseVersion:     return E::ReleaseVersion;
@@ -50,7 +51,7 @@ inline std::vector<Element> parse_keywords(std::span<Token> tokens,
   };
 
   static constexpr auto is_prefix = [](const KeywordKind kind) {
-    return kind == Episode || kind == Season || kind == Volume;
+    return kind == Episode || kind == Part || kind == Season || kind == Volume;
   };
 
   const auto is_allowed = [&options](const Token& token) {

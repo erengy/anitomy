@@ -13,6 +13,7 @@ enum class ElementKind {
   FileExtension,
   Language,
   Other,
+  Part,
   ReleaseGroup,
   ReleaseInformation,
   ReleaseVersion,

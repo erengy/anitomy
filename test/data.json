@@ -1981,7 +1981,8 @@
         "mal_id": 25729,
         "output": {
             "release_group": "Nishi-Taku",
-            "title": "Tamayura ~graduation photo~ Movie Part 1",
+            "title": "Tamayura ~graduation photo~ Movie",
+            "part": "1",
             "type": "Movie",
             "source": "BD",
             "video_resolution": "720p",
@@ -2832,7 +2833,8 @@
         "mal_id": 56063,
         "output": {
             "release_group": "Erai-raws",
-            "title": "NieR-Automata Ver1_1a Part 2",
+            "title": "NieR-Automata Ver1_1a",
+            "part": "2",
             "episode": "03",
             "video_resolution": "1080p",
             "subtitles": "Multiple Subtitle",
@@ -3156,7 +3158,8 @@
         "mal_id": 50602,
         "output": {
             "release_group": "Erai-raws",
-            "title": "Spy x Family Cour 2",
+            "title": "Spy x Family",
+            "part": "2",
             "episode": [
                 "01",
                 "13"
@@ -3170,7 +3173,8 @@
         "mal_id": 51105,
         "output": {
             "release_group": "NanakoRaws",
-            "title": "NieR Automata Ver1.1a (cour 2)",
+            "title": "NieR Automata Ver1.1a",
+            "part": "2",
             "video_resolution": "1080p"
         }
     },
@@ -3184,6 +3188,7 @@
                 "17",
                 "28"
             ],
+            "part": "2",
             "source": "WEB",
             "video_resolution": "1080p"
         }
@@ -3193,7 +3198,8 @@
         "mal_id": 53998,
         "output": {
             "release_group": "NanakoRaws",
-            "title": "Bleach - Sennen Kessen-hen cour 2",
+            "title": "Bleach - Sennen Kessen-hen",
+            "part": "2",
             "video_resolution": "1080p"
         }
     },
@@ -3202,7 +3208,8 @@
         "mal_id": 56784,
         "output": {
             "release_group": "Anime Time",
-            "title": "Bleach: Thousand-Year Blood War (Cour 3)",
+            "title": "Bleach: Thousand-Year Blood War",
+            "part": "3",
             "year": "2024",
             "video_resolution": "1080p",
             "video_term": [
@@ -3289,6 +3296,56 @@
             "episode": "001",
             "file_checksum": "E5B63FCA",
             "file_extension": "mkv"
+        }
+    },
+    {
+        "input": "[Judas] Spy x Family (Season 1 Part 2) [1080p][HEVC x265 10bit][Multi-Subs] (Batch)",
+        "mal_id": 50602,
+        "output": {
+            "release_group": "Judas",
+            "title": "Spy x Family",
+            "season": "1",
+            "part": "2",
+            "video_resolution": "1080p",
+            "video_term": [
+                "HEVC",
+                "x265",
+                "10bit"
+            ],
+            "subtitles": "Multi-Subs",
+            "release_information": "Batch"
+        }
+    },
+    {
+        "input": "[ADF] Love Live! Nijigasaki Gakuen School Idol Doukoukai Kanketsu-hen -Parte 1- (BD 1280x720 AAC 5.1+2.0)",
+        "mal_id": 55748,
+        "output": {
+            "release_group": "ADF",
+            "title": "Love Live! Nijigasaki Gakuen School Idol Doukoukai Kanketsu-hen",
+            "part": "1",
+            "source": "BD",
+            "video_resolution": "1280x720",
+            "audio_term": [
+                "AAC",
+                "5.1",
+                "2.0"
+            ]
+        }
+    },
+    {
+        "input": "[pat-e] The Devil is a Part-Timer! - Season 1 (BD 1080p AV1 Opus) [Dual Audio] | Hataraku Maou-sama! - S01",
+        "mal_id": 15809,
+        "output": {
+            "release_group": "pat-e",
+            "title": "The Devil is a Part-Timer!",
+            "season": "1",
+            "source": "BD",
+            "video_resolution": "1080p",
+            "video_term": "AV1",
+            "audio_term": [
+                "Opus",
+                "Dual Audio"
+            ]
         }
     }
 ]

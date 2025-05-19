@@ -35,6 +35,7 @@ constexpr std::string_view to_string(const KeywordKind kind) noexcept {
     case EpisodeType: return "episode_type";
     case Language: return "language";
     case Other: return "other";
+    case Part: return "part";
     case ReleaseGroup: return "release_group";
     case ReleaseInformation: return "release_information";
     case ReleaseVersion: return "release_version";
@@ -67,6 +68,7 @@ constexpr std::string_view to_string(const ElementKind kind) noexcept {
     case FileExtension: return "file_extension";
     case Language: return "language";
     case Other: return "other";
+    case Part: return "part";
     case ReleaseGroup: return "release_group";
     case ReleaseInformation: return "release_information";
     case ReleaseVersion: return "release_version";
@@ -96,6 +98,7 @@ inline const std::optional<ElementKind> to_element_kind(std::string_view str) no
       {"file_extension", FileExtension},
       {"language", Language},
       {"other", Other},
+      {"part", Part},
       {"release_group", ReleaseGroup},
       {"release_information", ReleaseInformation},
       {"release_version", ReleaseVersion},

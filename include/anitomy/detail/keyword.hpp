@@ -19,6 +19,7 @@ enum class KeywordKind {
   EpisodeType,
   Language,
   Other,
+  Part,
   ReleaseGroup,
   ReleaseInformation,
   ReleaseVersion,
@@ -229,6 +230,15 @@ constexpr auto make_base_keywords() noexcept {
           {"VFR"},
           {"Widescreen"},
           {"WS"},
+        }
+      },
+
+      // Part
+      {
+        Part, {
+          {"Cour", PrefixForNumber},
+          {"Part", Ambiguous | PrefixForNumber},  // e.g. "Extra Part", "Part-Timer"
+          {"Parte", PrefixForNumber},
         }
       },
 

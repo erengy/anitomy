@@ -9,6 +9,7 @@
 #include <anitomy/detail/parser/file_checksum.hpp>
 #include <anitomy/detail/parser/file_extension.hpp>
 #include <anitomy/detail/parser/keywords.hpp>
+#include <anitomy/detail/parser/part.hpp>
 #include <anitomy/detail/parser/release_group.hpp>
 #include <anitomy/detail/parser/season.hpp>
 #include <anitomy/detail/parser/title.hpp>
@@ -61,6 +62,11 @@ public:
     // Season
     if (options.parse_season) {
       add_elements(parse_season(tokens_));
+    }
+
+    // Part
+    if (options.parse_part) {
+      add_element(parse_part(tokens_));
     }
 
     // Episode
