@@ -65,7 +65,7 @@ inline std::vector<Element> parse_season(std::span<Token> tokens) noexcept {
   }
 
   // Season pattern (e.g. `S2`, `S01-02`)
-  if (elements.empty()) {
+  {
     static constexpr auto match_season = [](const Token& token, std::smatch& matches) {
       static const std::regex pattern{"S(\\d{1,2})"};
       return std::regex_match(token.value, matches, pattern);
