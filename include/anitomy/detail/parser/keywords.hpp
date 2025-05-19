@@ -35,6 +35,7 @@ inline std::vector<Element> parse_keywords(std::span<Token> tokens,
       case Season:             return E::Season;
       case Source:             return E::Source;
       case Subtitles:          return E::Subtitles;
+      case SubtitleLanguage:   return E::Subtitles;
       case Type:               return E::Type;
       case VideoCodec:         return E::VideoTerm;
       case VideoColorDepth:    return E::VideoTerm;

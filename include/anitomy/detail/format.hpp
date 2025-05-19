@@ -42,6 +42,7 @@ constexpr std::string_view to_string(const KeywordKind kind) noexcept {
     case Season: return "season";
     case Source: return "source";
     case Subtitles: return "subtitles";
+    case SubtitleLanguage: return "subtitle_language";
     case Type: return "type";
     case VideoCodec: return "video_codec";
     case VideoColorDepth: return "video_color_depth";

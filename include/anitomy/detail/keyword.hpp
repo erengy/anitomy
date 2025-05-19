@@ -26,6 +26,7 @@ enum class KeywordKind {
   Season,
   Source,
   Subtitles,
+  SubtitleLanguage,
   Type,
   VideoCodec,
   VideoColorDepth,
@@ -342,6 +343,10 @@ constexpr auto make_base_keywords() noexcept {
           {"Multi Sub"},
           {"Multi Subs"},
           {"Multiple Subtitle"},
+        }
+      },
+      {
+        SubtitleLanguage, {
           {"EngSub"},
           {"EngSubs"},
           {"GerSub"},
