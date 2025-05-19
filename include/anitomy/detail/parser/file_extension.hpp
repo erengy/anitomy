@@ -54,11 +54,7 @@ inline std::optional<Element> parse_file_extension(std::span<Token> tokens) noex
   last_token.keyword.reset();
   last_token.element_kind = ElementKind::FileExtension;
 
-  return Element{
-      .kind = ElementKind::FileExtension,
-      .value = last_token.value,
-      .position = last_token.position,
-  };
+  return element_from_token(ElementKind::FileExtension, last_token);
 }
 
 }  // namespace anitomy::detail

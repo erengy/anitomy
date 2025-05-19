@@ -39,11 +39,7 @@ inline std::optional<Element> parse_year(std::span<Token> tokens) noexcept {
 
   token.element_kind = ElementKind::Year;
 
-  return Element{
-      .kind = ElementKind::Year,
-      .value = token.value,
-      .position = token.position,
-  };
+  return element_from_token(ElementKind::Year, token);
 }
 
 }  // namespace anitomy::detail

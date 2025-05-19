@@ -28,11 +28,7 @@ inline std::optional<Element> parse_file_checksum(std::span<Token> tokens) noexc
 
   token.element_kind = ElementKind::FileChecksum;
 
-  return Element{
-      .kind = ElementKind::FileChecksum,
-      .value = token.value,
-      .position = token.position,
-  };
+  return element_from_token(ElementKind::FileChecksum, token);
 }
 
 }  // namespace anitomy::detail
