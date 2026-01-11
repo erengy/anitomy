@@ -46,7 +46,22 @@ inline std::vector<Element> parse_volume(std::span<Token> tokens) noexcept {
       }
     }
 
-    // @TODO: Multiple volumes (e.g. `Vol.1&2`)
+    // Multiple volumes (e.g. `1&2`)
+    {
+      static constexpr auto match_multiple_volumes = [](const Token& token, std::smatch& matches) {
+        static const std::regex pattern{R"((\d{1,4})&(\d{1,4}))"};
+        return std::regex_match(token.value, matches, pattern);
+      };
+
+      std::smatch matches;
+
+      if (match_multiple_volumes(*token, matches)) {
+        volume_token->element_kind = ElementKind::Volume;
+        token->element_kind = ElementKind::Volume;
+        elements.emplace_back(element_from_token(ElementKind::Volume, *token, matches.str(1)));
+        elements.emplace_back(element_from_token(ElementKind::Volume, *token, matches.str(2)));
+      }
+    }
 
     tokens = std::span<Token>(std::next(volume_token), tokens.end());
   }
