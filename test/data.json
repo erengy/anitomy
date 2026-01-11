@@ -3317,6 +3317,20 @@
         }
     },
     {
+        "input": "[Erai-raws] Vanitas no Karte 2nd Cour - 01 [1080p][Multiple Subtitle][DE38A9CD].mkv",
+        "mal_id": 49114,
+        "output": {
+            "release_group": "Erai-raws",
+            "title": "Vanitas no Karte",
+            "part": "2",
+            "episode": "01",
+            "video_resolution": "1080p",
+            "subtitles": "Multiple Subtitle",
+            "file_checksum": "DE38A9CD",
+            "file_extension": "mkv"
+        }
+    },
+    {
         "input": "[ADF] Love Live! Nijigasaki Gakuen School Idol Doukoukai Kanketsu-hen -Parte 1- (BD 1280x720 AAC 5.1+2.0)",
         "mal_id": 55748,
         "output": {
@@ -3346,6 +3360,38 @@
                 "Opus",
                 "Dual Audio"
             ]
+        }
+    },
+    {
+        "input": "[Judas] Sword Art Online S3 P2 - 01.mkv",
+        "mal_id": 39597,
+        "output": {
+            "release_group": "Judas",
+            "title": "Sword Art Online",
+            "season": "3",
+            "part": "2",
+            "episode": "01",
+            "file_extension": "mkv"
+        }
+    },
+    {
+        "input": "My.Hero.Academia.S04.P2.CRF-16.1080p.Blu-Ray.10-Bit.Dual-Audio.TrueHD.x265-iAHD",
+        "mal_id": 38408,
+        "output": {
+            "title": "My Hero Academia",
+            "season": "04",
+            "part": "2",
+            "video_resolution": "1080p",
+            "source": "Blu-Ray",
+            "video_term": [
+                "10-Bit",
+                "x265"
+            ],
+            "audio_term": [
+                "Dual-Audio",
+                "TrueHD"
+            ],
+            "release_group": "iAHD"
         }
     }
 ]
