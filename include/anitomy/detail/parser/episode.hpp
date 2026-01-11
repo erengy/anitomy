@@ -188,7 +188,20 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
 
   // Equivalent numbers (e.g. `01 (176)`, `29 (04)`)
   {
-    // @TODO
+    static constexpr auto match_equivalent_number = [](const Token& token, std::smatch& matches) {
+      static const std::regex pattern{"(\\d{1,4})\\s*\\((\\d{1,4})\\)"};
+      return std::regex_match(token.value, matches, pattern);
+    };
+
+    std::smatch matches;
+
+    for (auto& token : tokens | filter(is_free_token)) {
+      if (match_equivalent_number(token, matches)) {
+        add_element_from_token(ElementKind::Episode, token, matches.str(1),
+                               token.position + matches.position(1));
+        return elements;
+      }
+    }
   }
 
   // Separated number (e.g. ` - 08`)
