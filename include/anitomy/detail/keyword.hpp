@@ -260,6 +260,7 @@ constexpr auto make_base_keywords() noexcept {
           {"Final", Ambiguous},  // e.g. "Final Approach"
           {"Patch"},
           {"Remux"},
+          {"Repack"},
         }
       },
 
