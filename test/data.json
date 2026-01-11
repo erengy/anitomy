@@ -3393,5 +3393,49 @@
             ],
             "release_group": "iAHD"
         }
+    },
+    {
+        "input": "Chained.Soldier.S02E01.The.Commanders.Assembly.1080p.BILI.WEB-DL.AAC2.0.H.264-VARYG.mkv",
+        "mal_id": 58505,
+        "output": {
+            "title": "Chained Soldier",
+            "season": "02",
+            "episode": "01",
+            "episode_title": "The Commanders Assembly",
+            "video_resolution": "1080p",
+            "source": [
+                "BILI",
+                "WEB-DL"
+            ],
+            "audio_term": [
+                "AAC",
+                "2.0"
+            ],
+            "video_term": "H.264",
+            "release_group": "VARYG",
+            "file_extension": "mkv"
+        }
+    },
+    {
+        "input": "Chained Soldier S02E01 The Commanders Assembly 1080p BILI WEB-DL AAC2.0 H 264-VARYG (Mato Seihei no Slave, Multi-Subs)",
+        "mal_id": 58505,
+        "output": {
+            "title": "Chained Soldier",
+            "season": "02",
+            "episode": "01",
+            "episode_title": "The Commanders Assembly",
+            "video_resolution": "1080p",
+            "source": [
+                "BILI",
+                "WEB-DL"
+            ],
+            "audio_term": [
+                "AAC",
+                "2.0"
+            ],
+            "video_term": "H 264",
+            "release_group": "VARYG",
+            "subtitles": "Multi-Subs"
+        }
     }
 ]

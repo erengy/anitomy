@@ -248,6 +248,7 @@ constexpr auto make_base_keywords() noexcept {
         ReleaseGroup, {
           {"0x539"},  // to avoid parsing as season 0 episode 539
           {"THORA"},  // usually placed at the end
+          {"VARYG"},  // placed at the end
         }
       },
 
@@ -390,13 +391,14 @@ constexpr auto make_base_keywords() noexcept {
           {"AV1"},
           {"DivX", PrefixForNumber},
           {"AVC"},
-          {"H.264"},
+          {"H 264"},
           {"H264"},
-          {"X.264"},
+          {"X 264"},
           {"X264"},
-          {"H.265"},
+          {"H 265"},
           {"H265"},
           {"HEVC", PrefixForNumber},
+          {"X 265"},
           {"X265"},
           {"Xvid"},
         }
