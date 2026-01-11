@@ -18,6 +18,10 @@ inline std::span<Token> find_episode_title(std::span<Token> tokens) noexcept {
            token.element_kind != ElementKind::Season;
   };
 
+  static constexpr auto is_part_token = [](const Token& token) {
+    return token.element_kind == ElementKind::Part;
+  };
+
   const auto episode = std::ranges::find_if(tokens, [](const Token& token) {
     return token.element_kind == ElementKind::Episode;  //
   });
@@ -34,7 +38,7 @@ inline std::span<Token> find_episode_title(std::span<Token> tokens) noexcept {
     first = tokens.end();
   }
   auto last = std::find_if(first, tokens.end(), [](const Token& token) {
-    return is_open_bracket_token(token) || is_identified_token(token);
+    return is_open_bracket_token(token) || (is_identified_token(token) && !is_part_token(token));
   });
 
   // Fall back to the first free range in corner brackets after episode
