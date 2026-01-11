@@ -312,6 +312,8 @@ constexpr auto make_base_keywords() noexcept {
           {"WebRip"},
           {"ADN"},          // Animation Digital Network
           {"AMZN"},         // Amazon Prime
+          {"BILI"},         // Bilibili
+          {"Bilibili"},
           {"CR"},           // Crunchyroll
           {"Crunchyroll"},
           {"DSNP"},         // Disney+
