@@ -13,7 +13,7 @@ public:
   using string_t = std::string;
   using object_t = Object<string_t, Value>;
   using array_t = std::vector<Value>;
-  using value_t = std::variant<object_t, array_t, string_t, int, float, bool, nullptr_t>;
+  using value_t = std::variant<object_t, array_t, string_t, int, float, bool, std::nullptr_t>;
 
   enum Kind : size_t {
     Object,

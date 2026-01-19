@@ -167,7 +167,7 @@ private:
     return error();
   }
 
-  [[nodiscard]] inline expected_t<nullptr_t> parse_null() noexcept {
+  [[nodiscard]] inline expected_t<std::nullptr_t> parse_null() noexcept {
     if (skip_literal("null")) return nullptr;
     return error();
   }
