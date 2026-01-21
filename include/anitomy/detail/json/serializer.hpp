@@ -27,25 +27,25 @@ public:
 private:
   inline void serialize_value(Value& value, std::string& output) noexcept {
     switch (value.kind()) {
-      case Value::Object:
+      case Value::Kind::Object:
         serialize_object(value.as_object(), output);
         break;
-      case Value::Array:
+      case Value::Kind::Array:
         serialize_array(value.as_array(), output);
         break;
-      case Value::String:
+      case Value::Kind::String:
         serialize_string(value.as_string(), output);
         break;
-      case Value::Integer:
+      case Value::Kind::Integer:
         serialize_integer(value.as_integer(), output);
         break;
-      case Value::Float:
+      case Value::Kind::Float:
         serialize_float(value.as_float(), output);
         break;
-      case Value::Boolean:
+      case Value::Kind::Boolean:
         serialize_boolean(value.as_bool(), output);
         break;
-      case Value::Null:
+      case Value::Kind::Null:
         serialize_null(output);
         break;
     }

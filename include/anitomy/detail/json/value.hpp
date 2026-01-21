@@ -15,7 +15,7 @@ public:
   using array_t = std::vector<Value>;
   using value_t = std::variant<object_t, array_t, string_t, int, float, bool, std::nullptr_t>;
 
-  enum Kind : size_t {
+  enum class Kind : size_t {
     Object,
     Array,
     String,
@@ -94,7 +94,7 @@ public:
 
 private:
   [[nodiscard]] inline bool holds(const Kind kind) const noexcept {
-    return value_.index() == kind;
+    return value_.index() == static_cast<size_t>(kind);
   }
 
   value_t value_;
