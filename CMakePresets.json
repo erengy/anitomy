@@ -2,46 +2,112 @@
   "version": 6,
   "cmakeMinimumRequired": {
     "major": 3,
-    "minor": 20,
+    "minor": 21,
     "patch": 0
   },
   "configurePresets": [
     {
-      "name": "ninja-multi",
-      "displayName": "Ninja Multi-Config",
+      "name": "base",
+      "hidden": true,
       "generator": "Ninja Multi-Config",
       "binaryDir": "${sourceDir}/build/${presetName}",
-      "cacheVariables": {
-        "CMAKE_CXX_COMPILER": "cl.exe"
-      }
+      "toolset": { "value": "host=x64", "strategy": "external" }
+    },
+    {
+      "name": "x64",
+      "hidden": true,
+      "architecture": { "value": "x64", "strategy": "external" }
+    },
+    {
+      "name": "clang",
+      "hidden": true,
+      "cacheVariables": { "CMAKE_CXX_COMPILER": "clang++" }
+    },
+    {
+      "name": "gcc",
+      "hidden": true,
+      "cacheVariables": { "CMAKE_CXX_COMPILER": "g++" }
+    },
+    {
+      "name": "msvc",
+      "hidden": true,
+      "cacheVariables": { "CMAKE_CXX_COMPILER": "cl" }
+    },
+    {
+      "name": "clang-x64",
+      "inherits": ["base", "clang", "x64"]
+    },
+    {
+      "name": "gcc-x64",
+      "inherits": ["base", "gcc", "x64"]
+    },
+    {
+      "name": "msvc-x64",
+      "inherits": ["base", "msvc", "x64"]
     }
   ],
   "buildPresets": [
     {
-      "name": "ninja-debug",
-      "configurePreset": "ninja-multi",
-      "displayName": "Debug",
+      "name": "clang-x64-debug",
+      "configurePreset": "clang-x64",
       "configuration": "Debug"
     },
     {
-      "name": "ninja-release",
-      "configurePreset": "ninja-multi",
-      "displayName": "Release",
-      "configuration": "Release"
+      "name": "clang-x64-release",
+      "configurePreset": "clang-x64",
+      "configuration": "RelWithDebInfo"
+    },
+    {
+      "name": "gcc-x64-debug",
+      "configurePreset": "gcc-x64",
+      "configuration": "Debug"
+    },
+    {
+      "name": "gcc-x64-release",
+      "configurePreset": "gcc-x64",
+      "configuration": "RelWithDebInfo"
+    },
+    {
+      "name": "msvc-x64-debug",
+      "configurePreset": "msvc-x64",
+      "configuration": "Debug"
+    },
+    {
+      "name": "msvc-x64-release",
+      "configurePreset": "msvc-x64",
+      "configuration": "RelWithDebInfo"
     }
   ],
   "testPresets": [
     {
-      "name": "test-debug",
-      "configurePreset": "ninja-multi",
-      "displayName": "Debug",
+      "name": "test-clang-x64-debug",
+      "configurePreset": "clang-x64",
       "configuration": "Debug"
     },
     {
-      "name": "test-release",
-      "configurePreset": "ninja-multi",
-      "displayName": "Release",
-      "configuration": "Release"
+      "name": "clang-x64-release",
+      "configurePreset": "clang-x64",
+      "configuration": "RelWithDebInfo"
+    },
+    {
+      "name": "test-gcc-x64-debug",
+      "configurePreset": "gcc-x64",
+      "configuration": "Debug"
+    },
+    {
+      "name": "test-gcc-x64-release",
+      "configurePreset": "gcc-x64",
+      "configuration": "RelWithDebInfo"
+    },
+    {
+      "name": "test-msvc-x64-debug",
+      "configurePreset": "msvc-x64",
+      "configuration": "Debug"
+    },
+    {
+      "name": "test-msvc-x64-release",
+      "configurePreset": "msvc-x64",
+      "configuration": "RelWithDebInfo"
     }
   ]
 }
