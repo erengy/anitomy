@@ -15,7 +15,7 @@ public:
   using array_t = Value::array_t;
   using value_t = Value::value_t;
 
-  explicit Serializer(const Value& value, bool pretty) : value_{value}, pretty_{pretty} {
+  explicit Serializer(const Value& value, bool pretty) : pretty_{pretty}, value_{value} {
   }
 
   [[nodiscard]] inline std::string serialize() noexcept {
