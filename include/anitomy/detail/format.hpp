@@ -46,6 +46,7 @@ constexpr std::string_view to_string(const KeywordKind kind) noexcept {
     case Type: return "type";
     case VideoCodec: return "video_codec";
     case VideoColorDepth: return "video_color_depth";
+    case VideoDynamicRange: return "video_dynamic_range";
     case VideoFormat: return "video_format";
     case VideoFrameRate: return "video_frame_rate";
     case VideoProfile: return "video_profile";
