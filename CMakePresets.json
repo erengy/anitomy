@@ -8,38 +8,105 @@
   "configurePresets": [
     {
       "name": "ninja-multi",
+      "hidden": true,
       "displayName": "Ninja Multi-Config",
       "generator": "Ninja Multi-Config",
-      "binaryDir": "${sourceDir}/build/${presetName}",
+      "binaryDir": "${sourceDir}/build/${presetName}"
+    },
+    {
+      "name": "msvc",
       "cacheVariables": {
-        "CMAKE_CXX_COMPILER": "cl.exe"
-      }
+        "CMAKE_CXX_COMPILER": "cl"
+      },
+      "inherits": ["ninja-multi"]
+    },
+    {
+      "name": "gcc",
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "g++"
+      },
+      "inherits": ["ninja-multi"]
+    },
+    {
+      "name": "clang",
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "clang++"
+      },
+      "inherits": ["ninja-multi"]
     }
   ],
   "buildPresets": [
     {
-      "name": "ninja-debug",
-      "configurePreset": "ninja-multi",
+      "name": "msvc-debug",
+      "configurePreset": "msvc",
       "displayName": "Debug",
       "configuration": "Debug"
     },
     {
-      "name": "ninja-release",
-      "configurePreset": "ninja-multi",
+      "name": "msvc-release",
+      "configurePreset": "msvc",
+      "displayName": "Release",
+      "configuration": "Release"
+    },
+    {
+      "name": "gcc-debug",
+      "configurePreset": "gcc",
+      "displayName": "Debug",
+      "configuration": "Debug"
+    },
+    {
+      "name": "gcc-release",
+      "configurePreset": "gcc",
+      "displayName": "Release",
+      "configuration": "Release"
+    },
+    {
+      "name": "clang-debug",
+      "configurePreset": "clang",
+      "displayName": "Debug",
+      "configuration": "Debug"
+    },
+    {
+      "name": "clang-release",
+      "configurePreset": "clang",
       "displayName": "Release",
       "configuration": "Release"
     }
   ],
   "testPresets": [
     {
-      "name": "test-debug",
-      "configurePreset": "ninja-multi",
+      "name": "msvc-test-debug",
+      "configurePreset": "msvc",
       "displayName": "Debug",
       "configuration": "Debug"
     },
     {
-      "name": "test-release",
-      "configurePreset": "ninja-multi",
+      "name": "msvc-test-release",
+      "configurePreset": "msvc",
+      "displayName": "Release",
+      "configuration": "Release"
+    },
+    {
+      "name": "gcc-test-debug",
+      "configurePreset": "gcc",
+      "displayName": "Debug",
+      "configuration": "Debug"
+    },
+    {
+      "name": "gcc-test-release",
+      "configurePreset": "gcc",
+      "displayName": "Release",
+      "configuration": "Release"
+    },
+    {
+      "name": "clang-test-debug",
+      "configurePreset": "clang",
+      "displayName": "Debug",
+      "configuration": "Debug"
+    },
+    {
+      "name": "clang-test-release",
+      "configurePreset": "clang",
       "displayName": "Release",
       "configuration": "Release"
     }

@@ -22,4 +22,7 @@ else()
 		-Wall
 		-Wextra
 	)
+	if(MINGW)
+		target_link_libraries(anitomy-tests stdc++exp)
+	endif()
 endif()

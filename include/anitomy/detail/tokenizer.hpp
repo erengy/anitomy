@@ -8,6 +8,10 @@
 #include <utility>
 #include <vector>
 
+#if __cplusplus < 202106L || ! defined __cpp_lib_ranges_starts_ends_with
+#include "ranges.hpp"
+#endif
+
 #include <anitomy/detail/bracket.hpp>
 #include <anitomy/detail/delimiter.hpp>
 #include <anitomy/detail/keyword.hpp>
