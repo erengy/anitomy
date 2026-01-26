@@ -20,8 +20,8 @@ enum class TokenKind {
 struct Token {
   TokenKind kind;
   std::string value;
-  std::optional<Keyword> keyword;
-  std::optional<ElementKind> element_kind;
+  std::optional<Keyword> keyword{};
+  std::optional<ElementKind> element_kind{};
   size_t position = 0;       // index in input string
   bool is_enclosed = false;  // token is enclosed in brackets
   bool is_number = false;    // all characters in `value` are digits
