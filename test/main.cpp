@@ -271,8 +271,8 @@ void test_unicode() {
   assert(utf8::is_invalid(0xC1));
   assert(utf8::is_invalid(0xC2) == false);
   assert(utf8::is_invalid(0xF4) == false);
-  for (byte_t b = 0xF5; b <= 0xFF; ++b) {
-    assert(utf8::is_invalid(b));
+  for (int b = 0xF5; b <= 0xFF; ++b) {
+    assert(utf8::is_invalid(static_cast<byte_t>(b)));
   }
 
   assert(utf8::sequence_length(0b00000000) == 1);
