@@ -40,6 +40,7 @@ namespace anitomy::detail {
     case U'~':  // used for episode ranges
     case U'+':  // used in torrent titles
     case U'|':  // used in torrent titles, reserved in Windows
+    case U':':
       return true;
     default:
       return is_space(ch) || is_dash(ch);
