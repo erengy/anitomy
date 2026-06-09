@@ -3437,5 +3437,15 @@
             "release_group": "VARYG",
             "subtitles": "Multi-Subs"
         }
+    },
+    {
+        "input": "Sasameki Koto E02: Cute People.mkv",
+        "mal_id": 6203,
+        "output": {
+            "title": "Sasameki Koto",
+            "episode": "02",
+            "episode_title": "Cute People",
+            "file_extension": "mkv"
+        }
     }
 ]
