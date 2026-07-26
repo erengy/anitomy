@@ -69,6 +69,18 @@ anitomy --format=json --pretty "[Ouroboros] Fullmetal Alchemist Brotherhood - 01
 }
 ```
 
+## Linux Build
+
+Linux builds are possible with GCC 16.1 or higher.
+
+```bash
+cmake --preset gcc-x64
+cmake --build --preset gcc-x64-debug
+ctest --preset test-gcc-x64-debug --output-on-failure
+```
+
+Clang 22 does not work with this codebase at the moment.
+
 ## FAQ
 
 > **How does it work?**
