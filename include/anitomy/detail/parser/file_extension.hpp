@@ -10,33 +10,33 @@
 
 namespace anitomy::detail {
 
+// clang-format off
+constexpr std::array file_extensions{
+    "3gp",
+    "avi",
+    "divx",
+    "flv",
+    "m2ts",
+    "m4v",
+    "mkv",
+    "mov",
+    "mp4",
+    "mpg",
+    "ogm",
+    "rm",
+    "rmvb",
+    "ts",
+    "webm",
+    "wmv",
+};
+// clang-format on
+
 inline std::optional<Element> parse_file_extension(std::span<Token> tokens) noexcept {
   using namespace std::views;
 
   static constexpr auto is_file_extension = [](const Token& token) {
-    // clang-format off
-    static const std::array extensions{
-        "3gp",
-        "avi",
-        "divx",
-        "flv",
-        "m2ts",
-        "m4v",
-        "mkv",
-        "mov",
-        "mp4",
-        "mpg",
-        "ogm",
-        "rm",
-        "rmvb",
-        "ts",
-        "webm",
-        "wmv",
-    };
-    // clang-format on
-
     return (is_keyword_token(token) || is_text_token(token)) &&
-           std::ranges::contains(extensions, token.value);
+           std::ranges::contains(file_extensions, token.value);
   };
 
   static constexpr auto is_dot = [](const Token& token) {
