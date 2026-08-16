@@ -9,6 +9,7 @@
 #include <anitomy/detail/cli/util.hpp>
 #include <anitomy/detail/json.hpp>
 #include <anitomy/version.hpp>
+#include <anitomy/detail/cli/args.hpp>
 
 namespace {
 
@@ -54,7 +55,8 @@ void print_table(const std::vector<Token>& tokens, bool verbose) {
 }  // namespace
 
 int main(int argc, char* argv[]) {
-  const CommandLine cli{argc, argv};
+  const auto args = make_utf8_args(argc, argv);
+  const CommandLine cli{make_arg_views(args)};
 
   if (cli.contains("help")) {
     print_help();
