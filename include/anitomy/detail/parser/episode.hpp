@@ -29,6 +29,39 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
     token.element_kind = kind;
     elements.emplace_back(element_from_token(kind, token, value, position));
   };
+    static const auto match_equivalent_number = [&tokens, &elements](const Token& token,  bool add_episode=false) {
+      auto prev_token = find_prev_token(
+          tokens, token, [](const Token& t) { return is_not_delimiter_token(t) && !(is_bracket_token(t)); });
+      if (!is_numeric_token(prev_token)) return false;
+      auto confirm_token = find_prev_token(tokens, prev_token, is_not_delimiter_token);
+      if (!is_dash_token(confirm_token)) return false;
+      int a=0;
+      int b=0;
+      std::from_chars(token.value.data(), token.value.size() + token.value.data(), a);
+      std::from_chars(prev_token.value.data(), prev_token.value.size() + prev_token.value.data(), b);
+
+      if (b > a) {
+        elements.emplace_back(element_from_token(ElementKind::EpisodeAbsolute, prev_token,
+                                                 prev_token.value, prev_token.position));
+        if (add_episode) {
+        elements.emplace_back(element_from_token(ElementKind::Episode, token,
+                                                 token.value, token.position));
+        }
+      } else {
+
+        elements.emplace_back(element_from_token(ElementKind::EpisodeAbsolute, token,
+                                                 token.value, token.position));
+        if (add_episode) {
+
+        elements.emplace_back(element_from_token(ElementKind::Episode, prev_token,
+                                                 prev_token.value, prev_token.position));
+        }
+      }
+
+
+      return true;
+
+    };
 
   {
     static constexpr auto match_episode_token = [](const Token& token, std::smatch& matches) {
@@ -101,6 +134,8 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
       std::pair<std::smatch, std::smatch> matches;
 
       if (!match_episode_token(*token, matches.first)) continue;
+      match_equivalent_number(*token);
+   
 
       auto prev_token = find_prev_token(tokens, token.base(), is_not_delimiter_token);
       auto next_token = std::next(token.base());
@@ -187,18 +222,13 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
   }
 
   // Equivalent numbers (e.g. `01 (176)`, `29 (04)`)
+  // change this function so it checks for the prev tokens, checks if it is a numeric token and then checks the non delimiter token
+  // token before it and confirms its a dash
+  // for this specific scope we are going to check for tokens that are numeric but are also enclosed
+
   {
-    static constexpr auto match_equivalent_number = [](const Token& token, std::smatch& matches) {
-      static const std::regex pattern{"(\\d{1,4})\\s*\\((\\d{1,4})\\)"};
-      return std::regex_match(token.value, matches, pattern);
-    };
-
-    std::smatch matches;
-
     for (auto& token : tokens | filter(is_free_token)) {
-      if (match_equivalent_number(token, matches)) {
-        add_element_from_token(ElementKind::Episode, token, matches.str(1),
-                               token.position + matches.position(1));
+      if (match_equivalent_number(token, true)) {
         return elements;
       }
     }

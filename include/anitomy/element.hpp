@@ -8,6 +8,7 @@ enum class ElementKind {
   AudioTerm,
   Device,
   Episode,
+  EpisodeAbsolute,
   EpisodeTitle,
   FileChecksum,
   FileExtension,

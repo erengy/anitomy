@@ -65,6 +65,7 @@ constexpr std::string_view to_string(const ElementKind kind) noexcept {
     case AudioTerm: return "audio_term";
     case Device: return "device";
     case Episode: return "episode";
+    case EpisodeAbsolute: return "episode_alt";
     case EpisodeTitle: return "episode_title";
     case FileChecksum: return "file_checksum";
     case FileExtension: return "file_extension";
