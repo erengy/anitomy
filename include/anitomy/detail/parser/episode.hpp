@@ -29,32 +29,34 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
     token.element_kind = kind;
     elements.emplace_back(element_from_token(kind, token, value, position));
   };
-    static const auto match_equivalent_number = [&tokens, &elements](const Token& token,  bool add_episode=false) {
-      auto prev_token = find_prev_token(
-          tokens, token, [](const Token& t) { return is_not_delimiter_token(t) && !(is_bracket_token(t)); });
-      if (!is_numeric_token(prev_token)) return false;
-      auto confirm_token = find_prev_token(tokens, prev_token, is_not_delimiter_token);
-      if (!is_dash_token(confirm_token)) return false;
+    static const auto match_equivalent_number = [&tokens, &elements](std::span<Token>::iterator token,  bool add_episode=false) {
+      auto prev_token = find_prev_token(tokens, token, [](const Token& t) {
+      return is_not_delimiter_token(t) && !(is_bracket_token(t));
+    });
+    if (prev_token == tokens.end() || !is_free_token(*prev_token)) return false;
+      if (!is_numeric_token(*prev_token)) return false;
+      //auto confirm_token = find_prev_token(tokens, prev_token, is_not_delimiter_token);
+      //if (!is_dash_token(*confirm_token)) return false;
       int a=0;
       int b=0;
-      std::from_chars(token.value.data(), token.value.size() + token.value.data(), a);
-      std::from_chars(prev_token.value.data(), prev_token.value.size() + prev_token.value.data(), b);
+      std::from_chars(token->value.data(), token->value.size() + token->value.data(), a);
+      std::from_chars(prev_token->value.data(), prev_token->value.size() + prev_token->value.data(), b);
 
       if (b > a) {
-        elements.emplace_back(element_from_token(ElementKind::EpisodeAbsolute, prev_token,
-                                                 prev_token.value, prev_token.position));
+        elements.emplace_back(element_from_token(ElementKind::EpisodeAbsolute, *prev_token,
+                                                 prev_token->value, prev_token->position));
         if (add_episode) {
-        elements.emplace_back(element_from_token(ElementKind::Episode, token,
-                                                 token.value, token.position));
+        elements.emplace_back(element_from_token(ElementKind::Episode, *token,
+                                                 token->value, token->position));
         }
       } else {
 
-        elements.emplace_back(element_from_token(ElementKind::EpisodeAbsolute, token,
-                                                 token.value, token.position));
+        elements.emplace_back(element_from_token(ElementKind::EpisodeAbsolute, *token,
+                                                 token->value, token->position));
         if (add_episode) {
 
-        elements.emplace_back(element_from_token(ElementKind::Episode, prev_token,
-                                                 prev_token.value, prev_token.position));
+        elements.emplace_back(element_from_token(ElementKind::Episode, *prev_token,
+                                                 prev_token->value, prev_token->position));
         }
       }
 
@@ -134,7 +136,6 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
       std::pair<std::smatch, std::smatch> matches;
 
       if (!match_episode_token(*token, matches.first)) continue;
-      match_equivalent_number(*token);
    
 
       auto prev_token = find_prev_token(tokens, token.base(), is_not_delimiter_token);
@@ -227,8 +228,11 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
   // for this specific scope we are going to check for tokens that are numeric but are also enclosed
 
   {
-    for (auto& token : tokens | filter(is_free_token)) {
-      if (match_equivalent_number(token, true)) {
+    auto view = tokens | filter([](const Token& token) {
+                  return is_enclosed_token(token) && is_free_token(token);
+                });
+    for (auto it = view.begin(); it != view.end(); ++it) {
+      if (match_equivalent_number(it.base(), true)) {
         return elements;
       }
     }
