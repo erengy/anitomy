@@ -35,8 +35,6 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
     });
     if (prev_token == tokens.end() || !is_free_token(*prev_token)) return false;
       if (!is_numeric_token(*prev_token)) return false;
-      //auto confirm_token = find_prev_token(tokens, prev_token, is_not_delimiter_token);
-      //if (!is_dash_token(*confirm_token)) return false;
       int a=0;
       int b=0;
       std::from_chars(token->value.data(), token->value.size() + token->value.data(), a);
