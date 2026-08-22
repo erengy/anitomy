@@ -43,18 +43,20 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
       std::from_chars(prev_token->value.data(), prev_token->value.size() + prev_token->value.data(), b);
 
       if (b > a) {
+        prev_token->element_kind = ElementKind::EpisodeAbsolute;
         elements.emplace_back(element_from_token(ElementKind::EpisodeAbsolute, *prev_token,
                                                  prev_token->value, prev_token->position));
         if (add_episode) {
+          token->element_kind = ElementKind::Episode;
         elements.emplace_back(element_from_token(ElementKind::Episode, *token,
                                                  token->value, token->position));
         }
       } else {
-
+        token->element_kind = ElementKind::EpisodeAbsolute;
         elements.emplace_back(element_from_token(ElementKind::EpisodeAbsolute, *token,
                                                  token->value, token->position));
         if (add_episode) {
-
+          prev_token->element_kind = ElementKind::Episode;
         elements.emplace_back(element_from_token(ElementKind::Episode, *prev_token,
                                                  prev_token->value, prev_token->position));
         }
@@ -85,10 +87,10 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
                               token.position + matches.position(2));
       }
 
-      token.element_kind = ElementKind::Episode;
-      elements.emplace_back(element_from_token(ElementKind::Episode, token, matches.str(3),
-                                               token.position + matches.position(3)));
-
+        token.element_kind = ElementKind::Episode;
+        elements.emplace_back(element_from_token(ElementKind::Episode, token, matches.str(3),
+                                                 token.position + matches.position(3)));
+      
       if (matches[4].matched) {
         elements.emplace_back(ElementKind::ReleaseVersion, matches.str(4),
                               token.position + matches.position(4));
@@ -149,6 +151,11 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
       if (!valid) continue;
 
       parse_matches(matches.first, *token, elements);
+      const auto episode_token = std::ranges::find(elements, ElementKind::Episode, &Element::kind);
+      if (episode_token == elements.end()) {
+        match_equivalent_number(token.base(), true);
+      };
+      match_equivalent_number(token.base());
       if (!matches.second.empty()) {
         parse_matches(matches.second, *next_token, elements);
       }
