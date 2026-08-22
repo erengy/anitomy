@@ -230,9 +230,6 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
   }
 
   // Equivalent numbers (e.g. `01 (176)`, `29 (04)`)
-  // change this function so it checks for the prev tokens, checks if it is a numeric token and then checks the non delimiter token
-  // token before it and confirms its a dash
-  // for this specific scope we are going to check for tokens that are numeric but are also enclosed
 
   {
     auto view = tokens | filter([](const Token& token) {
