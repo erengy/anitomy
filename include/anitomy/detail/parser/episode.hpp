@@ -29,6 +29,41 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
     token.element_kind = kind;
     elements.emplace_back(element_from_token(kind, token, value, position));
   };
+    static const auto match_equivalent_number = [&tokens, &elements](std::span<Token>::iterator token,  bool add_episode=false) {
+      auto prev_token = find_prev_token(tokens, token, [](const Token& t) {
+      return is_not_delimiter_token(t) && !(is_bracket_token(t));
+    });
+    if (prev_token == tokens.end() || !is_free_token(*prev_token)) return false;
+      if (!is_numeric_token(*prev_token)) return false;
+      int a=0;
+      int b=0;
+      std::from_chars(token->value.data(), token->value.size() + token->value.data(), a);
+      std::from_chars(prev_token->value.data(), prev_token->value.size() + prev_token->value.data(), b);
+
+      if (b > a) {
+        prev_token->element_kind = ElementKind::EpisodeAbsolute;
+        elements.emplace_back(element_from_token(ElementKind::EpisodeAbsolute, *prev_token,
+                                                 prev_token->value, prev_token->position));
+        if (add_episode) {
+          token->element_kind = ElementKind::Episode;
+        elements.emplace_back(element_from_token(ElementKind::Episode, *token,
+                                                 token->value, token->position));
+        }
+      } else {
+        token->element_kind = ElementKind::EpisodeAbsolute;
+        elements.emplace_back(element_from_token(ElementKind::EpisodeAbsolute, *token,
+                                                 token->value, token->position));
+        if (add_episode) {
+          prev_token->element_kind = ElementKind::Episode;
+        elements.emplace_back(element_from_token(ElementKind::Episode, *prev_token,
+                                                 prev_token->value, prev_token->position));
+        }
+      }
+
+
+      return true;
+
+    };
 
   {
     static constexpr auto match_episode_token = [](const Token& token, std::smatch& matches) {
@@ -50,10 +85,10 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
                               token.position + matches.position(2));
       }
 
-      token.element_kind = ElementKind::Episode;
-      elements.emplace_back(element_from_token(ElementKind::Episode, token, matches.str(3),
-                                               token.position + matches.position(3)));
-
+        token.element_kind = ElementKind::Episode;
+        elements.emplace_back(element_from_token(ElementKind::Episode, token, matches.str(3),
+                                                 token.position + matches.position(3)));
+      
       if (matches[4].matched) {
         elements.emplace_back(ElementKind::ReleaseVersion, matches.str(4),
                               token.position + matches.position(4));
@@ -101,6 +136,7 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
       std::pair<std::smatch, std::smatch> matches;
 
       if (!match_episode_token(*token, matches.first)) continue;
+   
 
       auto prev_token = find_prev_token(tokens, token.base(), is_not_delimiter_token);
       auto next_token = std::next(token.base());
@@ -113,6 +149,11 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
       if (!valid) continue;
 
       parse_matches(matches.first, *token, elements);
+      const auto episode_token = std::ranges::find(elements, ElementKind::Episode, &Element::kind);
+      if (episode_token == elements.end()) {
+        match_equivalent_number(token.base(), true);
+      };
+      match_equivalent_number(token.base());
       if (!matches.second.empty()) {
         parse_matches(matches.second, *next_token, elements);
       }
@@ -187,18 +228,13 @@ inline std::vector<Element> parse_episode(std::span<Token> tokens) noexcept {
   }
 
   // Equivalent numbers (e.g. `01 (176)`, `29 (04)`)
+
   {
-    static constexpr auto match_equivalent_number = [](const Token& token, std::smatch& matches) {
-      static const std::regex pattern{"(\\d{1,4})\\s*\\((\\d{1,4})\\)"};
-      return std::regex_match(token.value, matches, pattern);
-    };
-
-    std::smatch matches;
-
-    for (auto& token : tokens | filter(is_free_token)) {
-      if (match_equivalent_number(token, matches)) {
-        add_element_from_token(ElementKind::Episode, token, matches.str(1),
-                               token.position + matches.position(1));
+    auto view = tokens | filter([](const Token& token) {
+                  return is_enclosed_token(token) && is_free_token(token);
+                });
+    for (auto it = view.begin(); it != view.end(); ++it) {
+      if (match_equivalent_number(it.base(), true)) {
         return elements;
       }
     }

@@ -3447,5 +3447,20 @@
             "episode_title": "Cute People",
             "file_extension": "mkv"
         }
+    },
+    {
+        "input": "[GJM] Ascendance of a Bookworm (Honzuki no Gekokujou) - 46 (S04E10) (WEB 1080p) [73AE5CE1].mkv",
+        "mal_id": 39468,
+        "output": {
+          "release_group": "GJM",
+          "title": "Ascendance of a Bookworm (Honzuki no Gekokujou)",
+          "episode_alt": "46",
+          "season": "04",
+          "episode": "10",
+          "source": "WEB",
+          "video_resolution": "1080p",
+          "file_checksum": "73AE5CE1",
+          "file_extension": "mkv"
+        }
     }
 ]
