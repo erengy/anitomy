@@ -120,6 +120,7 @@ constexpr auto make_base_keywords() noexcept {
           {"AACx4"},
           {"AC3"},
           {"EAC3"},
+          {"EAC-3"},
           {"E-AC-3"},
           {"E-AC3"},
           {"Atmos"},

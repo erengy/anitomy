@@ -3447,5 +3447,19 @@
             "episode_title": "Cute People",
             "file_extension": "mkv"
         }
+    },
+    {
+        "input": "[sam] The Ghost in the Shell (2026) - 01 [WEB 1080p EAC-3] [4C377BC4].mkv",
+        "output": {
+            "release_group": "sam",
+            "title": "The Ghost in the Shell",
+            "year": "2026",
+            "episode": "01",
+            "source": "WEB",
+            "video_resolution": "1080p",
+            "audio_term": "EAC-3",
+            "file_checksum": "4C377BC4",
+            "file_extension": "mkv"
+        }
     }
 ]
